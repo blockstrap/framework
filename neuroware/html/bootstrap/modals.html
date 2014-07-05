@@ -1,0 +1,78 @@
+{{#objects}}
+<div class="modal fade {{css}}" id="{{id}}-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">{{{title}}}</h4>
+            </div>
+            <div class="modal-body">
+                {{{body}}}
+                <div class="row-fluid">
+                    <form id="{{forms.id}}" class="{{forms.css}}">
+                        {{#form}}
+                            <div class="form-group {{css}}">
+
+                                <!-- INPUTS -->
+                                {{#input}}
+                                    {{#label.text}}
+                                        <label for="{{id}}" class="control-label {{label.css}}">{{label.text}}</label>
+                                    {{/label.text}}
+                                    {{#wrapper.css}}<div class="{{wrapper.class}}">{{/wrapper.css}}
+                                    <input type="{{type}}" id="{{id}}" class="form-control {{css}}" placeholder="{{placeholder}}" value="{{value}}" />
+                                    {{#wrapper.css}}</div>{{/wrapper.css}}
+                                {{/input}}
+
+                                <!-- AREAS -->
+                                {{#area}}
+                                    {{#label.text}}
+                                        <label for="{{id}}" class="control-label {{label.css}}">{{label.text}}</label>
+                                    {{/label.text}}
+                                    {{#wrapper.css}}<div class="{{wrapper.css}}">{{/wrapper.css}}
+                                        <textarea id="{{id}}" class="form-control {{css}}" placeholder="{{placeholder}}">{{value}}</textarea>
+                                    {{#wrapper.css}}</div>{{/wrapper.css}}
+                                {{/area}}
+
+                                <!-- SELECT -->
+                                {{#select}}
+                                    {{#label.text}}
+                                        <label for="{{id}}" class="control-label {{label.css}}">{{label.text}}</label>
+                                    {{/label.text}}
+                                    {{#wrapper.css}}<div class="{{wrapper.css}}">{{/wrapper.css}}
+                                        <select id="{{id}}" class="form-control {{css}}" placeholder="{{placeholder}}">
+                                            {{#values}}
+                                                <option value="{{value}}">{{text}}</option>
+                                            {{/values}}
+                                        </select>
+                                    {{#wrapper.css}}</div>{{/wrapper.css}}
+                                {{/select}}
+
+                            </div>
+
+                        {{/form}}
+
+                        <!-- BUTTONS -->
+                        {{#buttons}}
+                        <div class="actions">
+                            {{#forms}}
+                                <button type="{{type}}" id="{{id}}" class="btn {{css}}">{{text}}</button>
+                            {{/forms}}
+                        </div>
+                        <div class="clearfix">&nbsp;</div>
+                        {{/buttons}}
+                    
+                    </form>
+                    
+                </div>
+                    
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">{{close}}</button>
+                {{#actions}}
+                    <button type="button" class="btn {{css}}">{{text}}</button>
+                {{/actions}}
+            </div>
+        </div>
+    </div>
+</div>
+{{/objects}}

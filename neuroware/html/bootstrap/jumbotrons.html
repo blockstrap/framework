@@ -1,0 +1,27 @@
+{{#objects}}
+    <div class="jumbotron" id="{{id}}">
+
+        <h1>{{title}}</h1>
+        <p class="intro">{{intro}}</p>
+        
+        <span class="actions">
+            {{#buttons}}
+                <a href="{{href}}" 
+                    class="btn {{css}}"
+                    {{#data}}
+                        data-{{key}}="{{value}}"
+                    {{/data}}>
+                    {{text}}
+                </a>
+            {{/buttons}}
+        </span>
+
+        {{#html}}
+            <hr>
+            <div class="jumbotron-contents">
+                {{{html}}}
+            </div>
+        {{/html}}
+
+    </div>
+{{/objects}}

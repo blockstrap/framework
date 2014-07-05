@@ -1,0 +1,52 @@
+{{#objects}}
+    <form id="{{id}}" class="{{css}}">
+        {{#fields}}
+            <div class="form-group {{css}}">
+
+                <!-- INPUTS -->
+                {{#inputs}}
+                    {{#label.text}}
+                        <label for="{{id}}" class="control-label {{label.css}}">{{label.text}}</label>
+                    {{/label.text}}
+                    {{#wrapper.css}}<div class="{{wrapper.css}}">{{/wrapper.css}}
+                    <input type="{{type}}" id="{{id}}" class="form-control {{css}}" placeholder="{{placeholder}}" value="{{value}}" />
+                    {{#wrapper.css}}</div>{{/wrapper.css}}
+                {{/inputs}}
+
+                <!-- AREAS -->
+                {{#areas}}
+                    {{#label.text}}
+                        <label for="{{id}}" class="control-label {{label.css}}">{{label.text}}</label>
+                    {{/label.text}}
+                    {{#wrapper.css}}<div class="{{wrapper.css}}">{{/wrapper.css}}
+                        <textarea id="{{id}}" class="form-control {{css}}" placeholder="{{placeholder}}">{{value}}</textarea>
+                    {{#wrapper.css}}</div>{{/wrapper.css}}
+                {{/areas}}
+
+                <!-- SELECT -->
+                {{#selects}}
+                    {{#label.text}}
+                        <label for="{{id}}" class="control-label {{label.css}}">{{label.text}}</label>
+                    {{/label.text}}
+                    {{#wrapper.css}}<div class="{{wrapper.css}}">{{/wrapper.css}}
+                        <select id="{{id}}" class="form-control {{css}}" placeholder="{{placeholder}}">
+                            {{#values}}
+                                <option value="{{value}}">{{text}}</option>
+                            {{/values}}
+                        </select>
+                    {{#wrapper.css}}</div>{{/wrapper.css}}
+                {{/selects}}
+
+            </div>
+        {{/fields}}
+        <!-- BUTTONS -->
+        {{#buttons}}
+        <div class="actions">
+            {{#forms}}
+                <button type="{{type}}" id="{{id}}" class="btn {{css}}">{{text}}</button>
+            {{/forms}}
+        </div>
+        <div class="clearfix">&nbsp;</div>
+        {{/buttons}}
+    </form>
+{{/objects}}

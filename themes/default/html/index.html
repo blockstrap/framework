@@ -1,0 +1,65 @@
+<header>
+    <a id="menu-toggle" href="#"><i class="fa fa-bars"></i></a>
+    <a id="sidebar-toggle" href="#"><img class="avatar" src="{{user.avatar}}" /></a>
+</header>
+
+<nav id="navigation">
+    {{#navigation}}
+        <a id="{{id}}" class="nav-links {{css}}" href="{{href}}">{{text}}</a>
+    {{/navigation}}
+    <form id="search-form">
+        <div class="form-group">
+            <input id="{{form.search.id}}" placeholder="{{form.search.placeholder}}" />
+            <button type="submit" class="{{form.search.css}}"></button>
+        </div>
+    </form>
+</nav>
+
+<div id="sidebar">
+    <a href="{{user.urls.profile}}" class="btn-page"><img class="avatar" src="{{user.avatar}}" /></a>
+    <a href="{{user.urls.profile}}" class="btn-page"><h3 id="user-name">{{user.name}}</h3></a>
+    <h4 id="last">{{user.last}}</h4>
+    <div class="actions">
+        {{#sidebar.actions}}
+            <a 
+                id="{{id}}" 
+                class="{{css}}" 
+                href="{{href}}"
+                {{#data}}
+                    data-{{key}}="{{value}}"
+                {{/data}}
+            >
+                {{text}}
+            </a>
+        {{/sidebar.actions}}
+    </div>
+    <div id="sidebar-panel">
+        <h4 class="panel-title">{{copy.sidebar.balances}}</h4>
+        <ul id="sidebar-list">
+            {{#copy.sidebar.accounts}}
+                <li>{{{currency}}} <a href="#" class="values">{{total}}</a></li>
+            {{/copy.sidebar.accounts}}
+            <li class="total">{{{copy.sidebar.total}}}</li>
+        </ul>
+    </div>
+    <footer>{{{footer}}}</footer>
+</div>
+
+<div id="main-content" class="row-fluid">
+    {{#dashboard.panels}}
+        <div class="panel-wrapper {{css}}">
+            <div id="{{id}}" class="panel panel-default">
+                {{#header}}<div class="panel-heading">{{{header}}}</div>{{/header}}
+                {{#body}}<div class="panel-body padless">{{{body}}}</div>{{/body}}
+            </div>
+        </div>
+    {{/dashboard.panels}}
+</div>
+
+<nav id="mobile-footer">
+    {{#mobile.footer}}
+    <a href="{{href}}" class="{{css}}" id="{{id}}"><i class="{{icon}}"></i><span class="text">{{text}}</span></a>
+    {{/mobile.footer}}
+</nav>
+
+{{{modals}}}

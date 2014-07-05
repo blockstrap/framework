@@ -1,0 +1,387 @@
+{
+    "user": {
+        "name": "Mark Smalley",
+        "avatar": "neuroware/img/avatar.jpg",
+        "last": "last transaction 12 hours ago",
+        "urls": {
+            "profile": "#profile"
+        }
+    },
+    "navigation": [
+        {
+            "id": "dashboard",
+            "css": "btn-page active",
+            "href": "#dashboard",
+            "text": "Dashboard"
+        },
+        {
+            "id": "accounts",
+            "css": "btn-page",
+            "href": "#accounts",
+            "text": "Accounts"
+        },
+        {
+            "id": "contacts",
+            "css": "btn-page",
+            "href": "#contacts",
+            "text": "Contacts"
+        }
+    ],
+    "sidebar": {
+        "actions": [
+            {
+                "id": "nu-send-payment",
+                "css": "btn btn-primary btn-sm",
+                "href": "#send",
+                "text": "Send Money",
+                "data": [
+                    {
+                        "key": "toggle",
+                        "value": "modal"
+                    },
+                    {
+                        "key": "target",
+                        "value": "#send-modal"
+                    }
+                ]
+            },
+            {
+                "id": "nu-logout",
+                "css": "btn btn-default btn-sm",
+                "href": "#logout",
+                "text": "Logout"
+            }
+        ]
+    },
+    "dashboard": {
+        "panels": [
+            {
+                "id": "welcome-message",
+                "css": "col-md-12 ribbon",
+                "body": {
+                    "func": "bootstrap",
+                    "type": "jumbotrons",
+                    "objects": [
+                        {
+                            "title": "Welcome back Mark Smalley",
+                            "intro": "Here is an overview of your wallet and its accounts.",
+                            "html": "You currently have <a href='#'>3 Bitcoin</a> addresses, <a href='#'>2 Dogecoin</a> addresses, <a href='#'>1 Litecoin</a> address and <a href='#'>1 Peercoin</a> address.<br />This theme and the widgets seen on this dashboard can be customised within the <a href='#'>settings</a> page. <a href='#' class='btn-reset-device'>Reset</a> device.",
+                            "buttons": [
+                                {
+                                    "href": "#",
+                                    "css": "disabled",
+                                    "text": "2 months since last backup"
+                                },
+                                {
+                                    "href": "#",
+                                    "css": "btn-default",
+                                    "text": "Backup",
+                                    "data": [
+                                        {
+                                            "key": "toggle",
+                                            "value": "modal"
+                                        },
+                                        {
+                                            "key": "target",
+                                            "value": "#backup-modal"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "recent-transactions",
+                "css": "col-md-6 odd",
+                "header": "Recent Transactions",
+                "body": {
+                    "func": "bootstrap",
+                    "type": "lists",
+                    "objects": [
+                        {
+                            "items": [
+                                {
+                                    "css": "from",
+                                    "html": "<a href='#'>1,250 Dogecoin</a> from <a href='#'>Johnny Mayo</a>",
+                                    "buttons": [
+                                        {
+                                            "href": "#",
+                                            "css": "btn-danger btn-xs pull-right",
+                                            "text": "Remove"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "css": "to",
+                                    "html": "<a href='#'>0.10001250 Bitcoin</a> to <a href='#'>Madeline Chang</a>",
+                                    "buttons": [
+                                        {
+                                            "href": "#",
+                                            "css": "btn-danger btn-xs pull-right",
+                                            "text": "Remove"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "css": "from",
+                                    "html": "<a href='#'>0.99000001 Peercoin</a> from <a href='#'>Adam Giles</a>",
+                                    "buttons": [
+                                        {
+                                            "href": "#",
+                                            "css": "btn-danger btn-xs pull-right",
+                                            "text": "Remove"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "css": "from",
+                                    "html": "<a href='#'>288,120 Dogecoin</a> from <a href='#'>Adam Giles</a>",
+                                    "buttons": [
+                                        {
+                                            "href": "#",
+                                            "css": "btn-danger btn-xs pull-right",
+                                            "text": "Remove"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "css": "to",
+                                    "html": "<a href='#'>1.19 Litecoin</a> to <a href='#'>Adam Giles</a>",
+                                    "buttons": [
+                                        {
+                                            "href": "#",
+                                            "css": "btn-danger btn-xs pull-right",
+                                            "text": "Remove"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "css": "from",
+                                    "html": "<a href='#'>12 Bitcoin</a> from <a href='#'>Johnny Mayo</a>",
+                                    "buttons": [
+                                        {
+                                            "href": "#",
+                                            "css": "btn-danger btn-xs pull-right",
+                                            "text": "Remove"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "css": "from",
+                                    "html": "<a href='#'>1,250 Dogecoin</a> from <a href='#'>Johnny Mayo</a>",
+                                    "buttons": [
+                                        {
+                                            "href": "#",
+                                            "css": "btn-danger btn-xs pull-right",
+                                            "text": "Remove"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "market-conditions",
+                "css": "col-md-6 even",
+                "header": "Market Conditions",
+                "body": {
+                    "func": "bootstrap",
+                    "type": "panels",
+                    "objects": [
+                        {
+                            "css": "col-sm-6",
+                            "html": "<span class='panel-value'>US$ 555</span><span class='panel-description'>BTC to USD</span>"
+                        },
+                        {
+                            "css": "col-sm-6",
+                            "html": "<span class='panel-value'>2,424,687</span><span class='panel-description'>Daily TXs</span>"
+                        },
+                        {
+                            "css": "col-sm-6",
+                            "html": "<span class='panel-value'>24,687</span><span class='panel-description'>Daily BTC Sent</span>"
+                        },
+                        {
+                            "css": "col-sm-6",
+                            "html": "<span class='panel-value'>5,332,369</span><span class='panel-description'>Hash Rate GH/s</span>"
+                        },
+                        {
+                            "css": "col-sm-6",
+                            "html": "<span class='panel-value'>12.2 Million</span><span class='panel-description'>BTC Discovered</span>"
+                        },
+                        {
+                            "css": "col-sm-6",
+                            "html": "<span class='panel-value'>10.4 Billion</span><span class='panel-description'>Market Cap USD</span>"
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "form": {
+        "search": {
+            "id": "search-term",
+            "css": "icon fa fa-search btn btn-xs",
+            "placeholder": "Search your wallet"
+        }
+    },
+    "footer": "powered by neuroware.io",
+    "modals": {
+        "func": "bootstrap",
+        "type": "modals",
+        "objects": [
+            {
+                "id": "backup",
+                "title": "Backup Your Wallet",
+                "body": "<p>By default, the information for this wallet is stored in LocalStorage, which resides within this browsers memory. If you copy and paste the information below into a plain text file you can import it again later if information or the device itself is lost.</p>",
+                "close": "Cancel",
+                "form": [
+                    {
+                        "area": {
+                            "id": "data",
+                            "css": "data-backup"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "send",
+                "title": "Send Money",
+                "body": "<p>Easily send money to your contacts, or just type a raw address too.</p>",
+                "close": "Cancel",
+                "form": [
+                    {
+                        "input": {
+                            "id": "to",
+                            "label": {
+                                "text": "To",
+                                "css": "col-sm-3"
+                            },
+                            "type": "text",
+                            "placeholder": "Address",
+                            "wrapper": {
+                                "css": "col-sm-9"
+                            }
+                        }
+                    },
+                    {
+                        "select": {
+                            "id": "from",
+                            "label": {
+                                "text": "From",
+                                "css": "col-sm-3"
+                            },
+                            "type": "text",
+                            "placeholder": "Select Wallet",
+                            "wrapper": {
+                                "css": "col-sm-9"
+                            },
+                            "values": [
+                                {
+                                    "value": "wallet-01",
+                                    "text": "Bitcoin (Personal)"
+                                },
+                                {
+                                    "value": "wallet-02",
+                                    "text": "Bitcoin (Business)"
+                                },
+                                {
+                                    "value": "wallet-03",
+                                    "text": "Dogecoin"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "input": {
+                            "id": "amount",
+                            "label": {
+                                "text": "Amount",
+                                "css": "col-sm-3"
+                            },
+                            "type": "text",
+                            "placeholder": "Total to Send",
+                            "wrapper": {
+                                "css": "col-sm-9"
+                            }
+                        }
+                    }
+                ],
+                "buttons": {
+                    "forms": [
+                        {
+                            "type": "submit",
+                            "id": "send-money",
+                            "css": "btn-primary pull-right",
+                            "text": "Send"
+                        },
+                        {
+                            "id": "authorize-payment",
+                            "css": "btn-default pull-right",
+                            "text": "Authorize"
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "mobile": {
+        "footer": [
+            {
+                "id": "dashboard",
+                "css": "active nu-page",
+                "href": "#dashboard",
+                "icon": "fa fa-home",
+                "text": "Dashboard"
+            },
+            {
+                "id": "accounts",
+                "css": "nu-page",
+                "href": "#accounts",
+                "icon": "fa fa-dollar",
+                "text": "Accounts"
+            },
+            {
+                "id": "contacts",
+                "css": "nu-page",
+                "href": "#contacts",
+                "icon": "fa fa-book",
+                "text": "Contacts"
+            },
+            {
+                "id": "send",
+                "css": "nu-page",
+                "href": "#send",
+                "icon": "fa fa-plus-circle",
+                "text": "Send"
+            }
+        ]
+    },
+    "copy": {
+        "sidebar": {
+            "balances": "Account Balances",
+            "total": "Total <span>US$ 1,345.67</span>",
+            "accounts": [
+                {
+                    "currency": "Bitcoin (<a href='#'>3</a>)",
+                    "total": "2.25300100"
+                },
+                {
+                    "currency": "Dogecoin (<a href='#'>2</a>)",
+                    "total": "4,672.00100253"
+                },
+                {
+                    "currency": "Litecoin (<a href='#'>1</a>)",
+                    "total": "0"
+                },
+                {
+                    "currency": "Peercoin (<a href='#'>1</a>)",
+                    "total": "0.99000001"
+                }
+            ]
+        }
+    }
+}
