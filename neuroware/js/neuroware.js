@@ -28,7 +28,7 @@ var neuroware_core = function()
         var plugin_name = 'neuroware';
         var defaults = {
             v: '1.0.1.4',
-            salt: '',
+            salt: 'a',
             autoload: true,
             id: plugin_name,
             theme: 'default',
@@ -112,7 +112,28 @@ var neuroware_core = function()
             if(attributed_options['bootstrap']) $.fn.neuroware.settings['bootstrap'] = attributed_options['bootstrap'].split(', ');
             if(attributed_options['styles']) $.fn.neuroware.settings['styles'] = $.extend({}, $.fn.neuroware.settings.styles, $.fn.neuroware.core.stringed(attributed_options['styles'].split(', ')));
             
-            
+            if(!localStorage || !localStorage.getItem('nw_neuroware_salt'))
+            {
+                $.ajax({
+                    url: $.fn.neuroware.settings.core_base + 'html/' + 'setup.html',
+                    dataType: 'HTML',
+                    type: 'GET',
+                    complete: function(results)
+                    {
+                        if(results && results.responseText && results.responseText === '404')
+                        {
+
+                        }
+                        else
+                        {
+                            var setup = results.responseText;
+                            $($.fn.neuroware.element).append(setup);
+                        }
+                    }
+                });
+            }
+            else
+            {
                 $.ajax({
                     url: $.fn.neuroware.settings.core_base + 'html/' + 'loading.html',
                     dataType: 'HTML',
@@ -127,30 +148,10 @@ var neuroware_core = function()
                         {
                             var loading = results.responseText;
                             $($.fn.neuroware.element).append(loading);
-                            if(!localStorage || !localStorage.getItem('nw_neuroware_salt'))
-                            {
-                                $.ajax({
-                                    url: $.fn.neuroware.settings.core_base + 'html/' + 'setup.html',
-                                    dataType: 'HTML',
-                                    type: 'GET',
-                                    complete: function(results)
-                                    {
-                                        if(results && results.responseText && results.responseText === '404')
-                                        {
-
-                                        }
-                                        else
-                                        {
-                                            var setup = results.responseText;
-                                            $($.fn.neuroware.element).append(setup);
-                                        }
-                                    }
-                                });
-                            }
                         }
                     }
                 })
-            
+            }
 
             // LOAD DEPENDENCIES FIRST
             if($.isArray($.fn.neuroware.settings.dependencies))
@@ -346,7 +347,7 @@ var neuroware_core = function()
             },
             loading: function()
             {
-                $($.fn.neuroware.element).find('.loading-elements').animate({'opacity':1}).delay(0).animate({'opacity':0}, 300, function(e)
+                $($.fn.neuroware.element).find('.loading-elements').animate({'opacity':1}).delay(0).animate({'opacity':0}, 600, function(e)
                 {
                     if($(this).hasClass('loading')) $(this).removeClass('loading');
                     $($.fn.neuroware.element).removeClass('loading');

@@ -1,4 +1,8 @@
 <style>
+@keyframes fade-in {
+    0% { opacity; 0 }
+    100% { opacity: 1 }
+}
 .neuroware-wrapper #setup-neuroware p {
     margin: 0 0 10px;
 }
@@ -13,12 +17,14 @@
     width: 100%;
     height: 100%;
     z-index: 9999999999;
+    opacity: 0;
     background: black;
     color: white;
     padding: 0;
     margin: 0;
     font-family: sans-serif;
     line-height: 1.42857;
+    animation: fade-in 0.5s forwards;
 }
 </style>
 
