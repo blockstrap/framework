@@ -103,7 +103,7 @@
                             {
                                 var filtered_data = $.fn.neuroware.core.filter(data);
                                 $.fn.neuroware.data.put(slug, filtered_data);
-                                $.fn.neuroware.data.save('data', slug, data, function()
+                                $.fn.neuroware.data.save('data', slug, data, function(res)
                                 {
                                     $.fn.neuroware.data.find('html', slug, function(results)
                                     {
@@ -127,7 +127,7 @@
                                         }
                                         else
                                         {                                            
-                                            buttons.process(slug, content, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
+                                            buttons.process(slug, html, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
                                         }
                                     });
                                 });
@@ -157,7 +157,7 @@
                             }
                             else
                             {
-                                buttons.process(slug, content, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
+                                buttons.process(slug, html, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
                             }
                         });
                     }

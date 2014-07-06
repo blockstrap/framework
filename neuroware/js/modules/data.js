@@ -41,7 +41,7 @@
         if(localStorage && localStorage.getItem(data.item(collection, key)))
         {
             var obj = localStorage.getItem(data.item(collection, key));
-            if(neuroware_functions.json(obj))
+            if(obj && neuroware_functions.json(obj))
             {
                 var json = $.parseJSON(obj);
                 callback(json);

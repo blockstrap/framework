@@ -27,7 +27,7 @@ var neuroware_core = function()
         var $this = this;
         var plugin_name = 'neuroware';
         var defaults = {
-            v: '1.0.2.1',
+            v: '1.0.2.2',
             salt: 'a',
             autoload: true,
             id: plugin_name,
@@ -61,6 +61,21 @@ var neuroware_core = function()
                     block: '15968'
                 }
             },
+            objects: [ 
+                {
+                    id: 'accounts',
+                    single: 'Account',
+                    plural: 'Accounts',
+                    fields: [
+                        {
+                            id: '',
+                            type: '',
+                            label: '',
+                            value: ''
+                        }
+                    ]
+                }
+            ],
             maps: {
                 styles: {
                     elements: {
@@ -425,7 +440,6 @@ var neuroware_core = function()
                 {
                     $.fn.neuroware.buttons.reset(this, e);
                 });
-                $.fn.neuroware.buttons.check();
             },
             stringed: function(styles)
             {
