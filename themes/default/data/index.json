@@ -1,5 +1,6 @@
 {
     "user": {
+        "setup": false,
         "name": "Mark Smalley",
         "avatar": "neuroware/img/avatar.jpg",
         "last": "last transaction 12 hours ago",
@@ -382,6 +383,179 @@
                     "total": "0.99000001"
                 }
             ]
-        }
+        },
+        "print_guide": "Print Guide",
+        "support_forums": "Get Help"
+    },
+    "setup": {
+        "avatar": "neuroware/img/avatar.jpg",
+        "name": "Huxley The Wizard",
+        "info": "( huxley stardust is here to help you )",
+        "help": {
+            "title": "What is a Salt...?",
+            "body": "<p>Not entirely sure exactly what to say here but do know that Johnny has some work to do throughout to help make it pukka!</p><p>Not entirely sure exactly what to say here but do know that Johnny has some work to do throughout to help make it pukka!</p>"
+        },
+        "progress": {
+            "func": "bootstrap",
+            "type": "bars",
+            "objects": [
+                {
+                    "id": "",
+                    "after": "10% complete (1 of 3)",
+                    "stacks": [
+                        {
+                            "class": "progress-bar-success progress-bar-striped active",
+                            "value": "20",
+                            "text": "10%"
+                        }
+                    ]
+                }
+            ]
+        },
+        "steps": [
+            {
+                "id": "step1",
+                "css": "btn-page active",
+                "href": "#step1",
+                "text": "Salt Check"
+            },
+            {
+                "id": "step2",
+                "css": "btn-page",
+                "href": "#step2",
+                "text": "Additional Entropy"
+            },
+            {
+                "id": "step3",
+                "css": "btn-page",
+                "href": "#step3",
+                "text": "First Wallet"
+            }
+        ],
+        "actions": [
+            {
+                "id": "next-step",
+                "css": "btn btn-primary pull-right",
+                "href": "#step2",
+                "text": "Next Step"
+            }
+        ],
+        "panels": [
+            {
+                "id": "welcome-message",
+                "css": "col-md-12 ribbon",
+                "body": {
+                    "func": "bootstrap",
+                    "type": "jumbotrons",
+                    "objects": [
+                        {
+                            "title": "Welcome to Neuroware",
+                            "intro": "This device is compatible and ready to be used.",
+                            "html": "Not sure what to put here yet... Any ideas are much appreciated...?.",
+                            "buttons": [
+                                {
+                                    "href": "#",
+                                    "css": "btn-default",
+                                    "text": "Reset"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "salt-generation",
+                "css": "col-md-6 odd",
+                "header": "Determenistic Key-Salt Generation",
+                "body": {
+                    "func": "bootstrap",
+                    "type": "forms",
+                    "objects": [
+                        {
+                            "id": "neuroware-setup-step1",
+                            "fields": [
+                                {
+                                    "inputs": {
+                                        "id": "app_url",
+                                        "label": {
+                                            "text": "App URL",
+                                            "css": "col-sm-3"
+                                        },
+                                        "type": "text",
+                                        "placeholder": "",
+                                        "value": {
+                                            "func": "urls",
+                                            "type": "root"
+                                        },
+                                        "wrapper": {
+                                            "css": "col-sm-9"
+                                        }
+                                    }
+                                },
+                                {
+                                    "inputs": {
+                                        "id": "your_name",
+                                        "label": {
+                                            "text": "Your Name",
+                                            "css": "col-sm-3"
+                                        },
+                                        "type": "text",
+                                        "placeholder": "If you use your real name you might remember it",
+                                        "value": "",
+                                        "wrapper": {
+                                            "css": "col-sm-9"
+                                        }
+                                    }
+                                },
+                                {
+                                    "inputs": {
+                                        "id": "your_dob",
+                                        "label": {
+                                            "text": "Date of Birth",
+                                            "css": "col-sm-3"
+                                        },
+                                        "type": "text",
+                                        "placeholder": "",
+                                        "value": "",
+                                        "wrapper": {
+                                            "css": "col-sm-9"
+                                        }
+                                    }
+                                },
+                                {
+                                    "inputs": {
+                                        "id": "your_city",
+                                        "label": {
+                                            "text": "City of Birth",
+                                            "css": "col-sm-3"
+                                        },
+                                        "type": "text",
+                                        "placeholder": "It is easier to remember your real city of birth",
+                                        "value": "",
+                                        "wrapper": {
+                                            "css": "col-sm-9"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "salt-generation",
+                "css": "col-md-6 even",
+                "header": "Authentication Settings",
+                "body": {
+                    "func": "bootstrap",
+                    "type": "lists",
+                    "objects": [
+                        {
+                            
+                        }
+                    ]
+                }
+            }
+        ]
     }
 }

@@ -296,7 +296,6 @@
                 {
                     if($('#mobile-footer').css('display') === 'block')
                     {
-                        console.log('check', $(this).parent().attr('id'));
                         if($(this).parent().attr('id') === 'mobile-footer')
                         {
                             $(this).trigger('click');

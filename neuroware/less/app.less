@@ -201,7 +201,7 @@ SIDEBAR
 .neuroware-wrapper #sidebar {
     text-align: center;
     background: @sidebar-bg;
-    padding-top: @panel-padding;
+    padding: @panel-padding;
     .fixed-sidebar(@sidebar-width, @header-height);
     position: fixed;
     .avatar {
@@ -229,6 +229,12 @@ SIDEBAR
         background: @sidebar-panel-bg;
         border-top: 1px solid @sidebar-panel-border;
         border-bottom: 1px solid @sidebar-panel-border;
+        margin: @panel-padding -@panel-padding;
+        p {
+            font-size: 11px;
+            text-align: justify;
+            line-height: 16px;
+        }
         ul {
             font-size: 11px;
             display: block;
@@ -824,6 +830,21 @@ SETUP
         z-index: 999999999;
         background: black;
         color: white;
+        padding: @panel-padding;
+    }
+}
+
+/*
+
+PROGRESS
+
+*/
+.neuroware-wrapper {
+    #sidebar {
+        .progress {
+            background: @sidebar-panel-bg;
+            border: 1px solid @sidebar-panel-border;
+        }
     }
 }
 

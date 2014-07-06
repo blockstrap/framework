@@ -1,0 +1,21 @@
+{{#objects}}
+
+    <div id="{{id}}" class="progress">
+        {{#stacks}}
+        
+            <div 
+                class="progress-bar {{class}}" role="progressbar" 
+                aria-valuenow="{{value}}" aria-valuemin="0" aria-valuemax="100" 
+                style="width: {{value}}%;
+            ">
+            {{text}}
+            </div>
+            
+        {{/stacks}}
+    </div>
+
+    {{#after}}
+        {{{after}}}
+    {{/after}}
+    
+{{/objects}}

@@ -28,7 +28,7 @@ var neuroware_core = function()
         var plugin_name = 'neuroware';
         var defaults = {
             v: '1.0.2.2',
-            salt: 'a',
+            salt: '',
             autoload: true,
             id: plugin_name,
             theme: 'default',
@@ -47,7 +47,7 @@ var neuroware_core = function()
             filters: ['bootstrap'],
             modules: ['filters', 'data', 'api', 'security', 'buttons', 'styles', 'templates'],
             dependencies: ['sonic', 'swipe', 'effects', 'bootstrap.min', 'mustache', 'tables'],
-            bootstrap: ['lists', 'jumbotrons', 'panels', 'tables', 'modals'],
+            bootstrap: ['lists', 'jumbotrons', 'panels', 'tables', 'modals', 'forms', 'bars'],
             styles: {
                 content_bg: '#DDD',
                 header_bg: '#475862'
@@ -61,21 +61,6 @@ var neuroware_core = function()
                     block: '15968'
                 }
             },
-            objects: [ 
-                {
-                    id: 'accounts',
-                    single: 'Account',
-                    plural: 'Accounts',
-                    fields: [
-                        {
-                            id: '',
-                            type: '',
-                            label: '',
-                            value: ''
-                        }
-                    ]
-                }
-            ],
             maps: {
                 styles: {
                     elements: {
@@ -243,14 +228,13 @@ var neuroware_core = function()
                     };
                 }, true);
             }
-            
-            if(!localStorage || !localStorage.getItem('nw_neuroware_salt'))
-            {
-                $.ajax({
-                    url: $.fn.neuroware.settings.core_base + 'html/' + 'setup.html',
-                    dataType: 'HTML',
-                    type: 'GET',
-                    complete: function(results)
+            $.ajax({
+                url: $.fn.neuroware.settings.core_base + 'html/' + 'loading.html',
+                dataType: 'HTML',
+                type: 'GET',
+                complete: function(results)
+                {
+                    if($($.fn.neuroware.element).find('#'+$.fn.neuroware.settings.content_id).length < 1)
                     {
                         if(results && results.responseText && results.responseText === '404')
                         {
@@ -258,35 +242,12 @@ var neuroware_core = function()
                         }
                         else
                         {
-                            var setup = results.responseText;
-                            $($.fn.neuroware.element).append(setup);
+                            var loading = results.responseText;
+                            $($.fn.neuroware.element).append(loading);
                         }
                     }
-                });
-            }
-            else
-            {
-                $.ajax({
-                    url: $.fn.neuroware.settings.core_base + 'html/' + 'loading.html',
-                    dataType: 'HTML',
-                    type: 'GET',
-                    complete: function(results)
-                    {
-                        if($($.fn.neuroware.element).find('#'+$.fn.neuroware.settings.content_id).length < 1)
-                        {
-                            if(results && results.responseText && results.responseText === '404')
-                            {
-
-                            }
-                            else
-                            {
-                                var loading = results.responseText;
-                                $($.fn.neuroware.element).append(loading);
-                            }
-                        }
-                    }
-                })
-            }
+                }
+            });
         }
         
         // PREVENT DUPLICATES
