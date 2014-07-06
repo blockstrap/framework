@@ -27,6 +27,8 @@ var neuroware_core = function()
         var $this = this;
         var plugin_name = 'neuroware';
         var defaults = {
+            v: '1.0.1.4',
+            salt: '',
             autoload: true,
             id: plugin_name,
             theme: 'default',
@@ -44,7 +46,7 @@ var neuroware_core = function()
             css: ['font-awesome'],
             filters: ['bootstrap'],
             modules: ['filters', 'data', 'api', 'security', 'buttons', 'styles', 'templates'],
-            dependencies: ['sonic', 'effects', 'bootstrap.min', 'mustache', 'tables'],
+            dependencies: ['sonic', 'swipe', 'effects', 'bootstrap.min', 'mustache', 'tables'],
             bootstrap: ['lists', 'jumbotrons', 'panels', 'tables', 'modals'],
             styles: {
                 content_bg: '#DDD',
@@ -78,6 +80,7 @@ var neuroware_core = function()
         {
             // MERGE DEFAULT AND PLUGIN OPTIONS
             $.fn.neuroware.settings = $.extend({}, defaults, options);
+            if($.fn.neuroware.settings.salt && localStorage) localStorage.setItem('nw_neuroware_salt', $.fn.neuroware.settings.salt);
             $.fn.neuroware.settings.vars = neuroware_functions.vars();
             if(neuroware_functions.vars('less')) $.fn.neuroware.settings.less = true;
             if(!$.fn.neuroware.settings.base_url)
@@ -92,7 +95,7 @@ var neuroware_core = function()
                 element = $('#neuroware');
             }
             $.fn.neuroware.element = element;
-            $($.fn.neuroware.element).addClass('neuroware-wrapper loading').css({'opacity':0});
+            $($.fn.neuroware.element).addClass('neuroware-wrapper loading');
 
             // DATA ATTRIBUTES
             var attributed_options = $($.fn.neuroware.element).data();
@@ -108,6 +111,46 @@ var neuroware_core = function()
             if(attributed_options['modules']) $.fn.neuroware.settings['modules'] = attributed_options['modules'].split(', ');
             if(attributed_options['bootstrap']) $.fn.neuroware.settings['bootstrap'] = attributed_options['bootstrap'].split(', ');
             if(attributed_options['styles']) $.fn.neuroware.settings['styles'] = $.extend({}, $.fn.neuroware.settings.styles, $.fn.neuroware.core.stringed(attributed_options['styles'].split(', ')));
+            
+            
+                $.ajax({
+                    url: $.fn.neuroware.settings.core_base + 'html/' + 'loading.html',
+                    dataType: 'HTML',
+                    type: 'GET',
+                    complete: function(results)
+                    {
+                        if(results && results.responseText && results.responseText === '404')
+                        {
+
+                        }
+                        else
+                        {
+                            var loading = results.responseText;
+                            $($.fn.neuroware.element).append(loading);
+                            if(!localStorage || !localStorage.getItem('nw_neuroware_salt'))
+                            {
+                                $.ajax({
+                                    url: $.fn.neuroware.settings.core_base + 'html/' + 'setup.html',
+                                    dataType: 'HTML',
+                                    type: 'GET',
+                                    complete: function(results)
+                                    {
+                                        if(results && results.responseText && results.responseText === '404')
+                                        {
+
+                                        }
+                                        else
+                                        {
+                                            var setup = results.responseText;
+                                            $($.fn.neuroware.element).append(setup);
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                })
+            
 
             // LOAD DEPENDENCIES FIRST
             if($.isArray($.fn.neuroware.settings.dependencies))
@@ -127,96 +170,99 @@ var neuroware_core = function()
                                     $.fn.neuroware.buttons.reset(false, false);
                                 }
                                 
-                                // INJECT LESS.css EARLY IF REQUIRED
-                                $.fn.neuroware.data.find('inc', 'less', function(less)
+                                neuroware_functions.update($.fn.neuroware.settings.v, function()
                                 {
-                                    var refresh = neuroware_functions.vars('refresh');
-                                    if(!less || refresh === true) 
+                                    // INJECT LESS.css EARLY IF REQUIRED
+                                    $.fn.neuroware.data.find('inc', 'less', function(less)
                                     {
-                                        $('head').append('<link rel="stylesheet/less" type="text/css" href="'+$.fn.neuroware.settings.core_base+'less/neuroware.less">');
-                                        neuroware_functions.js('js-neuroware-less', $.fn.neuroware.settings.core_base+'js/less.js', function()
+                                        var refresh = neuroware_functions.vars('refresh');
+                                        if(!less || refresh === true) 
                                         {
-                                            var less_styles = false;
-                                            $('style').each(function()
+                                            $('head').append('<link rel="stylesheet/less" type="text/css" href="'+$.fn.neuroware.settings.core_base+'less/neuroware.less">');
+                                            neuroware_functions.js('js-neuroware-less', $.fn.neuroware.settings.core_base+'js/less.js', function()
                                             {
-                                                // less-neuroware
-                                                var id = $(this).attr('id');
-                                                if(id)
+                                                var less_styles = false;
+                                                $('style').each(function()
                                                 {
-                                                    var check = id.substring(0, 5);
-                                                    var double_check = id.substring((id.length - 14), id.length);
-                                                    if(check === 'less:' && double_check === 'less-neuroware')
+                                                    // less-neuroware
+                                                    var id = $(this).attr('id');
+                                                    if(id)
                                                     {
-                                                        less_styles = $(this).html();
-                                                    }
-                                                    if(less_styles)
-                                                    {
-                                                        $.fn.neuroware.data.save('inc', 'less', less_styles, function()
+                                                        var check = id.substring(0, 5);
+                                                        var double_check = id.substring((id.length - 14), id.length);
+                                                        if(check === 'less:' && double_check === 'less-neuroware')
                                                         {
+                                                            less_styles = $(this).html();
+                                                        }
+                                                        if(less_styles)
+                                                        {
+                                                            $.fn.neuroware.data.save('inc', 'less', less_styles, function()
+                                                            {
 
-                                                        });
+                                                            });
+                                                        }
+                                                    }
+                                                })
+                                            });
+                                        }
+                                        else
+                                        {
+                                            $('head').append('<style id="nw-css">'+less+'</style>');
+                                        }
+                                    });
+
+
+                                    // ADD TEMPLATES
+                                    $.fn.neuroware.snippets = {};                            
+                                    var snippet_count = 0;
+                                    var snippet_limit = 0;
+                                    if($.isArray($.fn.neuroware.settings.bootstrap))
+                                    {
+                                        snippet_limit = $.fn.neuroware.settings.bootstrap.length;
+                                    }
+                                    if($.isArray($.fn.neuroware.settings.bootstrap))
+                                    {
+                                        $.each($.fn.neuroware.settings.bootstrap, function(k, v)
+                                        {
+                                            $.fn.neuroware.data.find('boot', v, function(results)
+                                            {
+                                                var refresh = neuroware_functions.vars('refresh');
+                                                if(refresh === true || !results)
+                                                {
+                                                    $.fn.neuroware.templates.get($.fn.neuroware.settings.core_base+'html/bootstrap/'+v, 'html', function(html)
+                                                    {                                        
+                                                        $.fn.neuroware.data.save('boot', v, html, function(results)
+                                                        {
+                                                            $.fn.neuroware.snippets[v] = html;
+                                                            snippet_count++;
+                                                            if(snippet_count >= snippet_limit)
+                                                            {
+                                                                // INITIATE CORE
+                                                                $.fn.neuroware.core.init();
+                                                            }
+                                                        })
+
+                                                    });
+                                                }
+                                                else
+                                                {
+                                                    $.fn.neuroware.snippets[v] = results;
+                                                    snippet_count++;
+                                                    if(snippet_count >= snippet_limit)
+                                                    {
+                                                        // INITIATE CORE
+                                                        $.fn.neuroware.core.init();
                                                     }
                                                 }
-                                            })
+                                            });
                                         });
                                     }
                                     else
                                     {
-                                        $('head').append('<style id="nw-css">'+less+'</style>');
+                                        // INITIATE CORE
+                                        $.fn.neuroware.core.init();
                                     }
-                                });
-                                
-                                
-                                // ADD TEMPLATES
-                                $.fn.neuroware.snippets = {};                            
-                                var snippet_count = 0;
-                                var snippet_limit = 0;
-                                if($.isArray($.fn.neuroware.settings.bootstrap))
-                                {
-                                    snippet_limit = $.fn.neuroware.settings.bootstrap.length;
-                                }
-                                if($.isArray($.fn.neuroware.settings.bootstrap))
-                                {
-                                    $.each($.fn.neuroware.settings.bootstrap, function(k, v)
-                                    {
-                                        $.fn.neuroware.data.find('boot', v, function(results)
-                                        {
-                                            var refresh = neuroware_functions.vars('refresh');
-                                            if(refresh === true || !results)
-                                            {
-                                                $.fn.neuroware.templates.get($.fn.neuroware.settings.core_base+'html/bootstrap/'+v, 'html', function(html)
-                                                {                                        
-                                                    $.fn.neuroware.data.save('boot', v, html, function(results)
-                                                    {
-                                                        $.fn.neuroware.snippets[v] = html;
-                                                        snippet_count++;
-                                                        if(snippet_count >= snippet_limit)
-                                                        {
-                                                            // INITIATE CORE
-                                                            $.fn.neuroware.core.init();
-                                                        }
-                                                    })
-
-                                                });
-                                            }
-                                            else
-                                            {
-                                                $.fn.neuroware.snippets[v] = results;
-                                                snippet_count++;
-                                                if(snippet_count >= snippet_limit)
-                                                {
-                                                    // INITIATE CORE
-                                                    $.fn.neuroware.core.init();
-                                                }
-                                            }
-                                        });
-                                    });
-                                }
-                                else
-                                {
-                                    // INITIATE CORE
-                                    $.fn.neuroware.core.init();
-                                }
+                                }) 
                             });
                         })
                     };
@@ -302,6 +348,7 @@ var neuroware_core = function()
             {
                 $($.fn.neuroware.element).find('.loading-elements').animate({'opacity':1}).delay(0).animate({'opacity':0}, 300, function(e)
                 {
+                    if($(this).hasClass('loading')) $(this).removeClass('loading');
                     $($.fn.neuroware.element).removeClass('loading');
                     $($.fn.neuroware.element).find('.loading-elements').css({'opacity':1});
                 })
@@ -374,6 +421,7 @@ var neuroware_core = function()
                 {
                     $.fn.neuroware.buttons.reset(this, e);
                 });
+                $.fn.neuroware.buttons.check();
             },
             stringed: function(styles)
             {
@@ -449,24 +497,27 @@ var neuroware_functions = {
     vars: function(variable)
     {
         if(!variable) variable = false;
-        var query = window.location.search.substring(1);
-        var vars = query.split("&");
-        var original_vars = vars;
-        vars = {};
-        for(var i=0;i<original_vars.length;i++) 
-        {
-            var pair = original_vars[i].split("=");
-            var value = pair[1];
-            if(value === 'false') value = false;
-            if(value === 'true') value = true;
-            vars[pair[0]] = value;
-        }
         if(variable)
         {
-            if(vars[variable]) return vars[variable];
-            else return false;
+            
+            return $.fn.neuroware.settings.vars[variable];
         }
-        else return vars;
+        else
+        {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            var original_vars = vars;
+            vars = {};
+            for(var i=0;i<original_vars.length;i++) 
+            {
+                var pair = original_vars[i].split("=");
+                var value = pair[1];
+                if(value === 'false') value = false;
+                if(value === 'true') value = true;
+                vars[pair[0]] = value;
+            }
+            return vars;
+        }
     },
     js: function(id, src, callback)
     {
@@ -620,6 +671,40 @@ var neuroware_functions = {
                 callback(results);
             }
         }   
+    },
+    update: function(version, callback)
+    {
+        var current_version_array = version.split('.');
+        $.fn.neuroware.data.find('neuroware', 'version', function(results)
+        {
+            var stored_version_array = false;
+            if(results) stored_version_array = results.split('.');
+            if($.isArray(stored_version_array))
+            {
+                $.each(stored_version_array, function(k, v)
+                {
+                    if(parseInt(current_version_array[k]) > parseInt(v))
+                    {
+                        $.fn.neuroware.settings.vars.refresh = true;
+                    }
+                    if(k >= ($(current_version_array).length - 1))
+                    {
+                        $.fn.neuroware.data.save('neuroware', 'version', version, function(results)
+                        {
+                            callback();
+                        });
+                    }
+                })
+            }
+            else
+            {
+                $.fn.neuroware.settings.vars.refresh = true;
+                $.fn.neuroware.data.save('neuroware', 'version', version, function(results)
+                {
+                    callback();
+                });
+            }
+        })
     }
 };
 var neuroware_js_scripts;

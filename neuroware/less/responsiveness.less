@@ -70,6 +70,23 @@ REMEMBER TO REMOVE FROM MAIN CSS IF RESET HERE FIRST
 
 /*
 
+FUNKY SIDEBARS ON MOBILE
+
+*/
+@media(max-width:767px){
+    html body.neuroware-open-menu 
+    .neuroware-wrapper {
+        overflow: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
+        #sidebar {
+            position: absolute;
+        }
+    }
+}
+
+/*
+
 BOOTSTRAP BREAKPOINTS
 
 */
@@ -248,7 +265,8 @@ BOOTSTRAP BREAKPOINTS
         header #sidebar-toggle {
             display: none;
         }
-        navigation #search-form {
+        #search-form {
+            left: calc(@sidebar-width + 50);
             right: @panel-padding;
         }
     }       
@@ -267,7 +285,6 @@ BOOTSTRAP BREAKPOINTS
         #navigation {
             background: transparent;
             display: block;
-            position: absolute;
             top: 0;
             left: @sidebar-width;
             right: 0;
@@ -299,16 +316,13 @@ BOOTSTRAP BREAKPOINTS
             a.nav-links.active:hover {
                 color: @nav-color-hover;
             }
-            #search-form {
-                display: inline-block;
-                float: right;
-                position: relative;
-                left: auto;
-                right: auto;
-                padding-left: 0;
-                padding-right: @panel-padding;
-                width: 300px;
-            }
+        }
+        #search-form {
+            left: auto;
+            right: 0;
+            padding-left: 0;
+            padding-right: @panel-padding;
+            width: 300px;
         }
         #navigation:before {
             display: none;

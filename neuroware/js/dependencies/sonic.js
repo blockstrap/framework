@@ -371,7 +371,6 @@ if($('#neuroware').length > 0)
     var neuroware_sonic_injection = function(obj)
     {
         loader.play();
-        $(obj).html('<a href="#" id="loader-wrapper" class="loading-elements"><span id="logo"></span></a><span id="loader-canvas" class="loading-elements"></span>');
         $(obj).find('#loader-canvas').html(loader.canvas);
     }
     if($('#neuroware').length > 0)

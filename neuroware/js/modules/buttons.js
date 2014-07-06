@@ -14,17 +14,76 @@
     var buttons = {};
     
     // FUNCTIONS FOR OBJECT
+    buttons.process = function(slug, content, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements)
+    {
+        $('#'+$.fn.neuroware.settings.content_id).hide(effect, {direction:direction}, 500);
+        var paged_html = Mustache.render(content, filtered_data);
+        $('#'+$.fn.neuroware.settings.content_id).html(paged_html).show(effect, {direction:reverse_direction}, 500, function()
+        {
+            if(mobile && !menu) $(elements).css({'opacity':1});
+            if(menu)
+            {
+                if($('#menu-toggle').hasClass('open')) $('#menu-toggle').trigger('click');
+                if($('#sidebar-toggle').hasClass('open')) $('#sidebar-toggle').trigger('click');
+            }
+        });
+        $(button).removeClass('loading');
+        if(history.pushState) 
+        {
+            if(slug === $.fn.neuroware.settings.slug_base)
+            {
+                history.pushState({}, document.getElementsByTagName("title")[0].innerHTML, $.fn.neuroware.settings.base_url);
+            }
+            else
+            {
+                history.pushState({}, document.getElementsByTagName("title")[0].innerHTML, '#'+slug);
+            }
+            $($.fn.neuroware.element).find('.activated').removeClass('activated');
+            $.fn.neuroware.core.new();
+        }
+        else
+        {
+            $.fn.neuroware.core.new();
+        }
+    }
+    buttons.cancel = function(button, mobile, menu, elements)
+    {
+        if(mobile && !menu) $(elements).css({'opacity':1});
+        if(menu)
+        {
+            if($('#menu-toggle').hasClass('open')) $('#menu-toggle').trigger('click');
+            if($('#sidebar-toggle').hasClass('open')) $('#sidebar-toggle').trigger('click');
+        }
+        $(button).removeClass('loading');
+        $($.fn.neuroware.element).find('.activated').removeClass('activated').addClass('active');
+    }
     buttons.page = function(button, e)
     {
+        var menu = false;
+        var mobile = false;
         var slug = false;
         var id = $(button).attr('id');
         var href = $(button).attr('href');
         var slugs = href.split('#');
+        var effect = 'slide';
+        var direction = 'left';
+        var reverse_direction = 'right';
+        var elements = '#sidebar, #navigation';
+        if($(button).attr('data-elements')) elements = $(button).attr('data-elements');
+        if($(button).attr('data-effect')) effect = $(button).attr('data-effect');
+        if($(button).hasClass('up')) 
+        {
+            direction = 'up';
+            reverse_direction = 'down';
+        }
+        if($('#mobile-footer').css('display') === 'block') mobile = true;
+        if($('#menu-toggle').hasClass('open') || $('#sidebar-toggle').hasClass('open')) menu = true;
         if(slugs[0] === "")
         {
             slug = slugs[1];
             $($.fn.neuroware.element).find('.btn-page.active').removeClass('active').addClass('activated');
             $(button).addClass('active loading');
+            if(mobile && !menu) $(elements).css({'opacity':0});
             if($.fn.neuroware.settings.data_base && $.fn.neuroware.settings.html_base)
             {
                 e.preventDefault();
@@ -38,8 +97,7 @@
                         {
                             if(data.status)
                             {
-                                $(button).removeClass('loading active');
-                                $($.fn.neuroware.element).find('.activated').removeClass('activated').addClass('active');
+                                buttons.cancel(button, mobile, menu, elements);
                             }
                             else
                             {
@@ -56,63 +114,20 @@
                                             {
                                                 if(content.status && content.status === 404)
                                                 {
-                                                    $(button).removeClass('loading');
-                                                    $($.fn.neuroware.element).find('.activated').removeClass('activated').addClass('active');
+                                                    buttons.cancel(button, mobile, menu, elements);
                                                 }
                                                 else
                                                 {
                                                     $.fn.neuroware.data.save('html', slug, content, function()
                                                     {
-                                                        $('#'+$.fn.neuroware.settings.content_id).hide('slide', {direction:'left'}, 500);
-                                                        var paged_html = Mustache.render(content, filtered_data);
-                                                        $('#'+$.fn.neuroware.settings.content_id).html(paged_html).show('slide', {direction:'right'}, 500);
-                                                        $(button).removeClass('loading');
-                                                        if(history.pushState) 
-                                                        {
-                                                            if(slug === $.fn.neuroware.settings.slug_base)
-                                                            {
-                                                                history.pushState({}, document.getElementsByTagName("title")[0].innerHTML, $.fn.neuroware.settings.base_url);
-                                                            }
-                                                            else
-                                                            {
-                                                                history.pushState({}, document.getElementsByTagName("title")[0].innerHTML, '#'+slug);
-                                                            }
-                                                            $($.fn.neuroware.element).find('.activated').removeClass('activated');
-                                                            $.fn.neuroware.core.new();
-                                                        }
-                                                        else
-                                                        {
-                                                            $.fn.neuroware.core.new();
-                                                        }
+                                                        buttons.process(slug, content, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
                                                     });
                                                 }
                                             });
                                         }
                                         else
                                         {                                            
-                                            // THIS RUNS FIVE TIMES MUST BE FUNCTIONALIZED ASAP
-                                            
-                                            $('#'+$.fn.neuroware.settings.content_id).hide('slide', {direction:'left'}, 500);
-                                            var paged_html = Mustache.render(html, filtered_data);                                            
-                                            $('#'+$.fn.neuroware.settings.content_id).html(paged_html).show('slide', {direction:'right'}, 500);
-                                            $(button).removeClass('loading');
-                                            if(history.pushState) 
-                                            {
-                                                if(slug === $.fn.neuroware.settings.slug_base)
-                                                {
-                                                    history.pushState({}, document.getElementsByTagName("title")[0].innerHTML, $.fn.neuroware.settings.base_url);
-                                                }
-                                                else
-                                                {
-                                                    history.pushState({}, document.getElementsByTagName("title")[0].innerHTML, '#'+slug);
-                                                }
-                                                $($.fn.neuroware.element).find('.activated').removeClass('activated');
-                                                $.fn.neuroware.core.new();
-                                            }
-                                            else
-                                            {
-                                                $.fn.neuroware.core.new();
-                                            }
+                                            buttons.process(slug, content, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
                                         }
                                     });
                                 });
@@ -132,61 +147,17 @@
                                 {
                                     if(content.status && content.status === 404)
                                     {
-                                        $(button).removeClass('loading');
-                                        $($.fn.neuroware.element).find('.activated').removeClass('activated').addClass('active');
+                                        buttons.cancel(button, mobile, menu, elements);
                                     }
                                     else
                                     {
-                                        $('#'+$.fn.neuroware.settings.content_id).hide('slide', {direction:'left'}, 500);
-                                        var paged_html = Mustache.render(content, filtered_data);                                            
-                                        $('#'+$.fn.neuroware.settings.content_id).html(paged_html).show('slide', {direction:'right'}, 500);
-                                        $(button).removeClass('loading');
-                                        if(history.pushState) 
-                                        {
-                                            if(slug === $.fn.neuroware.settings.slug_base)
-                                            {
-                                                history.pushState({}, document.getElementsByTagName("title")[0].innerHTML, $.fn.neuroware.settings.base_url);
-                                            }
-                                            else
-                                            {
-                                                history.pushState({}, document.getElementsByTagName("title")[0].innerHTML, '#'+slug);
-                                            }
-                                            $($.fn.neuroware.element).find('.activated').removeClass('activated');
-                                            $.fn.neuroware.core.new();
-                                        }
-                                        else
-                                        {
-                                            $.fn.neuroware.core.new();
-                                        }
+                                        buttons.process(slug, content, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
                                     }
                                 });
                             }
                             else
                             {
-
-                                // THIS RUNS FIVE TIMES MUST BE FUNCTIONALIZED ASAP
-
-                                $('#'+$.fn.neuroware.settings.content_id).hide('slide', {direction:'left'}, 500);
-                                var paged_html = Mustache.render(html, filtered_data);                                            
-                                $('#'+$.fn.neuroware.settings.content_id).html(paged_html).show('slide', {direction:'right'}, 500);
-                                $(button).removeClass('loading');
-                                if(history.pushState) 
-                                {
-                                    if(slug === $.fn.neuroware.settings.slug_base)
-                                    {
-                                        history.pushState({}, document.getElementsByTagName("title")[0].innerHTML, $.fn.neuroware.settings.base_url);
-                                    }
-                                    else
-                                    {
-                                        history.pushState({}, document.getElementsByTagName("title")[0].innerHTML, '#'+slug);
-                                    }
-                                    $($.fn.neuroware.element).find('.activated').removeClass('activated');
-                                    $.fn.neuroware.core.new();
-                                }
-                                else
-                                {
-                                    $.fn.neuroware.core.new();
-                                }
+                                buttons.process(slug, content, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
                             }
                         });
                     }
@@ -310,6 +281,38 @@
             $($.fn.neuroware.element).find('table#'+table+' tbody tr td .cell').show(350);
         }
     };
+    buttons.check = function()
+    {
+        var hash = false;
+        if(window.location.href.split('#').length === 2) 
+        {
+            hash = window.location.href.split('#')[1];
+        }
+        if(hash)
+        {
+            $($.fn.neuroware.element).find('.btn-page').each(function()
+            {
+                if($(this).attr('href') === '#'+hash)
+                {
+                    if($('#mobile-footer').css('display') === 'block')
+                    {
+                        console.log('check', $(this).parent().attr('id'));
+                        if($(this).parent().attr('id') === 'mobile-footer')
+                        {
+                            $(this).trigger('click');
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        $(this).trigger('click');
+                        return false;
+                    }
+                }
+            })
+        }
+    }
+    
     
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.neuroware, {buttons:buttons});

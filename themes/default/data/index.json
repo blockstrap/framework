@@ -332,28 +332,28 @@
         "footer": [
             {
                 "id": "dashboard",
-                "css": "active nu-page",
+                "css": "active btn-page up",
                 "href": "#dashboard",
                 "icon": "fa fa-home",
                 "text": "Dashboard"
             },
             {
                 "id": "accounts",
-                "css": "nu-page",
+                "css": "btn-page up",
                 "href": "#accounts",
                 "icon": "fa fa-dollar",
                 "text": "Accounts"
             },
             {
                 "id": "contacts",
-                "css": "nu-page",
+                "css": "btn-page up",
                 "href": "#contacts",
                 "icon": "fa fa-book",
                 "text": "Contacts"
             },
             {
                 "id": "send",
-                "css": "nu-page",
+                "css": "btn-page up",
                 "href": "#send",
                 "icon": "fa fa-plus-circle",
                 "text": "Send"

@@ -1,0 +1,73 @@
+<style>
+.neuroware-wrapper #loading-neuroware p {
+    margin: 0 0 10px;
+}
+.neuroware-wrapper #loading-neuroware {
+    display: block;
+    position: fixed;
+    font-size: 14px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background: transparent;
+    color: white;
+    padding: 0;
+    margin: 0;
+    font-family: sans-serif;
+    line-height: 1.42857;
+}
+.neuroware-wrapper #loading-neuroware.loading {
+    z-index: 999999999;
+    background: black;
+}
+#loader-canvas,
+#loader-wrapper { 
+    z-index: 0;
+    background: transparent;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+#loader-wrapper {
+    display: block;
+    position: fixed;
+    font-size: 14px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999999999;
+    background: black;
+    color: white;
+    padding: 0;
+    margin: 0;
+    font-family: sans-serif;
+    line-height: 1.42857;
+}
+#loader-wrapper #logo {
+    display: block;
+    position: absolute;
+    width: 221px;
+    height: 36px;
+    background: url(neuroware/img/logo.png) no-repeat;
+    top: 50%;
+    left: 50%;
+    margin: -21px 0 0 -110px;
+}
+</style>
+
+<div id="loading-neuroware" class="loading loading-elements">
+    <a href="#" id="loader-wrapper" class="loading-elements">
+        <span id="logo"></span>
+    </a>
+    <span id="loader-canvas" class="loading-elements"></span>
+</div>

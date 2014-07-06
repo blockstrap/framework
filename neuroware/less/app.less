@@ -3,13 +3,14 @@
 RESETS AND WRAPPERS
 
 */
+body, html {
+    background: @content-bg;
+}
 .collapsable {
     vertical-align: top;
 }
 .neuroware-wrapper {
     z-index: 1;
-    .full-screen();
-    overflow-x: hidden;
     background: @content-bg;
     a { text-decoration: none; }
     nav a,
@@ -114,37 +115,10 @@ HEADER
         }
     }
     #navigation { 
-        display: inline-block; 
+        .fixed-header(@sidebar-width, @header-height);
+        position: fixed;
         a {
             outline: 0;
-        }
-        #search-form {
-            display: block;
-            position: absolute;
-            right: 0;
-            left: calc(@panel-padding + 30);
-            right: calc(@panel-padding + 30);
-            padding-left: calc(@panel-padding / 2);
-            padding-right: calc(@panel-padding / 2);
-            top: 7px;
-            .form-group {
-                position: relative;
-            }
-            button[type="submit"] {
-                width: 30px;
-                display: block;
-                position: absolute;
-                right: 0;
-                text-align: center;
-            }
-            input#search-term {
-                display: block;
-                position: absolute;
-                left: 0;
-                right: 31px;
-                width: 99%;
-                height: 35px;
-            }
         }
     }
 }
@@ -154,7 +128,36 @@ HEADER
 FORMS
 
 */
-.neuroware-wrapper #search-form {
+.neuroware-wrapper { 
+    #search-form {
+        display: block;
+        position: fixed;
+        right: 0;
+        left: calc(@panel-padding + 30);
+        right: calc(@panel-padding + 30);
+        padding-left: calc(@panel-padding / 2);
+        padding-right: calc(@panel-padding / 2);
+        top: 7px;
+        z-index: 999999;
+        .form-group {
+            position: relative;
+        }
+        button[type="submit"] {
+            width: 30px;
+            display: block;
+            position: absolute;
+            right: 0;
+            text-align: center;
+        }
+        input#search-term {
+            display: block;
+            position: absolute;
+            left: 0;
+            right: 31px;
+            width: 99%;
+            height: 35px;
+        }
+    }
     #search-term {
         padding: 5px 15px;
         font-size: 16px;
@@ -184,6 +187,11 @@ FORMS
         border-color: @nav-border-active;
     }
 }
+body.neuroware-open-menu .neuroware-wrapper { 
+    #search-form {
+        display: none;
+    }
+}
 
 /*
 
@@ -195,6 +203,7 @@ SIDEBAR
     background: @sidebar-bg;
     padding-top: @panel-padding;
     .fixed-sidebar(@sidebar-width, @header-height);
+    position: fixed;
     .avatar {
         padding: 5px;
         background: @header-bg;
@@ -258,8 +267,11 @@ CONTENT / PANELS
 */
 .neuroware-wrapper #main-content {
     background: @content-bg;
-    overflow-x: hidden;
-    overflow-y: auto;
+    left: @sidebar-width;
+    right: 0;
+    top: @header-height;
+    padding-top: @panel-padding;
+    position: absolute;
     z-index: 2;
     a {
         color: @content-link;
@@ -267,7 +279,6 @@ CONTENT / PANELS
     a:hover {
         color: @content-link-hover;
     }
-    .fixed-content(@sidebar-width, @header-height);
     .panel-wrapper {
         padding-left: @panel-padding;
         padding-right: @panel-padding;
@@ -799,6 +810,20 @@ FORMS
             padding-left: 0;
             padding-right: 0;
         }
+    }
+}
+
+/*
+
+SETUP
+
+*/
+.neuroware-wrapper {
+    #setup-neuroware {
+        .full-screen();
+        z-index: 999999999;
+        background: black;
+        color: white;
     }
 }
 

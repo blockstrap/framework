@@ -3,16 +3,17 @@
     <a id="sidebar-toggle" href="#"><img class="avatar" src="{{user.avatar}}" /></a>
 </header>
 
+<form id="search-form">
+    <div class="form-group">
+        <input id="{{form.search.id}}" placeholder="{{form.search.placeholder}}" />
+        <button type="submit" class="{{form.search.css}}"></button>
+    </div>
+</form>
+
 <nav id="navigation">
     {{#navigation}}
         <a id="{{id}}" class="nav-links {{css}}" href="{{href}}">{{text}}</a>
     {{/navigation}}
-    <form id="search-form">
-        <div class="form-group">
-            <input id="{{form.search.id}}" placeholder="{{form.search.placeholder}}" />
-            <button type="submit" class="{{form.search.css}}"></button>
-        </div>
-    </form>
 </nav>
 
 <div id="sidebar">
