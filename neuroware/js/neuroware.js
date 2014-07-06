@@ -27,7 +27,7 @@ var neuroware_core = function()
         var $this = this;
         var plugin_name = 'neuroware';
         var defaults = {
-            v: '1.0.1.4',
+            v: '1.0.2.1',
             salt: 'a',
             autoload: true,
             id: plugin_name,
@@ -112,47 +112,6 @@ var neuroware_core = function()
             if(attributed_options['bootstrap']) $.fn.neuroware.settings['bootstrap'] = attributed_options['bootstrap'].split(', ');
             if(attributed_options['styles']) $.fn.neuroware.settings['styles'] = $.extend({}, $.fn.neuroware.settings.styles, $.fn.neuroware.core.stringed(attributed_options['styles'].split(', ')));
             
-            if(!localStorage || !localStorage.getItem('nw_neuroware_salt'))
-            {
-                $.ajax({
-                    url: $.fn.neuroware.settings.core_base + 'html/' + 'setup.html',
-                    dataType: 'HTML',
-                    type: 'GET',
-                    complete: function(results)
-                    {
-                        if(results && results.responseText && results.responseText === '404')
-                        {
-
-                        }
-                        else
-                        {
-                            var setup = results.responseText;
-                            $($.fn.neuroware.element).append(setup);
-                        }
-                    }
-                });
-            }
-            else
-            {
-                $.ajax({
-                    url: $.fn.neuroware.settings.core_base + 'html/' + 'loading.html',
-                    dataType: 'HTML',
-                    type: 'GET',
-                    complete: function(results)
-                    {
-                        if(results && results.responseText && results.responseText === '404')
-                        {
-
-                        }
-                        else
-                        {
-                            var loading = results.responseText;
-                            $($.fn.neuroware.element).append(loading);
-                        }
-                    }
-                })
-            }
-
             // LOAD DEPENDENCIES FIRST
             if($.isArray($.fn.neuroware.settings.dependencies))
             {
@@ -268,6 +227,50 @@ var neuroware_core = function()
                         })
                     };
                 }, true);
+            }
+            
+            if(!localStorage || !localStorage.getItem('nw_neuroware_salt'))
+            {
+                $.ajax({
+                    url: $.fn.neuroware.settings.core_base + 'html/' + 'setup.html',
+                    dataType: 'HTML',
+                    type: 'GET',
+                    complete: function(results)
+                    {
+                        if(results && results.responseText && results.responseText === '404')
+                        {
+
+                        }
+                        else
+                        {
+                            var setup = results.responseText;
+                            $($.fn.neuroware.element).append(setup);
+                        }
+                    }
+                });
+            }
+            else
+            {
+                $.ajax({
+                    url: $.fn.neuroware.settings.core_base + 'html/' + 'loading.html',
+                    dataType: 'HTML',
+                    type: 'GET',
+                    complete: function(results)
+                    {
+                        if($($.fn.neuroware.element).find('#'+$.fn.neuroware.settings.content_id).length < 1)
+                        {
+                            if(results && results.responseText && results.responseText === '404')
+                            {
+
+                            }
+                            else
+                            {
+                                var loading = results.responseText;
+                                $($.fn.neuroware.element).append(loading);
+                            }
+                        }
+                    }
+                })
             }
         }
         
