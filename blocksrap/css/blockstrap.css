@@ -5815,7 +5815,7 @@ RESETS AND WRAPPERS
 .collapsable {
   vertical-align: top;
 }
-.neuroware-wrapper {
+.blockstrap-wrapper {
   z-index: 1;
   display: block;
   position: absolute;
@@ -5828,16 +5828,16 @@ RESETS AND WRAPPERS
   overflow-x: hidden;
   background: #dddddd;
 }
-.neuroware-wrapper a {
+.blockstrap-wrapper a {
   text-decoration: none;
 }
-.neuroware-wrapper nav a,
-.neuroware-wrapper .btn {
+.blockstrap-wrapper nav a,
+.blockstrap-wrapper .btn {
   text-transform: uppercase;
   border-radius: 4px;
 }
-.neuroware-wrapper #loader-canvas,
-.neuroware-wrapper #loader-wrapper {
+.blockstrap-wrapper #loader-canvas,
+.blockstrap-wrapper #loader-wrapper {
   z-index: 0;
   background: transparent;
   display: none;
@@ -5847,33 +5847,33 @@ RESETS AND WRAPPERS
   width: 100%;
   height: 100%;
 }
-.neuroware-wrapper #loader-canvas #logo,
-.neuroware-wrapper #loader-wrapper #logo {
+.blockstrap-wrapper #loader-canvas #logo,
+.blockstrap-wrapper #loader-wrapper #logo {
   display: block;
   position: absolute;
   width: 221px;
   height: 36px;
-  background: url(http://localhost/neuroware/wallet/neuroware/img/logo.png) no-repeat;
+  background: url(http://localhost/blockstrap/wallet/blockstrap/img/logo.png) no-repeat;
   top: 50%;
   left: 50%;
   margin: -21px 0 0 -110px;
 }
-.neuroware-wrapper .loading {
+.blockstrap-wrapper .loading {
   color: transparent !important;
-  background-image: url(http://localhost/neuroware/wallet/neuroware/img/loading.gif) !important;
+  background-image: url(http://localhost/blockstrap/wallet/blockstrap/img/loading.gif) !important;
   background-repeat: no-repeat !important;
   background-position: center center !important;
 }
-.neuroware-wrapper.loading {
+.blockstrap-wrapper.loading {
   background: black;
 }
-.neuroware-wrapper.loading #loader-wrapper {
+.blockstrap-wrapper.loading #loader-wrapper {
   z-index: 8888888;
   display: block;
   background: black;
   opacity: 0.75;
 }
-.neuroware-wrapper.loading #loader-canvas {
+.blockstrap-wrapper.loading #loader-canvas {
   display: block;
   z-index: 99999999;
   width: 400px;
@@ -5888,7 +5888,7 @@ RESETS AND WRAPPERS
 HEADER
 
 */
-.neuroware-wrapper header {
+.blockstrap-wrapper header {
   background: #475862;
   vertical-align: top;
   display: block;
@@ -5902,17 +5902,17 @@ HEADER
   position: fixed;
   z-index: 999;
 }
-.neuroware-wrapper header #search-form {
+.blockstrap-wrapper header #search-form {
   display: block;
   position: absolute;
   right: 0;
   top: 11px;
   padding-right: 20px;
 }
-.neuroware-wrapper header i.fa {
+.blockstrap-wrapper header i.fa {
   font-size: 24px;
 }
-.neuroware-wrapper header #menu-toggle {
+.blockstrap-wrapper header #menu-toggle {
   outline: 0;
   display: block;
   z-index: 99999;
@@ -5923,7 +5923,7 @@ HEADER
   text-align: left;
   width: 33px;
 }
-.neuroware-wrapper header #sidebar-toggle {
+.blockstrap-wrapper header #sidebar-toggle {
   outline: 0;
   display: block;
   z-index: 99999;
@@ -5934,11 +5934,11 @@ HEADER
   text-align: right;
   width: 33px;
 }
-.neuroware-wrapper header #menu-toggle:hover,
-.neuroware-wrapper header #sidebar-toggle:hover {
+.blockstrap-wrapper header #menu-toggle:hover,
+.blockstrap-wrapper header #sidebar-toggle:hover {
   color: #ffff99;
 }
-.neuroware-wrapper header #search-form {
+.blockstrap-wrapper header #search-form {
   position: absolute;
   left: calc(50px);
   right: calc(50px);
@@ -5946,17 +5946,17 @@ HEADER
   padding-right: calc(10px);
   top: 11px;
 }
-.neuroware-wrapper header #search-form .form-group {
+.blockstrap-wrapper header #search-form .form-group {
   position: relative;
 }
-.neuroware-wrapper header #search-form button[type="submit"] {
+.blockstrap-wrapper header #search-form button[type="submit"] {
   width: 30px;
   display: block;
   position: absolute;
   right: 0;
   text-align: center;
 }
-.neuroware-wrapper header #search-form input#search-term {
+.blockstrap-wrapper header #search-form input#search-term {
   display: block;
   position: absolute;
   left: 0;
@@ -5964,7 +5964,7 @@ HEADER
   width: 99%;
   height: 35px;
 }
-.neuroware-wrapper header .avatar {
+.blockstrap-wrapper header .avatar {
   margin-top: -5px;
   padding: 5px;
   background: #475862;
@@ -5972,10 +5972,10 @@ HEADER
   height: 40px;
   border-radius: calc(20px);
 }
-.neuroware-wrapper #navigation {
+.blockstrap-wrapper #navigation {
   display: inline-block;
 }
-.neuroware-wrapper #navigation a {
+.blockstrap-wrapper #navigation a {
   outline: 0;
 }
 /*
@@ -5983,7 +5983,7 @@ HEADER
 FORMS
 
 */
-.neuroware-wrapper #search-form #search-term {
+.blockstrap-wrapper #search-form #search-term {
   padding: 5px 15px;
   font-size: 16px;
   width: 300px;
@@ -5992,7 +5992,7 @@ FORMS
   border: 1px solid #000000;
   border-radius: 4px 0 0 4px;
 }
-.neuroware-wrapper #search-form button[type="submit"] {
+.blockstrap-wrapper #search-form button[type="submit"] {
   margin: 0 0 0 -5px;
   height: 33px;
   line-height: 33px;
@@ -6000,14 +6000,14 @@ FORMS
   border: 1px solid #000000;
   border-radius: 0 4px 4px 0;
 }
-.neuroware-wrapper #search-form button[type="submit"].fa {
+.blockstrap-wrapper #search-form button[type="submit"].fa {
   color: #aaaaaa;
   height: 35px;
   padding: 0 5px;
   font-size: 15px;
   line-height: 34px;
 }
-.neuroware-wrapper #search-form button[type="submit"]:hover {
+.blockstrap-wrapper #search-form button[type="submit"]:hover {
   background: #2f2f2f;
   border-color: #111e27;
 }
@@ -6016,7 +6016,7 @@ FORMS
 SIDEBAR
 
 */
-.neuroware-wrapper #sidebar {
+.blockstrap-wrapper #sidebar {
   text-align: center;
   background: #102634;
   padding-top: 20px;
@@ -6027,27 +6027,27 @@ SIDEBAR
   bottom: 0;
   width: 250px;
 }
-.neuroware-wrapper #sidebar .avatar {
+.blockstrap-wrapper #sidebar .avatar {
   padding: 5px;
   background: #475862;
   width: 140px;
   height: 140px;
   border-radius: calc(70px);
 }
-.neuroware-wrapper #sidebar #user-name {
+.blockstrap-wrapper #sidebar #user-name {
   font-size: 125%;
   font-family: pro, sans-serif;
   color: #ffffbb;
 }
-.neuroware-wrapper #sidebar #last {
+.blockstrap-wrapper #sidebar #last {
   font-size: 11px;
   margin: -10px 0 15px;
   color: #0085b2;
 }
-.neuroware-wrapper #sidebar .actions {
+.blockstrap-wrapper #sidebar .actions {
   padding-bottom: 20px;
 }
-.neuroware-wrapper #sidebar #sidebar-panel {
+.blockstrap-wrapper #sidebar #sidebar-panel {
   z-index: 2;
   position: relative;
   color: #666666;
@@ -6056,7 +6056,7 @@ SIDEBAR
   border-top: 1px solid #214760;
   border-bottom: 1px solid #214760;
 }
-.neuroware-wrapper #sidebar #sidebar-panel ul {
+.blockstrap-wrapper #sidebar #sidebar-panel ul {
   font-size: 11px;
   display: block;
   position: relative;
@@ -6065,21 +6065,21 @@ SIDEBAR
   margin: 0;
   padding: 0;
 }
-.neuroware-wrapper #sidebar #sidebar-panel ul li {
+.blockstrap-wrapper #sidebar #sidebar-panel ul li {
   padding-bottom: calc(10px);
 }
-.neuroware-wrapper #sidebar #sidebar-panel ul li a.values {
+.blockstrap-wrapper #sidebar #sidebar-panel ul li a.values {
   float: right;
 }
-.neuroware-wrapper #sidebar #sidebar-panel ul li.total {
+.blockstrap-wrapper #sidebar #sidebar-panel ul li.total {
   border-top: 1px solid #214760;
   padding-top: calc(10px);
   color: #ffffff;
 }
-.neuroware-wrapper #sidebar #sidebar-panel ul li.total span {
+.blockstrap-wrapper #sidebar #sidebar-panel ul li.total span {
   float: right;
 }
-.neuroware-wrapper #sidebar #sidebar-panel .panel-title {
+.blockstrap-wrapper #sidebar #sidebar-panel .panel-title {
   font-size: 125%;
   font-family: pro, sans-serif;
   border-bottom: 1px solid #214760;
@@ -6090,7 +6090,7 @@ SIDEBAR
 CONTENT / PANELS
 
 */
-.neuroware-wrapper #main-content {
+.blockstrap-wrapper #main-content {
   background: #dddddd;
   overflow-x: hidden;
   overflow-y: auto;
@@ -6103,35 +6103,35 @@ CONTENT / PANELS
   left: 250px;
   padding: 20px 0;
 }
-.neuroware-wrapper #main-content a {
+.blockstrap-wrapper #main-content a {
   color: #006699;
 }
-.neuroware-wrapper #main-content a:hover {
+.blockstrap-wrapper #main-content a:hover {
   color: #757575;
 }
-.neuroware-wrapper #main-content .panel-wrapper {
+.blockstrap-wrapper #main-content .panel-wrapper {
   padding-left: 20px;
   padding-right: 20px;
 }
-.neuroware-wrapper #main-content .panel {
+.blockstrap-wrapper #main-content .panel {
   padding: 0;
   margin-bottom: 20px;
   border-radius: 4px;
 }
-.neuroware-wrapper #main-content .panel .panel-heading {
+.blockstrap-wrapper #main-content .panel .panel-heading {
   font-size: 125%;
   font-family: pro, sans-serif;
   background: #111e27;
   color: #eeeeee;
   padding: calc(10px);
 }
-.neuroware-wrapper #main-content .panel .panel-body {
+.blockstrap-wrapper #main-content .panel .panel-body {
   padding: 20px;
 }
-.neuroware-wrapper #main-content .panel .panel-body .row-fluid {
+.blockstrap-wrapper #main-content .panel .panel-body .row-fluid {
   float: left;
 }
-.neuroware-wrapper #main-content .panel .panel-body .panel {
+.blockstrap-wrapper #main-content .panel .panel-body .panel {
   float: left;
   border-radius: 0;
   box-shadow: none;
@@ -6140,16 +6140,16 @@ CONTENT / PANELS
   margin: 0;
   background: #eeeeee;
 }
-.neuroware-wrapper #main-content .panel .panel-body .panel .panel-value {
+.blockstrap-wrapper #main-content .panel .panel-body .panel .panel-value {
   font-size: 24px;
   color: #006699;
   display: block;
   margin: 0;
 }
-.neuroware-wrapper #main-content .panel .panel-body .panel .panel-description {
+.blockstrap-wrapper #main-content .panel .panel-body .panel .panel-description {
   display: block;
 }
-.neuroware-wrapper #main-content .panel .panel-body.padless {
+.blockstrap-wrapper #main-content .panel .panel-body.padless {
   padding: 0;
 }
 /*
@@ -6157,7 +6157,7 @@ CONTENT / PANELS
 FOOTER
 
 */
-.neuroware-wrapper footer {
+.blockstrap-wrapper footer {
   display: block;
   position: absolute;
   bottom: 0;
@@ -6177,9 +6177,9 @@ FOOTER
 BUTTONS
 
 */
-.neuroware-wrapper #main-content .btn.btn-primary,
-.neuroware-wrapper #main-content .btn.btn-subtle.active,
-.neuroware-wrapper .btn.btn-primary {
+.blockstrap-wrapper #main-content .btn.btn-primary,
+.blockstrap-wrapper #main-content .btn.btn-subtle.active,
+.blockstrap-wrapper .btn.btn-primary {
   color: #ffffff;
   border-color: #000000;
   background: #0085b2;
@@ -6199,9 +6199,9 @@ BUTTONS
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@top', endColorstr='@bottom', GradientType=0);
   /* IE6-9 */
 }
-.neuroware-wrapper #main-content .btn.btn-primary:hover,
-.neuroware-wrapper #main-content .btn.btn-subtle.active:hover,
-.neuroware-wrapper .btn.btn-primary:hover {
+.blockstrap-wrapper #main-content .btn.btn-primary:hover,
+.blockstrap-wrapper #main-content .btn.btn-subtle.active:hover,
+.blockstrap-wrapper .btn.btn-primary:hover {
   background: #214e6b;
   /* Old browsers */
   background: -moz-linear-gradient(top, #214e6b 0%, #0085b2 100%);
@@ -6219,8 +6219,8 @@ BUTTONS
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@top', endColorstr='@bottom', GradientType=0);
   /* IE6-9 */
 }
-.neuroware-wrapper #main-content .btn.btn-default,
-.neuroware-wrapper .btn.btn-default {
+.blockstrap-wrapper #main-content .btn.btn-default,
+.blockstrap-wrapper .btn.btn-default {
   color: #ffffff;
   border-color: #000000;
   background: #475862;
@@ -6240,8 +6240,8 @@ BUTTONS
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@top', endColorstr='@bottom', GradientType=0);
   /* IE6-9 */
 }
-.neuroware-wrapper #main-content .btn.btn-default:hover,
-.neuroware-wrapper .btn.btn-default:hover {
+.blockstrap-wrapper #main-content .btn.btn-default:hover,
+.blockstrap-wrapper .btn.btn-default:hover {
   background: #283238;
   /* Old browsers */
   background: -moz-linear-gradient(top, #283238 0%, #475862 100%);
@@ -6259,8 +6259,8 @@ BUTTONS
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@top', endColorstr='@bottom', GradientType=0);
   /* IE6-9 */
 }
-.neuroware-wrapper #main-content .btn.btn-danger,
-.neuroware-wrapper .btn.btn-danger {
+.blockstrap-wrapper #main-content .btn.btn-danger,
+.blockstrap-wrapper .btn.btn-danger {
   color: #ffffff;
   border-color: #000000;
   background: #8c0000;
@@ -6280,8 +6280,8 @@ BUTTONS
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@top', endColorstr='@bottom', GradientType=0);
   /* IE6-9 */
 }
-.neuroware-wrapper #main-content .btn.btn-danger:hover,
-.neuroware-wrapper .btn.btn-danger:hover {
+.blockstrap-wrapper #main-content .btn.btn-danger:hover,
+.blockstrap-wrapper .btn.btn-danger:hover {
   background: #400000;
   /* Old browsers */
   background: -moz-linear-gradient(top, #400000 0%, #8c0000 100%);
@@ -6299,8 +6299,8 @@ BUTTONS
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@top', endColorstr='@bottom', GradientType=0);
   /* IE6-9 */
 }
-.neuroware-wrapper #main-content .btn.btn-subtle,
-.neuroware-wrapper .btn.btn-subtle {
+.blockstrap-wrapper #main-content .btn.btn-subtle,
+.blockstrap-wrapper .btn.btn-subtle {
   color: #006699;
   border-color: #bbbbbb;
   background: #f9f9f9;
@@ -6320,8 +6320,8 @@ BUTTONS
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@top', endColorstr='@bottom', GradientType=0);
   /* IE6-9 */
 }
-.neuroware-wrapper #main-content .btn.btn-subtle:hover,
-.neuroware-wrapper .btn.btn-subtle:hover {
+.blockstrap-wrapper #main-content .btn.btn-subtle:hover,
+.blockstrap-wrapper .btn.btn-subtle:hover {
   background: #ebeaeb;
   /* Old browsers */
   background: -moz-linear-gradient(top, #ebeaeb 0%, #f9f9f9 100%);
@@ -6344,39 +6344,39 @@ BUTTONS
 LISTS
 
 */
-.neuroware-wrapper .list-group .list-group-item {
+.blockstrap-wrapper .list-group .list-group-item {
   background: #eeeeee;
   font-size: 12px;
 }
-.neuroware-wrapper .list-group .list-group-item:nth-child(even) {
+.blockstrap-wrapper .list-group .list-group-item:nth-child(even) {
   background: #ffffff;
 }
-.neuroware-wrapper .list-group .list-group-item .btn.btn-xs {
+.blockstrap-wrapper .list-group .list-group-item .btn.btn-xs {
   font-size: 10px;
 }
-.neuroware-wrapper .panel-body .list-group {
+.blockstrap-wrapper .panel-body .list-group {
   float: left;
   width: 100%;
   background: #eeeeee;
 }
-.neuroware-wrapper .panel-body .list-group .list-group-item {
+.blockstrap-wrapper .panel-body .list-group .list-group-item {
   float: left;
   width: 100%;
   border-left: none;
   border-right: none;
   padding: 20px;
 }
-.neuroware-wrapper .panel-body .list-group .list-group-item:first-child {
+.blockstrap-wrapper .panel-body .list-group .list-group-item:first-child {
   border-top: none;
 }
-.neuroware-wrapper .panel-body .list-group .list-group-item:last-child {
+.blockstrap-wrapper .panel-body .list-group .list-group-item:last-child {
   border-bottom: none;
   margin-bottom: -20px;
 }
-.neuroware-wrapper .panel-body .list-group .list-group-item.from {
+.blockstrap-wrapper .panel-body .list-group .list-group-item.from {
   border-left: 8px solid #008c23;
 }
-.neuroware-wrapper .panel-body .list-group .list-group-item.to {
+.blockstrap-wrapper .panel-body .list-group .list-group-item.to {
   border-left: 8px solid #8c0000;
 }
 /*
@@ -6384,38 +6384,38 @@ LISTS
 JUMBOTRON
 
 */
-.neuroware-wrapper .panel-body .jumbotron {
+.blockstrap-wrapper .panel-body .jumbotron {
   background: #ffffff;
   border-left: 8px solid #214e6b;
   padding: 0;
   margin: 0;
 }
-.neuroware-wrapper .panel-body .jumbotron h1 {
+.blockstrap-wrapper .panel-body .jumbotron h1 {
   font-size: 125%;
   font-family: pro, sans-serif;
   text-align: center;
   margin: 0;
 }
-.neuroware-wrapper .panel-body .jumbotron .intro {
+.blockstrap-wrapper .panel-body .jumbotron .intro {
   font-size: 12px;
   opacity: 0.7;
   margin-bottom: 0;
   text-align: center;
 }
-.neuroware-wrapper .panel-body .jumbotron .actions .disabled {
+.blockstrap-wrapper .panel-body .jumbotron .actions .disabled {
   text-transform: lowercase;
   font-size: 12px;
 }
-.neuroware-wrapper .panel-body .jumbotron .jumbotron-contents {
+.blockstrap-wrapper .panel-body .jumbotron .jumbotron-contents {
   font-size: 12px;
 }
-.neuroware-wrapper .panel-body .jumbotron .jumbotron-contents a.btn-xs {
+.blockstrap-wrapper .panel-body .jumbotron .jumbotron-contents a.btn-xs {
   padding: 5px 10px;
   font-size: 11px;
   text-transform: lowercase;
   margin: 0 6px 6px 0;
 }
-.neuroware-wrapper .panel-body.padless .jumbotron {
+.blockstrap-wrapper .panel-body.padless .jumbotron {
   padding: 20px;
 }
 /*
@@ -6423,7 +6423,7 @@ JUMBOTRON
 HIDDEN MENU
 
 */
-.neuroware-wrapper #navigation {
+.blockstrap-wrapper #navigation {
   display: block;
   position: fixed;
   overflow-y: auto;
@@ -6440,16 +6440,16 @@ HIDDEN MENU
   z-index: 1;
   background: black;
 }
-.neuroware-wrapper #navigation a {
+.blockstrap-wrapper #navigation a {
   display: block;
   position: relative;
   padding: 20px 0;
   border-top: 1px dotted #111e27;
 }
-.neuroware-wrapper #navigation a:first-child {
+.blockstrap-wrapper #navigation a:first-child {
   border-top: none;
 }
-.neuroware-wrapper #navigation:before {
+.blockstrap-wrapper #navigation:before {
   content: "";
   display: block;
   position: fixed;
@@ -6466,49 +6466,49 @@ HIDDEN MENU
 TABLES
 
 */
-.neuroware-wrapper .jumbotron-contents .btn-table-filter {
+.blockstrap-wrapper .jumbotron-contents .btn-table-filter {
   display: none;
 }
-.neuroware-wrapper #main-content table.table,
-.neuroware-wrapper table.table {
+.blockstrap-wrapper #main-content table.table,
+.blockstrap-wrapper table.table {
   width: 100%;
   max-width: 100%;
   position: relative;
   border-bottom: 1px solid #bbbbbb;
 }
-.neuroware-wrapper #main-content table.table thead,
-.neuroware-wrapper table.table thead {
+.blockstrap-wrapper #main-content table.table thead,
+.blockstrap-wrapper table.table thead {
   visibility: hidden;
 }
-.neuroware-wrapper #main-content table.table thead tr th,
-.neuroware-wrapper table.table thead tr th {
+.blockstrap-wrapper #main-content table.table thead tr th,
+.blockstrap-wrapper table.table thead tr th {
   display: none;
 }
-.neuroware-wrapper #main-content table.table thead th,
-.neuroware-wrapper table.table thead th,
-.neuroware-wrapper #main-content table.table tbody td,
-.neuroware-wrapper table.table tbody td {
+.blockstrap-wrapper #main-content table.table thead th,
+.blockstrap-wrapper table.table thead th,
+.blockstrap-wrapper #main-content table.table tbody td,
+.blockstrap-wrapper table.table tbody td {
   font-size: 12px;
   border-color: #bbbbbb;
   padding: 20px calc(10px);
 }
-.neuroware-wrapper #main-content table.table thead tr th:last-child,
-.neuroware-wrapper table.table thead tr th:last-child,
-.neuroware-wrapper #main-content table.table tbody tr td:last-child,
-.neuroware-wrapper table.table tbody tr td:last-child {
+.blockstrap-wrapper #main-content table.table thead tr th:last-child,
+.blockstrap-wrapper table.table thead tr th:last-child,
+.blockstrap-wrapper #main-content table.table tbody tr td:last-child,
+.blockstrap-wrapper table.table tbody tr td:last-child {
   text-align: right;
 }
-.neuroware-wrapper #main-content table.table tbody tr td,
-.neuroware-wrapper table.table tbody tr td {
+.blockstrap-wrapper #main-content table.table tbody tr td,
+.blockstrap-wrapper table.table tbody tr td {
   color: #757575;
   background: #ffffff;
 }
-.neuroware-wrapper #main-content table.table tbody tr:nth-child(odd) td,
-.neuroware-wrapper table.table tbody tr:nth-child(odd) td {
+.blockstrap-wrapper #main-content table.table tbody tr:nth-child(odd) td,
+.blockstrap-wrapper table.table tbody tr:nth-child(odd) td {
   background: #eeeeee;
 }
-.neuroware-wrapper #main-content table.table thead tr th,
-.neuroware-wrapper table.table thead tr th {
+.blockstrap-wrapper #main-content table.table thead tr th,
+.blockstrap-wrapper table.table thead tr th {
   font-family: pro, sans-serif;
   cursor: pointer;
   font-size: 125%;
@@ -6517,72 +6517,72 @@ TABLES
   background: #111e27;
   color: #ededed;
 }
-.neuroware-wrapper #main-content table.table thead tr th.sorting_asc,
-.neuroware-wrapper table.table thead tr th.sorting_asc,
-.neuroware-wrapper #main-content table.table thead tr th.sorting_desc,
-.neuroware-wrapper table.table thead tr th.sorting_desc {
+.blockstrap-wrapper #main-content table.table thead tr th.sorting_asc,
+.blockstrap-wrapper table.table thead tr th.sorting_asc,
+.blockstrap-wrapper #main-content table.table thead tr th.sorting_desc,
+.blockstrap-wrapper table.table thead tr th.sorting_desc {
   background: #214862;
 }
-.neuroware-wrapper #main-content table.table tbody tr.to td.ribbon,
-.neuroware-wrapper table.table tbody tr.to td.ribbon {
+.blockstrap-wrapper #main-content table.table tbody tr.to td.ribbon,
+.blockstrap-wrapper table.table tbody tr.to td.ribbon {
   width: 8px;
   padding-left: 0;
   padding-right: 0;
   background: #8c0000;
 }
-.neuroware-wrapper #main-content table.table tbody tr.from td.ribbon,
-.neuroware-wrapper table.table tbody tr.from td.ribbon {
+.blockstrap-wrapper #main-content table.table tbody tr.from td.ribbon,
+.blockstrap-wrapper table.table tbody tr.from td.ribbon {
   width: 8px;
   padding-left: 0;
   padding-right: 0;
   background: #008c23;
 }
-.neuroware-wrapper #main-content table.table thead tr th.ribbon,
-.neuroware-wrapper table.table thead tr th.ribbon {
+.blockstrap-wrapper #main-content table.table thead tr th.ribbon,
+.blockstrap-wrapper table.table thead tr th.ribbon {
   width: 8px;
   padding-left: 0;
   padding-right: 0;
   background: #111e27;
 }
-.neuroware-wrapper #main-content table.table thead tr th,
-.neuroware-wrapper table.table thead tr th,
-.neuroware-wrapper #main-content table.table tbody tr td,
-.neuroware-wrapper table.table tbody tr td {
+.blockstrap-wrapper #main-content table.table thead tr th,
+.blockstrap-wrapper table.table thead tr th,
+.blockstrap-wrapper #main-content table.table tbody tr td,
+.blockstrap-wrapper table.table tbody tr td {
   display: none;
 }
-.neuroware-wrapper #main-content table.table thead tr th .btn-xs,
-.neuroware-wrapper table.table thead tr th .btn-xs,
-.neuroware-wrapper #main-content table.table tbody tr td .btn-xs,
-.neuroware-wrapper table.table tbody tr td .btn-xs {
+.blockstrap-wrapper #main-content table.table thead tr th .btn-xs,
+.blockstrap-wrapper table.table thead tr th .btn-xs,
+.blockstrap-wrapper #main-content table.table tbody tr td .btn-xs,
+.blockstrap-wrapper table.table tbody tr td .btn-xs {
   float: right;
 }
-.neuroware-wrapper #main-content table.table thead tr th .mobile-view,
-.neuroware-wrapper table.table thead tr th .mobile-view,
-.neuroware-wrapper #main-content table.table tbody tr td .mobile-view,
-.neuroware-wrapper table.table tbody tr td .mobile-view {
+.blockstrap-wrapper #main-content table.table thead tr th .mobile-view,
+.blockstrap-wrapper table.table thead tr th .mobile-view,
+.blockstrap-wrapper #main-content table.table tbody tr td .mobile-view,
+.blockstrap-wrapper table.table tbody tr td .mobile-view {
   display: inline-block;
   position: relative;
   margin-right: 6px;
 }
-.neuroware-wrapper #main-content table.table tbody tr td:first-child,
-.neuroware-wrapper table.table tbody tr td:first-child,
-.neuroware-wrapper #main-content table.table tbody tr td:last-child,
-.neuroware-wrapper table.table tbody tr td:last-child {
+.blockstrap-wrapper #main-content table.table tbody tr td:first-child,
+.blockstrap-wrapper table.table tbody tr td:first-child,
+.blockstrap-wrapper #main-content table.table tbody tr td:last-child,
+.blockstrap-wrapper table.table tbody tr td:last-child {
   display: table-cell !important;
   text-align: left;
 }
-.neuroware-wrapper #main-content .panel-body table.table,
-.neuroware-wrapper .panel-body table.table {
+.blockstrap-wrapper #main-content .panel-body table.table,
+.blockstrap-wrapper .panel-body table.table {
   margin-bottom: 0;
   padding-bottom: 0;
   max-height: 500px;
 }
-.neuroware-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_length,
-.neuroware-wrapper .panel-body .dataTables_wrapper .dataTables_length,
-.neuroware-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_info,
-.neuroware-wrapper .panel-body .dataTables_wrapper .dataTables_info,
-.neuroware-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_paginate,
-.neuroware-wrapper .panel-body .dataTables_wrapper .dataTables_paginate {
+.blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_length,
+.blockstrap-wrapper .panel-body .dataTables_wrapper .dataTables_length,
+.blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_info,
+.blockstrap-wrapper .panel-body .dataTables_wrapper .dataTables_info,
+.blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_paginate,
+.blockstrap-wrapper .panel-body .dataTables_wrapper .dataTables_paginate {
   font-size: 12px;
   color: #757575;
   background: transparent;
@@ -6595,56 +6595,56 @@ TABLES
   text-align: center;
   width: 100%;
 }
-.neuroware-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_paginate ul,
-.neuroware-wrapper .panel-body .dataTables_wrapper .dataTables_paginate ul {
+.blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_paginate ul,
+.blockstrap-wrapper .panel-body .dataTables_wrapper .dataTables_paginate ul {
   padding: 0;
   margin: 0;
 }
-.neuroware-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_paginate ul li a,
-.neuroware-wrapper .panel-body .dataTables_wrapper .dataTables_paginate ul li a {
+.blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_paginate ul li a,
+.blockstrap-wrapper .panel-body .dataTables_wrapper .dataTables_paginate ul li a {
   background: #eeeeee;
   border: 1px solid #bbbbbb;
 }
-.neuroware-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_paginate ul li.active a,
-.neuroware-wrapper .panel-body .dataTables_wrapper .dataTables_paginate ul li.active a {
+.blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_paginate ul li.active a,
+.blockstrap-wrapper .panel-body .dataTables_wrapper .dataTables_paginate ul li.active a {
   background: #214e6b;
   color: #ffffee;
 }
-.neuroware-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_info,
-.neuroware-wrapper .panel-body .dataTables_wrapper .dataTables_info {
+.blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_info,
+.blockstrap-wrapper .panel-body .dataTables_wrapper .dataTables_info {
   text-align: center;
 }
-.neuroware-wrapper #main-content .panel-wrapper.empty .panel,
-.neuroware-wrapper .panel-wrapper.empty .panel {
+.blockstrap-wrapper #main-content .panel-wrapper.empty .panel,
+.blockstrap-wrapper .panel-wrapper.empty .panel {
   background: transparent;
   border-color: transparent;
   box-shadow: none;
 }
-.neuroware-wrapper #main-content .panel-wrapper.empty .panel .panel-body .dataTables_wrapper .dataTables_length,
-.neuroware-wrapper .panel-wrapper.empty .panel .panel-body .dataTables_wrapper .dataTables_length,
-.neuroware-wrapper #main-content .panel-wrapper.empty .panel .dataTables_wrapper .dataTables_length,
-.neuroware-wrapper .panel-wrapper.empty .panel .dataTables_wrapper .dataTables_length,
-.neuroware-wrapper #main-content .panel-wrapper.empty .panel .panel-body .dataTables_wrapper .dataTables_info,
-.neuroware-wrapper .panel-wrapper.empty .panel .panel-body .dataTables_wrapper .dataTables_info,
-.neuroware-wrapper #main-content .panel-wrapper.empty .panel .dataTables_wrapper .dataTables_info,
-.neuroware-wrapper .panel-wrapper.empty .panel .dataTables_wrapper .dataTables_info,
-.neuroware-wrapper #main-content .panel-wrapper.empty .panel .panel-body .dataTables_wrapper .dataTables_paginate,
-.neuroware-wrapper .panel-wrapper.empty .panel .panel-body .dataTables_wrapper .dataTables_paginate,
-.neuroware-wrapper #main-content .panel-wrapper.empty .panel .dataTables_wrapper .dataTables_paginate,
-.neuroware-wrapper .panel-wrapper.empty .panel .dataTables_wrapper .dataTables_paginate {
+.blockstrap-wrapper #main-content .panel-wrapper.empty .panel .panel-body .dataTables_wrapper .dataTables_length,
+.blockstrap-wrapper .panel-wrapper.empty .panel .panel-body .dataTables_wrapper .dataTables_length,
+.blockstrap-wrapper #main-content .panel-wrapper.empty .panel .dataTables_wrapper .dataTables_length,
+.blockstrap-wrapper .panel-wrapper.empty .panel .dataTables_wrapper .dataTables_length,
+.blockstrap-wrapper #main-content .panel-wrapper.empty .panel .panel-body .dataTables_wrapper .dataTables_info,
+.blockstrap-wrapper .panel-wrapper.empty .panel .panel-body .dataTables_wrapper .dataTables_info,
+.blockstrap-wrapper #main-content .panel-wrapper.empty .panel .dataTables_wrapper .dataTables_info,
+.blockstrap-wrapper .panel-wrapper.empty .panel .dataTables_wrapper .dataTables_info,
+.blockstrap-wrapper #main-content .panel-wrapper.empty .panel .panel-body .dataTables_wrapper .dataTables_paginate,
+.blockstrap-wrapper .panel-wrapper.empty .panel .panel-body .dataTables_wrapper .dataTables_paginate,
+.blockstrap-wrapper #main-content .panel-wrapper.empty .panel .dataTables_wrapper .dataTables_paginate,
+.blockstrap-wrapper .panel-wrapper.empty .panel .dataTables_wrapper .dataTables_paginate {
   float: left;
   padding: 20px 0;
 }
-.neuroware-wrapper #main-content .panel-wrapper.empty .panel .panel-body .dataTables_wrapper .dataTables_paginate,
-.neuroware-wrapper .panel-wrapper.empty .panel .panel-body .dataTables_wrapper .dataTables_paginate,
-.neuroware-wrapper #main-content .panel-wrapper.empty .panel .dataTables_wrapper .dataTables_paginate,
-.neuroware-wrapper .panel-wrapper.empty .panel .dataTables_wrapper .dataTables_paginate {
+.blockstrap-wrapper #main-content .panel-wrapper.empty .panel .panel-body .dataTables_wrapper .dataTables_paginate,
+.blockstrap-wrapper .panel-wrapper.empty .panel .panel-body .dataTables_wrapper .dataTables_paginate,
+.blockstrap-wrapper #main-content .panel-wrapper.empty .panel .dataTables_wrapper .dataTables_paginate,
+.blockstrap-wrapper .panel-wrapper.empty .panel .dataTables_wrapper .dataTables_paginate {
   float: right;
 }
-.neuroware-wrapper #main-content .panel-wrapper.empty .panel .panel-body .dataTables_wrapper .dataTables_info,
-.neuroware-wrapper .panel-wrapper.empty .panel .panel-body .dataTables_wrapper .dataTables_info,
-.neuroware-wrapper #main-content .panel-wrapper.empty .panel .dataTables_wrapper .dataTables_info,
-.neuroware-wrapper .panel-wrapper.empty .panel .dataTables_wrapper .dataTables_info {
+.blockstrap-wrapper #main-content .panel-wrapper.empty .panel .panel-body .dataTables_wrapper .dataTables_info,
+.blockstrap-wrapper .panel-wrapper.empty .panel .panel-body .dataTables_wrapper .dataTables_info,
+.blockstrap-wrapper #main-content .panel-wrapper.empty .panel .dataTables_wrapper .dataTables_info,
+.blockstrap-wrapper .panel-wrapper.empty .panel .dataTables_wrapper .dataTables_info {
   padding: calc(22px);
 }
 /*
@@ -6653,11 +6653,11 @@ MODALS
 
 */
 .modal-backdrop,
-.neuroware-wrapper .modal-backdrop {
+.blockstrap-wrapper .modal-backdrop {
   z-index: 0;
   display: none;
 }
-.neuroware-wrapper .modal:before {
+.blockstrap-wrapper .modal:before {
   content: "";
   display: block;
   position: fixed;
@@ -6668,13 +6668,13 @@ MODALS
   background: #000f26;
   opacity: 0.85;
 }
-.neuroware-wrapper .modal {
+.blockstrap-wrapper .modal {
   z-index: 99999999;
 }
-.neuroware-wrapper .modal .modal-dialog {
+.blockstrap-wrapper .modal .modal-dialog {
   top: -100%;
 }
-.neuroware-wrapper .modal .modal-dialog .modal-header {
+.blockstrap-wrapper .modal .modal-dialog .modal-header {
   font-size: 125%;
   font-family: pro, sans-serif;
   background: #eeeeee;
@@ -6682,28 +6682,28 @@ MODALS
   border-radius: 4px 4px 0 0;
   border-bottom: 1px solid #bbbbbb;
 }
-.neuroware-wrapper .modal .modal-dialog .modal-body {
+.blockstrap-wrapper .modal .modal-dialog .modal-body {
   background: #ffffff;
   color: #555555;
   text-align: justify;
   font-size: 12px;
 }
-.neuroware-wrapper .modal .modal-dialog .modal-body form input,
-.neuroware-wrapper .modal .modal-dialog .modal-body form textarea,
-.neuroware-wrapper .modal .modal-dialog .modal-body form select {
+.blockstrap-wrapper .modal .modal-dialog .modal-body form input,
+.blockstrap-wrapper .modal .modal-dialog .modal-body form textarea,
+.blockstrap-wrapper .modal .modal-dialog .modal-body form select {
   background: #ffffee;
   font-size: 12px;
 }
-.neuroware-wrapper .modal .modal-dialog .modal-body form textarea {
+.blockstrap-wrapper .modal .modal-dialog .modal-body form textarea {
   height: 140px;
 }
-.neuroware-wrapper .modal .modal-dialog .modal-footer {
+.blockstrap-wrapper .modal .modal-dialog .modal-footer {
   background: #eeeeee;
   color: #757575;
   border-radius: 0 0 4px 4px;
   border-top: 1px solid #bbbbbb;
 }
-.neuroware-wrapper .modal.in .modal-dialog {
+.blockstrap-wrapper .modal.in .modal-dialog {
   animation: slide-down 1s forwards;
 }
 /* 
@@ -6724,24 +6724,24 @@ ANIMATIONS
 FORMS
 
 */
-.neuroware-wrapper form .actions,
-.neuroware-wrapper form .form-group {
+.blockstrap-wrapper form .actions,
+.blockstrap-wrapper form .form-group {
   display: block;
   position: relative;
   margin: 0;
   padding: calc(5px) 0;
 }
-.neuroware-wrapper form .actions .btn.pull-right {
+.blockstrap-wrapper form .actions .btn.pull-right {
   margin: calc(10px) 0 0 calc(10px);
 }
-.neuroware-wrapper form.form-horizontal label.control-label,
-.neuroware-wrapper form.form-horizontal select.form-control,
-.neuroware-wrapper form.form-horizontal input.form-control {
+.blockstrap-wrapper form.form-horizontal label.control-label,
+.blockstrap-wrapper form.form-horizontal select.form-control,
+.blockstrap-wrapper form.form-horizontal input.form-control {
   font-size: 16px;
   line-height: 16px;
   height: 30px;
 }
-.neuroware-wrapper form.form-horizontal label.control-label {
+.blockstrap-wrapper form.form-horizontal label.control-label {
   text-align: left;
   font-size: 12px;
   background: #dddddd;
@@ -6749,58 +6749,58 @@ FORMS
   border: 1px solid #cccccc;
   border-radius: 4px 0 0 4px;
 }
-.neuroware-wrapper form.form-horizontal select.form-control,
-.neuroware-wrapper form.form-horizontal input.form-control {
+.blockstrap-wrapper form.form-horizontal select.form-control,
+.blockstrap-wrapper form.form-horizontal input.form-control {
   border-radius: 0 4px 4px 0;
 }
-.neuroware-wrapper form.form-horizontal div.col-xs-1,
-.neuroware-wrapper form.form-horizontal div.col-sm-1,
-.neuroware-wrapper form.form-horizontal div.col-md-1,
-.neuroware-wrapper form.form-horizontal div.col-lg-1,
-.neuroware-wrapper form.form-horizontal div.col-xs-2,
-.neuroware-wrapper form.form-horizontal div.col-sm-2,
-.neuroware-wrapper form.form-horizontal div.col-md-2,
-.neuroware-wrapper form.form-horizontal div.col-lg-2,
-.neuroware-wrapper form.form-horizontal div.col-xs-3,
-.neuroware-wrapper form.form-horizontal div.col-sm-3,
-.neuroware-wrapper form.form-horizontal div.col-md-3,
-.neuroware-wrapper form.form-horizontal div.col-lg-3,
-.neuroware-wrapper form.form-horizontal div.col-xs-4,
-.neuroware-wrapper form.form-horizontal div.col-sm-4,
-.neuroware-wrapper form.form-horizontal div.col-md-4,
-.neuroware-wrapper form.form-horizontal div.col-lg-4,
-.neuroware-wrapper form.form-horizontal div.col-xs-5,
-.neuroware-wrapper form.form-horizontal div.col-sm-5,
-.neuroware-wrapper form.form-horizontal div.col-md-5,
-.neuroware-wrapper form.form-horizontal div.col-lg-5,
-.neuroware-wrapper form.form-horizontal div.col-xs-6,
-.neuroware-wrapper form.form-horizontal div.col-sm-6,
-.neuroware-wrapper form.form-horizontal div.col-md-6,
-.neuroware-wrapper form.form-horizontal div.col-lg-6,
-.neuroware-wrapper form.form-horizontal div.col-xs-7,
-.neuroware-wrapper form.form-horizontal div.col-sm-7,
-.neuroware-wrapper form.form-horizontal div.col-md-7,
-.neuroware-wrapper form.form-horizontal div.col-lg-7,
-.neuroware-wrapper form.form-horizontal div.col-xs-8,
-.neuroware-wrapper form.form-horizontal div.col-sm-8,
-.neuroware-wrapper form.form-horizontal div.col-md-8,
-.neuroware-wrapper form.form-horizontal div.col-lg-8,
-.neuroware-wrapper form.form-horizontal div.col-xs-9,
-.neuroware-wrapper form.form-horizontal div.col-sm-9,
-.neuroware-wrapper form.form-horizontal div.col-md-9,
-.neuroware-wrapper form.form-horizontal div.col-lg-9,
-.neuroware-wrapper form.form-horizontal div.col-xs-10,
-.neuroware-wrapper form.form-horizontal div.col-sm-10,
-.neuroware-wrapper form.form-horizontal div.col-md-10,
-.neuroware-wrapper form.form-horizontal div.col-lg-10,
-.neuroware-wrapper form.form-horizontal div.col-xs-11,
-.neuroware-wrapper form.form-horizontal div.col-sm-11,
-.neuroware-wrapper form.form-horizontal div.col-md-11,
-.neuroware-wrapper form.form-horizontal div.col-lg-11,
-.neuroware-wrapper form.form-horizontal div.col-xs-12,
-.neuroware-wrapper form.form-horizontal div.col-sm-12,
-.neuroware-wrapper form.form-horizontal div.col-md-12,
-.neuroware-wrapper form.form-horizontal div.col-lg-12 {
+.blockstrap-wrapper form.form-horizontal div.col-xs-1,
+.blockstrap-wrapper form.form-horizontal div.col-sm-1,
+.blockstrap-wrapper form.form-horizontal div.col-md-1,
+.blockstrap-wrapper form.form-horizontal div.col-lg-1,
+.blockstrap-wrapper form.form-horizontal div.col-xs-2,
+.blockstrap-wrapper form.form-horizontal div.col-sm-2,
+.blockstrap-wrapper form.form-horizontal div.col-md-2,
+.blockstrap-wrapper form.form-horizontal div.col-lg-2,
+.blockstrap-wrapper form.form-horizontal div.col-xs-3,
+.blockstrap-wrapper form.form-horizontal div.col-sm-3,
+.blockstrap-wrapper form.form-horizontal div.col-md-3,
+.blockstrap-wrapper form.form-horizontal div.col-lg-3,
+.blockstrap-wrapper form.form-horizontal div.col-xs-4,
+.blockstrap-wrapper form.form-horizontal div.col-sm-4,
+.blockstrap-wrapper form.form-horizontal div.col-md-4,
+.blockstrap-wrapper form.form-horizontal div.col-lg-4,
+.blockstrap-wrapper form.form-horizontal div.col-xs-5,
+.blockstrap-wrapper form.form-horizontal div.col-sm-5,
+.blockstrap-wrapper form.form-horizontal div.col-md-5,
+.blockstrap-wrapper form.form-horizontal div.col-lg-5,
+.blockstrap-wrapper form.form-horizontal div.col-xs-6,
+.blockstrap-wrapper form.form-horizontal div.col-sm-6,
+.blockstrap-wrapper form.form-horizontal div.col-md-6,
+.blockstrap-wrapper form.form-horizontal div.col-lg-6,
+.blockstrap-wrapper form.form-horizontal div.col-xs-7,
+.blockstrap-wrapper form.form-horizontal div.col-sm-7,
+.blockstrap-wrapper form.form-horizontal div.col-md-7,
+.blockstrap-wrapper form.form-horizontal div.col-lg-7,
+.blockstrap-wrapper form.form-horizontal div.col-xs-8,
+.blockstrap-wrapper form.form-horizontal div.col-sm-8,
+.blockstrap-wrapper form.form-horizontal div.col-md-8,
+.blockstrap-wrapper form.form-horizontal div.col-lg-8,
+.blockstrap-wrapper form.form-horizontal div.col-xs-9,
+.blockstrap-wrapper form.form-horizontal div.col-sm-9,
+.blockstrap-wrapper form.form-horizontal div.col-md-9,
+.blockstrap-wrapper form.form-horizontal div.col-lg-9,
+.blockstrap-wrapper form.form-horizontal div.col-xs-10,
+.blockstrap-wrapper form.form-horizontal div.col-sm-10,
+.blockstrap-wrapper form.form-horizontal div.col-md-10,
+.blockstrap-wrapper form.form-horizontal div.col-lg-10,
+.blockstrap-wrapper form.form-horizontal div.col-xs-11,
+.blockstrap-wrapper form.form-horizontal div.col-sm-11,
+.blockstrap-wrapper form.form-horizontal div.col-md-11,
+.blockstrap-wrapper form.form-horizontal div.col-lg-11,
+.blockstrap-wrapper form.form-horizontal div.col-xs-12,
+.blockstrap-wrapper form.form-horizontal div.col-sm-12,
+.blockstrap-wrapper form.form-horizontal div.col-md-12,
+.blockstrap-wrapper form.form-horizontal div.col-lg-12 {
   padding-left: 0;
   padding-right: 0;
 }
@@ -6811,8 +6811,8 @@ FONTS
 */
 @font-face {
   font-family: 'pro';
-  src: url('http://localhost/neuroware/wallet/neuroware/fonts/absolut_pro_light_reduced-webfont.eot');
-  src: url('http://localhost/neuroware/wallet/neuroware/fonts/absolut_pro_light_reduced-webfont.eot?#iefix') format('embedded-opentype'), url('http://localhost/neuroware/wallet/neuroware/fonts/absolut_pro_light_reduced-webfont.woff') format('woff'), url('http://localhost/neuroware/wallet/neuroware/fonts/absolut_pro_light_reduced-webfont.ttf') format('truetype'), url('http://localhost/neuroware/wallet/neuroware/fonts/absolut_pro_light_reduced-webfont.svg#absolut_pro_reducedregular') format('svg');
+  src: url('http://localhost/blockstrap/wallet/blockstrap/fonts/absolut_pro_light_reduced-webfont.eot');
+  src: url('http://localhost/neuroware/wallet/blockstrap/fonts/absolut_pro_light_reduced-webfont.eot?#iefix') format('embedded-opentype'), url('http://localhost/neuroware/wallet/blockstrap/fonts/absolut_pro_light_reduced-webfont.woff') format('woff'), url('http://localhost/neuroware/wallet/blockstrap/fonts/absolut_pro_light_reduced-webfont.ttf') format('truetype'), url('http://localhost/neuroware/wallet/blockstrap/fonts/absolut_pro_light_reduced-webfont.svg#absolut_pro_reducedregular') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -6823,56 +6823,56 @@ RESET PRIOR TO RESPONSIVENESS
 REMEMBER TO REMOVE FROM MAIN CSS IF RESET HERE FIRST
 
 */
-.neuroware-wrapper #menu-toggle,
-.neuroware-wrapper #sidebar-toggle {
+.blockstrap-wrapper #menu-toggle,
+.blockstrap-wrapper #sidebar-toggle {
   display: inline-block;
 }
-.neuroware-wrapper #main-content .panel-wrapper.col-md-6.odd {
+.blockstrap-wrapper #main-content .panel-wrapper.col-md-6.odd {
   padding-right: 20px;
 }
-.neuroware-wrapper #main-content .panel-wrapper.col-md-6.even {
+.blockstrap-wrapper #main-content .panel-wrapper.col-md-6.even {
   padding-left: 20px;
 }
-.neuroware-wrapper #main-content .panel .panel-body .panel.col-sm-6 {
+.blockstrap-wrapper #main-content .panel .panel-body .panel.col-sm-6 {
   min-width: 100%;
   border-top: 1px solid #cccccc;
 }
-.neuroware-wrapper #main-content .panel .panel-body .panel:nth-child(even) {
+.blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(even) {
   background: #ffffff;
 }
-.neuroware-wrapper #main-content .panel .panel-body .panel:first-child {
+.blockstrap-wrapper #main-content .panel .panel-body .panel:first-child {
   border-top: none;
 }
-.neuroware-wrapper .jumbotron .intro,
-.neuroware-wrapper .jumbotron h1 {
+.blockstrap-wrapper .jumbotron .intro,
+.blockstrap-wrapper .jumbotron h1 {
   text-align: center;
 }
-.neuroware-wrapper .jumbotron .intro {
+.blockstrap-wrapper .jumbotron .intro {
   padding-bottom: calc(10px);
 }
-.neuroware-wrapper .jumbotron .actions {
+.blockstrap-wrapper .jumbotron .actions {
   display: block;
   position: relative;
   text-align: center;
 }
-.neuroware-wrapper .jumbotron .actions .disabled {
+.blockstrap-wrapper .jumbotron .actions .disabled {
   display: none;
 }
-.neuroware-wrapper .jumbotron .jumbotron-contents {
+.blockstrap-wrapper .jumbotron .jumbotron-contents {
   text-align: center;
 }
-.neuroware-wrapper .list-item-content {
+.blockstrap-wrapper .list-item-content {
   display: inline-block;
   vertical-align: top;
   padding-right: 65px;
   position: relative;
 }
-.neuroware-wrapper .list-group-item a.pull-right {
+.blockstrap-wrapper .list-group-item a.pull-right {
   position: absolute;
   right: calc(19px);
   top: calc(19px);
 }
-.neuroware-wrapper #mobile-footer {
+.blockstrap-wrapper #mobile-footer {
   display: none;
 }
 /*
@@ -6880,7 +6880,7 @@ REMEMBER TO REMOVE FROM MAIN CSS IF RESET HERE FIRST
 BOOTSTRAP BREAKPOINTS
 
 */
-.neuroware-wrapper {
+.blockstrap-wrapper {
   /*
     
     ONE OF MANY THINGS THAT NEEDS TO BE MOVED TO THEME FILES
@@ -6889,83 +6889,83 @@ BOOTSTRAP BREAKPOINTS
   /* POINT OF SEARCH HITTING NAV */
 }
 @media (min-width: 768px) {
-  .neuroware-wrapper #search-form #search-term {
+  .blockstrap-wrapper #search-form #search-term {
     padding: 8px 15px;
     font-size: 12px;
   }
-  .neuroware-wrapper #main-content .panel .panel-body .panel:nth-child(even),
-  .neuroware-wrapper .panel .panel-body .panel:nth-child(even) {
+  .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(even),
+  .blockstrap-wrapper .panel .panel-body .panel:nth-child(even) {
     background: #eeeeee;
   }
-  .neuroware-wrapper #main-content .panel .panel-body .panel.col-sm-6,
-  .neuroware-wrapper .panel .panel-body .panel.col-sm-6 {
+  .blockstrap-wrapper #main-content .panel .panel-body .panel.col-sm-6,
+  .blockstrap-wrapper .panel .panel-body .panel.col-sm-6 {
     min-width: 50%;
     border-top: none;
   }
-  .neuroware-wrapper #main-content .panel .panel-body .panel:nth-child(even),
-  .neuroware-wrapper .panel .panel-body .panel:nth-child(even) {
+  .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(even),
+  .blockstrap-wrapper .panel .panel-body .panel:nth-child(even) {
     border-left: 1px solid #cccccc;
   }
-  .neuroware-wrapper #main-content .panel .panel-body .panel:nth-child(2n+4),
-  .neuroware-wrapper .panel .panel-body .panel:nth-child(2n+4),
-  .neuroware-wrapper #main-content .panel .panel-body .panel:nth-child(2n+3),
-  .neuroware-wrapper .panel .panel-body .panel:nth-child(2n+3) {
+  .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(2n+4),
+  .blockstrap-wrapper .panel .panel-body .panel:nth-child(2n+4),
+  .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(2n+3),
+  .blockstrap-wrapper .panel .panel-body .panel:nth-child(2n+3) {
     border-top: 1px solid #cccccc;
   }
-  .neuroware-wrapper #main-content .panel .panel-body .panel:nth-child(4n+4),
-  .neuroware-wrapper .panel .panel-body .panel:nth-child(4n+4),
-  .neuroware-wrapper #main-content .panel .panel-body .panel:nth-child(4n+3),
-  .neuroware-wrapper .panel .panel-body .panel:nth-child(4n+3) {
+  .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(4n+4),
+  .blockstrap-wrapper .panel .panel-body .panel:nth-child(4n+4),
+  .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(4n+3),
+  .blockstrap-wrapper .panel .panel-body .panel:nth-child(4n+3) {
     background: #ffffff;
   }
-  .neuroware-wrapper #main-content .panel-body .jumbotron .intro,
-  .neuroware-wrapper .jumbotron .intro,
-  .neuroware-wrapper #main-content .panel-body .jumbotron h1,
-  .neuroware-wrapper .jumbotron h1 {
+  .blockstrap-wrapper #main-content .panel-body .jumbotron .intro,
+  .blockstrap-wrapper .jumbotron .intro,
+  .blockstrap-wrapper #main-content .panel-body .jumbotron h1,
+  .blockstrap-wrapper .jumbotron h1 {
     text-align: left;
     padding: 0 180px 0 0;
   }
-  .neuroware-wrapper #main-content .panel-body .jumbotron .intro,
-  .neuroware-wrapper .jumbotron .intro {
+  .blockstrap-wrapper #main-content .panel-body .jumbotron .intro,
+  .blockstrap-wrapper .jumbotron .intro {
     padding-bottom: 0;
   }
-  .neuroware-wrapper #main-content .panel-body .jumbotron .actions,
-  .neuroware-wrapper .jumbotron .actions {
+  .blockstrap-wrapper #main-content .panel-body .jumbotron .actions,
+  .blockstrap-wrapper .jumbotron .actions {
     float: right;
     display: inline-block;
     margin-top: -35px;
   }
-  .neuroware-wrapper #main-content .panel-body .jumbotron .jumbotron-contents,
-  .neuroware-wrapper .jumbotron .jumbotron-contents {
+  .blockstrap-wrapper #main-content .panel-body .jumbotron .jumbotron-contents,
+  .blockstrap-wrapper .jumbotron .jumbotron-contents {
     text-align: left;
   }
 }
 @media (min-width: 992px) {
-  .neuroware-wrapper #main-content .panel-wrapper.col-md-6.odd {
+  .blockstrap-wrapper #main-content .panel-wrapper.col-md-6.odd {
     padding-right: calc(10px);
   }
-  .neuroware-wrapper #main-content .panel-wrapper.col-md-6.even {
+  .blockstrap-wrapper #main-content .panel-wrapper.col-md-6.even {
     padding-left: calc(10px);
   }
-  .neuroware-wrapper .jumbotron .actions .disabled {
+  .blockstrap-wrapper .jumbotron .actions .disabled {
     display: inline-block;
   }
 }
 @media (max-width: 660px) {
-  .neuroware-wrapper {
+  .blockstrap-wrapper {
     overflow-x: visible;
   }
-  .neuroware-wrapper #sidebar {
+  .blockstrap-wrapper #sidebar {
     top: calc(60px);
     left: 60px;
     right: 0;
     width: auto;
     z-index: 2;
   }
-  .neuroware-wrapper #sidebar footer {
+  .blockstrap-wrapper #sidebar footer {
     display: none;
   }
-  .neuroware-wrapper #sidebar:before {
+  .blockstrap-wrapper #sidebar:before {
     content: "";
     background: #475862;
     height: 60px;
@@ -6975,31 +6975,31 @@ BOOTSTRAP BREAKPOINTS
     width: 100%;
     top: 0;
   }
-  .neuroware-wrapper #main-content,
-  .neuroware-wrapper #navigation:before,
-  .neuroware-wrapper header {
+  .blockstrap-wrapper #main-content,
+  .blockstrap-wrapper #navigation:before,
+  .blockstrap-wrapper header {
     left: 0;
   }
-  .neuroware-wrapper #navigation:before {
+  .blockstrap-wrapper #navigation:before {
     padding-right: 30px;
   }
-  .neuroware-wrapper #main-content {
+  .blockstrap-wrapper #main-content {
     position: relative;
     overflow: visible;
     top: 0;
     padding-top: calc(80px);
     padding-bottom: calc(80px);
   }
-  .neuroware-wrapper #main-content .panel .panel-heading {
+  .blockstrap-wrapper #main-content .panel .panel-heading {
     text-align: center;
   }
-  .neuroware-wrapper .panel-body .jumbotron h1 {
+  .blockstrap-wrapper .panel-body .jumbotron h1 {
     font-size: 30px;
   }
-  .neuroware-wrapper .panel-body .jumbotron .intro {
+  .blockstrap-wrapper .panel-body .jumbotron .intro {
     font-size: 20px;
   }
-  .neuroware-wrapper #mobile-footer {
+  .blockstrap-wrapper #mobile-footer {
     display: block;
     position: fixed;
     bottom: 0;
@@ -7009,7 +7009,7 @@ BOOTSTRAP BREAKPOINTS
     margin-top: -60px;
     background: #475862;
   }
-  .neuroware-wrapper #mobile-footer a {
+  .blockstrap-wrapper #mobile-footer a {
     display: inline-block;
     position: relative;
     width: 25%;
@@ -7021,48 +7021,48 @@ BOOTSTRAP BREAKPOINTS
     line-height: 60px;
     border-left: 1px dotted #111e27;
   }
-  .neuroware-wrapper #mobile-footer a span.text {
+  .blockstrap-wrapper #mobile-footer a span.text {
     display: block;
     text-indent: -999em;
   }
-  .neuroware-wrapper #mobile-footer a:first-child {
+  .blockstrap-wrapper #mobile-footer a:first-child {
     border-left: none;
   }
-  .neuroware-wrapper #mobile-footer a:hover,
-  .neuroware-wrapper #mobile-footer a.active {
+  .blockstrap-wrapper #mobile-footer a:hover,
+  .blockstrap-wrapper #mobile-footer a.active {
     color: #ffff99;
   }
-  .neuroware-wrapper #mobile-footer a:hover {
+  .blockstrap-wrapper #mobile-footer a:hover {
     opacity: 1;
   }
-  .neuroware-wrapper #mobile-footer .loading {
+  .blockstrap-wrapper #mobile-footer .loading {
     background-position: center 25px !important;
   }
-  .neuroware-wrapper #navigation {
+  .blockstrap-wrapper #navigation {
     left: 0;
   }
 }
 @media (min-width: 661px) {
-  .neuroware-wrapper {
+  .blockstrap-wrapper {
     overflow-x: hidden;
     overflow-y: hidden;
   }
-  .neuroware-wrapper header #sidebar-toggle {
+  .blockstrap-wrapper header #sidebar-toggle {
     display: none;
   }
-  .neuroware-wrapper header #search-form {
+  .blockstrap-wrapper header #search-form {
     right: 20px;
   }
 }
 @media (min-width: 992px) {
-  .neuroware-wrapper .collapsable {
+  .blockstrap-wrapper .collapsable {
     display: inline-block;
   }
-  .neuroware-wrapper header #menu-toggle,
-  .neuroware-wrapper header #sidebar-toggle {
+  .blockstrap-wrapper header #menu-toggle,
+  .blockstrap-wrapper header #sidebar-toggle {
     display: none;
   }
-  .neuroware-wrapper header #search-form {
+  .blockstrap-wrapper header #search-form {
     display: inline-block;
     float: right;
     position: relative;
@@ -7072,7 +7072,7 @@ BOOTSTRAP BREAKPOINTS
     padding-right: 20px;
     width: 300px;
   }
-  .neuroware-wrapper #navigation {
+  .blockstrap-wrapper #navigation {
     background: transparent;
     display: block;
     position: absolute;
@@ -7083,7 +7083,7 @@ BOOTSTRAP BREAKPOINTS
     height: 60px;
     z-index: 99999;
   }
-  .neuroware-wrapper #navigation a.nav-links {
+  .blockstrap-wrapper #navigation a.nav-links {
     font-size: 11px;
     display: inline-block;
     position: relative;
@@ -7094,79 +7094,79 @@ BOOTSTRAP BREAKPOINTS
     background: transparent;
     border: 1px solid transparent;
   }
-  .neuroware-wrapper #navigation a.nav-links:hover {
+  .blockstrap-wrapper #navigation a.nav-links:hover {
     color: #ffff99;
     background: #2f2f2f;
     border-color: #000000;
   }
-  .neuroware-wrapper #navigation a.nav-links.active:hover,
-  .neuroware-wrapper #navigation a.nav-links.active {
+  .blockstrap-wrapper #navigation a.nav-links.active:hover,
+  .blockstrap-wrapper #navigation a.nav-links.active {
     color: #aaaaaa;
     background: #2b3f4b;
     border-color: #111e27;
   }
-  .neuroware-wrapper #navigation a.nav-links.active:hover {
+  .blockstrap-wrapper #navigation a.nav-links.active:hover {
     color: #ffff99;
   }
-  .neuroware-wrapper #navigation:before {
+  .blockstrap-wrapper #navigation:before {
     display: none;
   }
-  .neuroware-wrapper .jumbotron-contents .btn-table-filter {
+  .blockstrap-wrapper .jumbotron-contents .btn-table-filter {
     display: inline-block;
   }
-  .neuroware-wrapper #main-content table.table thead,
-  .neuroware-wrapper table.table thead {
+  .blockstrap-wrapper #main-content table.table thead,
+  .blockstrap-wrapper table.table thead {
     visibility: visible;
   }
-  .neuroware-wrapper #main-content table.table thead tr th,
-  .neuroware-wrapper table.table thead tr th {
+  .blockstrap-wrapper #main-content table.table thead tr th,
+  .blockstrap-wrapper table.table thead tr th {
     display: table-cell;
   }
-  .neuroware-wrapper #main-content table.table thead tr th,
-  .neuroware-wrapper table.table thead tr th,
-  .neuroware-wrapper #main-content table.table tbody tr td,
-  .neuroware-wrapper table.table tbody tr td {
+  .blockstrap-wrapper #main-content table.table thead tr th,
+  .blockstrap-wrapper table.table thead tr th,
+  .blockstrap-wrapper #main-content table.table tbody tr td,
+  .blockstrap-wrapper table.table tbody tr td {
     display: table-cell;
   }
-  .neuroware-wrapper #main-content table.table thead tr th .btn-xs,
-  .neuroware-wrapper table.table thead tr th .btn-xs,
-  .neuroware-wrapper #main-content table.table tbody tr td .btn-xs,
-  .neuroware-wrapper table.table tbody tr td .btn-xs {
+  .blockstrap-wrapper #main-content table.table thead tr th .btn-xs,
+  .blockstrap-wrapper table.table thead tr th .btn-xs,
+  .blockstrap-wrapper #main-content table.table tbody tr td .btn-xs,
+  .blockstrap-wrapper table.table tbody tr td .btn-xs {
     float: none;
   }
-  .neuroware-wrapper #main-content table.table thead tr th .mobile-view,
-  .neuroware-wrapper table.table thead tr th .mobile-view,
-  .neuroware-wrapper #main-content table.table tbody tr td .mobile-view,
-  .neuroware-wrapper table.table tbody tr td .mobile-view {
+  .blockstrap-wrapper #main-content table.table thead tr th .mobile-view,
+  .blockstrap-wrapper table.table thead tr th .mobile-view,
+  .blockstrap-wrapper #main-content table.table tbody tr td .mobile-view,
+  .blockstrap-wrapper table.table tbody tr td .mobile-view {
     display: none;
   }
-  .neuroware-wrapper #main-content table.table thead tr th .ribbon,
-  .neuroware-wrapper table.table thead tr th .ribbon,
-  .neuroware-wrapper #main-content table.table tbody tr td .ribbon,
-  .neuroware-wrapper table.table tbody tr td .ribbon {
+  .blockstrap-wrapper #main-content table.table thead tr th .ribbon,
+  .blockstrap-wrapper table.table thead tr th .ribbon,
+  .blockstrap-wrapper #main-content table.table tbody tr td .ribbon,
+  .blockstrap-wrapper table.table tbody tr td .ribbon {
     display: table-cell;
   }
-  .neuroware-wrapper #main-content table.table tbody tr td:last-child,
-  .neuroware-wrapper table.table tbody tr td:last-child {
+  .blockstrap-wrapper #main-content table.table tbody tr td:last-child,
+  .blockstrap-wrapper table.table tbody tr td:last-child {
     display: table-cell;
     text-align: right;
   }
-  .neuroware-wrapper .dataTables_wrapper .dataTables_length,
-  .neuroware-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_length,
-  .neuroware-wrapper .dataTables_wrapper .dataTables_info,
-  .neuroware-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_info,
-  .neuroware-wrapper .dataTables_wrapper .dataTables_paginate,
-  .neuroware-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_paginate {
+  .blockstrap-wrapper .dataTables_wrapper .dataTables_length,
+  .blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_length,
+  .blockstrap-wrapper .dataTables_wrapper .dataTables_info,
+  .blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_info,
+  .blockstrap-wrapper .dataTables_wrapper .dataTables_paginate,
+  .blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_paginate {
     display: inline-block;
     text-align: left;
     width: 33%;
   }
-  .neuroware-wrapper .dataTables_wrapper .dataTables_info,
-  .neuroware-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_info {
+  .blockstrap-wrapper .dataTables_wrapper .dataTables_info,
+  .blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_info {
     text-align: center;
   }
-  .neuroware-wrapper .dataTables_wrapper .dataTables_paginate,
-  .neuroware-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_paginate {
+  .blockstrap-wrapper .dataTables_wrapper .dataTables_paginate,
+  .blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_paginate {
     text-align: right;
   }
 }
