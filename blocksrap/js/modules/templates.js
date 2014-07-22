@@ -1,6 +1,6 @@
 /*
  * 
- *  Neuroware v0.1.1
+ *  Blockstrap v0.1.1
  *  http://neuroware.io
  *
  *  Designed, Developed and Maintained by Neuroware.io Inc
@@ -31,35 +31,35 @@
     };
     templates.render = function(slug, callback)
     {
-        $.fn.neuroware.data.find('data', slug, function(results)
+        $.fn.blockstrap.data.find('data', slug, function(results)
         {
             var data = results;
-            var refresh = neuroware_functions.vars('refresh');
+            var refresh = blockstrap_functions.vars('refresh');
             if(refresh === true || !data)
             {
-                templates.get('themes/'+$.fn.neuroware.settings.theme+'/'+$.fn.neuroware.settings.data_base+slug, 'json', function(data)
+                templates.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.data_base+slug, 'json', function(data)
                 {
-                    var filtered_data = $.fn.neuroware.core.filter(data);
-                    $.fn.neuroware.data.put(slug, filtered_data);
-                    $.fn.neuroware.data.save('data', slug, data, function()
+                    var filtered_data = $.fn.blockstrap.core.filter(data);
+                    $.fn.blockstrap.data.put(slug, filtered_data);
+                    $.fn.blockstrap.data.save('data', slug, data, function()
                     {
-                        $.fn.neuroware.data.find('html', slug, function(results)
+                        $.fn.blockstrap.data.find('html', slug, function(results)
                         {
                             var html = results;
-                            var refresh = neuroware_functions.vars('refresh');
+                            var refresh = blockstrap_functions.vars('refresh');
                             if(refresh === true || !html)
                             {
-                                templates.get('themes/'+$.fn.neuroware.settings.theme+'/'+$.fn.neuroware.settings.html_base+slug, 'html', function(content)
+                                templates.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.html_base+slug, 'html', function(content)
                                 {
                                     var paged_html = Mustache.render(content, filtered_data);
-                                    $($.fn.neuroware.element).append(paged_html);
-                                    $.fn.neuroware.data.save('html', slug, paged_html, callback);
+                                    $($.fn.blockstrap.element).append(paged_html);
+                                    $.fn.blockstrap.data.save('html', slug, paged_html, callback);
                                 });
                             }
                             else
                             {
                                 var paged_html = Mustache.render(html, filtered_data);
-                                $($.fn.neuroware.element).append(paged_html);
+                                $($.fn.blockstrap.element).append(paged_html);
                                 if(callback) callback();
                             }
                         });
@@ -68,25 +68,25 @@
             }
             else
             {
-                var filtered_data = $.fn.neuroware.core.filter(data);
-                $.fn.neuroware.data.put(slug, filtered_data);
-                $.fn.neuroware.data.find('html', slug, function(results)
+                var filtered_data = $.fn.blockstrap.core.filter(data);
+                $.fn.blockstrap.data.put(slug, filtered_data);
+                $.fn.blockstrap.data.find('html', slug, function(results)
                 {
                     var html = results;
-                    var refresh = neuroware_functions.vars('refresh');
+                    var refresh = blockstrap_functions.vars('refresh');
                     if(refresh === true || !html)
                     {
-                        templates.get('themes/'+$.fn.neuroware.settings.theme+'/'+$.fn.neuroware.settings.html_base+slug, 'html', function(content)
+                        templates.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.html_base+slug, 'html', function(content)
                         {
                             var paged_html = Mustache.render(content, filtered_data);
-                            $($.fn.neuroware.element).append(paged_html);
-                            $.fn.neuroware.data.save('html', slug, paged_html, callback);
+                            $($.fn.blockstrap.element).append(paged_html);
+                            $.fn.blockstrap.data.save('html', slug, paged_html, callback);
                         });
                     }
                     else
                     {
                         var paged_html = Mustache.render(html, filtered_data);
-                        $($.fn.neuroware.element).append(paged_html);
+                        $($.fn.blockstrap.element).append(paged_html);
                         if(callback) callback();
                     }
                 });
@@ -95,6 +95,6 @@
     };
     
     // MERGE THE NEW FUNCTIONS WITH CORE
-    $.extend(true, $.fn.neuroware, {templates:templates});
+    $.extend(true, $.fn.blockstrap, {templates:templates});
 })
 (jQuery);

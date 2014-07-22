@@ -1,6 +1,6 @@
 /*
  * 
- *  Neuroware v0.1.1
+ *  Blockstrap v0.1.1
  *  http://neuroware.io
  *
  *  Designed, Developed and Maintained by Neuroware.io Inc

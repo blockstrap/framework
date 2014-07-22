@@ -2,7 +2,7 @@
     "user": {
         "setup": false,
         "name": "Mark Smalley",
-        "avatar": "neuroware/img/avatar.jpg",
+        "avatar": "blockstrap/img/avatar.jpg",
         "last": "last transaction 12 hours ago",
         "urls": {
             "profile": "#profile"
@@ -388,7 +388,7 @@
         "support_forums": "Get Help"
     },
     "setup": {
-        "avatar": "neuroware/img/avatar.jpg",
+        "avatar": "blockstrap/img/avatar.jpg",
         "name": "Huxley The Wizard",
         "info": "( huxley stardust is here to help you )",
         "help": {
@@ -449,7 +449,7 @@
                     "type": "jumbotrons",
                     "objects": [
                         {
-                            "title": "Welcome to Neuroware",
+                            "title": "Welcome to Blockstrap",
                             "intro": "This device is compatible and ready to be used.",
                             "html": "Not sure what to put here yet... Any ideas are much appreciated...?.",
                             "buttons": [
@@ -472,7 +472,7 @@
                     "type": "forms",
                     "objects": [
                         {
-                            "id": "neuroware-setup-step1",
+                            "id": "blockstrap-setup-step1",
                             "fields": [
                                 {
                                     "inputs": {

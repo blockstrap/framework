@@ -1,4 +1,4 @@
-# Neuroware Wallet
+# Blockstrap Wallet
 
 This shows the default theme in action as a full-screen application.
 

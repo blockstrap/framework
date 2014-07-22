@@ -1,6 +1,6 @@
 /*
  * 
- *  Neuroware v0.1.1
+ *  Blcokstrap v0.1.1
  *  http://neuroware.io
  *
  *  Designed, Developed and Maintained by Neuroware.io Inc
@@ -240,6 +240,6 @@
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
-    $.extend(true, $.fn.neuroware, {api:api});
+    $.extend(true, $.fn.blockstrap, {api:api});
 })
 (jQuery);
