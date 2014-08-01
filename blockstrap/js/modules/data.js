@@ -14,7 +14,7 @@
     var data = {};
     if(localStorage)
     {
-        $.fn.neuroware.settings.info.storage = {
+        $.fn.blockstrap.settings.info.storage = {
             local: {
                 used: '' + ((JSON.stringify(localStorage).length * 2) / 1000000) + ' MB',
                 remaining: '' + ((2490000 - (JSON.stringify(localStorage).length * 2)) / 1000000) + ' MB'
@@ -26,11 +26,11 @@
     data.get = function(key)
     {
         if(!key) key = 'index';
-        return $.fn.neuroware.data[key];
+        return $.fn.blockstrap.data[key];
     };
     data.put = function(key, value)
     {
-        $.fn.neuroware.data[key] = value;
+        $.fn.blockstrap.data[key] = value;
     };
     data.item = function(collection, key)
     {
@@ -41,7 +41,7 @@
         if(localStorage && localStorage.getItem(data.item(collection, key)))
         {
             var obj = localStorage.getItem(data.item(collection, key));
-            if(obj && neuroware_functions.json(obj))
+            if(obj && blockstrap_functions.json(obj))
             {
                 var json = $.parseJSON(obj);
                 callback(json);
@@ -73,6 +73,6 @@
         callback()
     };    
     // MERGE THE NEW FUNCTIONS WITH CORE
-    $.extend(true, $.fn.neuroware, {data:data});
+    $.extend(true, $.fn.blockstrap, {data:data});
 })
 (jQuery);

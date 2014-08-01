@@ -27,7 +27,7 @@ var blockstrap_core = function()
         var $this = this;
         var plugin_name = 'blockstrap';
         var defaults = {
-            v: '1.0.2.2',
+            v: '1.0.2.3',
             salt: '',
             autoload: true,
             id: plugin_name,
@@ -45,9 +45,32 @@ var blockstrap_core = function()
             content_id: 'main-content',
             css: ['font-awesome'],
             filters: ['bootstrap'],
-            modules: ['filters', 'data', 'api', 'security', 'buttons', 'styles', 'templates'],
-            dependencies: ['sonic', 'swipe', 'effects', 'bootstrap.min', 'mustache', 'tables'],
-            bootstrap: ['lists', 'jumbotrons', 'panels', 'tables', 'modals', 'forms', 'bars'],
+            modules: [
+                'filters', 
+                'data', 
+                'api', 
+                'security', 
+                'buttons', 
+                'styles', 
+                'templates'
+            ],
+            dependencies: [
+                'sonic', 
+                'swipe', 
+                'effects', 
+                'bootstrap.min', 
+                'mustache', 
+                'tables'
+            ],
+            bootstrap: [
+                'lists', 
+                'jumbotrons', 
+                'panels', 
+                'tables', 
+                'modals', 
+                'forms', 
+                'bars'
+            ],
             styles: {
                 content_bg: '#DDD',
                 header_bg: '#475862'
@@ -80,7 +103,10 @@ var blockstrap_core = function()
         {
             // MERGE DEFAULT AND PLUGIN OPTIONS
             $.fn.blockstrap.settings = $.extend({}, defaults, options);
-            if($.fn.blockstrap.settings.salt && localStorage) localStorage.setItem('nw_blockstrap_salt', $.fn.blockstrap.settings.salt);
+            if($.fn.blockstrap.settings.salt && localStorage)
+            {
+                localStorage.setItem('nw_blockstrap_salt', $.fn.blockstrap.settings.salt);
+            }
             $.fn.blockstrap.settings.vars = blockstrap_functions.vars();
             if(blockstrap_functions.vars('less')) $.fn.blockstrap.settings.less = true;
             if(!$.fn.blockstrap.settings.base_url)
@@ -98,19 +124,55 @@ var blockstrap_core = function()
             $($.fn.blockstrap.element).addClass('blockstrap-wrapper loading');
 
             // DATA ATTRIBUTES
-            var attributed_options = $($.fn.blockstrap.element).data();
-            if(attributed_options['id']) $.fn.blockstrap.settings['id'] = attributed_options['id'];
-            if(attributed_options['defaultData']) $.fn.blockstrap.settings['default_data'] = attributed_options['defaultData'];
-            if(attributed_options['defaultHtml']) $.fn.blockstrap.settings['default_html'] = attributed_options['defaultHtml'];
-            if(attributed_options['dataBase']) $.fn.blockstrap.settings['data_base'] = attributed_options['dataBase'];
-            if(attributed_options['htmlBase']) $.fn.blockstrap.settings['html_base'] = attributed_options['htmlBase'];
-            if(attributed_options['slugBase']) $.fn.blockstrap.settings['slug_base'] = attributed_options['slugBase'];
-            if(attributed_options['contentId']) $.fn.blockstrap.settings['content_id'] = attributed_options['contentId'];
-            if(attributed_options['filters']) $.fn.blockstrap.settings['filters'] = attributed_options['filters'].split(', ');
-            if(attributed_options['dependencies']) $.fn.blockstrap.settings['dependencies'] = attributed_options['dependencies'].split(', ');
-            if(attributed_options['modules']) $.fn.blockstrap.settings['modules'] = attributed_options['modules'].split(', ');
-            if(attributed_options['bootstrap']) $.fn.blockstrap.settings['bootstrap'] = attributed_options['bootstrap'].split(', ');
-            if(attributed_options['styles']) $.fn.blockstrap.settings['styles'] = $.extend({}, $.fn.blockstrap.settings.styles, $.fn.blockstrap.core.stringed(attributed_options['styles'].split(', ')));
+            var attributes = $($.fn.blockstrap.element).data();
+            if(attributes['id'])
+            {
+                $.fn.blockstrap.settings['id'] = attributes['id'];
+            }
+            if(attributes['defaultData'])
+            {
+                $.fn.blockstrap.settings['default_data'] = attributes['defaultData'];
+            }
+            if(attributes['defaultHtml'])
+            {
+                $.fn.blockstrap.settings['default_html'] = attributes['defaultHtml'];
+            }
+            if(attributes['dataBase'])
+            {
+                $.fn.blockstrap.settings['data_base'] = attributes['dataBase'];
+            }
+            if(attributes['htmlBase'])
+            {
+                $.fn.blockstrap.settings['html_base'] = attributes['htmlBase'];
+            }
+            if(attributes['slugBase'])
+            {
+                $.fn.blockstrap.settings['slug_base'] = attributes['slugBase'];
+            }
+            if(attributes['contentId'])
+            {
+                $.fn.blockstrap.settings['content_id'] = attributes['contentId'];
+            }
+            if(attributes['filters'])
+            {
+                $.fn.blockstrap.settings['filters'] = attributes['filters'].split(', ');
+            }
+            if(attributes['dependencies'])
+            {
+                $.fn.blockstrap.settings['dependencies'] = attributes['dependencies'].split(', ');
+            }
+            if(attributes['modules'])
+            {
+                $.fn.blockstrap.settings['modules'] = attributes['modules'].split(', ');
+            }
+            if(attributes['bootstrap'])
+            {
+                $.fn.blockstrap.settings['bootstrap'] = attributes['bootstrap'].split(', ');
+            }
+            if(attributes['styles'])
+            {
+                $.fn.blockstrap.settings['styles'] = $.extend({}, $.fn.blockstrap.settings.styles, $.fn.blockstrap.core.stringed(attributes['styles'].split(', ')));
+            }
             
             // LOAD DEPENDENCIES FIRST
             if($.isArray($.fn.blockstrap.settings.dependencies))
@@ -146,10 +208,12 @@ var blockstrap_core = function()
                                                 {
                                                     // less-blockstrap
                                                     var id = $(this).attr('id');
+                                                    var string_to_count = 'less-blockstrap';
+                                                    var string_length = string_to_count.length;
                                                     if(id)
                                                     {
                                                         var check = id.substring(0, 5);
-                                                        var double_check = id.substring((id.length - 14), id.length);
+                                                        var double_check = id.substring((id.length - string_length), id.length);
                                                         if(check === 'less:' && double_check === 'less-blockstrap')
                                                         {
                                                             less_styles = $(this).html();
@@ -289,9 +353,9 @@ var blockstrap_core = function()
             },
             init: function()
             {
-                $.fn.blockstrap.styles.set();
                 $.fn.blockstrap.templates.render('index', function()
                 {
+                    $.fn.blockstrap.styles.set();
                     $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
                     {
                         $.fn.blockstrap.core.loading();

@@ -366,18 +366,18 @@ var loader = new Sonic({
     ]
 });
 
-if($('#neuroware').length > 0)
+if($('#blockstrap').length > 0)
 {
-    var neuroware_sonic_injection = function(obj)
+    var blockstrap_sonic_injection = function(obj)
     {
         loader.play();
         $(obj).find('#loader-canvas').html(loader.canvas);
     }
-    if($('#neuroware').length > 0)
+    if($('#blockstrap').length > 0)
     {
-        $('#neuroware').each(function()
+        $('#blockstrap').each(function()
         {
-            neuroware_sonic_injection(this);
+            blockstrap_sonic_injection(this);
         })
     }
 }

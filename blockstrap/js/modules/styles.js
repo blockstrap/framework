@@ -17,7 +17,7 @@
     styles.set = function(id, index)
     {
         if(!index) index = 0;
-        if(!id) id = 'neuroware-styles';
+        if(!id) id = 'blockstrap-styles';
 
         var style = document.createElement('style');
         style.id = id;
@@ -29,15 +29,15 @@
         document.head.appendChild(style);
         var tag = document.getElementById(id);
         var sheet = tag.sheet ? tag.sheet : tag.styleSheet;
-        var id_prefix = '#'+$.fn.neuroware.settings.id;
+        var id_prefix = '#'+$.fn.blockstrap.settings.id;
 
-        var styles = $.fn.neuroware.settings.styles;    
+        var styles = $.fn.blockstrap.settings.styles;    
         if($.isPlainObject(styles))
         {
             $.each(styles, function(k, v)
             {
-                var rule = $.fn.neuroware.styles.rule(k, v);
-                var element = $.fn.neuroware.styles.element(k);
+                var rule = $.fn.blockstrap.styles.rule(k, v);
+                var element = $.fn.blockstrap.styles.element(k);
                 if(sheet.insertRule) 
                 {
                     sheet.insertRule(element + ' { ' + rule + ' }', index);
@@ -58,16 +58,16 @@
     styles.element = function(key)
     {
         var map = styles.map('elements');
-        var element = '#' + $.fn.neuroware.settings.id + ' ' + map[key];
+        var element = '#' + $.fn.blockstrap.settings.id + ' ' + map[key];
         return element;
     };
     styles.map = function(type)
     {
-        return $.fn.neuroware.settings.maps.styles[type];
+        return $.fn.blockstrap.settings.maps.styles[type];
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
-    $.extend(true, $.fn.neuroware, {styles:styles});
+    $.extend(true, $.fn.blockstrap, {styles:styles});
 })
 (jQuery);
 

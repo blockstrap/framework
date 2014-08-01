@@ -41,7 +41,7 @@
             var header_margin = margin_left;
             
             $(button).addClass('open');
-            $('body').addClass('neuroware-open-menu');
+            $('body').addClass('blockstrap-open-menu');
             
             if($('#sidebar').css('left') === '60px')
             {
@@ -63,14 +63,14 @@
             {
                 $(this).css('width','auto');
                 $(button).removeClass('open');
-                $('body').removeClass('neuroware-open-menu');
+                $('body').removeClass('blockstrap-open-menu');
                 header.clearQueue();
             }});
             $(content).animate({'left':sidebar_width, 'margin-left':0}, {duration: 350, queue: false, complete: function(e)
             {
                 $(this).css('width','auto');
                 $(button).removeClass('open');
-                $('body').removeClass('neuroware-open-menu');
+                $('body').removeClass('blockstrap-open-menu');
                 content.clearQueue();
             }});
         }
@@ -88,7 +88,7 @@
         if(!$(button).hasClass('open'))
         {
             $(button).addClass('open');
-            $('body').addClass('neuroware-open-menu');
+            $('body').addClass('blockstrap-open-menu');
             $(header).animate({'left':left, 'margin-left':margin_left, 'width':width}, {duration:350, queue:false, complete:function(e)
             {
                 header.clearQueue();
@@ -108,59 +108,59 @@
                 $(this).css({'width':'auto'});
                 header.clearQueue();
                 $(button).removeClass('open');
-                $('body').removeClass('neuroware-open-menu');
+                $('body').removeClass('blockstrap-open-menu');
             }});
             $(content).animate({'left':left, 'margin-left':margin_left, 'width':width}, {duration:350, queue:false, complete:function(e)
             {
                 $(this).css({'width':'auto'});
                 header.clearQueue();
                 $(button).removeClass('open');
-                $('body').removeClass('neuroware-open-menu');
+                $('body').removeClass('blockstrap-open-menu');
             }});
         }
     }
     
     $('body').on('click', '#menu-toggle', function(e)
     {
-        $.fn.neuroware.buttons.menu(this);
+        $.fn.blockstrap.buttons.menu(this);
     });
     $('body').on('click', '#sidebar-toggle', function(e)
     {
-        $.fn.neuroware.buttons.sidebar(this);
+        $.fn.blockstrap.buttons.sidebar(this);
     });
     
     $("body").swipe( {
         //Generic swipe handler for all directions
         swipeLeft:function(event, direction, distance, duration, fingerCount) 
         {
-            if($($.fn.neuroware.element).find('#mobile-footer').css('display') === 'block')
+            if($($.fn.blockstrap.element).find('#mobile-footer').css('display') === 'block')
             {
-                if($($.fn.neuroware.element).find('#menu-toggle').hasClass('open'))
+                if($($.fn.blockstrap.element).find('#menu-toggle').hasClass('open'))
                 {
-                    $($.fn.neuroware.element).find('#menu-toggle').trigger('click');
+                    $($.fn.blockstrap.element).find('#menu-toggle').trigger('click');
                 }
                 else
                 {
-                    if(!$($.fn.neuroware.element).find('#sidebar-toggle').hasClass('open'))
+                    if(!$($.fn.blockstrap.element).find('#sidebar-toggle').hasClass('open'))
                     {
-                        $($.fn.neuroware.element).find('#sidebar-toggle').trigger('click');
+                        $($.fn.blockstrap.element).find('#sidebar-toggle').trigger('click');
                     }
                 }
             }
         },
         swipeRight:function(event, direction, distance, duration, fingerCount) 
         {
-            if($($.fn.neuroware.element).find('#mobile-footer').css('display') === 'block')
+            if($($.fn.blockstrap.element).find('#mobile-footer').css('display') === 'block')
             {
-                if($($.fn.neuroware.element).find('#sidebar-toggle').hasClass('open'))
+                if($($.fn.blockstrap.element).find('#sidebar-toggle').hasClass('open'))
                 {
-                    $($.fn.neuroware.element).find('#sidebar-toggle').trigger('click');
+                    $($.fn.blockstrap.element).find('#sidebar-toggle').trigger('click');
                 }
                 else
                 {
-                    if(!$($.fn.neuroware.element).find('#menu-toggle').hasClass('open'))
+                    if(!$($.fn.blockstrap.element).find('#menu-toggle').hasClass('open'))
                     {
-                        $($.fn.neuroware.element).find('#menu-toggle').trigger('click');
+                        $($.fn.blockstrap.element).find('#menu-toggle').trigger('click');
                     }
                 }
             }
@@ -169,36 +169,6 @@
         threshold:100
     });
     
-    /*
-    Hammer(window).on("swipeleft", function() 
-    {
-        if($($.fn.neuroware.element).find('#menu-toggle').hasClass('open'))
-        {
-            $($.fn.neuroware.element).find('#menu-toggle').trigger('click');
-        }
-        else
-        {
-            if(!$($.fn.neuroware.element).find('#sidebar-toggle').hasClass('open'))
-            {
-                $($.fn.neuroware.element).find('#sidebar-toggle').trigger('click');
-            }
-        }
-    });
-    Hammer(window).on("swiperight", function() 
-    {
-        if($($.fn.neuroware.element).find('#sidebar-toggle').hasClass('open'))
-        {
-            $($.fn.neuroware.element).find('#sidebar-toggle').trigger('click');
-        }
-        else
-        {
-            if(!$($.fn.neuroware.element).find('#menu-toggle').hasClass('open'))
-            {
-                $($.fn.neuroware.element).find('#menu-toggle').trigger('click');
-            }
-        }
-    });
-    */
     $(window).resize(function(e)
     {
         var content_height = $('#main-content').height();
@@ -252,6 +222,6 @@
     })
     
     // MERGE THE NEW FUNCTIONS WITH CORE
-    $.extend(true, $.fn.neuroware, {buttons:buttons});
+    $.extend(true, $.fn.blockstrap, {buttons:buttons});
 })
 (jQuery);

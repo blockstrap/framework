@@ -9,7 +9,7 @@ body, html {
 .collapsable {
     vertical-align: top;
 }
-.neuroware-wrapper {
+.blockstrap-wrapper {
     z-index: 1;
     background: @content-bg;
     a { text-decoration: none; }
@@ -46,7 +46,7 @@ body, html {
         background-position: center center !important;
     }
 }
-.neuroware-wrapper.loading {
+.blockstrap-wrapper.loading {
     background: black;
     #loader-wrapper { 
         z-index: 8888888; 
@@ -71,7 +71,7 @@ body, html {
 HEADER
 
 */
-.neuroware-wrapper { 
+.blockstrap-wrapper { 
     header {
         background: @header-bg;
         vertical-align: top;
@@ -128,7 +128,7 @@ HEADER
 FORMS
 
 */
-.neuroware-wrapper { 
+.blockstrap-wrapper { 
     #search-form {
         display: block;
         position: fixed;
@@ -187,7 +187,7 @@ FORMS
         border-color: @nav-border-active;
     }
 }
-body.neuroware-open-menu .neuroware-wrapper { 
+body.blockstrap-open-menu .blockstrap-wrapper { 
     #search-form {
         display: none;
     }
@@ -198,7 +198,7 @@ body.neuroware-open-menu .neuroware-wrapper {
 SIDEBAR
 
 */
-.neuroware-wrapper #sidebar {
+.blockstrap-wrapper #sidebar {
     text-align: center;
     background: @sidebar-bg;
     padding: @panel-padding;
@@ -271,7 +271,7 @@ SIDEBAR
 CONTENT / PANELS
 
 */
-.neuroware-wrapper #main-content {
+.blockstrap-wrapper #main-content {
     background: @content-bg;
     left: @sidebar-width;
     right: 0;
@@ -334,7 +334,7 @@ CONTENT / PANELS
 FOOTER
 
 */
-.neuroware-wrapper footer {
+.blockstrap-wrapper footer {
     display: block;
     position: absolute;
     bottom: 0;
@@ -355,7 +355,7 @@ FOOTER
 BUTTONS
 
 */
-.neuroware-wrapper { 
+.blockstrap-wrapper { 
     #main-content .btn.btn-primary,
     #main-content .btn.btn-subtle.active,
     .btn.btn-primary {
@@ -405,7 +405,7 @@ BUTTONS
 LISTS
 
 */
-.neuroware-wrapper {
+.blockstrap-wrapper {
     .list-group .list-group-item {
         background: @table-bg;
         font-size: 12px;
@@ -450,7 +450,7 @@ LISTS
 JUMBOTRON
 
 */
-.neuroware-wrapper {
+.blockstrap-wrapper {
     .panel-body .jumbotron {
         background: @panel-bg;
         border-left: 8px solid @ribbon-default;
@@ -493,7 +493,7 @@ JUMBOTRON
 HIDDEN MENU
 
 */
-.neuroware-wrapper {
+.blockstrap-wrapper {
     #navigation {
         display: block;
         position: fixed;
@@ -539,7 +539,7 @@ HIDDEN MENU
 TABLES
 
 */
-.neuroware-wrapper {
+.blockstrap-wrapper {
     .jumbotron-contents .btn-table-filter {
         display: none;
     }
@@ -694,11 +694,11 @@ MODALS
 
 */
 .modal-backdrop,
-.neuroware-wrapper .modal-backdrop {
+.blockstrap-wrapper .modal-backdrop {
     z-index: 0;
     display: none;
 }
-.neuroware-wrapper {
+.blockstrap-wrapper {
     .modal:before {
         content: "";
         display: block;
@@ -766,7 +766,7 @@ ANIMATIONS
 FORMS
 
 */
-.neuroware-wrapper {
+.blockstrap-wrapper {
     form {
         .actions,
         .form-group {
@@ -824,8 +824,8 @@ FORMS
 SETUP
 
 */
-.neuroware-wrapper {
-    #setup-neuroware {
+.blockstrap-wrapper {
+    #setup-blockstrap {
         .full-screen();
         z-index: 999999999;
         background: black;
@@ -839,7 +839,7 @@ SETUP
 PROGRESS
 
 */
-.neuroware-wrapper {
+.blockstrap-wrapper {
     #sidebar {
         .progress {
             background: @sidebar-panel-bg;

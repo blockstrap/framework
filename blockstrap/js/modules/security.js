@@ -20,7 +20,7 @@
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
-    $.extend(true, $.fn.neuroware, {security:security});
+    $.extend(true, $.fn.blockstrap, {security:security});
 })
 (jQuery);
 

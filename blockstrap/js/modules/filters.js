@@ -14,15 +14,15 @@
     var filters = {};
     
     // FUNCTIONS FOR OBJECT
-    filters.bootstrap = function(neuroware, data)
+    filters.bootstrap = function(blockstrap, data)
     {
-        var snippet = neuroware.snippets[data.type];
+        var snippet = blockstrap.snippets[data.type];
         var html = Mustache.render(snippet, data);
         return html;
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
-    $.extend(true, $.fn.neuroware, {filters:filters});
+    $.extend(true, $.fn.blockstrap, {filters:filters});
 })
 (jQuery);
 
