@@ -11,9 +11,6 @@
  *  
  */
 
-// INCLUDE LATEST VERSION OF jQUERY FROM GOOGLE CDN
-var blockstrap_jquery_url = 'http://code.jquery.com/jquery-latest.min.js';
-
 var blockstrap_core = function()
 {
     /* 
@@ -59,6 +56,7 @@ var blockstrap_core = function()
                 'swipe', 
                 'effects', 
                 'bootstrap.min', 
+                'bootstrap-switch.min',
                 'mustache', 
                 'tables'
             ],
@@ -112,6 +110,7 @@ var blockstrap_core = function()
             if(!$.fn.blockstrap.settings.base_url)
             {
                 $.fn.blockstrap.settings.base_url = window.location.href.split('#')[0];
+                $.fn.blockstrap.settings.base_url = $.fn.blockstrap.settings.base_url.split('?')[0];
             }
             $.fn.blockstrap.settings.info = {};
 
@@ -360,6 +359,7 @@ var blockstrap_core = function()
                     {
                         $.fn.blockstrap.core.loading();
                         $.fn.blockstrap.core.buttons();
+                        $.fn.blockstrap.core.forms();
                         $.fn.blockstrap.core.new();
                         $(window).resize(function(e)
                         {
@@ -371,6 +371,17 @@ var blockstrap_core = function()
                     if(tests) run_tests = true;
                     $.fn.blockstrap.core.tests(run_tests);
                 });
+            },
+            forms: function()
+            {
+                $($.fn.blockstrap.element).find('input').each(function(i)
+                {
+                    if($(this).val() === '{{urls.root}}')
+                    {
+                        $(this).val($.fn.blockstrap.settings.base_url);
+                    }
+                });
+                $($.fn.blockstrap.element).find("input.switch").bootstrapSwitch();
             },
             css: function(callback)
             {
@@ -582,10 +593,14 @@ var blockstrap_functions = {
             blockstrap_outputted = true;
             if(typeof(jQuery) === 'undefined') 
             {
-                blockstrap_functions.js('js-blockstrap-jquery', blockstrap_jquery_url, function()
-                {
-                    blockstrap_core();
-                });
+                blockstrap_functions.js(
+                    'js-blockstrap-jquery', 
+                    'blockstrap/js/dependencies/jquery.min.js', 
+                    function()
+                    {
+                        blockstrap_core();
+                    }
+                );
             } 
             else 
             {

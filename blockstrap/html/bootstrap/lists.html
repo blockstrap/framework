@@ -21,7 +21,15 @@
                         {{{html}}}
                     </div>
                     {{#buttons}}
-                        <a href="{{href}}" class="btn {{css}}">{{text}}</a>
+                        <a 
+                           href="{{href}}" 
+                           class="btn {{css}}" 
+                           {{#attributes}}
+                                {{key}}="{{value}}" 
+                           {{/attributes}}
+                        >
+                            {{text}}
+                        </a>
                     {{/buttons}}
                 </li>
             {{/href}}

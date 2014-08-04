@@ -483,10 +483,7 @@
                                         },
                                         "type": "text",
                                         "placeholder": "",
-                                        "value": {
-                                            "func": "urls",
-                                            "type": "root"
-                                        },
+                                        "value": "{{urls.root}}",
                                         "wrapper": {
                                             "css": "col-sm-9"
                                         }
@@ -508,17 +505,28 @@
                                     }
                                 },
                                 {
-                                    "inputs": {
+                                    "dobs": {
                                         "id": "your_dob",
                                         "label": {
                                             "text": "Date of Birth",
                                             "css": "col-sm-3"
                                         },
-                                        "type": "text",
                                         "placeholder": "",
                                         "value": "",
                                         "wrapper": {
                                             "css": "col-sm-9"
+                                        },
+                                        "day": {
+                                            "text": "Day",
+                                            "css": "col-sm-4"
+                                        },
+                                        "month": {
+                                            "text": "Month",
+                                            "css": "col-sm-4"
+                                        },
+                                        "year": {
+                                            "text": "Year",
+                                            "css": "col-sm-4"
                                         }
                                     }
                                 },
@@ -548,10 +556,160 @@
                 "header": "Authentication Settings",
                 "body": {
                     "func": "bootstrap",
-                    "type": "lists",
+                    "type": "forms",
                     "objects": [
                         {
-                            
+                            "id": "blockstrap-auth-step1",
+                            "fields": [
+                                {
+                                    "inputs": {
+                                        "id": "auth_salt",
+                                        "css": "switch",
+                                        "label": {
+                                            "text": "Authenticate Salt Generation",
+                                            "css": "col-sm-6"
+                                        },
+                                        "type": "checkbox",
+                                        "attributes": [
+                                            {
+                                                "key": "data-off-color",
+                                                "value": "danger"
+                                            },
+                                            {
+                                                "key": "data-on-color",
+                                                "value": "success"
+                                            },
+                                            {
+                                                "key": "data-off-text",
+                                                "value": "NO"
+                                            },
+                                            {
+                                                "key": "data-on-text",
+                                                "value": "YES"
+                                            },
+                                            {
+                                                "key": "data-label-text",
+                                                "value": "SET"
+                                            }
+                                        ],
+                                        "wrapper": {
+                                            "css": "col-sm-6"
+                                        }
+                                    }
+                                },
+                                {
+                                    "inputs": {
+                                        "id": "auth_session",
+                                        "css": "switch",
+                                        "label": {
+                                            "text": "Authenticate Each Session",
+                                            "css": "col-sm-6"
+                                        },
+                                        "type": "checkbox",
+                                        "attributes": [
+                                            {
+                                                "key": "data-off-color",
+                                                "value": "danger"
+                                            },
+                                            {
+                                                "key": "data-on-color",
+                                                "value": "success"
+                                            },
+                                            {
+                                                "key": "data-off-text",
+                                                "value": "NO"
+                                            },
+                                            {
+                                                "key": "data-on-text",
+                                                "value": "YES"
+                                            },
+                                            {
+                                                "key": "data-label-text",
+                                                "value": "SET"
+                                            }
+                                        ],
+                                        "wrapper": {
+                                            "css": "col-sm-6"
+                                        }
+                                    }
+                                },
+                                {
+                                    "inputs": {
+                                        "id": "auth_tx",
+                                        "css": "switch",
+                                        "label": {
+                                            "text": "Authenticate Each Transaction",
+                                            "css": "col-sm-6"
+                                        },
+                                        "type": "checkbox",
+                                        "attributes": [
+                                            {
+                                                "key": "data-off-color",
+                                                "value": "danger"
+                                            },
+                                            {
+                                                "key": "data-on-color",
+                                                "value": "success"
+                                            },
+                                            {
+                                                "key": "data-off-text",
+                                                "value": "NO"
+                                            },
+                                            {
+                                                "key": "data-on-text",
+                                                "value": "YES"
+                                            },
+                                            {
+                                                "key": "data-label-text",
+                                                "value": "SET"
+                                            },
+                                            {
+                                                "key": "checked",
+                                                "value": "checked"
+                                            }
+                                        ],
+                                        "wrapper": {
+                                            "css": "col-sm-6"
+                                        }
+                                    }
+                                },
+                                {
+                                    "inputs": {
+                                        "id": "auth_settings",
+                                        "css": "switch",
+                                        "label": {
+                                            "text": "Authenticate Settings Page",
+                                            "css": "col-sm-6"
+                                        },
+                                        "type": "checkbox",
+                                        "attributes": [
+                                            {
+                                                "key": "data-off-color",
+                                                "value": "danger"
+                                            },
+                                            {
+                                                "key": "data-on-color",
+                                                "value": "success"
+                                            },
+                                            {
+                                                "key": "data-off-text",
+                                                "value": "NO"
+                                            },
+                                            {
+                                                "key": "data-on-text",
+                                                "value": "YES"
+                                            },
+                                            {
+                                                "key": "data-label-text",
+                                                "value": "SET"
+                                            }
+                                        ],
+                                        "wrapper": {
+                                            "css": "col-sm-6"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     ]
                 }

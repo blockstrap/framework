@@ -129,6 +129,53 @@ FORMS
 
 */
 .blockstrap-wrapper { 
+    .panel-body {
+        form {
+            .form-group {
+                background: @table-bg;
+                display: inline-block;
+                width: 100%;
+                position: relative;
+                padding: @panel-padding 0;
+                min-height: calc(@panel-padding * 3);
+                border-top: 1px solid @table-border;
+                margin-bottom: -5px;
+                .col-sm-9 {
+                    input { 
+                        background: @form-alternative-bg;
+                    }
+                    .row-fluid {
+                        select {
+                            padding-left: 0;
+                        }
+                    }
+                }
+                label {
+                    line-height: 33px;
+                }
+                .bootstrap-switch-wrapper {
+                    float: right;
+                    max-height: 38px;
+                }
+            }
+            .form-control.row-fluid {
+                margin-top: -6px;
+                background-color: transparent;
+                padding-left: 0;
+                padding-right: 0;
+                border: none;
+            }
+            .form-group:nth-child(even) {
+                background: @table-bg-alt;
+            }
+            .form-group:first-child {
+                border-top: none;
+            }
+            label.control-label {
+                color: @form-horizontal-label-color;
+            }
+        }
+    }
     #search-form {
         display: block;
         position: fixed;
@@ -780,6 +827,22 @@ FORMS
                 margin: calc(@panel-padding / 2) 0 0 calc(@panel-padding / 2);
             }
         }
+        .bootstrap-switch {
+            background: @form-alternative-bg;
+            border: 1px solid @form-horizontal-label-border;
+            padding: 3px;
+            .bootstrap-switch-label {
+                color: @form-horizontal-label-color;
+                background: @form-alternative-bg;
+                margin-left: -3px;
+                line-height: 27px !important;
+            }
+        }
+        .bootstrap-switch.bootstrap-switch-on {
+            .bootstrap-switch-label {
+                margin-left: 3px;
+            }
+        }   
     }
     form.form-horizontal {
         label.control-label,
