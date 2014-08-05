@@ -14,9 +14,24 @@
     var security = {};
     
     // FUNCTIONS FOR OBJECT
-    security.test = function()
+    security.salt = function(modules, callback)
     {
-        alert('security module loaded');
+        var salt = '';
+        if($.isPlainObject(modules))
+        {
+            var count = 0;
+            var key_count = Object.keys(modules).length;
+            $.each(modules, function(k, v)
+            {
+                count++;
+                salt = CryptoJS.SHA3(salt+k+blockstrap_functions.slug(v), { outputLength: 512 });
+                if(count >= key_count && callback)
+                {
+                    callback(salt.toString());
+                }
+            })
+        }
+        else if(callback) callback;
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE

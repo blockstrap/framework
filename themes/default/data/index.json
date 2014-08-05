@@ -1,6 +1,10 @@
 {
     "user": {
-        "setup": false,
+        "setup": {
+            "func": "got",
+            "collection": "blockstrap",
+            "key": "salt"
+        },
         "name": "Mark Smalley",
         "avatar": "blockstrap/img/avatar.jpg",
         "last": "last transaction 12 hours ago",
@@ -234,6 +238,12 @@
         "func": "bootstrap",
         "type": "modals",
         "objects": [
+            {
+                "id": "default",
+                "title": "Title",
+                "body": "<p>Content.</p>",
+                "close": "Cancel"
+            },
             {
                 "id": "backup",
                 "title": "Backup Your Wallet",

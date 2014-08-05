@@ -20,6 +20,14 @@
         var html = Mustache.render(snippet, data);
         return html;
     }
+    filters.got = function(blockstrap, data)
+    {
+        if(data.collection && data.key)
+        {
+            return localStorage.getItem('nw_'+data.collection+'_'+data.key);
+        }
+        else return false;
+    }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {filters:filters});

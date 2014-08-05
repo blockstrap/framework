@@ -11,7 +11,7 @@
                         {
                             "title": "Welcome back Mark Smalley",
                             "intro": "Here is an overview of your wallet and its accounts.",
-                            "html": "You currently have <a href='#'>3 Bitcoin</a> addresses, <a href='#'>2 Dogecoin</a> addresses, <a href='#'>1 Litecoin</a> address and <a href='#'>1 Peercoin</a> address.<br />This theme and the widgets seen on this dashboard can be customised within the <a href='#'>settings</a> page.",
+                            "html": "You currently have <a href='#'>3 Bitcoin</a> addresses, <a href='#'>2 Dogecoin</a> addresses, <a href='#'>1 Litecoin</a> address and <a href='#'>1 Peercoin</a> address.<br />This theme and the widgets seen on this dashboard can be customised within the <a href='#'>settings</a> page. <a href='#' class='btn-reset-device'>Reset</a> device.",
                             "buttons": [
                                 {
                                     "href": "#",

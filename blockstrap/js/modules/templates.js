@@ -29,15 +29,16 @@
             }
         });
     };
-    templates.render = function(slug, callback)
+    templates.render = function(slug, callback, force_refresh)
     {
         $.fn.blockstrap.data.find('data', slug, function(results)
         {
             var data = results;
             var refresh = blockstrap_functions.vars('refresh');
+            if(force_refresh) refresh = true;
             if(refresh === true || !data)
             {
-                templates.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.data_base+slug, 'json', function(data)
+                templates.get('themes/' + $.fn.blockstrap.settings.theme + '/' + $.fn.blockstrap.settings.data_base + slug, 'json', function(data)
                 {
                     var filtered_data = $.fn.blockstrap.core.filter(data);
                     $.fn.blockstrap.data.put(slug, filtered_data);
@@ -46,13 +47,19 @@
                         $.fn.blockstrap.data.find('html', slug, function(results)
                         {
                             var html = results;
-                            var refresh = blockstrap_functions.vars('refresh');
-                            if(refresh === true || !html)
+                            if(!html || refresh)
                             {
-                                templates.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.html_base+slug, 'html', function(content)
+                                templates.get('themes/' + $.fn.blockstrap.settings.theme + '/' + $.fn.blockstrap.settings.html_base + slug, 'html', function(content)
                                 {
                                     var paged_html = Mustache.render(content, filtered_data);
+                                    
+                                    if(force_refresh)
+                                    {
+                                        $($.fn.blockstrap.element).html('');
+                                    }
+                                    
                                     $($.fn.blockstrap.element).append(paged_html);
+                                    
                                     $.fn.blockstrap.data.save('html', slug, paged_html, callback);
                                 });
                             }
@@ -73,8 +80,7 @@
                 $.fn.blockstrap.data.find('html', slug, function(results)
                 {
                     var html = results;
-                    var refresh = blockstrap_functions.vars('refresh');
-                    if(refresh === true || !html)
+                    if(!html)
                     {
                         templates.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.html_base+slug, 'html', function(content)
                         {

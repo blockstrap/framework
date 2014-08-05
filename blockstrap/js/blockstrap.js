@@ -24,7 +24,7 @@ var blockstrap_core = function()
         var $this = this;
         var plugin_name = 'blockstrap';
         var defaults = {
-            v: '1.0.2.3',
+            v: '1.0.2.4',
             salt: '',
             autoload: true,
             id: plugin_name,
@@ -41,7 +41,7 @@ var blockstrap_core = function()
             base_url: '',
             content_id: 'main-content',
             css: ['font-awesome'],
-            filters: ['bootstrap'],
+            filters: ['bootstrap, got'],
             modules: [
                 'filters', 
                 'data', 
@@ -58,7 +58,8 @@ var blockstrap_core = function()
                 'bootstrap.min', 
                 'bootstrap-switch.min',
                 'mustache', 
-                'tables'
+                'tables',
+                'crypto'
             ],
             bootstrap: [
                 'lists', 
@@ -372,16 +373,23 @@ var blockstrap_core = function()
                     $.fn.blockstrap.core.tests(run_tests);
                 });
             },
+            modal: function(title, content)
+            {
+                $('#default-modal').find('.modal-title').html(title);
+                $('#default-modal').find('.modal-body').html(content);
+                $('#default-modal').modal('show');
+            },
             forms: function()
             {
-                $($.fn.blockstrap.element).find('input').each(function(i)
-                {
-                    if($(this).val() === '{{urls.root}}')
-                    {
-                        $(this).val($.fn.blockstrap.settings.base_url);
-                    }
-                });
                 $($.fn.blockstrap.element).find("input.switch").bootstrapSwitch();
+                $('body').on('change', '.bs-dobs', function(i)
+                {
+                    var field = $(this).parent().find('input[type="hidden"]');
+                    var day = $(this).parent().find('.bs-dob-day').val();
+                    var month = $(this).parent().find('.bs-dob-month').val();
+                    var year = $(this).parent().find('.bs-dob-year').val();
+                    $(field).val(day + '_' + month + '_' + year);
+                });
             },
             css: function(callback)
             {
@@ -451,6 +459,28 @@ var blockstrap_core = function()
             {
                 $.each(data, function(k, v)
                 {
+                    var data_key = k;
+                    if(v && v.body && v.body.type && v.body.objects)
+                    {
+                        $.each(v.body.objects, function(k, obj_v)
+                        {
+                            var object_key = k;
+                            if(obj_v.fields)
+                            {
+                                $.each(obj_v.fields, function(k, field_v)
+                                {
+                                    var field_key = k;
+                                    if(
+                                        field_v.inputs 
+                                        && field_v.inputs.value 
+                                        && field_v.inputs.value === '{{urls.root}}')
+                                    {
+                                        v.body.objects[object_key].fields[field_key].inputs.value = $.fn.blockstrap.settings.base_url;
+                                    }
+                                });
+                            }
+                        });
+                    }
                     if($.isPlainObject(v) && v.func && $.isFunction($.fn.blockstrap.filters[v.func]))
                     {
                         data[k] = $.fn.blockstrap.filters[v.func]($.fn.blockstrap, v);
@@ -475,6 +505,10 @@ var blockstrap_core = function()
                 $($.fn.blockstrap.element).on('click', '.btn-reset-device', function(e)
                 {
                     $.fn.blockstrap.buttons.reset(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '#next-step', function(e)
+                {
+                    $.fn.blockstrap.buttons.next(this, e);
                 });
             },
             stringed: function(styles)
@@ -619,7 +653,7 @@ var blockstrap_functions = {
     {
         var name = slug.replace('-', '_');
         name = name.replace('.', '_');
-        return name;
+        return name.toLowerCase();
     },
     include: function(blockstrap, start, files, callback, dependency)
     {

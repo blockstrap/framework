@@ -178,13 +178,15 @@
                     localStorage.removeItem(k);
                 }
             });
+            console.log(localStorage);
             $.fn.blockstrap.settings.info.storage = {
                 local: {
                     used: '' + ((JSON.stringify(localStorage).length * 2) / 1000000) + ' MB',
                     remaining: '' + ((2490000 - (JSON.stringify(localStorage).length * 2)) / 1000000) + ' MB'
                 }
             };
-            alert('Device Reset | '+$.fn.blockstrap.settings.info.storage.local.remaining+' Local Storage Remaining');
+            alert('Device Reset | ' + $.fn.blockstrap.settings.info.storage.local.remaining + ' Local Storage Remaining');
+            location.reload();
         }
     }
     buttons.filter = function(button, e)
@@ -309,6 +311,45 @@
                     }
                 }
             })
+        }
+    }
+    buttons.next = function(button, e)
+    {
+        e.preventDefault();
+        var href = $(button).attr('href');
+        if($('form#blockstrap-setup-step1').length > 0)
+        {
+            var modules = {};
+            var continue_salting = true;
+            $('form#blockstrap-setup-step1').find('.form-group').each(function(i)
+            {
+                if(!$(this).find('input').val())
+                {
+                    var label = false;
+                    if($(this).find('label').html()) label = $(this).find('label').html();
+                    if(label) $.fn.blockstrap.core.modal('Error', 'Value for "'+label+'" Required');
+                    else $.fn.blockstrap.core.modal('Error', 'Value Required');
+                    continue_salting = false;
+                }
+                else
+                {
+                    modules[$(this).find('input').attr('id')] = $(this).find('input').val();
+                }
+            });
+            if(continue_salting)
+            {
+                $.fn.blockstrap.security.salt(modules, function(salt)
+                {
+                    $.fn.blockstrap.data.save('blockstrap', 'salt', salt, function()
+                    {
+                        /* NEED TO RESET THE INDEX HTML AND DATA */
+                        $.fn.blockstrap.templates.render('index', function()
+                        {
+                            location.reload();
+                        }, true);
+                    });
+                });
+            }
         }
     }
     

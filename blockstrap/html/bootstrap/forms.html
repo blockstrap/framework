@@ -55,7 +55,8 @@
                     {{/label.text}}
                     {{#wrapper.css}}<div class="{{wrapper.css}}">{{/wrapper.css}}
                         <div class="form-control row-fluid">
-                        <select id="{{id}}-day" class="{{day.css}}">
+                        <input type="hidden" id="{{id}}" />
+                        <select id="{{id}}-day" class="{{day.css}} bs-dobs bs-dob-day">
                             <option value="">{{day.text}}</option>
                             <option value="01">01</option>
                             <option value="02">02</option>
@@ -89,7 +90,7 @@
                             <option value="30">30</option>
                             <option value="31">31</option>
                         </select>
-                        <select id="{{id}}-month" class="{{month.css}}">
+                        <select id="{{id}}-month" class="{{month.css}} bs-dobs bs-dob-month">
                             <option value="">{{month.text}}</option>
                             <option value="01">01</option>
                             <option value="02">02</option>
@@ -104,7 +105,7 @@
                             <option value="11">11</option>
                             <option value="12">12</option>
                         </select>
-                        <select id="{{id}}-year" class="{{year.css}}">
+                        <select id="{{id}}-year" class="{{year.css}} bs-dobs bs-dob-year">
                             <option value="">{{year.text}}</option>
                             <option value="1914">1914</option>
                             <option value="1915">1915</option>

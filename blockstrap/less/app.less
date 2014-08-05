@@ -164,6 +164,10 @@ FORMS
                 padding-left: 0;
                 padding-right: 0;
                 border: none;
+                box-shadow: none;
+                .col-sm-4 {
+                    padding: 5px;
+                }
             }
             .form-group:nth-child(even) {
                 background: @table-bg-alt;
@@ -373,6 +377,9 @@ CONTENT / PANELS
         .panel-body.padless {
             padding: 0;
         }
+    }
+    .actions.col-md-12 {
+        padding: 0 @panel-padding calc(@panel-padding * 2);
     }
 }
 
