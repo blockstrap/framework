@@ -233,7 +233,7 @@
             "placeholder": "Search your wallet"
         }
     },
-    "footer": "powered by neuroware.io",
+    "footer": "powered by blockstrap.com",
     "modals": {
         "func": "bootstrap",
         "type": "modals",

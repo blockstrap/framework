@@ -1,7 +1,7 @@
 /*
  * 
- *  Blcokstrap v0.1.1
- *  http://neuroware.io
+ *  Blockstrap v0.5
+ *  http://blockstrap.com
  *
  *  Designed, Developed and Maintained by Neuroware.io Inc
  *  All Work Released Under MIT License

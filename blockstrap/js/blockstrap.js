@@ -1,11 +1,12 @@
 /*
  * 
- *  Blockstrap Core v0.1.1 - http://neuroware.io
+ *  Blockstrap v0.5
+ *  http://blockstrap.com
  *
  *  Designed, Developed and Maintained by Neuroware.io Inc
  *  All Work Released Under MIT License
  *  
- *  -- Please note that Blockstrap Core is required by all Neuroware Products
+ *  -- Please note that Blockstrap is required by all Neuroware Products
  *  -- Including this file in the HTML header is the only requirement
  *  -- Everything else, including the loading of dependencies is handled here
  *  
