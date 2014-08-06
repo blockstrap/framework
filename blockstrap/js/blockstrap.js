@@ -42,6 +42,7 @@ var blockstrap_core = function()
             content_id: 'main-content',
             css: ['font-awesome'],
             filters: ['bootstrap, got'],
+            store: ['app_url', 'your_name'],
             modules: [
                 'filters', 
                 'data', 

@@ -17,6 +17,7 @@
     security.salt = function(modules, callback)
     {
         var salt = '';
+        var keys = [];
         if($.isPlainObject(modules))
         {
             var count = 0;
@@ -24,10 +25,26 @@
             $.each(modules, function(k, v)
             {
                 count++;
+                keys.push(k);
+                
+                if($.isArray($.fn.blockstrap.settings.store))
+                {
+                    $.each($.fn.blockstrap.settings.store, function(store_index, store_key)
+                    {
+                        if(store_key === k)
+                        {
+                            $.fn.blockstrap.data.save('keys', store_key, v, function()
+                            {
+                                
+                            });
+                        }
+                    });
+                }
+                
                 salt = CryptoJS.SHA3(salt+k+blockstrap_functions.slug(v), { outputLength: 512 });
                 if(count >= key_count && callback)
                 {
-                    callback(salt.toString());
+                    callback(salt.toString(), keys);
                 }
             })
         }

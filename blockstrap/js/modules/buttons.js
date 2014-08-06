@@ -313,6 +313,9 @@
             })
         }
     }
+    
+    // THIS NEEDS TO BE MORE GENERIC
+    // PLACEHOLDER FUNCTION FOR NOW
     buttons.next = function(button, e)
     {
         e.preventDefault();
@@ -338,15 +341,18 @@
             });
             if(continue_salting)
             {
-                $.fn.blockstrap.security.salt(modules, function(salt)
+                $.fn.blockstrap.security.salt(modules, function(salt, keys)
                 {
-                    $.fn.blockstrap.data.save('blockstrap', 'salt', salt, function()
+                    $.fn.blockstrap.data.save('blockstrap', 'keys', keys, function()
                     {
-                        /* NEED TO RESET THE INDEX HTML AND DATA */
-                        $.fn.blockstrap.templates.render('index', function()
+                        $.fn.blockstrap.data.save('blockstrap', 'salt', salt, function()
                         {
-                            location.reload();
-                        }, true);
+                            /* NEED TO RESET THE INDEX HTML AND DATA */
+                            $.fn.blockstrap.templates.render('index', function()
+                            {
+                                location.reload();
+                            }, true);
+                        });
                     });
                 });
             }
