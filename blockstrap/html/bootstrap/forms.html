@@ -55,7 +55,15 @@
                     {{/label.text}}
                     {{#wrapper.css}}<div class="{{wrapper.css}}">{{/wrapper.css}}
                         <div class="form-control row-fluid">
-                        <input type="hidden" id="{{id}}" />
+                            
+                        <input 
+                            type="hidden" 
+                            id="{{id}}" 
+                            {{#attributes}} 
+                                {{key}}="{{value}}"
+                            {{/attributes}} 
+                        />
+                            
                         <select id="{{id}}-day" class="{{day.css}} bs-dobs bs-dob-day">
                             <option value="">{{day.text}}</option>
                             <option value="01">01</option>

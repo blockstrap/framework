@@ -316,29 +316,68 @@
     
     // THIS NEEDS TO BE MORE GENERIC
     // PLACEHOLDER FUNCTION FOR NOW
-    buttons.next = function(button, e)
+    buttons.setup = function(button, e)
     {
         e.preventDefault();
         var href = $(button).attr('href');
-        if($('form#blockstrap-setup-step1').length > 0)
+        var steps = $(button).attr('data-steps');
+        var current_step = $(button).attr('data-step');
+        var form_string = $(button).attr('data-forms');
+        var forms = form_string.split(', ');
+        
+        if($.isArray(forms))
         {
             var modules = {};
+            var options = {};
             var continue_salting = true;
-            $('form#blockstrap-setup-step1').find('.form-group').each(function(i)
+            
+            $.each(forms, function(form_index, form_id)
             {
-                if(!$(this).find('input').val())
+                var form = $('form#'+form_id);
+                if($(form).length > 0)
                 {
-                    var label = false;
-                    if($(this).find('label').html()) label = $(this).find('label').html();
-                    if(label) $.fn.blockstrap.core.modal('Error', 'Value for "'+label+'" Required');
-                    else $.fn.blockstrap.core.modal('Error', 'Value Required');
-                    continue_salting = false;
-                }
-                else
-                {
-                    modules[$(this).find('input').attr('id')] = $(this).find('input').val();
+                    $(form).find('.form-group').each(function(i)
+                    {
+                        var setup_type = $(this).find('input').attr('data-setup-type');
+                        if(!$(this).find('input').val() && setup_type == 'module')
+                        {
+                            var label = false;
+                            if($(this).find('label').html()) label = $(this).find('label').html();
+                            if(label) $.fn.blockstrap.core.modal('Error', 'Value for "'+label+'" Required');
+                            else $.fn.blockstrap.core.modal('Error', 'Value Required');
+                            continue_salting = false;
+                        }
+                        else
+                        {
+                            var value = $(this).find('input').val();
+                            if($(this).find('input').attr('checked'))
+                            {
+                                value = true;
+                            }
+                            else if(!value) value = false;
+                                
+                            if(setup_type === 'module')
+                            {
+                                modules[$(this).find('input').attr('id')] = value;
+                            }
+                            else if(setup_type === 'option')
+                            {
+                                options[$(this).find('input').attr('id')] = value;
+                            }
+                            else
+                            {
+                                $.fn.blockstrap.core.modal('Error', 'Setup Type Missing');
+                            }
+                        }
+                    });
                 }
             });
+            
+            $.fn.blockstrap.data.save('blockstrap', 'options', options, function()
+            {
+                
+            });
+        
             if(continue_salting)
             {
                 $.fn.blockstrap.security.salt(modules, function(salt, keys)

@@ -116,9 +116,9 @@
                     id="{{id}}" 
                     class="{{css}}" 
                     href="{{href}}"
-                    {{#data}}
-                        data-{{key}}="{{value}}"
-                    {{/data}}
+                    {{#attributes}}
+                        {{key}}="{{value}}"
+                    {{/attributes}}
                 >
                     {{text}}
                 </a>

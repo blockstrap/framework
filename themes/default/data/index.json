@@ -445,9 +445,24 @@
         "actions": [
             {
                 "id": "next-step",
-                "css": "btn btn-primary pull-right",
+                "css": "btn btn-primary pull-right bs-setup",
                 "href": "#step2",
-                "text": "Next Step"
+                "text": "Next Step",
+                "attributes": [
+                    {
+                        "key": "data-forms",
+                        "value": "blockstrap-setup-step1-left, blockstrap-setup-step1-right"
+                        
+                    },
+                    {
+                        "key": "data-step",
+                        "value": 1
+                    },
+                    {
+                        "key": "data-steps",
+                        "value": 3
+                    }
+                ]
             }
         ],
         "panels": [
@@ -482,7 +497,7 @@
                     "type": "forms",
                     "objects": [
                         {
-                            "id": "blockstrap-setup-step1",
+                            "id": "blockstrap-setup-step1-left",
                             "fields": [
                                 {
                                     "inputs": {
@@ -496,7 +511,13 @@
                                         "value": "{{urls.root}}",
                                         "wrapper": {
                                             "css": "col-sm-9"
-                                        }
+                                        },
+                                        "attributes": [
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "module"
+                                            }
+                                        ]
                                     }
                                 },
                                 {
@@ -511,7 +532,13 @@
                                         "value": "",
                                         "wrapper": {
                                             "css": "col-sm-9"
-                                        }
+                                        },
+                                        "attributes": [
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "module"
+                                            }
+                                        ]
                                     }
                                 },
                                 {
@@ -537,7 +564,13 @@
                                         "year": {
                                             "text": "Year",
                                             "css": "col-sm-4"
-                                        }
+                                        },
+                                        "attributes": [
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "module"
+                                            }
+                                        ]
                                     }
                                 },
                                 {
@@ -552,7 +585,13 @@
                                         "value": "",
                                         "wrapper": {
                                             "css": "col-sm-9"
-                                        }
+                                        },
+                                        "attributes": [
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "module"
+                                            }
+                                        ]
                                     }
                                 }
                             ]
@@ -569,7 +608,7 @@
                     "type": "forms",
                     "objects": [
                         {
-                            "id": "blockstrap-auth-step1",
+                            "id": "blockstrap-setup-step1-right",
                             "fields": [
                                 {
                                     "inputs": {
@@ -600,6 +639,10 @@
                                             {
                                                 "key": "data-label-text",
                                                 "value": "SET"
+                                            },
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "option"
                                             }
                                         ],
                                         "wrapper": {
@@ -636,6 +679,10 @@
                                             {
                                                 "key": "data-label-text",
                                                 "value": "SET"
+                                            },
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "option"
                                             }
                                         ],
                                         "wrapper": {
@@ -676,6 +723,10 @@
                                             {
                                                 "key": "checked",
                                                 "value": "checked"
+                                            },
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "option"
                                             }
                                         ],
                                         "wrapper": {
@@ -712,6 +763,10 @@
                                             {
                                                 "key": "data-label-text",
                                                 "value": "SET"
+                                            },
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "option"
                                             }
                                         ],
                                         "wrapper": {

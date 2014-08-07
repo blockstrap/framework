@@ -508,9 +508,9 @@ var blockstrap_core = function()
                 {
                     $.fn.blockstrap.buttons.reset(this, e);
                 });
-                $($.fn.blockstrap.element).on('click', '#next-step', function(e)
+                $($.fn.blockstrap.element).on('click', '.bs-setup', function(e)
                 {
-                    $.fn.blockstrap.buttons.next(this, e);
+                    $.fn.blockstrap.buttons.setup(this, e);
                 });
             },
             stringed: function(styles)
