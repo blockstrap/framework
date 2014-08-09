@@ -28,6 +28,15 @@
         }
         else return false;
     }
+    filters.setup = function(blockstrap, data)
+    {
+        if(data.step)
+        {
+            var step = parseInt(data.step) - 1;
+            return blockstrap.core.filter(blockstrap_setup_steps[step]);
+        }
+        else return data;
+    }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {filters:filters});

@@ -42,7 +42,7 @@ var blockstrap_core = function()
             base_url: '',
             content_id: 'main-content',
             css: ['font-awesome'],
-            filters: ['bootstrap, got'],
+            filters: ['bootstrap', 'got', 'setup'],
             store: ['app_url', 'your_name'],
             modules: [
                 'filters', 
@@ -57,6 +57,7 @@ var blockstrap_core = function()
                 'sonic', 
                 'swipe', 
                 'effects', 
+                'steps',
                 'bootstrap.min', 
                 'bootstrap-switch.min',
                 'mustache', 
