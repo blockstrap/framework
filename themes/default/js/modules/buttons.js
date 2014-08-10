@@ -119,6 +119,11 @@
             }});
         }
     }
+    buttons.auth_salt = function(button)
+    {
+        var input_value = $(button).attr('checked');
+        console.log('ath_salt', auth_salt);
+    }
     
     $('body').on('click', '#menu-toggle', function(e)
     {
@@ -127,6 +132,10 @@
     $('body').on('click', '#sidebar-toggle', function(e)
     {
         $.fn.blockstrap.buttons.sidebar(this);
+    });
+    $('body').on('change', 'input#auth_salt', function(e)
+    {
+        $.fn.blockstrap.buttons.auth_salt(this);
     });
     
     $("body").swipe( {

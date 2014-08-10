@@ -384,7 +384,13 @@ var blockstrap_core = function()
             },
             forms: function()
             {
-                $($.fn.blockstrap.element).find("input.switch").bootstrapSwitch();
+                $($.fn.blockstrap.element).find("input.switch").each(function()
+                {
+                    $(this).bootstrapSwitch();
+                    $(this).on('switchChange.bootstrapSwitch', function(event, state) {
+                        $(this).val(state);
+                    });
+                });
                 $('body').on('change', '.bs-dobs', function(i)
                 {
                     var field = $(this).parent().find('input[type="hidden"]');

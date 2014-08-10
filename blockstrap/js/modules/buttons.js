@@ -350,11 +350,12 @@
                         else
                         {
                             var value = $(this).find('input').val();
-                            if($(this).find('input').attr('checked'))
+                            if(value === 'true' || value === true) value = true;
+                            else if(value === 'false' || value === false || !value && $(this).find('input').hasClass('switch'))
                             {
-                                value = true;
+                                value = false;
+                                $(this).find('input.switch').removeAttr('checked');
                             }
-                            else if(!value) value = false;
                                 
                             if(setup_type === 'module')
                             {
