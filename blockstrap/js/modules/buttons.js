@@ -351,7 +351,7 @@
                         {
                             var value = $(this).find('input').val();
                             if(value === 'true' || value === true) value = true;
-                            else if(value === 'false' || value === false || !value && $(this).find('input').hasClass('switch'))
+                            else if((value === 'false' || value === false || !value) && $(this).find('input').hasClass('switch'))
                             {
                                 value = false;
                                 $(this).find('input.switch').removeAttr('checked');
