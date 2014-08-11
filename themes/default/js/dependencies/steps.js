@@ -489,12 +489,21 @@ var blockstrap_setup_steps = [
                                     "selects": {
                                         "id": "app_url",
                                         "label": {
-                                            "text": "App URL",
+                                            "text": "Salt Component",
                                             "css": "col-sm-3"
                                         },
                                         "type": "text",
                                         "placeholder": "",
-                                        "value": "{{urls.root}}",
+                                        "values": [
+                                            {
+                                                "value": "",
+                                                "text": "-- Select Additional Salt Components --"
+                                            },
+                                            {
+                                                "value": "your_email",
+                                                "text": "Your Email"
+                                            }
+                                        ],
                                         "wrapper": {
                                             "css": "col-sm-9"
                                         }

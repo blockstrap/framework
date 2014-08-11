@@ -162,6 +162,12 @@
     {
         $.fn.blockstrap.buttons.auth_salt(this);
     });
+    $($.fn.blockstrap.element).on('click', 'label[for="auth_salt"]', function(e)
+    {
+        var boot_switch = $(this).parent().find('.bootstrap-switch-id-auth_salt');
+        if($(boot_switch).hasClass('bootstrap-switch-off')) $(this).parent().find('input.switch').val('true');
+        else $(this).parent().find('input.switch').val('false');
+    });
     
     $($.fn.blockstrap.element).swipe( {
         //Generic swipe handler for all directions
