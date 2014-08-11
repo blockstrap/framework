@@ -502,6 +502,18 @@ var blockstrap_setup_steps = [
                                             {
                                                 "value": "your_email",
                                                 "text": "Your Email"
+                                            },
+                                            {
+                                                "value": "your_tel",
+                                                "text": "Your Telephone Number"
+                                            },
+                                            {
+                                                "value": "your_id",
+                                                "text": "Identification / Passport Number"
+                                            },
+                                            {
+                                                "value": "mothers_maiden",
+                                                "text": "Mother's Maiden Name"
                                             }
                                         ],
                                         "wrapper": {
