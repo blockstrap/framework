@@ -60,7 +60,7 @@
                                     
                                     $($.fn.blockstrap.element).append(paged_html);
                                     
-                                    $.fn.blockstrap.data.save('html', slug, paged_html, callback);
+                                    $.fn.blockstrap.data.save('html', slug, content, callback);
                                 });
                             }
                             else
@@ -86,7 +86,7 @@
                         {
                             var paged_html = Mustache.render(content, filtered_data);
                             $($.fn.blockstrap.element).append(paged_html);
-                            $.fn.blockstrap.data.save('html', slug, paged_html, callback);
+                            $.fn.blockstrap.data.save('html', slug, content, callback);
                         });
                     }
                     else

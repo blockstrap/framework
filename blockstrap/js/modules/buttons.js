@@ -185,7 +185,7 @@
                     remaining: '' + ((2490000 - (JSON.stringify(localStorage).length * 2)) / 1000000) + ' MB'
                 }
             };
-            alert('Device Reset | ' + $.fn.blockstrap.settings.info.storage.local.remaining + ' Local Storage Remaining');
+            $.fn.blockstrap.core.modal('Device Reset', $.fn.blockstrap.settings.info.storage.local.remaining + ' Local Storage Remaining');
             location.reload();
         }
     }
@@ -314,8 +314,6 @@
         }
     }
     
-    // THIS NEEDS TO BE MORE GENERIC
-    // PLACEHOLDER FUNCTION FOR NOW
     buttons.setup = function(button, e)
     {
         e.preventDefault();
@@ -324,6 +322,8 @@
         var current_step = $(button).attr('data-step');
         var form_string = $(button).attr('data-forms');
         var forms = form_string.split(', ');
+        
+        
         
         if($.isArray(forms))
         {
@@ -387,11 +387,30 @@
                     {
                         $.fn.blockstrap.data.save('blockstrap', 'salt', salt, function()
                         {
-                            /* NEED TO RESET THE INDEX HTML AND DATA */
-                            $.fn.blockstrap.templates.render('index', function()
+                            if(current_step + 1 >= steps)
                             {
-                                location.reload();
-                            }, true);
+                                /* NEED TO RESET THE INDEX HTML AND DATA */
+                                $.fn.blockstrap.templates.render('index', function()
+                                {
+                                    location.reload();
+                                }, true);
+                            }
+                            else
+                            {
+                                $.fn.blockstrap.data.find('data', 'index', function(results)
+                                {
+                                    results.setup = {};
+                                    results.setup.func = 'setup';
+                                    results.setup.step = '2';
+                                    var data = $.fn.blockstrap.core.filter(results);
+                                    $.fn.blockstrap.data.find('html', 'index', function(html)
+                                    {
+                                        var page = Mustache.render(html, data);
+                                        $($.fn.blockstrap.element).html('');
+                                        $($.fn.blockstrap.element).append(page);
+                                    });
+                                });
+                            }
                         });
                     });
                 });

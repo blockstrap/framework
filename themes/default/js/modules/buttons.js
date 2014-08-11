@@ -121,24 +121,49 @@
     }
     buttons.auth_salt = function(button)
     {
-        var input_value = $(button).attr('checked');
-        console.log('ath_salt', auth_salt);
+        var input_value = $(button).find('input.switch').val();
+        if(input_value === true || input_value === 'true')
+        {
+            var password = '';
+            password+= '<div class="form-group" id="salt-password">';
+                password+= '<label class="control-label col-sm-3" for="salt_pw">Salt Password</label>';
+                password+= '<div class="col-sm-9">';
+                    password+= '<input type="text" data-setup-type="module" value="" placeholder="Strictly used for salt generation - not device or wallet" class="form-control " id="salt_pw">';
+                password+= '</div>';
+            password+= '</div>';
+            if($('#blockstrap-setup-step1-left').find('#salt-password').length < 1)
+            {
+                $('#blockstrap-setup-step1-left').append(password);
+                $('#blockstrap-setup-step1-left').find('#salt-password').hide(0);
+            }
+            $('#blockstrap-setup-step1-left').find('#salt-password').show(350, function()
+            {
+              
+            });
+        }
+        else
+        {
+            $('#blockstrap-setup-step1-left').find('#salt-password').hide(350, function()
+            {
+              $(this).remove();
+            });
+        }
     }
     
-    $('body').on('click', '#menu-toggle', function(e)
+    $($.fn.blockstrap.element).on('click', '#menu-toggle', function(e)
     {
         $.fn.blockstrap.buttons.menu(this);
     });
-    $('body').on('click', '#sidebar-toggle', function(e)
+    $($.fn.blockstrap.element).on('click', '#sidebar-toggle', function(e)
     {
         $.fn.blockstrap.buttons.sidebar(this);
     });
-    $('body').on('change', 'input#auth_salt', function(e)
+    $($.fn.blockstrap.element).on('click', '.bootstrap-switch-id-auth_salt', function(e)
     {
         $.fn.blockstrap.buttons.auth_salt(this);
     });
     
-    $("body").swipe( {
+    $($.fn.blockstrap.element).swipe( {
         //Generic swipe handler for all directions
         swipeLeft:function(event, direction, distance, duration, fingerCount) 
         {
