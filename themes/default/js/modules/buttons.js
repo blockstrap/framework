@@ -150,6 +150,32 @@
         }
     }
     
+    buttons.extra_salty = function(button)
+    {
+        var value = $(button).val();
+        $(button).find('option').each(function(i)
+        {
+            if($(this).attr('value') === value)
+            {
+                var text = $(this).html();
+                if(value)
+                {
+                    var component = '';
+                    $(button).find('option:nth-child('+(i+1)+')').remove();
+                    component+= '<div class="form-group" id="extra-'+value+'">';
+                        component+= '<label class="control-label col-sm-3" for="'+value+'">'+text+'</label>';
+                        component+= '<div class="col-sm-9">';
+                            component+= '<input type="text" data-setup-type="module" class="form-control" id="'+value+'">';
+                        component+= '</div>';
+                    component+= '</div>';
+                    $('#blockstrap-setup-step2-left').prepend(component);
+                    $('#blockstrap-setup-step2-left').find('#extra-'+value).hide(0);
+                    $('#blockstrap-setup-step2-left').find('#extra-'+value).show(350);
+                }
+            }
+        });
+    }
+    
     $($.fn.blockstrap.element).on('click', '#menu-toggle', function(e)
     {
         $.fn.blockstrap.buttons.menu(this);
@@ -157,6 +183,10 @@
     $($.fn.blockstrap.element).on('click', '#sidebar-toggle', function(e)
     {
         $.fn.blockstrap.buttons.sidebar(this);
+    });
+    $($.fn.blockstrap.element).on('change', '#extra_salty', function(e)
+    {
+        $.fn.blockstrap.buttons.extra_salty(this);
     });
     $($.fn.blockstrap.element).on('click', '.bootstrap-switch-id-auth_salt', function(e)
     {

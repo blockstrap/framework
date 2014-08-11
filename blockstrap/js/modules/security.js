@@ -14,9 +14,9 @@
     var security = {};
     
     // FUNCTIONS FOR OBJECT
-    security.salt = function(modules, callback)
+    security.salt = function(modules, callback, salt)
     {
-        var salt = '';
+        if(!salt) salt = $.fn.blockstrap.settings.id;
         var keys = [];
         if($.isPlainObject(modules))
         {

@@ -327,8 +327,6 @@
         var form_string = $(button).attr('data-forms');
         var forms = form_string.split(', ');
         
-        
-        
         if($.isArray(forms))
         {
             var modules = {};
@@ -371,7 +369,10 @@
                             }
                             else
                             {
-                                $.fn.blockstrap.core.modal('Error', 'Setup Type Missing');
+                                if($(this).find('select#extra_salty').length < 1)
+                                {
+                                    $.fn.blockstrap.core.modal('Error', 'Setup Type Missing');
+                                }
                             }
                         }
                     });
@@ -385,13 +386,19 @@
         
             if(continue_salting)
             {
+                var saved_salt = $.fn.blockstrap.settings.id;
+                if(localStorage.getItem('nw_blockstrap_salt'))
+                {
+                    saved_salt = localStorage.getItem('nw_blockstrap_salt');
+                }
                 $.fn.blockstrap.security.salt(modules, function(salt, keys)
                 {
                     $.fn.blockstrap.data.save('blockstrap', 'keys', keys, function()
                     {
                         $.fn.blockstrap.data.save('blockstrap', 'salt', salt, function()
                         {
-                            if(current_step + 1 >= steps)
+                            var this_step = parseInt(current_step) + 1;
+                            if(this_step >= steps)
                             {
                                 /* NEED TO RESET THE INDEX HTML AND DATA */
                                 $.fn.blockstrap.templates.render('index', function()
@@ -405,7 +412,7 @@
                                 {
                                     results.setup = {};
                                     results.setup.func = 'setup';
-                                    results.setup.step = '2';
+                                    results.setup.step = this_step;
                                     var data = $.fn.blockstrap.core.filter(results);
                                     $.fn.blockstrap.data.find('html', 'index', function(html)
                                     {
@@ -418,7 +425,7 @@
                             }
                         });
                     });
-                });
+                }, saved_salt);
             }
         }
     }

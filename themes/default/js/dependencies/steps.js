@@ -487,13 +487,11 @@ var blockstrap_setup_steps = [
                             "fields": [
                                 {
                                     "selects": {
-                                        "id": "app_url",
+                                        "id": "extra_salty",
                                         "label": {
                                             "text": "Salt Component",
                                             "css": "col-sm-3"
                                         },
-                                        "type": "text",
-                                        "placeholder": "",
                                         "values": [
                                             {
                                                 "value": "",
@@ -505,15 +503,11 @@ var blockstrap_setup_steps = [
                                             },
                                             {
                                                 "value": "your_tel",
-                                                "text": "Your Telephone Number"
+                                                "text": "Your Telephone"
                                             },
                                             {
                                                 "value": "your_id",
-                                                "text": "Identification / Passport Number"
-                                            },
-                                            {
-                                                "value": "mothers_maiden",
-                                                "text": "Mother's Maiden Name"
+                                                "text": "Passport Number"
                                             }
                                         ],
                                         "wrapper": {
@@ -566,6 +560,10 @@ var blockstrap_setup_steps = [
                                             {
                                                 "key": "data-label-text",
                                                 "value": "SET"
+                                            },
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "option"
                                             }
                                         ],
                                         "wrapper": {
