@@ -342,6 +342,7 @@ var blockstrap_core = function()
                 */
                 $.fn.blockstrap.core.table();
                 $.fn.blockstrap.core.form();
+                $.fn.blockstrap.core.forms();
                 $.fn.blockstrap.buttons.new();
             },
             resize: function()

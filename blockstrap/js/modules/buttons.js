@@ -78,7 +78,7 @@
         }
         if($('#mobile-footer').css('display') === 'block') mobile = true;
         if($('#menu-toggle').hasClass('open') || $('#sidebar-toggle').hasClass('open')) menu = true;
-        if(slugs[0] === "")
+        if(slugs[0] === "" && href)
         {
             slug = slugs[1];
             $($.fn.blockstrap.element).find('.btn-page.active').removeClass('active').addClass('activated');
@@ -163,6 +163,10 @@
                     }
                 });
             }
+        }
+        else
+        {
+            if(!href) e.preventDefault();
         }
     }
     buttons.reset = function(button, e)
@@ -408,6 +412,7 @@
                                         var page = Mustache.render(html, data);
                                         $($.fn.blockstrap.element).html('');
                                         $($.fn.blockstrap.element).append(page);
+                                        $.fn.blockstrap.core.new();
                                     });
                                 });
                             }
