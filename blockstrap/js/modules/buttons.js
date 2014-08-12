@@ -322,8 +322,9 @@
     {
         e.preventDefault();
         var href = $(button).attr('href');
-        var steps = $(button).attr('data-steps');
-        var current_step = $(button).attr('data-step');
+        var steps = parseInt($(button).attr('data-steps'));
+        var current_step = parseInt($(button).attr('data-step'));
+        var next_step = current_step + 1;
         var form_string = $(button).attr('data-forms');
         var forms = form_string.split(', ');
         
@@ -353,7 +354,7 @@
                         {
                             var value = $(this).find('input').val();
                             if(value === 'true' || value === true) value = true;
-                            else if((value === 'false' || value === false || !value) && $(this).find('input').hasClass('switch'))
+                            else if((value === 'false' || value === false || !value) && ($(this).find('input').hasClass('switch') || $(this).find('input').attr('type') === 'file'))
                             {
                                 value = false;
                                 $(this).find('input.switch').removeAttr('checked');
@@ -369,7 +370,7 @@
                             }
                             else
                             {
-                                if($(this).find('select#extra_salty').length < 1)
+                                if($(this).find('select').length < 1)
                                 {
                                     $.fn.blockstrap.core.modal('Error', 'Setup Type Missing');
                                 }
@@ -379,9 +380,13 @@
                 }
             });
             
-            $.fn.blockstrap.data.save('blockstrap', 'options', options, function()
+            $.fn.blockstrap.data.find('blockstrap', 'options', function(current_options)
             {
-                
+                var merged_options = $.extend({}, current_options, options);
+                $.fn.blockstrap.data.save('blockstrap', 'options', merged_options, function()
+                {
+
+                });
             });
         
             if(continue_salting)
@@ -393,36 +398,39 @@
                 }
                 $.fn.blockstrap.security.salt(modules, function(salt, keys)
                 {
-                    $.fn.blockstrap.data.save('blockstrap', 'keys', keys, function()
+                    $.fn.blockstrap.data.find('blockstrap', 'keys', function(stored_keys)
                     {
-                        $.fn.blockstrap.data.save('blockstrap', 'salt', salt, function()
+                        var new_keys = $.merge($.merge([], stored_keys), keys);
+                        $.fn.blockstrap.data.save('blockstrap', 'keys', new_keys, function()
                         {
-                            var this_step = parseInt(current_step) + 1;
-                            if(this_step >= steps)
+                            $.fn.blockstrap.data.save('blockstrap', 'salt', salt, function()
                             {
-                                /* NEED TO RESET THE INDEX HTML AND DATA */
-                                $.fn.blockstrap.templates.render('index', function()
+                                if(current_step >= steps)
                                 {
-                                    location.reload();
-                                }, true);
-                            }
-                            else
-                            {
-                                $.fn.blockstrap.data.find('data', 'index', function(results)
-                                {
-                                    results.setup = {};
-                                    results.setup.func = 'setup';
-                                    results.setup.step = this_step;
-                                    var data = $.fn.blockstrap.core.filter(results);
-                                    $.fn.blockstrap.data.find('html', 'index', function(html)
+                                    /* NEED TO RESET THE INDEX HTML AND DATA */
+                                    $.fn.blockstrap.templates.render('index', function()
                                     {
-                                        var page = Mustache.render(html, data);
-                                        $($.fn.blockstrap.element).html('');
-                                        $($.fn.blockstrap.element).append(page);
-                                        $.fn.blockstrap.core.new();
+                                        location.reload();
+                                    }, true);
+                                }
+                                else
+                                {
+                                    $.fn.blockstrap.data.find('data', 'index', function(results)
+                                    {
+                                        results.setup = {};
+                                        results.setup.func = 'setup';
+                                        results.setup.step = next_step;
+                                        var data = $.fn.blockstrap.core.filter(results);
+                                        $.fn.blockstrap.data.find('html', 'index', function(html)
+                                        {
+                                            var page = Mustache.render(html, data);
+                                            $($.fn.blockstrap.element).html('');
+                                            $($.fn.blockstrap.element).append(page);
+                                            $.fn.blockstrap.core.new();
+                                        });
                                     });
-                                });
-                            }
+                                }
+                            });
                         });
                     });
                 }, saved_salt);

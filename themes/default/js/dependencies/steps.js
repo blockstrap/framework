@@ -532,11 +532,58 @@ var blockstrap_setup_steps = [
                             "id": "blockstrap-setup-step2-right",
                             "fields": [
                                 {
+                                    "selects": {
+                                        "id": "api_service",
+                                        "label": {
+                                            "text": "API Service",
+                                            "css": "col-sm-3"
+                                        },
+                                        "attributes": [
+                                            {
+                                                "value": "data-setup-type",
+                                                "text": "option"
+                                            }
+                                        ],
+                                        "values": [
+                                            {
+                                                "value": "blockstrap",
+                                                "text": "Blockstrap"
+                                            },
+                                            {
+                                                "value": "helloblock",
+                                                "text": "Hello Block"
+                                            }
+                                        ],
+                                        "wrapper": {
+                                            "css": "col-sm-9"
+                                        }
+                                    }
+                                },
+                                {
                                     "inputs": {
-                                        "id": "auth_salt",
+                                        "id": "your_photo",
+                                        "label": {
+                                            "text": "Profile Photo",
+                                            "css": "col-sm-6"
+                                        },
+                                        "type": "file",
+                                        "attributes": [
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "option"
+                                            }
+                                        ],
+                                        "wrapper": {
+                                            "css": "col-sm-6"
+                                        }
+                                    }
+                                },
+                                {
+                                    "inputs": {
+                                        "id": "photo_salt",
                                         "css": "switch",
                                         "label": {
-                                            "text": "Authenticate Salt Generation",
+                                            "text": "Add Photo to Salt?",
                                             "css": "col-sm-6"
                                         },
                                         "type": "checkbox",
