@@ -450,6 +450,20 @@ var blockstrap_core = function()
                     $.fn.blockstrap.core.tests(run_tests);
                 });
             },
+            image: function(input, callback)
+            {
+                if(input.files && input.files[0]) 
+                {
+                    var reader = new FileReader();
+                    reader.onload = function(e) 
+                    {
+                        var image = e.target.result;
+                        callback(image);
+
+                    };       
+                    reader.readAsDataURL(input.files[0]);
+                }
+            },
             modal: function(title, content)
             {
                 $('#default-modal').find('.modal-title').html(title);
@@ -460,8 +474,16 @@ var blockstrap_core = function()
             {
                 $($.fn.blockstrap.element).find('input.filestyle').each(function(i)
                 {
+                    var input = $(this);
                     $(this).filestyle({
-                        
+                        iconName: 'glyphicon-inbox'
+                    });
+                    $(this).on('change', function(i)
+                    {
+                        $.fn.blockstrap.core.image(this, function(img)
+                        {
+                            $(input).attr('data-img', img);
+                        });
                     });
                 });
                 $($.fn.blockstrap.element).find("input.switch").each(function()
@@ -481,13 +503,14 @@ var blockstrap_core = function()
                 });
                 $($.fn.blockstrap.element).find('.bs-currency-select').each(function(i)
                 {
+                    var select = $(this);
                     var currencies = $.fn.blockstrap.settings.currencies;
                     if($.isArray(currencies))
                     {
-                        $(this).append('<option>-- Select Currency --</option>');
+                        $(select).append('<option>-- Select Currency --</option>');
                         $.each(currencies, function(k, v)
                         {
-                            $(this).append('<option value="'+v.key+'">'+v.currency+'</option>');
+                            $(select).append('<option value="'+v.key+'">'+v.currency+'</option>');
                         });
                     }
                 });

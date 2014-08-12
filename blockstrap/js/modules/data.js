@@ -36,6 +36,16 @@
     {
         return 'nw_' + collection + '_' + key;
     };
+    data.option = function(key)
+    {
+        var value = false;
+        var options = $.parseJSON(localStorage.getItem('nw_blockstrap_options'));
+        $.each(options, function(k, v)
+        {
+            if(k == key) value = v;
+        });
+        return value
+    }
     data.find = function(collection, key, callback)
     {
         if(localStorage && localStorage.getItem(data.item(collection, key)))

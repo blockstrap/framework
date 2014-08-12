@@ -564,22 +564,18 @@ var blockstrap_setup_steps = [
                                         "id": "your_photo",
                                         "label": {
                                             "text": "Profile Photo",
-                                            "css": "col-sm-6"
+                                            "css": "col-sm-3"
                                         },
                                         "type": "file",
                                         "css": "filestyle",
                                         "attributes": [
-                                            {
-                                                "key": "data-iconName",
-                                                "value": "glyphicon-index"
-                                            },
                                             {
                                                 "key": "data-setup-type",
                                                 "value": "option"
                                             }
                                         ],
                                         "wrapper": {
-                                            "css": "col-sm-6"
+                                            "css": "col-sm-9"
                                         }
                                     }
                                 },

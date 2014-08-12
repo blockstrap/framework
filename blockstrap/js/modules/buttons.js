@@ -353,11 +353,18 @@
                         else
                         {
                             var value = $(this).find('input').val();
-                            if(value === 'true' || value === true) value = true;
+                            var image = $(this).find('input').attr('data-img');
+                            
+                            if(value === 'true' || value === true || $(this).find('.bootstrap-switch').hasClass('bootstrap-switch-on')) value = true;
                             else if((value === 'false' || value === false || !value) && ($(this).find('input').hasClass('switch') || $(this).find('input').attr('type') === 'file'))
                             {
                                 value = false;
                                 $(this).find('input.switch').removeAttr('checked');
+                            }
+                            
+                            if(image)
+                            {
+                                value = image;
                             }
                                 
                             if(setup_type === 'module')

@@ -22,33 +22,43 @@
         {
             var count = 0;
             var key_count = Object.keys(modules).length;
-            $.each(modules, function(k, v)
+            if(key_count === count)
             {
-                count++;
-                keys.push(k);
-                
-                if($.isArray($.fn.blockstrap.settings.store))
+                callback(salt, keys);
+            }
+            else
+            {
+                $.each(modules, function(k, v)
                 {
-                    $.each($.fn.blockstrap.settings.store, function(store_index, store_key)
+                    count++;
+                    keys.push(k);
+
+                    if($.isArray($.fn.blockstrap.settings.store))
                     {
-                        if(store_key === k)
+                        $.each($.fn.blockstrap.settings.store, function(store_index, store_key)
                         {
-                            $.fn.blockstrap.data.save('keys', store_key, v, function()
+                            if(store_key === k)
                             {
-                                
-                            });
-                        }
-                    });
-                }
-                
-                salt = CryptoJS.SHA3(salt+k+blockstrap_functions.slug(v), { outputLength: 512 });
-                if(count >= key_count && callback)
-                {
-                    callback(salt.toString(), keys);
-                }
-            })
+                                $.fn.blockstrap.data.save('keys', store_key, v, function()
+                                {
+
+                                });
+                            }
+                        });
+                    }
+
+                    salt = CryptoJS.SHA3(salt+k+blockstrap_functions.slug(v), { outputLength: 512 });
+                    if(count >= key_count && callback)
+                    {
+                        callback(salt.toString(), keys);
+                    }
+                })
+            }
         }
-        else if(callback) callback;
+        else
+        {
+            callback(salt, keys);
+        }
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
