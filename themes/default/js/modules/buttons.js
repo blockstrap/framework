@@ -150,9 +150,10 @@
         }
     }
     
-    buttons.extra_salty = function(button)
+    buttons.extra_fields = function(button)
     {
         var value = $(button).val();
+        var form = $('#'+$(button).attr('data-form'));
         $(button).find('option').each(function(i)
         {
             if($(this).attr('value') === value)
@@ -168,9 +169,9 @@
                             component+= '<input type="text" data-setup-type="module" class="form-control" id="'+value+'">';
                         component+= '</div>';
                     component+= '</div>';
-                    $('#blockstrap-setup-step2-left').prepend(component);
-                    $('#blockstrap-setup-step2-left').find('#extra-'+value).hide(0);
-                    $('#blockstrap-setup-step2-left').find('#extra-'+value).show(350);
+                    $(form).prepend(component);
+                    $(form).find('#extra-'+value).hide(0);
+                    $(form).find('#extra-'+value).show(350);
                 }
             }
         });
@@ -184,9 +185,9 @@
     {
         $.fn.blockstrap.buttons.sidebar(this);
     });
-    $($.fn.blockstrap.element).on('change', '#extra_salty', function(e)
+    $($.fn.blockstrap.element).on('change', '.extra-fields', function(e)
     {
-        $.fn.blockstrap.buttons.extra_salty(this);
+        $.fn.blockstrap.buttons.extra_fields(this);
     });
     $($.fn.blockstrap.element).on('click', '.bootstrap-switch-id-auth_salt', function(e)
     {

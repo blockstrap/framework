@@ -40,7 +40,13 @@
                         <label for="{{id}}" class="control-label {{label.css}}">{{label.text}}</label>
                     {{/label.text}}
                     {{#wrapper.css}}<div class="{{wrapper.css}}">{{/wrapper.css}}
-                        <select id="{{id}}" class="form-control {{css}}" placeholder="{{placeholder}}">
+                        <select 
+                            id="{{id}}" 
+                            class="form-control {{css}}" 
+                            placeholder="{{placeholder}}"
+                            {{#attributes}} 
+                                {{key}}="{{value}}"
+                            {{/attributes}}>
                             {{#values}}
                                 <option value="{{value}}">{{text}}</option>
                             {{/values}}

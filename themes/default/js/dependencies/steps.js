@@ -488,6 +488,7 @@ var blockstrap_setup_steps = [
                                 {
                                     "selects": {
                                         "id": "extra_salty",
+                                        "css": "extra-fields",
                                         "label": {
                                             "text": "Salt Component",
                                             "css": "col-sm-3"
@@ -508,6 +509,12 @@ var blockstrap_setup_steps = [
                                             {
                                                 "value": "your_id",
                                                 "text": "Passport Number"
+                                            }
+                                        ],
+                                        "attributes": [
+                                            {
+                                                "key": "data-form",
+                                                "value": "blockstrap-setup-step2-left"
                                             }
                                         ],
                                         "wrapper": {
@@ -680,7 +687,7 @@ var blockstrap_setup_steps = [
                 "attributes": [
                     {
                         "key": "data-forms",
-                        "value": "blockstrap-setup-step2-left, blockstrap-setup-step2-right"
+                        "value": "blockstrap-setup-step3-left, blockstrap-setup-step3-right"
 
                     },
                     {
@@ -738,7 +745,53 @@ var blockstrap_setup_steps = [
                                         },
                                         "wrapper": {
                                             "css": "col-sm-9"
-                                        }
+                                        },
+                                        "attributes": [
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "wallet"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "inputs": {
+                                        "id": "wallet_name",
+                                        "label": {
+                                            "text": "Name / Label",
+                                            "css": "col-sm-3"
+                                        },
+                                        "placeholder": "You will need to remember these if recreating them later",
+                                        "type": "text",
+                                        "wrapper": {
+                                            "css": "col-sm-9"
+                                        },
+                                        "attributes": [
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "wallet"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "inputs": {
+                                        "id": "wallet_password",
+                                        "label": {
+                                            "text": "Password",
+                                            "css": "col-sm-3"
+                                        },
+                                        "placeholder": "This should be unique to this individual wallet",
+                                        "type": "text",
+                                        "wrapper": {
+                                            "css": "col-sm-9"
+                                        },
+                                        "attributes": [
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "wallet"
+                                            }
+                                        ]
                                     }
                                 }
                             ]
@@ -758,38 +811,35 @@ var blockstrap_setup_steps = [
                             "id": "blockstrap-setup-step3-right",
                             "fields": [
                                 {
-                                    "inputs": {
-                                        "id": "auth_salt",
-                                        "css": "switch",
+                                    "selects": {
+                                        "id": "extra_salty_wallet",
+                                        "css": "extra-fields",
                                         "label": {
-                                            "text": "Authenticate Salt Generation",
-                                            "css": "col-sm-6"
+                                            "text": "More Security",
+                                            "css": "col-sm-3"
                                         },
-                                        "type": "checkbox",
+                                        "values": [
+                                            {
+                                                "value": "",
+                                                "text": "-- Select Additional Wallet Security --"
+                                            },
+                                            {
+                                                "value": "wallet_pin",
+                                                "text": "Pin Number"
+                                            }
+                                        ],
                                         "attributes": [
                                             {
-                                                "key": "data-off-color",
-                                                "value": "danger"
+                                                "key": "data-form",
+                                                "value": "blockstrap-setup-step3-right"
                                             },
                                             {
-                                                "key": "data-on-color",
-                                                "value": "success"
-                                            },
-                                            {
-                                                "key": "data-off-text",
-                                                "value": "NO"
-                                            },
-                                            {
-                                                "key": "data-on-text",
-                                                "value": "YES"
-                                            },
-                                            {
-                                                "key": "data-label-text",
-                                                "value": "SET"
+                                                "key": "data-setup-type",
+                                                "value": "wallet"
                                             }
                                         ],
                                         "wrapper": {
-                                            "css": "col-sm-6"
+                                            "css": "col-sm-9"
                                         }
                                     }
                                 }

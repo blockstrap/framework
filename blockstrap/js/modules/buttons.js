@@ -330,6 +330,7 @@
         
         if($.isArray(forms))
         {
+            var wallet = {};
             var modules = {};
             var options = {};
             var continue_salting = true;
@@ -342,7 +343,7 @@
                     $(form).find('.form-group').each(function(i)
                     {
                         var setup_type = $(this).find('input').attr('data-setup-type');
-                        if(!$(this).find('input').val() && setup_type == 'module')
+                        if((!$(this).find('input').val() && setup_type == 'module') || ((!$(this).find('input').val() || !$(this).find('select').val()) && setup_type == 'wallet'))
                         {
                             var label = false;
                             if($(this).find('label').html()) label = $(this).find('label').html();
@@ -375,6 +376,18 @@
                             {
                                 options[$(this).find('input').attr('id')] = value;
                             }
+                            else if(setup_type === 'wallet')
+                            {
+                                if(!value)
+                                {
+                                    value = $(this).find('select').val();
+                                    wallet[$(this).find('select').attr('id')] = value;
+                                }
+                                else
+                                {
+                                    wallet[$(this).find('input').attr('id')] = value;
+                                }
+                            }
                             else
                             {
                                 if($(this).find('select').length < 1)
@@ -395,6 +408,25 @@
 
                 });
             });
+            
+            if(
+                wallet 
+                && wallet.wallet_currency
+                && wallet.wallet_name 
+                && wallet.wallet_password
+            ){
+                $.fn.blockstrap.wallets.new(
+                    wallet.wallet_currency, 
+                    wallet.wallet_name,
+                    wallet.wallet_password,
+                    wallet,
+                    function(keys)
+                    {
+                        console.log('keys', keys);
+                    }
+                )
+            }
+                
         
             if(continue_salting)
             {

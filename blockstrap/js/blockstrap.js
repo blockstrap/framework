@@ -51,7 +51,8 @@ var blockstrap_core = function()
                 'security', 
                 'buttons', 
                 'styles', 
-                'templates'
+                'templates',
+                'wallets'
             ],
             dependencies: [
                 'sonic', 
