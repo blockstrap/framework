@@ -62,6 +62,7 @@ var blockstrap_core = function()
                 'bootstrap-switch.min',
                 'mustache', 
                 'tables',
+                'bootstrap-filestyle.min',
                 'crypto'
             ],
             bootstrap: [
@@ -86,6 +87,18 @@ var blockstrap_core = function()
                     block: '15968'
                 }
             },
+            currencies: [
+                {
+                    key: "btc",
+                    currency: "Bitcoin",
+                    api: "https://mainnet.helloblock.io/v1/"
+                },
+                {
+                    key: "ltc",
+                    currency: "Litecoin",
+                    api: "https://mainnet.helloblock.io/v1/"
+                }
+            ],
             maps: {
                 styles: {
                     elements: {
@@ -96,7 +109,67 @@ var blockstrap_core = function()
                         content_bg: 'background',
                         header_bg: 'background'
                     }
-                }
+                },
+                apis: [
+                    {
+                        key: "btc",
+                        functions: {
+                            to: {
+                                address: 'addresses/',
+                                addresses: 'addresses?addresses=',
+                                transaction: 'transactions/',
+                                transactions: 'addresses/$call/transactions?limit=100',
+                                block: 'blocks/'
+                            },
+                            from: {
+                                address: {
+                                    key: 'address',
+                                    address: 'address',
+                                    hash: 'hash160',
+                                    tx_count: 'confirmedTxsCount',
+                                    received: 'confirmedReceivedValue',
+                                    balance: 'confirmedBalance'
+                                },
+                                addresses: {
+                                    key: 'addresses',
+                                    address: 'address',
+                                    hash: 'hash160',
+                                    tx_count: 'confirmedTxsCount',
+                                    received: 'confirmedReceivedValue',
+                                    balance: 'confirmedBalance'
+                                },
+                                transaction: {
+                                    key: 'transaction',
+                                    txid: 'txHash',
+                                    size: 'size',
+                                    block: 'blockHeight',
+                                    time: 'blockTime',
+                                    input: 'totalInputsValue',
+                                    output: 'totalOutputsValue',
+                                    fees: 'fees'
+                                },
+                                transactions: {
+                                    key: 'transactions',
+                                    txid: 'txHash',
+                                    size: 'size',
+                                    block: 'blockHeight',
+                                    time: 'blockTime',
+                                    input: 'totalInputsValue',
+                                    output: 'totalOutputsValue',
+                                    fees: 'fees'
+                                },
+                                block: {
+                                    key: 'block',
+                                    height: 'blockHeight',
+                                    hash: 'blockHash',
+                                    prev: 'prevBlockHash',
+                                    tx_count: 'txsCount',
+                                    time: 'blockTime'
+                                }
+                            }
+                        }
+                    }
+                ]
             }
         };
 
@@ -385,6 +458,12 @@ var blockstrap_core = function()
             },
             forms: function()
             {
+                $($.fn.blockstrap.element).find('input.filestyle').each(function(i)
+                {
+                    $(this).filestyle({
+                        
+                    });
+                });
                 $($.fn.blockstrap.element).find("input.switch").each(function()
                 {
                     $(this).bootstrapSwitch();
@@ -392,13 +471,25 @@ var blockstrap_core = function()
                         $(this).val(state);
                     });
                 });
-                $('body').on('change', '.bs-dobs', function(i)
+                $($.fn.blockstrap.element).on('change', '.bs-dobs', function(i)
                 {
                     var field = $(this).parent().find('input[type="hidden"]');
                     var day = $(this).parent().find('.bs-dob-day').val();
                     var month = $(this).parent().find('.bs-dob-month').val();
                     var year = $(this).parent().find('.bs-dob-year').val();
                     $(field).val(day + '_' + month + '_' + year);
+                });
+                $($.fn.blockstrap.element).find('.bs-currency-select').each(function(i)
+                {
+                    var currencies = $.fn.blockstrap.settings.currencies;
+                    if($.isArray(currencies))
+                    {
+                        $(this).append('<option>-- Select Currency --</option>');
+                        $.each(currencies, function(k, v)
+                        {
+                            $(this).append('<option value="'+v.key+'">'+v.currency+'</option>');
+                        });
+                    }
                 });
             },
             css: function(callback)

@@ -567,7 +567,12 @@ var blockstrap_setup_steps = [
                                             "css": "col-sm-6"
                                         },
                                         "type": "file",
+                                        "css": "filestyle",
                                         "attributes": [
+                                            {
+                                                "key": "data-iconName",
+                                                "value": "glyphicon-index"
+                                            },
                                             {
                                                 "key": "data-setup-type",
                                                 "value": "option"
@@ -725,18 +730,16 @@ var blockstrap_setup_steps = [
                     "type": "forms",
                     "objects": [
                         {
-                            "id": "blockstrap-setup-step2-left",
+                            "id": "blockstrap-setup-step3-left",
                             "fields": [
                                 {
                                     "selects": {
-                                        "id": "app_url",
+                                        "id": "wallet_currency",
+                                        "css": "bs-currency-select",
                                         "label": {
-                                            "text": "App URL",
+                                            "text": "Currency",
                                             "css": "col-sm-3"
                                         },
-                                        "type": "text",
-                                        "placeholder": "",
-                                        "value": "{{urls.root}}",
                                         "wrapper": {
                                             "css": "col-sm-9"
                                         }
@@ -756,7 +759,7 @@ var blockstrap_setup_steps = [
                     "type": "forms",
                     "objects": [
                         {
-                            "id": "blockstrap-setup-step2-right",
+                            "id": "blockstrap-setup-step3-right",
                             "fields": [
                                 {
                                     "inputs": {

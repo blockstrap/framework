@@ -12,64 +12,68 @@
 {
     // EMPTY OBJECTS
     var api = {};
-    var map = {
-        ends: {
-            btc: 'https://mainnet.helloblock.io/v1/'
-        },
-        to: {
-            address: 'addresses/',
-            addresses: 'addresses?addresses=',
-            transaction: 'transactions/',
-            transactions: 'addresses/$call/transactions?limit=100',
-            block: 'blocks/'
-        },
-        from: {
-            address: {
-                key: 'address',
-                address: 'address',
-                hash: 'hash160',
-                tx_count: 'confirmedTxsCount',
-                received: 'confirmedReceivedValue',
-                balance: 'confirmedBalance'
-            },
-            addresses: {
-                key: 'addresses',
-                address: 'address',
-                hash: 'hash160',
-                tx_count: 'confirmedTxsCount',
-                received: 'confirmedReceivedValue',
-                balance: 'confirmedBalance'
-            },
-            transaction: {
-                key: 'transaction',
-                txid: 'txHash',
-                size: 'size',
-                block: 'blockHeight',
-                time: 'blockTime',
-                input: 'totalInputsValue',
-                output: 'totalOutputsValue',
-                fees: 'fees'
-            },
-            transactions: {
-                key: 'transactions',
-                txid: 'txHash',
-                size: 'size',
-                block: 'blockHeight',
-                time: 'blockTime',
-                input: 'totalInputsValue',
-                output: 'totalOutputsValue',
-                fees: 'fees'
-            },
-            block: {
-                key: 'block',
-                height: 'blockHeight',
-                hash: 'blockHash',
-                prev: 'prevBlockHash',
-                tx_count: 'txsCount',
-                time: 'blockTime'
+    var map = [
+        {
+            key: "btc",
+            currency: "Bitcoin",
+            api: "https://mainnet.helloblock.io/v1/",
+            functions: {
+                to: {
+                    address: 'addresses/',
+                    addresses: 'addresses?addresses=',
+                    transaction: 'transactions/',
+                    transactions: 'addresses/$call/transactions?limit=100',
+                    block: 'blocks/'
+                },
+                from: {
+                    address: {
+                        key: 'address',
+                        address: 'address',
+                        hash: 'hash160',
+                        tx_count: 'confirmedTxsCount',
+                        received: 'confirmedReceivedValue',
+                        balance: 'confirmedBalance'
+                    },
+                    addresses: {
+                        key: 'addresses',
+                        address: 'address',
+                        hash: 'hash160',
+                        tx_count: 'confirmedTxsCount',
+                        received: 'confirmedReceivedValue',
+                        balance: 'confirmedBalance'
+                    },
+                    transaction: {
+                        key: 'transaction',
+                        txid: 'txHash',
+                        size: 'size',
+                        block: 'blockHeight',
+                        time: 'blockTime',
+                        input: 'totalInputsValue',
+                        output: 'totalOutputsValue',
+                        fees: 'fees'
+                    },
+                    transactions: {
+                        key: 'transactions',
+                        txid: 'txHash',
+                        size: 'size',
+                        block: 'blockHeight',
+                        time: 'blockTime',
+                        input: 'totalInputsValue',
+                        output: 'totalOutputsValue',
+                        fees: 'fees'
+                    },
+                    block: {
+                        key: 'block',
+                        height: 'blockHeight',
+                        hash: 'blockHash',
+                        prev: 'prevBlockHash',
+                        tx_count: 'txsCount',
+                        time: 'blockTime'
+                    }
+                }
             }
         }
-    }
+    ]
     
     // FUNCTIONS FOR OBJECT
     api.url = function(action, key, currency)
