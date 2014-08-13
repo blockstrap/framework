@@ -12,78 +12,18 @@
 {
     // EMPTY OBJECTS
     var api = {};
-    var map = [
-        {
-            key: "btc",
-            currency: "Bitcoin",
-            api: "https://mainnet.helloblock.io/v1/",
-            functions: {
-                to: {
-                    address: 'addresses/',
-                    addresses: 'addresses?addresses=',
-                    transaction: 'transactions/',
-                    transactions: 'addresses/$call/transactions?limit=100',
-                    block: 'blocks/'
-                },
-                from: {
-                    address: {
-                        key: 'address',
-                        address: 'address',
-                        hash: 'hash160',
-                        tx_count: 'confirmedTxsCount',
-                        received: 'confirmedReceivedValue',
-                        balance: 'confirmedBalance'
-                    },
-                    addresses: {
-                        key: 'addresses',
-                        address: 'address',
-                        hash: 'hash160',
-                        tx_count: 'confirmedTxsCount',
-                        received: 'confirmedReceivedValue',
-                        balance: 'confirmedBalance'
-                    },
-                    transaction: {
-                        key: 'transaction',
-                        txid: 'txHash',
-                        size: 'size',
-                        block: 'blockHeight',
-                        time: 'blockTime',
-                        input: 'totalInputsValue',
-                        output: 'totalOutputsValue',
-                        fees: 'fees'
-                    },
-                    transactions: {
-                        key: 'transactions',
-                        txid: 'txHash',
-                        size: 'size',
-                        block: 'blockHeight',
-                        time: 'blockTime',
-                        input: 'totalInputsValue',
-                        output: 'totalOutputsValue',
-                        fees: 'fees'
-                    },
-                    block: {
-                        key: 'block',
-                        height: 'blockHeight',
-                        hash: 'blockHash',
-                        prev: 'prevBlockHash',
-                        tx_count: 'txsCount',
-                        time: 'blockTime'
-                    }
-                }
-            }
-        }
-    ]
+    var apis = $.fn.blockstrap.settings.maps.apis;
+    var currencies = $.fn.blockstrap.settings.currencies;
     
     // FUNCTIONS FOR OBJECT
     api.url = function(action, key, currency)
     {
         if(!currency) currency = 'btc';
-        var url = map.ends[currency] + map.to[action] + key;
-        if(map.to[action].indexOf("$call") > -1)
+        var url = currencies[currency].api + apis[currency].functions.to[action] + key;
+        if(apis[currency].functions.to[action].indexOf("$call") > -1)
         {
-            var call = map.to[action].replace("$call", key);
-            url = map.ends[currency] + call;
+            var call = apis[currency].functions.to[action].replace("$call", key);
+            url = currencies[currency].api + call;
         }
         return url;
     }
@@ -104,6 +44,7 @@
         api.request(api.url('address', hash, currency), function(results)
         {
             var data;
+            var map = apis[currency].functions;
             if(results.data[map.from.address.key]) data = results.data[map.from.address.key];
             var address = {
                 url: '#',
@@ -129,6 +70,7 @@
         api.request(api.url('transactions', address, currency), function(results)
         {
             var data;
+            var map = apis[currency].functions;
             if(results.data[map.from.transactions.key]) data = results.data[map.from.transactions.key];
             var transactions = [];
             $.each(data, function(k, v)
@@ -163,6 +105,7 @@
         api.request(api.url('addresses', hashes, currency), function(results)
         {
             var data;
+            var map = apis[currency].functions;
             if(results.data[map.from.addresses.key]) data = results.data[map.from.addresses.key];
             var addresses = [];
             $.each(data, function(k, v)
@@ -193,6 +136,7 @@
         api.request(api.url('transaction', txid, currency), function(results)
         {
             var data;
+            var map = apis[currency].functions;
             if(results.data[map.from.transaction.key]) data = results.data[map.from.transaction.key];
             var transaction = {
                 url: '#',
@@ -222,6 +166,7 @@
         api.request(api.url('block', height, currency), function(results)
         {
             var data;
+            var map = apis[currency].functions;
             if(results.data[map.from.block.key]) data = results.data[map.from.block.key];
             var block = {
                 url: '#',

@@ -88,18 +88,16 @@ var blockstrap_core = function()
                     block: '15968'
                 }
             },
-            currencies: [
-                {
-                    key: "btc",
+            currencies: {
+                btc: {
                     currency: "Bitcoin",
                     api: "https://mainnet.helloblock.io/v1/"
                 },
-                {
-                    key: "ltc",
+                ltc: {
                     currency: "Litecoin",
                     api: "https://mainnet.helloblock.io/v1/"
                 }
-            ],
+            },
             maps: {
                 styles: {
                     elements: {
@@ -111,9 +109,8 @@ var blockstrap_core = function()
                         header_bg: 'background'
                     }
                 },
-                apis: [
-                    {
-                        key: "btc",
+                apis: {
+                    btc: {
                         functions: {
                             to: {
                                 address: 'addresses/',
@@ -170,7 +167,7 @@ var blockstrap_core = function()
                             }
                         }
                     }
-                ]
+                }
             }
         };
 
@@ -506,12 +503,12 @@ var blockstrap_core = function()
                 {
                     var select = $(this);
                     var currencies = $.fn.blockstrap.settings.currencies;
-                    if($.isArray(currencies))
+                    if($.isPlainObject(currencies))
                     {
                         $(select).append('<option>-- Select Currency --</option>');
-                        $.each(currencies, function(k, v)
+                        $.each(currencies, function(currency, v)
                         {
-                            $(select).append('<option value="'+v.key+'">'+v.currency+'</option>');
+                            $(select).append('<option value="'+currency+'">'+v.currency+'</option>');
                         });
                     }
                 });
