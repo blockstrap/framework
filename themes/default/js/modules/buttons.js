@@ -154,6 +154,8 @@
     {
         var value = $(button).val();
         var form = $('#'+$(button).attr('data-form'));
+        var setup_type = 'module';
+        if($(button).attr('data-setup-type')) setup_type = $(button).attr('data-setup-type');
         $(button).find('option').each(function(i)
         {
             if($(this).attr('value') === value)
@@ -166,7 +168,7 @@
                     component+= '<div class="form-group" id="extra-'+value+'">';
                         component+= '<label class="control-label col-sm-3" for="'+value+'">'+text+'</label>';
                         component+= '<div class="col-sm-9">';
-                            component+= '<input type="text" data-setup-type="module" class="form-control" id="'+value+'">';
+                            component+= '<input type="text" data-setup-type="'+setup_type+'" class="form-control" id="'+value+'">';
                         component+= '</div>';
                     component+= '</div>';
                     $(form).prepend(component);

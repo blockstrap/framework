@@ -330,7 +330,7 @@
         
         if($.isArray(forms))
         {
-            var wallet = {};
+            var wallet = false;
             var modules = {};
             var options = {};
             var continue_salting = true;
@@ -343,7 +343,8 @@
                     $(form).find('.form-group').each(function(i)
                     {
                         var setup_type = $(this).find('input').attr('data-setup-type');
-                        if((!$(this).find('input').val() && setup_type == 'module') || ((!$(this).find('input').val() || !$(this).find('select').val()) && setup_type == 'wallet'))
+                        if(!setup_type) setup_type = $(this).find('select').attr('data-setup-type');
+                        if((!$(this).find('input').val() && setup_type == 'module') || ((!$(this).find('input').val() && !$(this).find('select').val()) && setup_type == 'wallet' && $(this).find('select').attr('id') !== 'extra_salty_wallet'))
                         {
                             var label = false;
                             if($(this).find('label').html()) label = $(this).find('label').html();
@@ -378,12 +379,13 @@
                             }
                             else if(setup_type === 'wallet')
                             {
-                                if(!value)
+                                if(!wallet) wallet = {};
+                                if(!value && $(this).find('select').attr('id') !== 'extra_salty_wallet')
                                 {
                                     value = $(this).find('select').val();
                                     wallet[$(this).find('select').attr('id')] = value;
                                 }
-                                else
+                                else if($(this).find('select').attr('id') !== 'extra_salty_wallet')
                                 {
                                     wallet[$(this).find('input').attr('id')] = value;
                                 }
@@ -414,21 +416,24 @@
                 && wallet.wallet_currency
                 && wallet.wallet_name 
                 && wallet.wallet_password
-            ){
-                $.fn.blockstrap.wallets.new(
+            )
+            {
+                $.fn.blockstrap.accounts.new(
                     wallet.wallet_currency, 
                     wallet.wallet_name,
                     wallet.wallet_password,
                     wallet,
-                    function(keys)
+                    function(account)
                     {
-                        console.log('keys', keys);
+                        /* NEED TO RESET THE INDEX HTML AND DATA */
+                        $.fn.blockstrap.templates.render('index', function()
+                        {
+                            location.reload();
+                        }, true);
                     }
                 )
             }
-                
-        
-            if(continue_salting)
+            else if(continue_salting)
             {
                 var saved_salt = $.fn.blockstrap.settings.id;
                 if(localStorage.getItem('nw_blockstrap_salt'))

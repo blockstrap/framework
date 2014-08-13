@@ -52,19 +52,20 @@ var blockstrap_core = function()
                 'buttons', 
                 'styles', 
                 'templates',
-                'wallets'
+                'accounts'
             ],
             dependencies: [
                 'sonic', 
                 'swipe', 
                 'effects', 
+                'crypto',
+                'bitcoinjs',
                 'steps',
                 'bootstrap.min', 
                 'bootstrap-switch.min',
                 'mustache', 
                 'tables',
-                'bootstrap-filestyle.min',
-                'crypto'
+                'bootstrap-filestyle.min'
             ],
             bootstrap: [
                 'lists', 
@@ -780,111 +781,80 @@ var blockstrap_functions = {
     include: function(blockstrap, start, files, callback, dependency)
     {
         var head = document.getElementsByTagName('head')[0];
-        var blockstrap_js_scripts = document.createElement("script");
-        var results = false;
-        if(localStorage)
-        {
-            var obj = localStorage.getItem('nw_inc_js');
-            if(blockstrap_functions.json(obj)) results = $.parseJSON(obj);
-            else results = localStorage.getItem('nw_inc_js');
-        }
         var refresh = blockstrap_functions.vars('refresh');
-        if(refresh === true || !results)
+        var limit = files.length;
+        
+        if(!dependency) dependency = false;
+        if(!start) start = 0;
+        
+        if($.isArray(files))
         {
-            if(!dependency) dependency = false;
-            if(!files) return false;
-            if(!start) start = 0;
-            var limit = files.length;
-            if($.isArray(files))
+            $.each(files, function(order, file_name)
             {
-                // INCLUDE CORE
-                var filename = blockstrap.settings.core_base + blockstrap.settings.dependency_base + files[start] + '.js';
-                if(!dependency)
+                var js_file = localStorage.getItem('nw_js_'+file_name);
+                if(!js_file || refresh)
                 {
-                    filename = blockstrap.settings.core_base + blockstrap.settings.module_base + files[start] + '.js';
-                }
-                $.ajax({
-                    url: filename,
-                    type: 'GET',
-                    dataType: 'HTML',
-                    complete: function(results)
+                    // INCLUDE CORE
+                    var filename = blockstrap.settings.core_base + blockstrap.settings.dependency_base + file_name + '.js';
+                    if(!dependency)
                     {
-                        var js = '';
-                        if(results.responseText && results.responseText !== '404' && results.status === 200) js+= results.responseText+"\n";
-                        var theme_filename = 'themes/'+blockstrap.settings.theme+'/js/dependencies/' + files[start] + '.js';
-                        if(!dependency)
+                        filename = blockstrap.settings.core_base + blockstrap.settings.module_base + file_name + '.js';
+                    }
+                    $.ajax({
+                        url: filename,
+                        type: 'GET',
+                        dataType: 'HTML',
+                        complete: function(results)
                         {
-                            theme_filename = 'themes/'+blockstrap.settings.theme+'/js/modules/' + files[start] + '.js';
-                        }
-                        $.ajax({
-                            url: theme_filename,
-                            type: 'GET',
-                            dataType: 'HTML',
-                            complete: function(results)
+                            var js = '';
+                            if(results.responseText && results.responseText !== '404' && results.status === 200) js+= results.responseText+"\n";
+                            var theme_filename = 'themes/'+blockstrap.settings.theme+'/js/dependencies/' + file_name + '.js';
+                            if(!dependency)
                             {
-                                if(results.responseText && results.responseText !== '404' && results.status === 200) js+= results.responseText+"\n";
-                                blockstrap_js_files[blockstrap_functions.slug(files[start])] = js;
-                                start++;
-                                if(start < limit)
+                                theme_filename = 'themes/'+blockstrap.settings.theme+'/js/modules/' + file_name + '.js';
+                            }
+                            $.ajax({
+                                url: theme_filename,
+                                type: 'GET',
+                                dataType: 'HTML',
+                                complete: function(results)
                                 {
-                                    blockstrap_functions.include(blockstrap, start, files, callback, dependency);
-                                }
-                                else
-                                {
-                                    if(dependency)
+                                    if(results.responseText && results.responseText !== '404' && results.status === 200) js+= results.responseText+"\n";
+                                    blockstrap_js_files[blockstrap_functions.slug(file_name)] = js;
+                                    start++;
+                                    
+                                    var new_script = document.createElement("script");
+                                    new_script.setAttribute('type', 'text/javascript');
+                                    new_script.setAttribute('id', file_name);
+                                    new_script.text = js;
+                                    head.appendChild(new_script);  
+                                    localStorage.setItem('nw_js_'+file_name, js);
+                                    
+                                    if(start >= limit)
                                     {
                                         callback();
                                     }
-                                    else
-                                    {
-                                        var key = '';
-                                        var text = '';
-                                        var count = 0;
-                                        $.each(blockstrap_js_files, function(k, v)
-                                        {
-                                            if(count > 0) key+='_'+k;
-                                            else key+=k;
-                                            count++;
-                                            text+=v+"\n";
-                                            if(count >= Object.keys(blockstrap_js_files).length)
-                                            {
-                                                blockstrap_js_scripts.setAttribute('type', 'text/javascript');
-                                                blockstrap_js_scripts.setAttribute('id', key);
-                                                blockstrap_js_scripts.text = text;
-                                                head.appendChild(blockstrap_js_scripts);  
-                                                $.fn.blockstrap.data.save('inc', 'js', text, function(results)
-                                                {
-                                                    $.fn.blockstrap.data.find('inc', 'js', function(results)
-                                                    {
-                                                        callback(results);
-                                                    });
-                                                })
-                                            }
-                                        })
-                                    }
                                 }
-                            }
-                        })
+                            })
 
+                        }
+                    });
+                }
+                else
+                {
+                    start++;
+                    var new_script = document.createElement("script");
+                    new_script.setAttribute('type', 'text/javascript');
+                    new_script.setAttribute('id', file_name);
+                    new_script.text = js_file;
+                    head.appendChild(new_script);
+                    if(start >= limit)
+                    {
+                        callback();
                     }
-                });
-            }
+                }
+            });
         }
-        else
-        {
-            if(dependency)
-            {
-                blockstrap_js_scripts.setAttribute('type', 'text/javascript');
-                blockstrap_js_scripts.setAttribute('id', 'nw-js');
-                blockstrap_js_scripts.text = results;
-                head.appendChild(blockstrap_js_scripts);
-                callback(results);
-            }
-            else
-            {
-                callback(results);
-            }
-        }   
     },
     update: function(version, callback)
     {

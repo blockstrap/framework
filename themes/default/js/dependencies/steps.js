@@ -825,7 +825,7 @@ var blockstrap_setup_steps = [
                                             },
                                             {
                                                 "value": "wallet_pin",
-                                                "text": "Pin Number"
+                                                "text": "PIN Number"
                                             }
                                         ],
                                         "attributes": [
