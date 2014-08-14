@@ -335,6 +335,8 @@
             var options = {};
             var continue_salting = true;
             
+            $.fn.blockstrap.core.loader();
+            
             $.each(forms, function(form_index, form_id)
             {
                 var form = $('form#'+form_id);
@@ -479,7 +481,10 @@
                                             var page = Mustache.render(html, data);
                                             $($.fn.blockstrap.element).html('');
                                             $($.fn.blockstrap.element).append(page);
+                                            $($.fn.blockstrap.element).addClass('loading');
+                                            $($.fn.blockstrap.element).find('#blockstrap-loader').css({'opacity': 1, 'z-index': 9999999});
                                             $.fn.blockstrap.core.new();
+                                            $.fn.blockstrap.core.loader();
                                         });
                                     });
                                 }

@@ -366,6 +366,8 @@ var loader = new Sonic({
     ]
 });
 
+blockstrap_loader = loader;
+
 if($('#blockstrap').length > 0)
 {
     var blockstrap_sonic_injection = function(obj)

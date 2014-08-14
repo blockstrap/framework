@@ -12,6 +12,7 @@
  *  
  */
 
+var blockstrap_loader;
 var blockstrap_core = function()
 {
     /* 
@@ -538,12 +539,47 @@ var blockstrap_core = function()
             },
             loading: function()
             {
-                $($.fn.blockstrap.element).find('.loading-elements').animate({'opacity':1}).delay(0).animate({'opacity':0}, 600, function(e)
+                var loaders = $($.fn.blockstrap.element).find('.loading-elements');
+                $(loaders).animate({'opacity':1}).delay(0).animate({'opacity':0}, 600, function(e)
                 {
                     if($(this).hasClass('loading')) $(this).removeClass('loading');
                     $($.fn.blockstrap.element).removeClass('loading');
-                    $($.fn.blockstrap.element).find('.loading-elements').css({'opacity':1});
+                    $(loaders).css({'opacity':1});
                 })
+            },
+            loader: function(element)
+            {
+                var original_element = element;
+                if(!element) element = $($.fn.blockstrap.element).find('#loading-blockstrap');
+                if($(element).length < 1)
+                {
+                    var loader = '<div class="loading-elements" id="loading-blockstrap" style="opacity: 1; z-index: 0">';
+                        loader+= '<a class="loading-elements" id="loader-wrapper" style="opacity: 1;">';
+                            loader+'<span id="logo"><span>( loading )</span></span>';
+                        loader+= '</a>';
+                        loader+= '<span class="loading-elements" id="loader-canvas" style="opacity: 1;"><canvas class="sonic" height="400" width="400"></canvas></span>';
+                    loader+= '</div>';
+                    $($.fn.blockstrap.element).prepend(loader);
+                    if(original_element) element = original_element;
+                    else element = $($.fn.blockstrap.element).find('#loading-blockstrap');
+                    $(element).find('#loader-canvas').html(blockstrap_loader.canvas);
+                    blockstrap_loader.play();
+                }
+                if(!$($.fn.blockstrap.element).hasClass('loading'))
+                {
+                    $($.fn.blockstrap.element).addClass('loading');
+                    $(element).css({'opacity':1, 'z-index': 9999998});
+                    $(element).find('#loader-wrapper').css({'opacity':0});
+                    $(element).find('#loader-wrapper').animate({'opacity':1}, 350);
+                }
+                else
+                {
+                    $(element).find('#loader-wrapper').animate({'opacity':0}, 350, function()
+                    {
+                        $(element).css({'opacity':0, 'z-index': 0});
+                        $($.fn.blockstrap.element).removeClass('loading');
+                    });
+                }
             },
             table: function()
             {
