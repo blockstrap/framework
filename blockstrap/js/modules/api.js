@@ -27,15 +27,21 @@
         }
         return url;
     }
-    api.request = function(url, callback)
+    api.request = function(url, callback, type, data)
     {
+        if(!type) type = 'GET';
         $.ajax({
             url: url,
-            type: 'GET',
+            type: type,
             dataType: 'JSON',
+            data: data,
             success: function(results)
             {
                 if(callback) callback(results);
+            },
+            error: function()
+            {
+                callback(false)
             }
         })
     }
@@ -186,6 +192,39 @@
             if(callback) callback(block);
             else return block;
         })
+    }
+    
+    api.relay = function(hash, currency, callback)
+    {
+        var request_data = {};
+        var map = apis[currency].functions;
+        request_data[map.to.relay_param] = hash;
+        api.request(api.url('relay', '', currency), function(results)
+        {
+            var data;
+            var tx = false;
+            if(results.data)
+            {
+                if(map.from.relay.inner)
+                {
+                    data = results.data[map.from.relay.inner][map.from.relay.txid];
+                }
+                else if(map.from.relay.txid)
+                {
+                    data = results.data[map.from.relay.txid];
+                }
+                if(data)
+                {
+                    tx = {
+                        url: '#transaction?txid='+data,
+                        currency: currency,
+                        txid: data
+                    }
+                }
+            }
+            if(callback) callback(tx);
+            else return tx;
+        }, 'POST', request_data)
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE

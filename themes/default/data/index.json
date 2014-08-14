@@ -5,8 +5,15 @@
             "collection": "blockstrap",
             "key": "salt"
         },
-        "name": "Mark Smalley",
-        "avatar": "blockstrap/img/avatar.jpg",
+        "name": {
+            "func": "get",
+            "collection": "keys",
+            "key": "your_name"
+        },
+        "avatar": {
+            "func": "avatars",
+            "default": "blockstrap/img/avatar.jpg"
+        },
         "last": "last transaction 12 hours ago",
         "urls": {
             "profile": "#profile"
