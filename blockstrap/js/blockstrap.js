@@ -591,6 +591,7 @@ var blockstrap_core = function()
                     var data_key = k;
                     if(v && v.body && v.body.type && v.body.objects)
                     {
+                        // REMOVE THIS HACK
                         $.each(v.body.objects, function(k, obj_v)
                         {
                             var object_key = k;

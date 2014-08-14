@@ -40,10 +40,13 @@
     {
         var value = false;
         var options = $.parseJSON(localStorage.getItem('nw_blockstrap_options'));
-        $.each(options, function(k, v)
+        if(options)
         {
-            if(k == key) value = v;
-        });
+            $.each(options, function(k, v)
+            {
+                if(k == key) value = v;
+            });
+        }
         return value
     }
     data.find = function(collection, key, callback)

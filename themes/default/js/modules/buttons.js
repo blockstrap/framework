@@ -150,6 +150,33 @@
         }
     }
     
+    buttons.photo_salt = function(button)
+    {
+        var input_id = $(button).find('input.switch').attr('data-input');
+        var input = $(button).parent().parent().parent().find('input#'+input_id);
+        var photo = $(input).attr('data-img');
+        if(photo)
+        {
+            var photo_salt = CryptoJS.SHA3(photo, { outputLength: 256 });
+            var hidden_input = '<input type="hidden" id="'+input_id+'" value="'+photo_salt+'" data-setup-type="module" class="hidden-input" />';
+            if($(button).parent().find('.hidden-input').length < 1)
+            {
+                $(button).parent().append(hidden_input);
+            }
+        }
+        else
+        {
+            if($(button).hasClass('bootstrap-switch-on'))
+            {
+                $.fn.blockstrap.core.modal('Warning', 'Unable to find photo');
+            }
+            if($(button).parent().find('.hidden-input').length > 0)
+            {
+                $(button).parent().find('.hidden-input').remove();
+            }
+        }
+    }
+    
     buttons.extra_fields = function(button)
     {
         var value = $(button).val();
@@ -200,6 +227,10 @@
         var boot_switch = $(this).parent().find('.bootstrap-switch-id-auth_salt');
         if($(boot_switch).hasClass('bootstrap-switch-off')) $(this).parent().find('input.switch').val('true');
         else $(this).parent().find('input.switch').val('false');
+    });
+    $($.fn.blockstrap.element).on('click', '.bootstrap-switch-id-photo_salt', function(e)
+    {
+        $.fn.blockstrap.buttons.photo_salt(this);
     });
     
     $($.fn.blockstrap.element).swipe( {

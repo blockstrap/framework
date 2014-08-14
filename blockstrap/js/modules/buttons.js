@@ -368,6 +368,15 @@
                             {
                                 value = image;
                             }
+                            else if($(this).find('input.hidden-input').val())
+                            {
+                                value = $(this).find('input.hidden-input').val();
+                                var hidden_setup_type = $(this).find('input.hidden-input').attr('data-setup-type');
+                                if(hidden_setup_type === 'module')
+                                {
+                                    modules[$(this).find('input.hidden-input').attr('id')] = value;
+                                }
+                            }
                                 
                             if(setup_type === 'module')
                             {

@@ -619,6 +619,10 @@ var blockstrap_setup_steps = [
                                             {
                                                 "key": "data-setup-type",
                                                 "value": "option"
+                                            },
+                                            {
+                                                "key": "data-input",
+                                                "value": "your_photo"
                                             }
                                         ],
                                         "wrapper": {

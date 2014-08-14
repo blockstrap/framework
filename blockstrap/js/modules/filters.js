@@ -13,13 +13,13 @@
     // EMPTY OBJECT
     var filters = {};
     
-    // FUNCTIONS FOR OBJECT
     filters.bootstrap = function(blockstrap, data)
     {
         var snippet = blockstrap.snippets[data.type];
         var html = Mustache.render(snippet, data);
         return html;
     }
+    
     filters.got = function(blockstrap, data)
     {
         if(data.collection && data.key)
@@ -30,6 +30,7 @@
         }
         else return false;
     }
+    
     filters.get = function(blockstrap, data)
     {
         if(data.collection && data.key)
@@ -40,6 +41,7 @@
         }
         else return false;
     }
+    
     filters.setup = function(blockstrap, data)
     {
         if(data.step)
@@ -52,8 +54,7 @@
     
     filters.avatars = function(blockstrap, data)
     {
-        var photo = $.fn.blockstrap.data.option('your_photo');
-        console.log('photo', photo);
+        var photo = blockstrap.data.option('your_photo');
         if(!photo && data.default) photo = data.default;
         var image = '<img class="avatar" src="'+photo+'" />';
         return image;
