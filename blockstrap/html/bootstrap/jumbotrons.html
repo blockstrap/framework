@@ -8,9 +8,9 @@
             {{#buttons}}
                 <a href="{{href}}" 
                     class="btn {{css}}"
-                    {{#data}}
-                        data-{{key}}="{{value}}"
-                    {{/data}}>
+                    {{#attributes}}
+                        {{key}}="{{value}}"
+                    {{/attributes}}>
                     {{text}}
                 </a>
             {{/buttons}}

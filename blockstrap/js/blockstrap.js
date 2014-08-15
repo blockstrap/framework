@@ -676,6 +676,10 @@ var blockstrap_core = function()
                 {
                     $.fn.blockstrap.buttons.setup(this, e);
                 });
+                $($.fn.blockstrap.element).on('click', '#create-account', function(e)
+                {
+                    $.fn.blockstrap.buttons.account(this, e);
+                });
             },
             stringed: function(styles)
             {

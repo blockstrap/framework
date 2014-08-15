@@ -270,78 +270,200 @@
                 "title": "Send Money",
                 "body": "<p>Easily send money to your contacts, or just type a raw address too.</p>",
                 "close": "Cancel",
-                "form": [
-                    {
-                        "input": {
-                            "id": "to",
-                            "label": {
-                                "text": "To",
-                                "css": "col-sm-3"
-                            },
-                            "type": "text",
-                            "placeholder": "Address",
-                            "wrapper": {
-                                "css": "col-sm-9"
-                            }
-                        }
-                    },
-                    {
-                        "select": {
-                            "id": "from",
-                            "label": {
-                                "text": "From",
-                                "css": "col-sm-3"
-                            },
-                            "type": "text",
-                            "placeholder": "Select Wallet",
-                            "wrapper": {
-                                "css": "col-sm-9"
-                            },
-                            "values": [
-                                {
-                                    "value": "wallet-01",
-                                    "text": "Bitcoin (Personal)"
-                                },
-                                {
-                                    "value": "wallet-02",
-                                    "text": "Bitcoin (Business)"
-                                },
-                                {
-                                    "value": "wallet-03",
-                                    "text": "Dogecoin"
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "input": {
-                            "id": "amount",
-                            "label": {
-                                "text": "Amount",
-                                "css": "col-sm-3"
-                            },
-                            "type": "text",
-                            "placeholder": "Total to Send",
-                            "wrapper": {
-                                "css": "col-sm-9"
-                            }
-                        }
-                    }
-                ],
-                "buttons": {
-                    "forms": [
+                "form": {
+                    "css": "form-horizontal",
+                    "fields": [
                         {
-                            "type": "submit",
-                            "id": "send-money",
-                            "css": "btn-primary pull-right",
-                            "text": "Send"
+                            "inputs": {
+                                "id": "to",
+                                "label": {
+                                    "text": "To",
+                                    "css": "col-sm-3"
+                                },
+                                "type": "text",
+                                "placeholder": "Address",
+                                "wrapper": {
+                                    "css": "col-sm-9"
+                                }
+                            }
                         },
                         {
-                            "id": "authorize-payment",
-                            "css": "btn-default pull-right",
-                            "text": "Authorize"
+                            "selects": {
+                                "id": "from",
+                                "label": {
+                                    "text": "From",
+                                    "css": "col-sm-3"
+                                },
+                                "type": "text",
+                                "placeholder": "Select Wallet",
+                                "wrapper": {
+                                    "css": "col-sm-9"
+                                },
+                                "values": [
+                                    {
+                                        "value": "wallet-01",
+                                        "text": "Bitcoin (Personal)"
+                                    },
+                                    {
+                                        "value": "wallet-02",
+                                        "text": "Bitcoin (Business)"
+                                    },
+                                    {
+                                        "value": "wallet-03",
+                                        "text": "Dogecoin"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "inputs": {
+                                "id": "amount",
+                                "label": {
+                                    "text": "Amount",
+                                    "css": "col-sm-3"
+                                },
+                                "type": "text",
+                                "placeholder": "Total to Send",
+                                "wrapper": {
+                                    "css": "col-sm-9"
+                                }
+                            }
                         }
-                    ]
+                    ],
+                    "buttons": {
+                        "forms": [
+                            {
+                                "type": "submit",
+                                "id": "send-money",
+                                "css": "btn-primary pull-right",
+                                "text": "Send"
+                            },
+                            {
+                                "id": "authorize-payment",
+                                "css": "btn-default pull-right",
+                                "text": "Authorize"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "id": "new-account",
+                "title": "New Account",
+                "body": "<p>Some text to introduce the addition of new addresses.</p>",
+                "close": "Cancel",
+                "form": {
+                    "css": "form-horizontal",
+                    "fields": [
+                        {
+                            "selects": {
+                                "id": "wallet_currency",
+                                "css": "bs-currency-select",
+                                "label": {
+                                    "text": "Currency",
+                                    "css": "col-sm-3"
+                                },
+                                "wrapper": {
+                                    "css": "col-sm-9"
+                                },
+                                "attributes": [
+                                    {
+                                        "key": "data-setup-type",
+                                        "value": "wallet"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "inputs": {
+                                "id": "wallet_name",
+                                "label": {
+                                    "text": "Name / Label",
+                                    "css": "col-sm-3"
+                                },
+                                "placeholder": "You will need to remember these if recreating them later",
+                                "type": "text",
+                                "wrapper": {
+                                    "css": "col-sm-9"
+                                },
+                                "attributes": [
+                                    {
+                                        "key": "data-setup-type",
+                                        "value": "wallet"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "inputs": {
+                                "id": "wallet_password",
+                                "label": {
+                                    "text": "Password",
+                                    "css": "col-sm-3"
+                                },
+                                "placeholder": "This should be unique to this individual wallet",
+                                "type": "text",
+                                "wrapper": {
+                                    "css": "col-sm-9"
+                                },
+                                "attributes": [
+                                    {
+                                        "key": "data-setup-type",
+                                        "value": "wallet"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "selects": {
+                                "id": "extra_salty_wallet",
+                                "css": "extra-fields",
+                                "label": {
+                                    "text": "More Security",
+                                    "css": "col-sm-3"
+                                },
+                                "values": [
+                                    {
+                                        "value": "",
+                                        "text": "-- Select Additional Wallet Security --"
+                                    },
+                                    {
+                                        "value": "wallet_pin",
+                                        "text": "PIN Number"
+                                    }
+                                ],
+                                "attributes": [
+                                    {
+                                        "key": "data-form",
+                                        "value": "new-account"
+                                    },
+                                    {
+                                        "key": "data-setup-type",
+                                        "value": "wallet"
+                                    }
+                                ],
+                                "wrapper": {
+                                    "css": "col-sm-9"
+                                }
+                            }
+                        }
+                    ],
+                    "buttons": {
+                        "forms": [
+                            {
+                                "type": "submit",
+                                "id": "create-account",
+                                "css": "btn-primary pull-right",
+                                "text": "Create",
+                                "attributes": [
+                                    {
+                                        "key": "data-form",
+                                        "value": "new-account"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
                 }
             }
         ]

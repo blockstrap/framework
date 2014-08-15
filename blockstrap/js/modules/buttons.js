@@ -496,6 +496,66 @@
         }
     }
     
+    buttons.account = function(button, e)
+    {
+        e.preventDefault();
+        var wallet = {};
+        var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form'));
+        if($(form).length > 0)
+        {
+            $(form).find('.form-group').each(function(i)
+            {
+                var value = $(this).find('input').val();
+                wallet[$(this).find('input').attr('id')] = value;
+                if(!value)
+                {
+                    if($(this).find('select').attr('id') !== 'extra_salty_wallet')
+                    {
+                        value = $(this).find('select').val();
+                        if(value)
+                        {
+                            wallet[$(this).find('select').attr('id')] = value;
+                        }
+                    }
+                    else if(!value)
+                    {
+                        var label = false;
+                        if($(this).find('label').html()) label = $(this).find('label').html();
+                        if(label) $.fn.blockstrap.core.modal('Error', 'Value for "'+label+'" Required');
+                        else $.fn.blockstrap.core.modal('Error', 'Value Required');
+                    }
+                    if(
+                        wallet 
+                        && wallet.wallet_currency
+                        && wallet.wallet_name 
+                        && wallet.wallet_password
+                    )
+                    {
+                        $.fn.blockstrap.accounts.new(
+                            wallet.wallet_currency, 
+                            wallet.wallet_name,
+                            wallet.wallet_password,
+                            wallet,
+                            function(account)
+                            {
+                                /* NEED TO RESET THE INDEX HTML AND DATA */
+                                $.fn.blockstrap.templates.render('accounts', function()
+                                {
+                                    location.reload();
+                                }, true);
+                            }
+                        )
+                    }
+                    else
+                    {
+                        $.fn.blockstrap.core.modal('Error', 'Missing wallet requirements');
+                    }
+                    
+                }
+                
+            });
+        }
+    }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {buttons:buttons});

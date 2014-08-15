@@ -18,7 +18,17 @@
                                 {
                                     "href": "#",
                                     "css": "btn-primary",
-                                    "text": "Add New Account"
+                                    "text": "Add New Account",
+                                    "attributes": [
+                                        {
+                                            "key": "data-target",
+                                            "value": "#new-account-modal"
+                                        },
+                                        {
+                                            "key": "data-toggle",
+                                            "value": "modal"
+                                        }
+                                    ]
                                 }
                             ]
                         }
