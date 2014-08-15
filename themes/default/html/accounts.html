@@ -6,3 +6,97 @@
         </div>
     </div>
 {{/accounts.panels}}
+
+<div class="panel-wrapper col-sm-12">
+    <div id="accounts" class="panel panel-default">
+        <div class="panel-body padless">
+            
+            <table class="table table-striped" data-order="desc" data-order-by="0">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="cell">
+                                Account
+                            </div>
+                        </th>
+                        <th>
+                            <div class="cell">
+                                Currency
+                            </div>
+                        </th>
+                        <th>
+                            <div class="cell">
+                                Address
+                            </div>
+                        </th>
+                        <th>
+                            <div class="cell">
+                                Incoming TXs
+                            </div>
+                        </th>
+                        <th>
+                            <div class="cell">
+                                Outgoing TXs
+                            </div>
+                        </th>
+                        <th>
+                            <div class="cell">
+                                Balance
+                            </div>
+                        </th>
+                        <th>
+                            <div class="cell">
+
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+                    {{#accounts.objects}}
+                        <tr>
+                            <td>
+                                <div class="cell">
+                                    <a href="#account?id={{id}}">{{name}}</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cell">
+                                    {{currency.type}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cell">
+                                    <a href="#address?key={{address}}">{{address}}</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cell">
+                                    {{incoming}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cell">
+                                    {{outgoing}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cell">
+                                    {{balance}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cell">
+                                    <a href="#" class="btn btn-xs btn-primary" data-id="{{id}}" data-address="{{address}}" data-pw="{{password}}">Actions</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {{/accounts.objects}}
+                </tbody>
+
+            </table>
+            
+        </div>
+    </div>
+</div>

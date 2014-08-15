@@ -50,11 +50,18 @@
                         var pw_obj = CryptoJS.SHA3(salt+password, { outputLength: 512 });
                         var pw = pw_obj.toString();
                         var account = {
-                            currency: currency,
+                            id: slug,
+                            currency: {
+                                type: $.fn.blockstrap.settings.currencies[currency].currency,
+                                code: currency
+                            },
                             name: name,
                             password: pw,
                             keys: keys,
-                            address: address
+                            address: address,
+                            incoming: 0,
+                            outgoing: 0,
+                            balance: 0
                         };
                         $.fn.blockstrap.data.save('accounts', slug, account, function()
                         {

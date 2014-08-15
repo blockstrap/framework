@@ -43,7 +43,7 @@ var blockstrap_core = function()
             base_url: '',
             content_id: 'main-content',
             css: ['font-awesome'],
-            filters: ['bootstrap', 'got', 'setup', 'get', 'avatars'],
+            filters: ['bootstrap', 'got', 'setup', 'get', 'avatars', 'accounts'],
             store: ['app_url', 'your_name'],
             modules: [
                 'filters', 
@@ -821,8 +821,8 @@ var blockstrap_functions = {
     },
     slug: function(slug)
     {
-        var name = slug.replace('-', '_');
-        name = name.replace('.', '_');
+        var name = slug.replace(/ /g, '_');
+        name = name.replace(/-/g, '_');
         return name.toLowerCase();
     },
     include: function(blockstrap, start, files, callback, dependency)

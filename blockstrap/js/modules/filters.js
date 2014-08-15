@@ -60,6 +60,22 @@
         return image;
     }
     
+    filters.accounts = function(blockstrap, data)
+    {
+        var accounts = [];
+        if($.isPlainObject(localStorage))
+        {
+            $.each(localStorage, function(key, account)
+            {
+                if(key.substring(0, 12) === 'nw_accounts_')
+                {
+                    accounts.push($.parseJSON(account));
+                }
+            });
+        }
+        return accounts;
+    }
+    
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {filters:filters});
 })
