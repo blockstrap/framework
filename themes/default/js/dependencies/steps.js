@@ -1,11 +1,11 @@
 var blockstrap_setup_steps = [
     {
         "avatar": "blockstrap/img/avatar.jpg",
-        "name": "Huxley The Wizard",
-        "info": "( huxley stardust is here to help you )",
+        "name": "Setup Wizard",
+        "info": "(Here to help you get started)",
         "help": {
-            "title": "What is a Salt...?",
-            "body": "<p>Not entirely sure exactly what to say here but do know that Johnny has some work to do throughout to help make it pukka!</p><p>Not entirely sure exactly what to say here but do know that Johnny has some work to do throughout to help make it pukka!</p>"
+            "title": "SALT GENERATION",
+            "body": "<p>Each piece of memorable information you enter is randomized and turned into a hash. For added security we also generate a deive Salt - an exra layer of seemingly random numbers and characters. It is this Salt that is used to generate your private key. Because only your Salt is stored and none of your information it is important you keep these details safe. If you forget anything you will lose access to your wallet.</p>"
         },
         "progress": {
             "func": "bootstrap",
@@ -76,9 +76,9 @@ var blockstrap_setup_steps = [
                     "type": "jumbotrons",
                     "objects": [
                         {
-                            "title": "Welcome to Blockstrap",
-                            "intro": "This device is compatible and ready to be used.",
-                            "html": "Not sure what to put here yet... Any ideas are much appreciated...?.",
+                            "title": "Welcome to your new wallet",
+                            "intro": "This is a one time installation process to generate your private key. Please read the instructions carefully.",
+                            "html": "We dont store your private keys or personal details anywhere. Instead we turn them into 'hashes' which we use to create a device Salt that is stored in your browser. It is this Salt that gives you access to your wallet. Because this is the only information we keep it is important that you remember your details and keep them safe. REMEMBER: If you cannot recreate this process, you cannot access your wallet.",
                             "buttons": [
                                 {
                                     "href": "#",
