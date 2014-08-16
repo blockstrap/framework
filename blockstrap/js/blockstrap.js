@@ -26,7 +26,7 @@ var blockstrap_core = function()
         var $this = this;
         var plugin_name = 'blockstrap';
         var defaults = {
-            v: '1.0.2.5',
+            v: '1.0.2.6',
             salt: '',
             autoload: true,
             id: plugin_name,
@@ -439,6 +439,7 @@ var blockstrap_core = function()
                 $.fn.blockstrap.templates.render('index', function()
                 {
                     $.fn.blockstrap.styles.set();
+                    $.fn.blockstrap.core.modals();
                     $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
                     {
                         $.fn.blockstrap.core.loading();
@@ -475,6 +476,33 @@ var blockstrap_core = function()
                 $('#default-modal').find('.modal-title').html(title);
                 $('#default-modal').find('.modal-body').html(content);
                 $('#default-modal').modal('show');
+            },
+            modals: function(action)
+            {
+                if(action)
+                {
+                    if(action === 'close_all')
+                    {
+                        $($.fn.blockstrap.element).find('.modal').each(function(i)
+                        {
+                            $(this).modal('hide');
+                        });
+                    }
+                }
+                else
+                {
+                    $($.fn.blockstrap.element).on('show.bs.modal', '.modal', function(i)
+                    {
+                        var this_id = $(this).attr('id');
+                        $($.fn.blockstrap.element).find('.modal').each(function(i)
+                        {
+                            if($(this).attr('id') != this_id)
+                            {
+                                $(this).modal('hide');
+                            }
+                        });
+                    });
+                }
             },
             forms: function()
             {

@@ -501,15 +501,20 @@
         e.preventDefault();
         var wallet = {};
         var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form'));
+        $.fn.blockstrap.core.loader('open');
+        $.fn.blockstrap.core.modals('close_all');
         if($(form).length > 0)
         {
             $(form).find('.form-group').each(function(i)
             {
                 var value = $(this).find('input').val();
-                wallet[$(this).find('input').attr('id')] = value;
-                if(!value)
+                if(value) 
                 {
-                    if($(this).find('select').hasClass('extra-fields'))
+                    wallet[$(this).find('input').attr('id')] = value;
+                }
+                else
+                {
+                    if($(this).find('select').length > 0 && !$(this).find('select').hasClass('extra-fields'))
                     {
                         value = $(this).find('select').val();
                         if(value)
@@ -517,41 +522,46 @@
                             wallet[$(this).find('select').attr('id')] = value;
                         }
                     }
-                    else if(!value)
+                    else if(!value && !$(this).find('select').hasClass('extra-fields'))
                     {
                         var label = false;
                         if($(this).find('label').html()) label = $(this).find('label').html();
                         if(label) $.fn.blockstrap.core.modal('Error', 'Value for "'+label+'" Required');
                         else $.fn.blockstrap.core.modal('Error', 'Value Required');
+                        $.fn.blockstrap.core.loader('close');
+                        return false;
                     }
                 }
-                if(
-                    wallet 
-                    && wallet.wallet_currency
-                    && wallet.wallet_name 
-                    && wallet.wallet_password
-                )
-                {
-                    $.fn.blockstrap.accounts.new(
-                        wallet.wallet_currency, 
-                        wallet.wallet_name,
-                        wallet.wallet_password,
-                        wallet,
-                        function(account)
-                        {
-                            /* NEED TO RESET THE INDEX HTML AND DATA */
-                            $.fn.blockstrap.templates.render('accounts', function()
-                            {
-                                location.reload();
-                            }, true);
-                        }
-                    )
-                }
-                else
-                {
-                    $.fn.blockstrap.core.modal('Error', 'Missing wallet requirements');
-                }
             });
+        }
+        if(
+            wallet 
+            && wallet.wallet_currency
+            && wallet.wallet_name 
+            && wallet.wallet_password
+        )
+        {
+            $.fn.blockstrap.accounts.new(
+                wallet.wallet_currency, 
+                wallet.wallet_name,
+                wallet.wallet_password,
+                wallet,
+                function(account)
+                {
+                    /* NEED TO RESET THE INDEX HTML AND DATA */
+                    $.fn.blockstrap.templates.render('accounts', function()
+                    {
+                        //location.reload();
+                        $.fn.blockstrap.core.loader('close');
+                    }, true);
+                }
+            )
+        }
+        else
+        {
+            $.fn.blockstrap.core.loader('close');
+            $.fn.blockstrap.core.modal('Error', 'Missing wallet requirements');
+            return false;
         }
     }
     

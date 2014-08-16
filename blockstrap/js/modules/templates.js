@@ -53,13 +53,19 @@
                                 {
                                     var paged_html = Mustache.render(content, filtered_data);
                                     
-                                    if(force_refresh)
+                                    if(force_refresh && slug === 'index')
                                     {
                                         $($.fn.blockstrap.element).html('');
+                                        $($.fn.blockstrap.element).append(paged_html);
                                     }
-                                    
-                                    $($.fn.blockstrap.element).append(paged_html);
-                                    
+                                    else if(force_refresh)
+                                    {
+                                        $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.content_id).html(paged_html);
+                                    }
+                                    else
+                                    {
+                                        $($.fn.blockstrap.element).append(paged_html);
+                                    }
                                     $.fn.blockstrap.data.save('html', slug, content, callback);
                                 });
                             }
