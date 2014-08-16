@@ -509,15 +509,18 @@ var blockstrap_core = function()
                 });
                 $($.fn.blockstrap.element).find('.bs-currency-select').each(function(i)
                 {
-                    var select = $(this);
-                    var currencies = $.fn.blockstrap.settings.currencies;
-                    if($.isPlainObject(currencies))
+                    if($(this).find('option').length < 1)
                     {
-                        $(select).append('<option>-- Select Currency --</option>');
-                        $.each(currencies, function(currency, v)
+                        var select = $(this);
+                        var currencies = $.fn.blockstrap.settings.currencies;
+                        if($.isPlainObject(currencies))
                         {
-                            $(select).append('<option value="'+currency+'">'+v.currency+'</option>');
-                        });
+                            $(select).append('<option value="">-- Select Currency --</option>');
+                            $.each(currencies, function(currency, v)
+                            {
+                                $(select).append('<option value="'+currency+'">'+v.currency+'</option>');
+                            });
+                        }
                     }
                 });
             },
