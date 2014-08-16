@@ -422,6 +422,7 @@ var blockstrap_core = function()
                 $.fn.blockstrap.core.table();
                 $.fn.blockstrap.core.form();
                 $.fn.blockstrap.core.forms();
+                $.fn.blockstrap.core.buttons();
                 $.fn.blockstrap.buttons.new();
             },
             resize: function()
@@ -443,8 +444,6 @@ var blockstrap_core = function()
                     $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
                     {
                         $.fn.blockstrap.core.loading();
-                        $.fn.blockstrap.core.buttons();
-                        $.fn.blockstrap.core.forms();
                         $.fn.blockstrap.core.new();
                         $(window).resize(function(e)
                         {
