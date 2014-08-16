@@ -1,5 +1,8 @@
 {
     "contacts": {
+        "objects": {
+            "func": "contacts"
+        },
         "panels": [
             {
                 "id": "welcome-message",
@@ -10,115 +13,24 @@
                     "objects": [
                         {
                             "title": "Your Contacts",
-                            "intro": "You currently have 5 Friends Contacts, 5 Family Contacts, 1 Business Contact",
-                            "html": "<a href='#' class='active btn btn-subtle btn-xs btn-table-filter btn-table-filter-all' data-col='*' data-table='contact-table'>all</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='1' data-table='contact-table'>name</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='2' data-table='contact-table'>address</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='3' data-table='contact-table'>type</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='4' data-table='contact-table'>email</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='5' data-table='contact-table'>actions</a>",
+                            "intro": "You currently have 3 contacts.",
                             "buttons": [
                                 {
                                     "href": "#",
                                     "css": "btn-primary",
-                                    "text": "Add New Contact"
+                                    "text": "Add New Contact",
+                                    "attributes": [
+                                        {
+                                            "key": "data-target",
+                                            "value": "#new-contact-modal"
+                                        },
+                                        {
+                                            "key": "data-toggle",
+                                            "value": "modal"
+                                        }
+                                    ]
                                 }
                             ]
-                        }
-                    ]
-                }
-            },
-            {
-                "id": "your-contacts",
-                "css": "col-md-12 empty",
-                "body": {
-                    "func": "bootstrap",
-                    "type": "tables",
-                    "objects": [ 
-                        {
-                            "id": "contact-table",
-                            "css": "data-table",
-                            "order": "desc",
-                            "order_by": "1",
-                            "thead": {
-                                "tr": [
-                                    {
-                                        "th": [
-                                            {
-                                                "html": "Name"
-                                            },
-                                            {
-                                                "html": "Address"
-                                            },
-                                            {
-                                                "html": "Type"
-                                            },
-                                            {
-                                                "html": "Email"
-                                            },
-                                            {
-                                                "html": ""
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            "tbody": {
-                                "tr": [
-                                    {
-                                        "td": [
-                                            {
-                                                "html": "<a href='#'>Johnny Mayo</a>"
-                                            },
-                                            {
-                                                "html": "<a href='#'>1a1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX</a>"
-                                            },
-                                            {
-                                                "html": "Friends"
-                                            },
-                                            {
-                                                "html": "<a href='#'>johnny@neuroware.io</a>"
-                                            },
-                                            {
-                                                "html": "<div class='mobile-view'><a href='#'>Johnny Mayo</a></div><a href='#' class='btn btn-xs btn-primary'>send</a> <a href='#' class='btn btn-xs btn-default'>edit</a> <a href='#' class='btn btn-xs btn-danger'>remove</a>"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "td": [
-                                            {
-                                                "html": "<a href='#'>Adam Gile</a>"
-                                            },
-                                            {
-                                                "html": "<a href='#'>1b1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX</a>"
-                                            },
-                                            {
-                                                "html": "Business"
-                                            },
-                                            {
-                                                "html": "<a href='#'>adam@neuroware.io</a>"
-                                            },
-                                            {
-                                                "html": "<div class='mobile-view'><a href='#'>Adam Giles</a></div><a href='#' class='btn btn-xs btn-primary'>send</a> <a href='#' class='btn btn-xs btn-default'>edit</a> <a href='#' class='btn btn-xs btn-danger'>remove</a>"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "td": [
-                                            {
-                                                "html": "<a href='#'>Madeline Change</a>"
-                                            },
-                                            {
-                                                "html": "<a href='#'>1c1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX</a>"
-                                            },
-                                            {
-                                                "html": "Family"
-                                            },
-                                            {
-                                                "html": "<a href='#'>madeline20688@hotmail.com</a>"
-                                            },
-                                            {
-                                                "html": "<div class='mobile-view'><a href='#'>Madeline Chang</a></div><a href='#' class='btn btn-xs btn-primary'>send</a> <a href='#' class='btn btn-xs btn-default'>edit</a> <a href='#' class='btn btn-xs btn-danger'>remove</a>"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
                         }
                     ]
                 }

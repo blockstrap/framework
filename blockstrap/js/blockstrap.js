@@ -26,7 +26,7 @@ var blockstrap_core = function()
         var $this = this;
         var plugin_name = 'blockstrap';
         var defaults = {
-            v: '1.0.2.6',
+            v: '1.0.2.7',
             salt: '',
             autoload: true,
             id: plugin_name,
@@ -43,7 +43,15 @@ var blockstrap_core = function()
             base_url: '',
             content_id: 'main-content',
             css: ['font-awesome'],
-            filters: ['bootstrap', 'got', 'setup', 'get', 'avatars', 'accounts'],
+            filters: [
+                'bootstrap', 
+                'got', 
+                'setup', 
+                'get', 
+                'avatars', 
+                'accounts',
+                'contacts'
+            ],
             store: ['app_url', 'your_name'],
             modules: [
                 'filters', 
@@ -53,7 +61,8 @@ var blockstrap_core = function()
                 'buttons', 
                 'styles', 
                 'templates',
-                'accounts'
+                'accounts',
+                'contacts'
             ],
             dependencies: [
                 'sonic', 
@@ -422,7 +431,6 @@ var blockstrap_core = function()
                 $.fn.blockstrap.core.table();
                 $.fn.blockstrap.core.form();
                 $.fn.blockstrap.core.forms();
-                $.fn.blockstrap.core.buttons();
                 $.fn.blockstrap.buttons.new();
             },
             resize: function()
@@ -441,6 +449,7 @@ var blockstrap_core = function()
                 {
                     $.fn.blockstrap.styles.set();
                     $.fn.blockstrap.core.modals();
+                    $.fn.blockstrap.core.buttons();
                     $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
                     {
                         $.fn.blockstrap.core.loading();
@@ -717,6 +726,10 @@ var blockstrap_core = function()
                 $($.fn.blockstrap.element).on('click', '#create-account', function(e)
                 {
                     $.fn.blockstrap.buttons.account(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '#create-contact', function(e)
+                {
+                    $.fn.blockstrap.buttons.contact(this, e);
                 });
             },
             stringed: function(styles)

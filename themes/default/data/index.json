@@ -465,6 +465,92 @@
                         ]
                     }
                 }
+            },
+            {
+                "id": "new-contact",
+                "title": "New Contact",
+                "body": "<p>Some text to introduce the addition of new contacts.</p>",
+                "close": "Cancel",
+                "form": {
+                    "css": "form-horizontal",
+                    "fields": [
+                        {
+                            "inputs": {
+                                "id": "contact_name",
+                                "label": {
+                                    "text": "Full Name",
+                                    "css": "col-sm-3"
+                                },
+                                "type": "text",
+                                "wrapper": {
+                                    "css": "col-sm-9"
+                                },
+                                "attributes": [
+                                    {
+                                        "key": "data-setup-type",
+                                        "value": "contact"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "inputs": {
+                                "id": "contact_address",
+                                "label": {
+                                    "text": "Wallet Address",
+                                    "css": "col-sm-3"
+                                },
+                                "placeholder": "This should be unique to this individual wallet",
+                                "type": "text",
+                                "wrapper": {
+                                    "css": "col-sm-9"
+                                },
+                                "attributes": [
+                                    {
+                                        "key": "data-setup-type",
+                                        "value": "contact"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "inputs": {
+                                "id": "contact_email",
+                                "label": {
+                                    "text": "Email Address",
+                                    "css": "col-sm-3"
+                                },
+                                "placeholder": "This should be unique to this individual wallet",
+                                "type": "email",
+                                "wrapper": {
+                                    "css": "col-sm-9"
+                                },
+                                "attributes": [
+                                    {
+                                        "key": "data-setup-type",
+                                        "value": "data"
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "buttons": {
+                        "forms": [
+                            {
+                                "type": "submit",
+                                "id": "create-contact",
+                                "css": "btn-primary pull-right",
+                                "text": "Create",
+                                "attributes": [
+                                    {
+                                        "key": "data-form",
+                                        "value": "new-contact"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
             }
         ]
     },

@@ -6,3 +6,89 @@
         </div>
     </div>
 {{/contacts.panels}}
+
+<div class="panel-wrapper col-sm-12">
+    <div id="contacts" class="panel panel-default">
+        <div class="panel-body padless">
+            
+            <table class="table table-striped data-table" data-order="desc" data-order-by="0">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="cell">
+                                Name
+                            </div>
+                        </th>
+                        <th>
+                            <div class="cell">
+                                Address
+                            </div>
+                        </th>
+                        <th>
+                            <div class="cell">
+                                TXs To
+                            </div>
+                        </th>
+                        <th>
+                            <div class="cell">
+                                TXs From
+                            </div>
+                        </th>
+                        <th>
+                            <div class="cell">
+                                Email
+                            </div>
+                        </th>
+                        <th>
+                            <div class="cell">
+                                
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+                    {{#contacts.objects}}
+                        <tr>
+                            <td>
+                                <div class="cell">
+                                    <a href="#contact?id={{id}}">{{name}}</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cell">
+                                    <a href="#address?key={{address}}">{{address}}</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cell">
+                                    {{tx_to}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cell">
+                                    {{tx_from}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cell">
+                                    <a href="mailto:{{data.contact_email}}">{{data.contact_email}}</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cell">
+                                    <a href="#" class="btn btn-primary btn-xs">Send</a>
+                                    <a href="#" class="btn btn-default btn-xs">Edit</a>
+                                    <a href="#" class="btn btn-danger btn-xs">Remove</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {{/contacts.objects}}
+                </tbody>
+
+            </table>
+            
+        </div>
+    </div>
+</div>

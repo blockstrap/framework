@@ -76,6 +76,22 @@
         return accounts;
     }
     
+    filters.contacts = function(blockstrap, data)
+    {
+        var contacts = [];
+        if($.isPlainObject(localStorage))
+        {
+            $.each(localStorage, function(key, contact)
+            {
+                if(key.substring(0, 12) === 'nw_contacts_')
+                {
+                    contacts.push($.parseJSON(contact));
+                }
+            });
+        }
+        return contacts;
+    }
+    
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {filters:filters});
 })

@@ -565,6 +565,72 @@
         }
     }
     
+    buttons.contact = function(button, e)
+    {
+        e.preventDefault();
+        var contact = {};
+        var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form'));
+        $.fn.blockstrap.core.loader('open');
+        $.fn.blockstrap.core.modals('close_all');
+        if($(form).length > 0)
+        {
+            $(form).find('.form-group').each(function(i)
+            {
+                var value = $(this).find('input').val();
+                if(value) 
+                {
+                    contact[$(this).find('input').attr('id')] = value;
+                }
+                else
+                {
+                    if($(this).find('select').length > 0 && !$(this).find('select').hasClass('extra-fields'))
+                    {
+                        value = $(this).find('select').val();
+                        if(value)
+                        {
+                            contact[$(this).find('select').attr('id')] = value;
+                        }
+                    }
+                    else if(!value && !$(this).find('select').hasClass('extra-fields'))
+                    {
+                        var label = false;
+                        if($(this).find('label').html()) label = $(this).find('label').html();
+                        if(label) $.fn.blockstrap.core.modal('Error', 'Value for "'+label+'" Required');
+                        else $.fn.blockstrap.core.modal('Error', 'Value Required');
+                        $.fn.blockstrap.core.loader('close');
+                        return false;
+                    }
+                }
+            });
+        }
+        if(
+            contact 
+            && contact.contact_name
+            && contact.contact_address 
+        )
+        {
+            $.fn.blockstrap.contacts.new(
+                contact.contact_name, 
+                contact.contact_address,
+                contact,
+                function(contact)
+                {
+                    /* NEED TO RESET THE INDEX HTML AND DATA */
+                    $.fn.blockstrap.templates.render('contacts', function()
+                    {
+                        $.fn.blockstrap.core.loader('close');
+                    }, true);
+                }
+            )
+        }
+        else
+        {
+            $.fn.blockstrap.core.loader('close');
+            $.fn.blockstrap.core.modal('Error', 'Missing contact requirements');
+            return false;
+        }
+    }
+    
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {buttons:buttons});
 })
