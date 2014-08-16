@@ -547,10 +547,18 @@ var blockstrap_core = function()
                     $(loaders).css({'opacity':1});
                 })
             },
-            loader: function(element)
+            loader: function(force_state, element)
             {
                 var original_element = element;
                 if(!element) element = $($.fn.blockstrap.element).find('#loading-blockstrap');
+                if(force_state && force_state === 'open')
+                {
+                    $($.fn.blockstrap.element).removeClass('loading');
+                }
+                else if(force_state && force_state === 'close')
+                {
+                    $($.fn.blockstrap.element).addClass('loading');
+                }
                 if($(element).length < 1)
                 {
                     var loader = '<div class="loading-elements" id="loading-blockstrap" style="opacity: 1; z-index: 0">';

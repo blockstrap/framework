@@ -509,7 +509,7 @@
                 wallet[$(this).find('input').attr('id')] = value;
                 if(!value)
                 {
-                    if($(this).find('select').attr('id') !== 'extra_salty_wallet')
+                    if($(this).find('select').hasClass('extra-fields'))
                     {
                         value = $(this).find('select').val();
                         if(value)
@@ -524,35 +524,33 @@
                         if(label) $.fn.blockstrap.core.modal('Error', 'Value for "'+label+'" Required');
                         else $.fn.blockstrap.core.modal('Error', 'Value Required');
                     }
-                    if(
-                        wallet 
-                        && wallet.wallet_currency
-                        && wallet.wallet_name 
-                        && wallet.wallet_password
-                    )
-                    {
-                        $.fn.blockstrap.accounts.new(
-                            wallet.wallet_currency, 
-                            wallet.wallet_name,
-                            wallet.wallet_password,
-                            wallet,
-                            function(account)
-                            {
-                                /* NEED TO RESET THE INDEX HTML AND DATA */
-                                $.fn.blockstrap.templates.render('accounts', function()
-                                {
-                                    location.reload();
-                                }, true);
-                            }
-                        )
-                    }
-                    else
-                    {
-                        $.fn.blockstrap.core.modal('Error', 'Missing wallet requirements');
-                    }
-                    
                 }
-                
+                if(
+                    wallet 
+                    && wallet.wallet_currency
+                    && wallet.wallet_name 
+                    && wallet.wallet_password
+                )
+                {
+                    $.fn.blockstrap.accounts.new(
+                        wallet.wallet_currency, 
+                        wallet.wallet_name,
+                        wallet.wallet_password,
+                        wallet,
+                        function(account)
+                        {
+                            /* NEED TO RESET THE INDEX HTML AND DATA */
+                            $.fn.blockstrap.templates.render('accounts', function()
+                            {
+                                location.reload();
+                            }, true);
+                        }
+                    )
+                }
+                else
+                {
+                    $.fn.blockstrap.core.modal('Error', 'Missing wallet requirements');
+                }
             });
         }
     }
