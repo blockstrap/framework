@@ -1,11 +1,11 @@
 var blockstrap_setup_steps = [
     {
         "avatar": "blockstrap/img/avatar.jpg",
-        "name": "Huxley The Wizard",
-        "info": "( huxley stardust is here to help you )",
+        "name": "Setup Wizard",
+        "info": "(Here to help you get started)",
         "help": {
-            "title": "What is a Salt...?",
-            "body": "<p>Not entirely sure exactly what to say here but do know that Johnny has some work to do throughout to help make it pukka!</p><p>Not entirely sure exactly what to say here but do know that Johnny has some work to do throughout to help make it pukka!</p>"
+            "title": "SALT GENERATION",
+            "body": "<p>A salt is an extra layer of encryption that makes hashing passwords more secure. A salt is added to make an already difficult combination more difficult. A salt value is generated entirely at random and lowers the possibility of someone discovering your hash.</p>"
         },
         "progress": {
             "func": "bootstrap",
@@ -29,19 +29,19 @@ var blockstrap_setup_steps = [
                 "id": "step1",
                 "css": "btn-page active",
                 "href": "",
-                "text": "Salt Check"
+                "text": "STEP ONE"
             },
             {
                 "id": "step2",
                 "css": "btn-page",
                 "href": "",
-                "text": "Additional Entropy"
+                "text": "STEP TWO"
             },
             {
                 "id": "step3",
                 "css": "btn-page",
                 "href": "",
-                "text": "First Wallet"
+                "text": "ACTIVATE"
             }
         ],
         "actions": [
@@ -76,9 +76,9 @@ var blockstrap_setup_steps = [
                     "type": "jumbotrons",
                     "objects": [
                         {
-                            "title": "Welcome to Blockstrap",
-                            "intro": "This device is compatible and ready to be used.",
-                            "html": "Not sure what to put here yet... Any ideas are much appreciated...?.",
+                            "title": "Generating Your Device Salt",
+                            "intro": "This is a one time installation process. Please read the instructions carefully.",
+                            "html": "<b>REMINDER:</b> We do not store or keep a record of your private keys or personal information anywhere. Instead we take these memorable pieces of information and turn them into 'hashes' which we use to create a device Salt that is stored in your browser. It is through reacreating the steps in this process that you generate your Salt and access your wallet. As we do not keep this information it is important that you remember the details you enter and keep them safe. <b>REMEMBER: If you cannot recreate this process, you cannot access your wallet.</b>",
                             "buttons": [
                                 {
                                     "href": "#",
@@ -93,7 +93,7 @@ var blockstrap_setup_steps = [
             {
                 "id": "salt-generation",
                 "css": "col-md-6 odd",
-                "header": "Determenistic Key-Salt Generation",
+                "header": "Your Account Information",
                 "body": {
                     "func": "bootstrap",
                     "type": "forms",
@@ -385,11 +385,11 @@ var blockstrap_setup_steps = [
     },
     {
         "avatar": "blockstrap/img/avatar.jpg",
-        "name": "Huxley The Wizard",
-        "info": "( huxley stardust is here to help you )",
+        "name": "Setup Wizard",
+        "info": "(Here to help you)",
         "help": {
-            "title": "What is a Salt...?",
-            "body": "<p>Not entirely sure exactly what to say here but do know that Johnny has some work to do throughout to help make it pukka!</p><p>Not entirely sure exactly what to say here but do know that Johnny has some work to do throughout to help make it pukka!</p>"
+            "title": "ADDITIONAL SECURITY",
+            "body": "If you wish you can configure your wallet to include extra security infromation. Just like before this information isn't stored anywhere, so make sure you record this information in a safe place.</p>"
         },
         "progress": {
             "func": "bootstrap",
@@ -413,19 +413,19 @@ var blockstrap_setup_steps = [
                 "id": "step1",
                 "css": "btn-page",
                 "href": "",
-                "text": "Salt Check"
+                "text": "STEP ONE"
             },
             {
                 "id": "step2",
                 "css": "btn-page active",
                 "href": "",
-                "text": "Additional Entropy"
+                "text": "STEP TWO"
             },
             {
                 "id": "step3",
                 "css": "btn-page",
                 "href": "",
-                "text": "First Wallet"
+                "text": "ACTIVATE"
             }
         ],
         "actions": [
@@ -460,9 +460,9 @@ var blockstrap_setup_steps = [
                     "type": "jumbotrons",
                     "objects": [
                         {
-                            "title": "Additionsl Entropy",
-                            "intro": "Now on Step 2 of 3",
-                            "html": "Not sure what to put here yet... Any ideas are much appreciated...?.",
+                            "title": "Extend Your Security Settings",
+                            "intro": "Configure your wallet to include extra security modules (Reccomended)",
+                            "html": "<b>REMINDER:</b> We do not store or keep a record of your private keys or personal information anywhere. Instead we take these memorable pieces of information and turn them into 'hashes' which we use to create a device Salt that is stored in your browser. It is through reacreating the steps in this process that you generate your Salt and access your wallet. As we do not keep this information it is important that you remember the details you enter and keep them safe. <b>REMEMBER: If you cannot recreate this process, you cannot access your wallet.</b>",
                             "buttons": [
                                 {
                                     "href": "#",
@@ -477,7 +477,7 @@ var blockstrap_setup_steps = [
             {
                 "id": "additional-modules",
                 "css": "col-md-6 odd",
-                "header": "Additional Salt Modules",
+                "header": "Additional Salt Components",
                 "body": {
                     "func": "bootstrap",
                     "type": "forms",
@@ -639,8 +639,8 @@ var blockstrap_setup_steps = [
     },
     {
         "avatar": "blockstrap/img/avatar.jpg",
-        "name": "Huxley The Wizard",
-        "info": "( huxley stardust is here to help you )",
+        "name": "Setup Wizard",
+        "info": "(Here to help you )",
         "help": {
             "title": "What is a Salt...?",
             "body": "<p>Not entirely sure exactly what to say here but do know that Johnny has some work to do throughout to help make it pukka!</p><p>Not entirely sure exactly what to say here but do know that Johnny has some work to do throughout to help make it pukka!</p>"
