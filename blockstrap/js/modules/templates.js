@@ -29,6 +29,31 @@
             }
         });
     };
+    
+    templates.filter = function(placeholders, replacements)
+    {
+        if(!placeholders || !replacements && $.isArray(placeholders) && $.isArray(replacements))
+        {
+            var raw_name = localStorage.getItem('nw_keys_your_name');
+            var name = raw_name;
+
+            if(blockstrap_functions.json(raw_name)) name = $.parseJSON(raw_name);
+
+            var placeholders = ['urls.root', 'user.name'];
+            var replacements = [
+                $.fn.blockstrap.settings.base_url,
+                name
+            ];
+        }
+        for(var i = 0; i < placeholders.length; i++) 
+        {
+            var html = $($.fn.blockstrap.element).html();
+            html = html.split('{{' + placeholders[i] + '}}').join(replacements[i]);
+            $($.fn.blockstrap.element).html(html);
+            $.fn.blockstrap.core.loader('close');
+        }
+    }
+    
     templates.render = function(slug, callback, force_refresh)
     {
         $.fn.blockstrap.data.find('data', slug, function(results)

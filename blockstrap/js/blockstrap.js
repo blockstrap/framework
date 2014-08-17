@@ -431,7 +431,10 @@ var blockstrap_core = function()
                 $.fn.blockstrap.core.table();
                 $.fn.blockstrap.core.form();
                 $.fn.blockstrap.core.forms();
+            
+                // Not handling lack of these being activated ...
                 $.fn.blockstrap.buttons.new();
+                $.fn.blockstrap.templates.filter();
             },
             resize: function()
             {
@@ -670,30 +673,7 @@ var blockstrap_core = function()
             filter: function(data)
             {
                 $.each(data, function(k, v)
-                {
-                    var data_key = k;
-                    if(v && v.body && v.body.type && v.body.objects)
-                    {
-                        // REMOVE THIS HACK
-                        $.each(v.body.objects, function(k, obj_v)
-                        {
-                            var object_key = k;
-                            if(obj_v.fields)
-                            {
-                                $.each(obj_v.fields, function(k, field_v)
-                                {
-                                    var field_key = k;
-                                    if(
-                                        field_v.inputs 
-                                        && field_v.inputs.value 
-                                        && field_v.inputs.value === '{{urls.root}}')
-                                    {
-                                        v.body.objects[object_key].fields[field_key].inputs.value = $.fn.blockstrap.settings.base_url;
-                                    }
-                                });
-                            }
-                        });
-                    }
+                { 
                     if($.isPlainObject(v) && v.func && $.isFunction($.fn.blockstrap.filters[v.func]))
                     {
                         data[k] = $.fn.blockstrap.filters[v.func]($.fn.blockstrap, v);
