@@ -107,26 +107,51 @@
         return accounts;
     }
     
-    accounts.balances = function()
+    accounts.balance = function(address, currency, callback, update)
+    {
+        if(update && callback)
+        {
+            var balance = 0;
+            if(address)
+            {
+                $.fn.blockstrap.api.address(address, currency, function(address)
+                {
+                    if(address.balance) callback(address.balance)
+                    else callback(balance);
+                })
+            }
+        }
+        else
+        {
+            if(callback) callback(false);
+            else return false;
+        }
+    }
+    
+    accounts.balances = function(update)
     {
         var balances = {};
         if($.isArray(accounts.get()))
         {
             $.each(accounts.get(), function(k, v)
             {
-                if(balances[v.currency.code])
+                accounts.balance(v.address, v.currency.code, function(balance)
                 {
-                    balances[v.currency.code].balance = parseInt(balances[v.currency.code].balance) + parseInt(v.balance);
-                    balances[v.currency.code].count++;
-                    balances[v.currency.code].name = v.currency.type;
-                }
-                else
-                {
-                    balances[v.currency.code] = {};
-                    balances[v.currency.code].balance = parseInt(v.balance);
-                    balances[v.currency.code].count = 1;
-                    balances[v.currency.code].name = v.currency.type;
-                }
+                    if(!balance) balance = parseInt(v.balance);
+                    if(balances[v.currency.code])
+                    {
+                        balances[v.currency.code].balance = parseInt(balances[v.currency.code].balance) + balance;
+                        balances[v.currency.code].count++;
+                        balances[v.currency.code].name = v.currency.type;
+                    }
+                    else
+                    {
+                        balances[v.currency.code] = {};
+                        balances[v.currency.code].balance = parseInt(balance);
+                        balances[v.currency.code].count = 1;
+                        balances[v.currency.code].name = v.currency.type;
+                    }
+                }, update);
             });
         }
         return balances;

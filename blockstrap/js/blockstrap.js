@@ -114,10 +114,15 @@ var blockstrap_core = function()
                     api: "https://mainnet.helloblock.io/v1/"
                 }
             },
+            cache: {
+                api: {
+                    address: 60
+                },
+            },
             exchange: {
                 btc: 500,
                 ltc: 5
-            },
+            }, // WHY USE MAPS TERMINOLOGY ALL OF A SUDDEN ...?
             maps: {
                 styles: {
                     elements: {
@@ -458,6 +463,7 @@ var blockstrap_core = function()
             {
                 $.fn.blockstrap.templates.render('index', function()
                 {
+                    $.fn.blockstrap.accounts.balances(true);
                     $.fn.blockstrap.styles.set();
                     $.fn.blockstrap.core.modals();
                     $.fn.blockstrap.core.buttons();
@@ -479,6 +485,35 @@ var blockstrap_core = function()
                         $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id).find('#' + blockstrap_functions.slug(window.location.hash)).trigger('click');
                     }
                 });
+            },
+            cache: function(key, value, time_to_live)
+            {
+                if(!time_to_live) time_to_live = 1000;
+                
+                // 1000 WHAT ...?
+                
+                var now = new Date().getTime();
+                var val = localStorage.getItem(key);
+                if(blockstrap_functions.json(val))
+                {
+                    val = $.parseJSON(localStorage.getItem(key));
+                }
+                var time = time_to_live;
+                if(val && val.ts) time = val.ts + time_to_live;
+                if(value && time < now)
+                {
+                    var obj = {
+                        value: value,
+                        ts: now
+                    };
+                    console.log(obj);
+                    localStorage.setItem(key, JSON.stringify(obj));
+                }
+                else
+                {
+                    if($.isPlainObject(val) && val.value) return val.value;
+                    else return false;
+                }
             },
             image: function(input, callback)
             {

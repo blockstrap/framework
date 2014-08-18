@@ -15,7 +15,6 @@
     var apis = $.fn.blockstrap.settings.maps.apis;
     var currencies = $.fn.blockstrap.settings.currencies;
     
-    // FUNCTIONS FOR OBJECT
     api.url = function(action, key, currency)
     {
         if(!currency) currency = 'btc';
@@ -27,6 +26,7 @@
         }
         return url;
     }
+    
     api.request = function(url, callback, type, data)
     {
         if(!type) type = 'GET';
@@ -45,32 +45,44 @@
             }
         })
     }
+    
     api.address = function(hash, currency, callback)
     {
-        api.request(api.url('address', hash, currency), function(results)
+        var cache = $.fn.blockstrap.settings.cache.api.address;
+        if(cache && cache > 0 && $.fn.blockstrap.core.cache('nw_cache_api_address'))
         {
-            var data;
-            var map = apis[currency].functions;
-            if(results.data[map.from.address.key]) data = results.data[map.from.address.key];
-            var address = {
-                url: '#',
-                address: 'N/A',
-                hash: 'N/A',
-                tx_count: 0,
-                currency: currency,
-                received: 0,
-                balance: 0,
-            }
-            if(data[map.from.address.address]) address.url = '#address?key='+data[map.from.address.address];
-            if(data[map.from.address.address]) address.address = data[map.from.address.address];
-            if(data[map.from.address.hash]) address.hash = data[map.from.address.hash];
-            if(data[map.from.address.tx_count]) address.tx_count = data[map.from.address.tx_count];
-            if(data[map.from.address.received]) address.received = data[map.from.address.received];
-            if(data[map.from.address.balance]) address.balance = data[map.from.address.balance];
-            if(callback) callback(address);
-            else return address;
-        })
+            if(callback) callback($.fn.blockstrap.core.cache('nw_cache_api_address'));
+            else return $.fn.blockstrap.core.cache('nw_cache_api_address');
+        }
+        else
+        {
+            api.request(api.url('address', hash, currency), function(results)
+            {
+                var data;
+                var map = apis[currency].functions;
+                if(results.data[map.from.address.key]) data = results.data[map.from.address.key];
+                var address = {
+                    url: '#',
+                    address: 'N/A',
+                    hash: 'N/A',
+                    tx_count: 0,
+                    currency: currency,
+                    received: 0,
+                    balance: 0,
+                }
+                if(data[map.from.address.address]) address.url = '#address?key='+data[map.from.address.address];
+                if(data[map.from.address.address]) address.address = data[map.from.address.address];
+                if(data[map.from.address.hash]) address.hash = data[map.from.address.hash];
+                if(data[map.from.address.tx_count]) address.tx_count = data[map.from.address.tx_count];
+                if(data[map.from.address.received]) address.received = data[map.from.address.received];
+                if(data[map.from.address.balance]) address.balance = data[map.from.address.balance];
+                $.fn.blockstrap.core.cache('nw_cache_api_address', address);
+                if(callback) callback(address);
+                else return address;
+            })
+        }
     }
+    
     api.transactions = function(address, currency, callback)
     {
         api.request(api.url('transactions', address, currency), function(results)
@@ -137,6 +149,7 @@
             else return addresses;
         })
     }
+    
     api.transaction = function(txid, currency, callback)
     {
         api.request(api.url('transaction', txid, currency), function(results)
@@ -167,6 +180,7 @@
             else return transaction;
         })
     }
+    
     api.block = function(height, currency, callback)
     {
         api.request(api.url('block', height, currency), function(results)
