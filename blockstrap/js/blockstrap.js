@@ -506,7 +506,6 @@ var blockstrap_core = function()
                         value: value,
                         ts: now
                     };
-                    console.log(obj);
                     localStorage.setItem(key, JSON.stringify(obj));
                 }
                 else
