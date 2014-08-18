@@ -94,13 +94,13 @@
                                     "href": "#",
                                     "css": "btn-default",
                                     "text": "Backup",
-                                    "data": [
+                                    "attributes": [
                                         {
-                                            "key": "toggle",
+                                            "key": "data-toggle",
                                             "value": "modal"
                                         },
                                         {
-                                            "key": "target",
+                                            "key": "data-target",
                                             "value": "#backup-modal"
                                         }
                                     ]
@@ -262,14 +262,16 @@
                 "title": "Backup Your Wallet",
                 "body": "<p>By default, the information for this wallet is stored in LocalStorage, which resides within this browsers memory. If you copy and paste the information below into a plain text file you can import it again later if information or the device itself is lost.</p>",
                 "close": "Cancel",
-                "form": [
-                    {
-                        "area": {
-                            "id": "data",
-                            "css": "data-backup"
+                "form": {
+                    "fields": [
+                        {
+                            "areas": {
+                                "id": "data",
+                                "css": "data-backup"
+                            }
                         }
-                    }
-                ]
+                    ]
+                }
             },
             {
                 "id": "send",

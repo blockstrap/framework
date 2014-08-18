@@ -437,7 +437,6 @@ var blockstrap_core = function()
 
                 */
                 $.fn.blockstrap.core.table();
-                $.fn.blockstrap.core.form();
                 $.fn.blockstrap.core.forms();
             
                 // Not handling lack of these being activated ...
@@ -530,6 +529,46 @@ var blockstrap_core = function()
             },
             forms: function()
             {
+                // PERHAPS FORMS NEEDS ITS OWN MODULE...?
+                var backup = '';
+                if($.isPlainObject(localStorage))
+                {
+                    var objs = {};
+                    $.each(localStorage, function(key, value)
+                    {
+                        var obj = value;
+                        if(blockstrap_functions.json(value))
+                        {
+                            obj = $.parseJSON(value);
+                        }
+                        if(key.substring(0, 12) == 'nw_accounts_')
+                        {
+                            if(!$.isArray(objs['nw_accounts']))
+                            {
+                                objs['nw_accounts'] = [];
+                            }
+                            objs['nw_accounts'].push(obj);
+                        }
+                        else if(key.substring(0, 14) == 'nw_blockstrap_')
+                        {
+                            if(!$.isArray(objs['nw_blockstrap']))
+                            {
+                                objs['nw_blockstrap'] = [];
+                            }
+                            objs['nw_blockstrap'].push(obj);
+                        }
+                        else if(key.substring(0, 8) == 'nw_keys_')
+                        {
+                            if(!$.isArray(objs['nw_keys']))
+                            {
+                                objs['nw_keys'] = [];
+                            }
+                            objs['nw_keys'].push(obj);
+                        }
+                    });
+                }
+                var backup = JSON.stringify(objs);
+                $($.fn.blockstrap.element).find('textarea.data-backup').val(backup);
                 $($.fn.blockstrap.element).find('input.filestyle').each(function(i)
                 {
                     var input = $(this);
@@ -678,10 +717,6 @@ var blockstrap_core = function()
                         });
                     }
                 });
-            },
-            form: function()
-            {
-                $($.fn.blockstrap.element).find('textarea.data-backup').val(JSON.stringify($.fn.blockstrap.data.get('index')));
             },
             filter: function(data)
             {
