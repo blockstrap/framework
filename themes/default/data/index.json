@@ -246,7 +246,7 @@
             "placeholder": "Search your wallet"
         }
     },
-    "footer": "powered by blockstrap.com",
+    "footer": "powered by <a href='http://blockstrap.com'>blockstrap.com</a>",
     "modals": {
         "func": "bootstrap",
         "type": "modals",
