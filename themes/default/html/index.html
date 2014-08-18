@@ -48,10 +48,12 @@
         <div id="sidebar-panel">
             <h4 class="panel-title">{{copy.sidebar.balances}}</h4>
             <ul id="sidebar-list">
-                {{#copy.sidebar.accounts}}
-                    <li>{{{currency}}} <a href="#" class="values">{{total}}</a></li>
-                {{/copy.sidebar.accounts}}
-                <li class="total">{{{copy.sidebar.total}}}</li>
+                
+                {{#sidebar.accounts}}
+                    <li>{{currency}} (<span>{{count}}</span>) <a href="#accounts?currency={{code}}" class="values">{{balance}}</a></li>
+                {{/sidebar.accounts}}
+                
+                <li class="total">{{copy.sidebar.total}} <span>{{sidebar.total}}</span></li>
             </ul>
         </div>
         

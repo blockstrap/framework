@@ -50,19 +50,22 @@ var blockstrap_core = function()
                 'get', 
                 'avatars', 
                 'accounts',
-                'contacts'
+                'contacts',
+                'balances',
+                'total'
             ],
             store: ['app_url', 'your_name'],
             modules: [
-                'filters', 
+                'accounts',
+                'contacts',
                 'data', 
                 'api', 
                 'security', 
+                'theme',
                 'buttons', 
                 'styles', 
                 'templates',
-                'accounts',
-                'contacts'
+                'filters'
             ],
             dependencies: [
                 'sonic', 
@@ -109,6 +112,10 @@ var blockstrap_core = function()
                     currency: "Litecoin",
                     api: "https://mainnet.helloblock.io/v1/"
                 }
+            },
+            exchange: {
+                btc: 500,
+                ltc: 5
             },
             maps: {
                 styles: {
@@ -433,6 +440,7 @@ var blockstrap_core = function()
                 $.fn.blockstrap.core.forms();
             
                 // Not handling lack of these being activated ...
+                $.fn.blockstrap.theme.new();
                 $.fn.blockstrap.buttons.new();
                 $.fn.blockstrap.templates.filter();
             },
@@ -909,6 +917,10 @@ var blockstrap_functions = {
                                     new_script.setAttribute('type', 'text/javascript');
                                     new_script.setAttribute('id', file_name);
                                     new_script.text = js;
+                                    new_script.onload = function()
+                                    {
+                                        console.log('loaded');
+                                    };
                                     head.appendChild(new_script);  
                                     localStorage.setItem('nw_js_'+file_name, js);
                                     

@@ -91,6 +91,64 @@
         }
     }
     
+    accounts.get = function()
+    {
+        var accounts = [];
+        if($.isPlainObject(localStorage))
+        {
+            $.each(localStorage, function(key, account)
+            {
+                if(key.substring(0, 12) === 'nw_accounts_')
+                {
+                    accounts.push($.parseJSON(account));
+                }
+            });
+        }
+        return accounts;
+    }
+    
+    accounts.balances = function()
+    {
+        var balances = {};
+        if($.isArray(accounts.get()))
+        {
+            $.each(accounts.get(), function(k, v)
+            {
+                if(balances[v.currency.code])
+                {
+                    balances[v.currency.code].balance = parseInt(balances[v.currency.code].balance) + parseInt(v.balance);
+                    balances[v.currency.code].count++;
+                    balances[v.currency.code].name = v.currency.type;
+                }
+                else
+                {
+                    balances[v.currency.code] = {};
+                    balances[v.currency.code].balance = parseInt(v.balance);
+                    balances[v.currency.code].count = 1;
+                    balances[v.currency.code].name = v.currency.type;
+                }
+            });
+        }
+        return balances;
+    }
+    
+    accounts.total = function(rate, prefix)
+    {
+        var grand_total = 0;
+        var exchange_rates = $.fn.blockstrap.settings.exchange;
+        var balances = accounts.balances();
+        if($.isPlainObject(balances))
+        {
+            $.each(balances, function(code, currency)
+            {
+                var total = parseInt(currency.balance) * parseInt(exchange_rates[rate]);
+                grand_total = grand_total + total;
+            });
+        }
+        if(prefix) return prefix + ' ' + grand_total;
+        else return grand_total;
+    }
+    
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {accounts:accounts});
 })

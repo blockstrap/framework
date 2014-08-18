@@ -63,7 +63,13 @@
                 "href": "#logout",
                 "text": "Logout"
             }
-        ]
+        ],
+        "total": {
+            "func": "total"
+        },
+        "accounts": {
+            "func": "balances"
+        }
     },
     "dashboard": {
         "panels": [
@@ -589,7 +595,7 @@
     "copy": {
         "sidebar": {
             "balances": "Account Balances",
-            "total": "Total <span>US$ 1,345.67</span>",
+            "total": "Total",
             "accounts": [
                 {
                     "currency": "Bitcoin (<a href='#'>3</a>)",

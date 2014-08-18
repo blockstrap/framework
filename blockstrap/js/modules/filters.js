@@ -76,6 +76,25 @@
         return accounts;
     }
     
+    filters.balances = function(blockstrap, data)
+    {
+        var data = [];
+        var balances = blockstrap.accounts.balances();
+        if($.isPlainObject(balances))
+        {
+            $.each(balances, function(k, v)
+            {
+                data.push({
+                    code: k,
+                    currency: v.name,
+                    count: v.count,
+                    balance: v.balance
+                });
+            });
+        }
+        return data;
+    }
+    
     filters.contacts = function(blockstrap, data)
     {
         var contacts = [];
@@ -90,6 +109,15 @@
             });
         }
         return contacts;
+    }
+    
+    filters.total = function(blockstrap, data)
+    {
+        var rate = 'btc';
+        var prefix = 'US$';
+        if(data.rate) rate = data.rate;
+        if(data.prefix) prefix = data.prefix;
+        return blockstrap.accounts.total(rate, prefix);
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
