@@ -30,9 +30,9 @@
         });
     };
     
-    templates.filter = function(placeholders, replacements)
+    templates.filter = function(html, placeholders, replacements)
     {
-        if(!placeholders || !replacements && $.isArray(placeholders) && $.isArray(replacements))
+        if(!placeholders || !replacements)
         {
             var raw_name = localStorage.getItem('nw_keys_your_name');
             var name = raw_name;
@@ -47,10 +47,18 @@
         }
         for(var i = 0; i < placeholders.length; i++) 
         {
-            var html = $($.fn.blockstrap.element).html();
-            html = html.split('{{' + placeholders[i] + '}}').join(replacements[i]);
-            $($.fn.blockstrap.element).html(html);
-            $.fn.blockstrap.core.loader('close');
+            if(!html)
+            {
+                html = $($.fn.blockstrap.element).html();
+                html = html.split('{{' + placeholders[i] + '}}').join(replacements[i]);
+                $($.fn.blockstrap.element).html(html);
+                $.fn.blockstrap.core.loader('close');
+            }
+            else
+            {
+                html = html.split('{{' + placeholders[i] + '}}').join(replacements[i]);
+                if(i >= (placeholders.length - 1)) return html;
+            }
         }
     }
     
@@ -76,7 +84,7 @@
                             {
                                 templates.get('themes/' + $.fn.blockstrap.settings.theme + '/' + $.fn.blockstrap.settings.html_base + slug, 'html', function(content)
                                 {
-                                    var paged_html = Mustache.render(content, filtered_data);
+                                    var paged_html = templates.filter(Mustache.render(content, filtered_data));
                                     
                                     if(force_refresh && slug === 'index')
                                     {
@@ -96,7 +104,7 @@
                             }
                             else
                             {
-                                var paged_html = Mustache.render(html, filtered_data);
+                                var paged_html = templates.filter(Mustache.render(html, filtered_data));
                                 $($.fn.blockstrap.element).append(paged_html);
                                 if(callback) callback();
                             }
@@ -115,14 +123,14 @@
                     {
                         templates.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.html_base+slug, 'html', function(content)
                         {
-                            var paged_html = Mustache.render(content, filtered_data);
+                            var paged_html = templates.filter(Mustache.render(content, filtered_data));
                             $($.fn.blockstrap.element).append(paged_html);
                             $.fn.blockstrap.data.save('html', slug, content, callback);
                         });
                     }
                     else
                     {
-                        var paged_html = Mustache.render(html, filtered_data);
+                        var paged_html = templates.filter(Mustache.render(html, filtered_data));
                         $($.fn.blockstrap.element).append(paged_html);
                         if(callback) callback();
                     }

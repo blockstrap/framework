@@ -442,7 +442,7 @@ var blockstrap_core = function()
                 // Not handling lack of these being activated ...
                 $.fn.blockstrap.theme.new();
                 $.fn.blockstrap.buttons.new();
-                $.fn.blockstrap.templates.filter();
+                //$.fn.blockstrap.templates.filter();
             },
             resize: function()
             {
