@@ -26,7 +26,7 @@ var blockstrap_core = function()
         var $this = this;
         var plugin_name = 'blockstrap';
         var defaults = {
-            v: '1.0.2.7',
+            v: '1.0.2.8',
             salt: '',
             autoload: true,
             id: plugin_name,
@@ -42,6 +42,7 @@ var blockstrap_core = function()
             slug_base: 'dashboard',
             base_url: '',
             content_id: 'main-content',
+            navigation_id: 'navigation',
             css: ['font-awesome'],
             filters: [
                 'bootstrap', 
@@ -474,6 +475,10 @@ var blockstrap_core = function()
                     var tests = blockstrap_functions.vars('tests');
                     if(tests) run_tests = true;
                     $.fn.blockstrap.core.tests(run_tests);
+                    if(window.location.hash)
+                    {
+                        $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id).find('#' + blockstrap_functions.slug(window.location.hash)).trigger('click');
+                    }
                 });
             },
             image: function(input, callback)
@@ -866,6 +871,7 @@ var blockstrap_functions = {
     {
         var name = slug.replace(/ /g, '_');
         name = name.replace(/-/g, '_');
+        name = name.replace(/#/g, '');
         return name.toLowerCase();
     },
     include: function(blockstrap, start, files, callback, dependency)
