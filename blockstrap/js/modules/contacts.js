@@ -14,7 +14,7 @@
     var contacts = {};
     
     // FUNCTIONS FOR OBJECT
-    contacts.new = function(name, address, fields, callback)
+    contacts.new = function(name, address, currency, fields, callback)
     {
         if(name && address && fields)
         {
@@ -39,10 +39,18 @@
                             }
                         });
                     };
+                    var currencies = [];
+                    var addresses = [];
+                    addresses.push({key:address});
+                    currencies.push({
+                        code: currency,
+                        currency: $.fn.blockstrap.settings.currencies[currency].currency,
+                        addresses: addresses
+                    });
                     contact = {
                         id: id,
                         name: name,
-                        address: address,
+                        currencies: currencies,
                         data: data,
                         tx_to: 0,
                         tx_from: 0
@@ -60,6 +68,22 @@
             $.fn.blockstrap.core.loader('close');
             $.fn.blockstrap.core.modal('Warning', 'Currency not supported');
         }
+    }
+    
+    contacts.get = function()
+    {
+        var contacts = [];
+        if($.isPlainObject(localStorage))
+        {
+            $.each(localStorage, function(key, contact)
+            {
+                if(key.substring(0, 12) === 'nw_contacts_')
+                {
+                    contacts.push($.parseJSON(contact));
+                }
+            });
+        }
+        return contacts;
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE

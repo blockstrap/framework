@@ -55,7 +55,7 @@
 
                 <tbody>
                     {{#accounts.objects}}
-                        <tr>
+                        <tr id="table-row-{{id}}">
                             <td>
                                 <div class="cell">
                                     <a href="#account?id={{id}}">{{name}}</a>
@@ -90,8 +90,10 @@
                                 <div class="cell">
                                     <a 
                                        href="#" 
-                                       class="btn btn-danger btn-xs bs-remove"
+                                       class="btn btn-danger btn-xs btn-remove"
                                        data-collection="accounts"
+                                       data-parent="accounts"
+                                       data-element="table-row-{{id}}"
                                        data-key="{{id}}"
                                        data-confirm="true"
                                     >Remove</a>

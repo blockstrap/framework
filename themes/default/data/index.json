@@ -289,10 +289,23 @@
                                     "css": "col-sm-3"
                                 },
                                 "type": "text",
-                                "placeholder": "Address",
+                                "placeholder": "Type any address or click the user to select a contact",
                                 "wrapper": {
                                     "css": "col-sm-9"
-                                }
+                                },
+                                "icon": [
+                                    {
+                                        "css": "bs-toggle",
+                                        "href": "#",
+                                        "glyph": "user",
+                                        "attributes": [
+                                            {
+                                                "key": "data-toggle",
+                                                "value": "contacts"
+                                            }
+                                        ]
+                                    }
+                                ]
                             }
                         },
                         {
@@ -508,7 +521,7 @@
                                     "text": "Wallet Address",
                                     "css": "col-sm-3"
                                 },
-                                "placeholder": "This should be unique to this individual wallet",
+                                "placeholder": "Primary wallet address to use for this contact?",
                                 "type": "text",
                                 "wrapper": {
                                     "css": "col-sm-9"
@@ -522,13 +535,33 @@
                             }
                         },
                         {
+                            "selects": {
+                                "id": "contact_currency",
+                                "css": "bs-currency-select",
+                                "label": {
+                                    "text": "Address Currency",
+                                    "css": "col-sm-3"
+                                },
+                                "attributes": [
+                                    {
+                                        "key": "data-setup-type",
+                                        "value": "contact"
+                                    }
+                                ],
+                                "wrapper": {
+                                    "css": "col-sm-9"
+                                }
+                            }
+                        },
+                        {
                             "inputs": {
                                 "id": "contact_email",
+                                "css": "optional",
                                 "label": {
                                     "text": "Email Address",
                                     "css": "col-sm-3"
                                 },
-                                "placeholder": "This should be unique to this individual wallet",
+                                "placeholder": "Optional email address for contact",
                                 "type": "email",
                                 "wrapper": {
                                     "css": "col-sm-9"

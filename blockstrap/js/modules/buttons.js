@@ -577,16 +577,16 @@
             $(form).find('.form-group').each(function(i)
             {
                 var value = $(this).find('input').val();
-                if(value) 
+                if(value && !$(this).find('input').hasClass('optional')) 
                 {
                     contact[$(this).find('input').attr('id')] = value;
                 }
                 else
                 {
-                    if($(this).find('select').length > 0 && !$(this).find('select').hasClass('extra-fields'))
+                    if($(this).find('select').length > 0 && !$(this).find('select').hasClass('extra-fields') || $(this).find('.optional').length > 0)
                     {
                         value = $(this).find('select').val();
-                        if(value)
+                        if(value && $(this).find('.optional').length < 1)
                         {
                             contact[$(this).find('select').attr('id')] = value;
                         }
@@ -607,11 +607,13 @@
             contact 
             && contact.contact_name
             && contact.contact_address 
+            && contact.contact_currency 
         )
         {
             $.fn.blockstrap.contacts.new(
                 contact.contact_name, 
                 contact.contact_address,
+                contact.contact_currency,
                 contact,
                 function(contact)
                 {
@@ -628,6 +630,38 @@
             $.fn.blockstrap.core.loader('close');
             $.fn.blockstrap.core.modal('Error', 'Missing contact requirements');
             return false;
+        }
+    }
+    
+    buttons.toggle = function(button, e)
+    {
+        e.preventDefault();
+        var type = $(button).attr('data-toggle');
+        if(type === 'contacts')
+        {
+            var contacts = $.fn.blockstrap.contacts.get();
+            console.log('contacts', contacts);
+        }
+    }
+    
+    buttons.remove = function(button, e)
+    {
+        e.preventDefault();
+        var key = $(button).attr('data-key');
+        var parent = $(button).attr('data-parent');
+        var element = $(button).attr('data-element');
+        var collection = $(button).attr('data-collection');
+        if($.isPlainObject(localStorage))
+        {
+            var item = localStorage.getItem('nw_' + collection + '_' + key);
+            if(item)
+            {
+                localStorage.removeItem('nw_' + collection + '_' + key);
+                $($.fn.blockstrap.element).find('#' + parent).find('#' + element).hide(350, function()
+                {
+                   $(this).remove();
+                })
+            }
         }
     }
     

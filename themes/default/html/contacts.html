@@ -21,7 +21,7 @@
                         </th>
                         <th>
                             <div class="cell">
-                                Address
+                                Addresses
                             </div>
                         </th>
                         <th>
@@ -50,7 +50,7 @@
 
                 <tbody>
                     {{#contacts.objects}}
-                        <tr>
+                        <tr id="table-row-{{id}}">
                             <td>
                                 <div class="cell">
                                     <a href="#contact?id={{id}}">{{name}}</a>
@@ -58,7 +58,14 @@
                             </td>
                             <td>
                                 <div class="cell">
-                                    <a href="#address?key={{address}}">{{address}}</a>
+                                    {{#currencies}}
+                                        {{#addresses}}
+                                            <p>
+                                                {{currency}}: 
+                                                <a href="#account?key={{key}}">{{key}}</a>
+                                            </p>
+                                        {{/addresses}}
+                                    {{/currencies}}
                                 </div>
                             </td>
                             <td>
@@ -73,7 +80,14 @@
                             </td>
                             <td>
                                 <div class="cell">
-                                    <a href="mailto:{{data.contact_email}}">{{data.contact_email}}</a>
+                                    {{#data.contact_email}}
+                                        <a href="mailto:{{data.contact_email}}">
+                                            {{data.contact_email}}
+                                    </a>
+                                    {{/data.contact_email}}
+                                    {{^data.contact_email}}
+                                        N / A
+                                    {{/data.contact_email}}
                                 </div>
                             </td>
                             <td>
@@ -82,8 +96,10 @@
                                     <a href="#" class="btn btn-default btn-xs">Edit</a>
                                     <a 
                                        href="#" 
-                                       class="btn btn-danger btn-xs bs-remove"
-                                       data-collection="accounts"
+                                       class="btn btn-danger btn-xs btn-remove"
+                                       data-collection="contacts"
+                                       data-parent="contacts"
+                                       data-element="table-row-{{id}}"
                                        data-key="{{id}}"
                                        data-confirm="true"
                                     >Remove</a>

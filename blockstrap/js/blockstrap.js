@@ -793,6 +793,14 @@ var blockstrap_core = function()
                 {
                     $.fn.blockstrap.buttons.contact(this, e);
                 });
+                $($.fn.blockstrap.element).on('click', '.bs-toggle', function(e)
+                {
+                    $.fn.blockstrap.buttons.toggle(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '.btn-remove', function(e)
+                {
+                    $.fn.blockstrap.buttons.remove(this, e);
+                });
             },
             stringed: function(styles)
             {

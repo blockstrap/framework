@@ -32,6 +32,26 @@
                                                     {{key}}="{{value}}"
                                                {{/attributes}} 
                                         />
+                                    
+                                        {{#icon}}
+                                    
+                                            {{#href}}
+                                                <a 
+                                                    id="{{id}}" 
+                                                    class="{{css}}" 
+                                                    href="{{href}}"
+                                                    {{#attributes}} 
+                                                        {{key}}="{{value}}"
+                                                    {{/attributes}} 
+                                                >
+                                            {{/href}}
+                                    
+                                            {{#glyph}}
+                                                <span class="glyphicon input-icon glyphicon-{{glyph}}"></span>
+                                            {{/glyph}}
+                                            
+                                            {{#href}}</a>{{/href}}
+                                        {{/icon}}
 
                                         {{#wrapper.css}}</div>{{/wrapper.css}}
                                     {{/inputs}}
