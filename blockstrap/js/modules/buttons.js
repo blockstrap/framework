@@ -652,7 +652,9 @@
                 var input = $(button).parent().find('input');
                 var select_id = $(input).attr('id');
                 var select_class = $(input).attr('class');
-                var select = '<select id="'+select_id+'" class="'+select_class+'">';
+                var select_placeholder = $(input).attr('placeholder');
+                var select_type = $(input).attr('type');
+                var select = '<select id="'+select_id+'" class="'+select_class+'" type="'+select_type+'" placeholder="'+select_placeholder+'">';
                 $.each(contacts, function(key, contact)
                 {
                     var value = '';
@@ -680,15 +682,27 @@
                 });
                 if(options)
                 {
+                    var default_option = '<option value="">-- Select Contact--</option>';
                     options+= '<option value="bs-toggle">-- Enter Manually --</option>';
-                    $(button).hide(0);
-                    $(input).addClass('optional').addClass('hidden').val('');
-                    $(input).after(select+options+'</select>');
+                    $(button).css({'display':'none'});
+                    $(input).after(select+default_option+options+'</select>');
+                    $(input).remove();
+                    $(button).parent().find('select').on('change', function()
+                    {
+                        if($(this).val() == 'bs-toggle')
+                        {
+                            var select = $(button).parent().find('select');
+                            var input_id = $(select).attr('id');
+                            var input_class = $(select).attr('class');
+                            var input_placeholder = $(select).attr('placeholder');
+                            var input_type = $(select).attr('type');
+                            var input = '<input id="'+input_id+'" class="'+input_class+'" type="'+input_type+'" placeholder="'+input_placeholder+'">';
+                            $(select).after(input);
+                            $(select).remove();
+                            $(button).css({'display':'block'});
+                        }
+                    });
                 }
-            }
-            else if(state == 'select')
-            {
-                
             }
         }
     }
