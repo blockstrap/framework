@@ -644,6 +644,9 @@
         {
             state = 'select';
         }
+        
+        // MAY NEED TO MAKE MORE MODULE IF MORE THAN ONE TYPE
+        // THIS WAS ONLY MEANT AS A PLACEHOLDER FOR DEMO DAY
         if(type === 'contacts')
         {
             var contacts = $.fn.blockstrap.contacts.get();
@@ -658,7 +661,7 @@
                 $.each(contacts, function(key, contact)
                 {
                     var value = '';
-                    var text = 'N / A';
+                    var text = '';
                     var currencies = contact.currencies;
                     if($.isArray(currencies))
                     {

@@ -286,12 +286,12 @@
                                 "id": "to",
                                 "label": {
                                     "text": "To",
-                                    "css": "col-sm-3"
+                                    "css": "col-xs-3"
                                 },
                                 "type": "text",
                                 "placeholder": "Type any address or click the user to select a contact",
                                 "wrapper": {
-                                    "css": "col-sm-9"
+                                    "css": "col-xs-9"
                                 },
                                 "icon": [
                                     {
@@ -313,12 +313,12 @@
                                 "id": "from",
                                 "label": {
                                     "text": "From",
-                                    "css": "col-sm-3"
+                                    "css": "col-xs-3"
                                 },
                                 "type": "text",
                                 "placeholder": "Select Wallet",
                                 "wrapper": {
-                                    "css": "col-sm-9"
+                                    "css": "col-xs-9"
                                 },
                                 "values": [
                                     {
@@ -341,12 +341,12 @@
                                 "id": "amount",
                                 "label": {
                                     "text": "Amount",
-                                    "css": "col-sm-3"
+                                    "css": "col-xs-3"
                                 },
                                 "type": "text",
                                 "placeholder": "Total to Send",
                                 "wrapper": {
-                                    "css": "col-sm-9"
+                                    "css": "col-xs-9"
                                 }
                             }
                         }
@@ -382,10 +382,10 @@
                                 "css": "bs-currency-select",
                                 "label": {
                                     "text": "Currency",
-                                    "css": "col-sm-3"
+                                    "css": "col-xs-3"
                                 },
                                 "wrapper": {
-                                    "css": "col-sm-9"
+                                    "css": "col-xs-9"
                                 },
                                 "attributes": [
                                     {
@@ -400,12 +400,12 @@
                                 "id": "wallet_name",
                                 "label": {
                                     "text": "Name / Label",
-                                    "css": "col-sm-3"
+                                    "css": "col-xs-3"
                                 },
                                 "placeholder": "You will need to remember these if recreating them later",
                                 "type": "text",
                                 "wrapper": {
-                                    "css": "col-sm-9"
+                                    "css": "col-xs-9"
                                 },
                                 "attributes": [
                                     {
@@ -420,12 +420,12 @@
                                 "id": "wallet_password",
                                 "label": {
                                     "text": "Password",
-                                    "css": "col-sm-3"
+                                    "css": "col-xs-3"
                                 },
                                 "placeholder": "This should be unique to this individual wallet",
                                 "type": "text",
                                 "wrapper": {
-                                    "css": "col-sm-9"
+                                    "css": "col-xs-9"
                                 },
                                 "attributes": [
                                     {
@@ -441,7 +441,7 @@
                                 "css": "extra-fields",
                                 "label": {
                                     "text": "More Security",
-                                    "css": "col-sm-3"
+                                    "css": "col-xs-3"
                                 },
                                 "values": [
                                     {
@@ -464,7 +464,7 @@
                                     }
                                 ],
                                 "wrapper": {
-                                    "css": "col-sm-9"
+                                    "css": "col-xs-9"
                                 }
                             }
                         }
@@ -500,11 +500,11 @@
                                 "id": "contact_name",
                                 "label": {
                                     "text": "Full Name",
-                                    "css": "col-sm-3"
+                                    "css": "col-xs-3"
                                 },
                                 "type": "text",
                                 "wrapper": {
-                                    "css": "col-sm-9"
+                                    "css": "col-xs-9"
                                 },
                                 "attributes": [
                                     {
@@ -519,12 +519,12 @@
                                 "id": "contact_address",
                                 "label": {
                                     "text": "Wallet Address",
-                                    "css": "col-sm-3"
+                                    "css": "col-xs-3"
                                 },
                                 "placeholder": "Primary wallet address to use for this contact?",
                                 "type": "text",
                                 "wrapper": {
-                                    "css": "col-sm-9"
+                                    "css": "col-xs-9"
                                 },
                                 "attributes": [
                                     {
@@ -540,7 +540,7 @@
                                 "css": "bs-currency-select",
                                 "label": {
                                     "text": "Address Currency",
-                                    "css": "col-sm-3"
+                                    "css": "col-xs-3"
                                 },
                                 "attributes": [
                                     {
@@ -549,7 +549,7 @@
                                     }
                                 ],
                                 "wrapper": {
-                                    "css": "col-sm-9"
+                                    "css": "col-xs-9"
                                 }
                             }
                         },
@@ -559,12 +559,12 @@
                                 "css": "optional",
                                 "label": {
                                     "text": "Email Address",
-                                    "css": "col-sm-3"
+                                    "css": "col-xs-3"
                                 },
                                 "placeholder": "Optional email address for contact",
                                 "type": "email",
                                 "wrapper": {
-                                    "css": "col-sm-9"
+                                    "css": "col-xs-9"
                                 },
                                 "attributes": [
                                     {
