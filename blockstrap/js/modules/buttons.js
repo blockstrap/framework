@@ -551,7 +551,7 @@
                     /* NEED TO RESET THE INDEX HTML AND DATA */
                     $.fn.blockstrap.templates.render('accounts', function()
                     {
-                        //location.reload();
+                        $.fn.blockstrap.core.new();
                         $.fn.blockstrap.core.loader('close');
                     }, true);
                 }
@@ -620,6 +620,7 @@
                     /* NEED TO RESET THE INDEX HTML AND DATA */
                     $.fn.blockstrap.templates.render('contacts', function()
                     {
+                        $.fn.blockstrap.core.new();
                         $.fn.blockstrap.core.loader('close');
                     }, true);
                 }
@@ -637,10 +638,58 @@
     {
         e.preventDefault();
         var type = $(button).attr('data-toggle');
+        var state = 'input';
+        var options = '';
+        if($(button).parent().find('select').length > 0)
+        {
+            state = 'select';
+        }
         if(type === 'contacts')
         {
             var contacts = $.fn.blockstrap.contacts.get();
-            console.log('contacts', contacts);
+            if($.isArray(contacts) && state == 'input')
+            {
+                var input = $(button).parent().find('input');
+                var select_id = $(input).attr('id');
+                var select_class = $(input).attr('class');
+                var select = '<select id="'+select_id+'" class="'+select_class+'">';
+                $.each(contacts, function(key, contact)
+                {
+                    var value = '';
+                    var text = 'N / A';
+                    var currencies = contact.currencies;
+                    if($.isArray(currencies))
+                    {
+                        $.each(currencies, function(currency_key, currency)
+                        {
+                            var addresses = currency.addresses;
+                            if($.isArray(addresses))
+                            {
+                                $.each(addresses, function(address_key, address)
+                                {
+                                    value = address.key;
+                                    text = contact.name +': '+ currency.currency;
+                                });
+                            }
+                        });
+                    }
+                    if(value && text)
+                    {
+                        options+= '<option value="' + value + '">' + text + '</option>';
+                    }
+                });
+                if(options)
+                {
+                    options+= '<option value="bs-toggle">-- Enter Manually --</option>';
+                    $(button).hide(0);
+                    $(input).addClass('optional').addClass('hidden').val('');
+                    $(input).after(select+options+'</select>');
+                }
+            }
+            else if(state == 'select')
+            {
+                
+            }
         }
     }
     
