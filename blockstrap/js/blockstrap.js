@@ -26,7 +26,7 @@ var blockstrap_core = function()
         var $this = this;
         var plugin_name = 'blockstrap';
         var defaults = {
-            v: '1.0.2.8',
+            v: '1.0.2.9',
             salt: '',
             autoload: true,
             id: plugin_name,
@@ -296,6 +296,7 @@ var blockstrap_core = function()
                                     $.fn.blockstrap.buttons.reset(false, false);
                                 }
                                 
+                                
                                 blockstrap_functions.update($.fn.blockstrap.settings.v, function()
                                 {
                                     // INJECT LESS.css EARLY IF REQUIRED
@@ -461,30 +462,52 @@ var blockstrap_core = function()
             },
             init: function()
             {
-                $.fn.blockstrap.templates.render('index', function()
+                // Check for login credentials...?
+                if(!$.fn.blockstrap.security.logged_in())
                 {
-                    $.fn.blockstrap.accounts.balances(true);
-                    $.fn.blockstrap.styles.set();
-                    $.fn.blockstrap.core.modals();
-                    $.fn.blockstrap.core.buttons();
-                    $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
+                    $.fn.blockstrap.templates.render('../../../blockstrap/html/bootstrap/login', function()
                     {
-                        $.fn.blockstrap.core.loading();
-                        $.fn.blockstrap.core.new();
-                        $(window).resize(function(e)
+                        $.fn.blockstrap.styles.set();
+                        $.fn.blockstrap.core.modals();
+                        $.fn.blockstrap.core.buttons();
+                        $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
                         {
-                            $.fn.blockstrap.core.resize();
-                        })
+                            $.fn.blockstrap.core.loading();
+                            $.fn.blockstrap.core.new();
+                            $(window).resize(function(e)
+                            {
+                                $.fn.blockstrap.core.resize();
+                            })
+                        });
                     });
-                    var run_tests = false;
-                    var tests = blockstrap_functions.vars('tests');
-                    if(tests) run_tests = true;
-                    $.fn.blockstrap.core.tests(run_tests);
-                    if(window.location.hash)
+                }
+                else
+                {
+                    $.fn.blockstrap.templates.render('index', function()
                     {
-                        $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id).find('#' + blockstrap_functions.slug(window.location.hash)).trigger('click');
-                    }
-                });
+                        $.fn.blockstrap.accounts.balances(true);
+                        $.fn.blockstrap.styles.set();
+                        $.fn.blockstrap.core.modals();
+                        $.fn.blockstrap.core.buttons();
+                        $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
+                        {
+                            $.fn.blockstrap.core.loading();
+                            $.fn.blockstrap.core.new();
+                            $(window).resize(function(e)
+                            {
+                                $.fn.blockstrap.core.resize();
+                            })
+                        });
+                        var run_tests = false;
+                        var tests = blockstrap_functions.vars('tests');
+                        if(tests) run_tests = true;
+                        $.fn.blockstrap.core.tests(run_tests);
+                        if(window.location.hash)
+                        {
+                            $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id).find('#' + blockstrap_functions.slug(window.location.hash)).trigger('click');
+                        }
+                    });
+                }
             },
             cache: function(key, value, time_to_live)
             {
@@ -558,6 +581,15 @@ var blockstrap_core = function()
                                 $(this).modal('hide');
                             }
                         });
+                    });
+                    $($.fn.blockstrap.element).on('shown.bs.modal', '.modal', function(i)
+                    {
+                        var this_form = $(this).find('form');
+                        if($(this_form).find('input').length > 0)
+                        {
+                            var input = $(this_form).find('input[type!=hidden]:first');
+                            $(input).focus();
+                        }
                     });
                 }
             },
@@ -647,6 +679,11 @@ var blockstrap_core = function()
                             });
                         }
                     }
+                });
+                $($.fn.blockstrap.element).on('submit', '#blockstrap-login', function(e)
+                {
+                    e.preventDefault();
+                    $(this).find('input[type="submit"]').trigger('click');
                 });
             },
             css: function(callback)
@@ -800,6 +837,22 @@ var blockstrap_core = function()
                 $($.fn.blockstrap.element).on('click', '.btn-remove', function(e)
                 {
                     $.fn.blockstrap.buttons.remove(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '.btn-logout', function(e)
+                {
+                    $.fn.blockstrap.buttons.logout(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '.btn-login', function(e)
+                {
+                    $.fn.blockstrap.buttons.login(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '#create-login-credentials', function(e)
+                {
+                    $.fn.blockstrap.buttons.credentials(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '#set-credentials', function(e)
+                {
+                    $.fn.blockstrap.buttons.set(this, e);
                 });
             },
             stringed: function(styles)

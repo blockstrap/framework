@@ -58,8 +58,8 @@
                 ]
             },
             {
-                "id": "nu-logout",
-                "css": "btn btn-default btn-sm",
+                "id": "logout",
+                "css": "btn btn-default btn-sm btn-logout",
                 "href": "#logout",
                 "text": "Logout"
             }
@@ -255,6 +255,98 @@
                 "id": "default",
                 "title": "Title",
                 "body": "<p>Content.</p>",
+                "close": "Cancel"
+            },
+            {
+                "id": "login-credentials",
+                "title": "Create Login Credentials",
+                "body": "<p>Add an extra layer of optional protection in case you share your computer and phone with others. This is far from secure and easily fooled and has nothing to do with the storing of your coins, only the protection from others using this app without your permission.</p>",
+                "form": {
+                    "css": "form-horizontal",
+                    "fields": [
+                        {
+                            "inputs": {
+                                "id": "device_username",
+                                "label": {
+                                    "text": "Username",
+                                    "css": "col-xs-3"
+                                },
+                                "type": "text",
+                                "placeholder": "This can be anything you like and is not registered anywhere",
+                                "wrapper": {
+                                    "css": "col-xs-9"
+                                }
+                            }
+                        },
+                        {
+                            "inputs": {
+                                "id": "device_password",
+                                "label": {
+                                    "text": "Password",
+                                    "css": "col-xs-3"
+                                },
+                                "type": "password",
+                                "placeholder": "Something simple - this is not for storing coins",
+                                "wrapper": {
+                                    "css": "col-xs-9"
+                                }
+                            }
+                        },
+                        {
+                            "inputs": {
+                                "id": "device_password_repeat",
+                                "css": "ignore",
+                                "label": {
+                                    "text": "Repeat",
+                                    "css": "col-xs-3"
+                                },
+                                "type": "password",
+                                "placeholder": "Better to be safe than sorry",
+                                "wrapper": {
+                                    "css": "col-xs-9"
+                                }
+                            }
+                        }
+                    ],
+                    "buttons": {
+                        "forms": [
+                            {
+                                "type": "submit",
+                                "id": "set-credentials",
+                                "css": "btn-primary pull-right",
+                                "text": "Set",
+                                "attributes": [
+                                    {
+                                        "key": "data-form",
+                                        "value": "login-credentials"
+                                    },
+                                    {
+                                        "key": "data-field-username",
+                                        "value": "device_username"
+                                    },
+                                    {
+                                        "key": "data-field-password",
+                                        "value": "device_password"
+                                    },
+                                    {
+                                        "key": "data-field-repeat",
+                                        "value": "device_password_repeat"
+                                    }
+                                ]
+                            },
+                            {
+                                "css": "btn-danger pull-right",
+                                "text": "Cancel",
+                                "attributes": [
+                                    {
+                                        "key": "data-dismiss",
+                                        "value": "modal"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
                 "close": "Cancel"
             },
             {

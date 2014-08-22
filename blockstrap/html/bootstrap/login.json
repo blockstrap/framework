@@ -1,0 +1,11 @@
+{
+    "login": {
+        "avatar": {
+            "func": "avatars"
+        },
+        "intro": "Welcome Back {{user.name}}",
+        "username": "Username",
+        "password": "Password",
+        "submit": "Submit"
+    }
+}
