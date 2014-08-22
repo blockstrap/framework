@@ -16,7 +16,12 @@
     // FUNCTIONS FOR OBJECT
     contacts.new = function(name, address, currency, fields, callback)
     {
-        if(name && address && fields)
+        if(!$.fn.blockstrap.btc.validate(address))
+        {
+            $.fn.blockstrap.core.modal('Error', 'This is not a valid address!');
+            callback();
+        }
+        else if(name && address && fields)
         {
             var id = blockstrap_functions.slug(name);
             $.fn.blockstrap.data.find('contacts', id, function(contact)

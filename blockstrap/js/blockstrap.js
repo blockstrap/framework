@@ -66,7 +66,8 @@ var blockstrap_core = function()
                 'buttons', 
                 'styles', 
                 'templates',
-                'filters'
+                'filters',
+                'btc'
             ],
             dependencies: [
                 'sonic', 
