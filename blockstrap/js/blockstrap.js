@@ -530,6 +530,8 @@ var blockstrap_core = function()
                         ts: now
                     };
                     localStorage.setItem(key, JSON.stringify(obj));
+                    if(callback) callback(true);
+                    else return true;
                 }
                 else
                 {
@@ -541,6 +543,7 @@ var blockstrap_core = function()
                     else
                     {
                         if($.isPlainObject(val) && val.value) return val.value;
+                        else if(callback) callback(false);
                         else return false;
                     }
                 }
