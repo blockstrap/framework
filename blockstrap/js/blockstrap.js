@@ -117,7 +117,7 @@ var blockstrap_core = function()
             },
             cache: {
                 api: {
-                    address: 60
+                    address: 60000
                 },
             },
             exchange: {
@@ -510,11 +510,10 @@ var blockstrap_core = function()
                     });
                 }
             },
-            cache: function(key, value, time_to_live)
+            cache: function(key, value, variable, callback, time_to_live)
             {
-                if(!time_to_live) time_to_live = 1000;
-                
-                // 1000 WHAT ...?
+                if(!time_to_live) time_to_live = 60000; // 1 Minute
+                key = key+'_'+variable;
                 
                 var now = new Date().getTime();
                 var val = localStorage.getItem(key);
@@ -534,8 +533,16 @@ var blockstrap_core = function()
                 }
                 else
                 {
-                    if($.isPlainObject(val) && val.value) return val.value;
-                    else return false;
+                    if(time < now)
+                    {
+                        if(callback) callback(false);
+                        else return false;
+                    }
+                    else
+                    {
+                        if($.isPlainObject(val) && val.value) return val.value;
+                        else return false;
+                    }
                 }
             },
             image: function(input, callback)
