@@ -693,6 +693,11 @@ var blockstrap_core = function()
                     e.preventDefault();
                     $(this).find('input[type="submit"]').trigger('click');
                 });
+                $($.fn.blockstrap.element).on('submit', '#search-form', function(e)
+                {
+                    e.preventDefault();
+                    $.fn.blockstrap.core.modal('Warning', 'Search functionality will be available in the next major update');
+                });
             },
             css: function(callback)
             {
