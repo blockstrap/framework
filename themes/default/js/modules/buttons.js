@@ -198,6 +198,9 @@
                 var text = $(this).html();
                 if(value)
                 {
+                    
+                    // REPLACE WITH NEW FORMS FUNCTIONS
+                    
                     var component = '';
                     $(button).find('option:nth-child('+(i+1)+')').remove();
                     component+= '<div class="form-group" id="extra-'+value+'">';
@@ -212,6 +215,93 @@
                 }
             }
         });
+    }
+    
+    buttons.your_question = function(button)
+    {
+        var form_id = $(button).parent().find('input.switch').attr('data-form-id');
+        var form = $($.fn.blockstrap.element).find('form#'+form_id);
+        if($(form).find('#temporary_question').length > 0)
+        {
+            $(form).find('#temporary_question').hide(350, function()
+            {
+                $(this).remove();
+            });
+        }
+        else
+        {
+            var question = $.fn.blockstrap.forms.input({
+                id: 'salt_question',
+                label: {
+                    text: 'The Question',
+                    css: 'col-sm-3',
+                },
+                wrapper: 'col-sm-9',
+                attributes: [
+                    {
+                        key: 'data-setup-type',
+                        value: 'option'
+                    }
+                ]
+            });
+            var answer = $.fn.blockstrap.forms.input({
+                id: 'salt_answer',
+                type: 'password',
+                label: {
+                    text: 'The Answer',
+                    css: 'col-sm-3',
+                },
+                wrapper: 'col-sm-9',
+                attributes: [
+                    {
+                        key: 'data-setup-type',
+                        value: 'module'
+                    }
+                ]
+            });
+            var choice = $.fn.blockstrap.forms.input({
+                id: 'salt_choice',
+                type: 'checkbox',
+                label: {
+                    text: 'Add question to salt too?',
+                    css: 'col-sm-6',
+                },
+                wrapper: 'col-sm-6',
+                css: 'switch',
+                attributes: [
+                    {
+                        key: "data-off-color",
+                        value: "danger"
+                    },
+                    {
+                        key: "data-on-color",
+                        value: "success"
+                    },
+                    {
+                        key: "data-off-text",
+                        value: "NO"
+                    },
+                    {
+                        key: "data-on-text",
+                        value: "YES"
+                    },
+                    {
+                        key: "data-label-text",
+                        value: "SET"
+                    },
+                    {
+                        key: 'data-setup-type',
+                        value: 'option'
+                    }
+                ]
+            });
+            var html = '<div id="temporary_question">'+question+answer+choice+'</div>';
+            $(form).append(html);
+            $(form).find('#temporary_question').hide(0).show(350, function()
+            {
+
+            });
+        }
     }
     
     $($.fn.blockstrap.element).on('click', '#menu-toggle', function(e)
@@ -239,6 +329,16 @@
     $($.fn.blockstrap.element).on('click', '.bootstrap-switch-id-photo_salt', function(e)
     {
         $.fn.blockstrap.buttons.photo_salt(this);
+    });
+    $($.fn.blockstrap.element).on('click', 'label[for="your_question"]', function(e)
+    {
+        var boot_switch = $(this).parent().find('.bootstrap-switch-id-your_question');
+        if($(boot_switch).hasClass('bootstrap-switch-off')) $(this).parent().find('input.switch').val('true');
+        else $(this).parent().find('input.switch').val('false');
+    });
+    $($.fn.blockstrap.element).on('click', '.bootstrap-switch-id-your_question', function(e)
+    {
+        $.fn.blockstrap.buttons.your_question(this);
     });
     
     $($.fn.blockstrap.element).swipe( {

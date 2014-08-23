@@ -57,6 +57,7 @@ var blockstrap_core = function()
             ],
             store: ['app_url', 'your_name'],
             modules: [
+                'forms',
                 'accounts',
                 'contacts',
                 'data', 

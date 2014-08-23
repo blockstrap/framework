@@ -663,6 +663,10 @@ var blockstrap_setup_steps = [
                                             {
                                                 "key": "data-setup-type",
                                                 "value": "option"
+                                            },
+                                            {
+                                                "key": "data-form-id",
+                                                "value": "blockstrap-setup-step2-left"
                                             }
                                         ],
                                         "wrapper": {
