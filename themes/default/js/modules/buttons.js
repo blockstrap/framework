@@ -124,34 +124,57 @@
         var input_value = $(button).find('input.switch').val();
         if(input_value === true || input_value === 'true')
         {
-            var password = '';
-            password+= '<div id="salt-passwords">';
-                password+= '<div class="form-group">';
-                    password+= '<label class="control-label col-sm-3" for="salt_pw">Salt Password</label>';
-                    password+= '<div class="col-sm-9">';
-                        password+= '<input type="password" data-setup-type="module" value="" placeholder="Strictly used for salt generation - not device or wallet" class="form-control " id="salt_pw">';
-                    password+= '</div>';
-                password+= '</div>';
-                password+= '<div class="form-group" id="salt-password-repeat">';
-                    password+= '<label class="control-label col-sm-3" for="salt_pw_repeat">Repeat Password</label>';
-                    password+= '<div class="col-sm-9">';
-                        password+= '<input type="password" data-setup-type="module" value="" placeholder="Better to be safe than sorry" class="form-control ignore" id="salt_pw_repeat" data-pw-id="salt_pw">';
-                    password+= '</div>';
-                password+= '</div>';
-            password+= '</div>';
-            if($('#blockstrap-setup-step1-left').find('#salt-passwords').length < 1)
+            var password = $.fn.blockstrap.forms.input({
+                id: 'salt_pw',
+                type: 'password',
+                label: {
+                    text: 'Salt Password',
+                    css: 'col-sm-3',
+                },
+                placeholder: 'Strictly used for salt generation - not device or wallet',
+                css: 'salt-passwords',
+                wrapper: {
+                    css: 'col-sm-9'
+                },
+                attributes: [
+                    {
+                        key: 'data-setup-type',
+                        value: 'module'
+                    }
+                ]
+            });
+            var password_repeat = $.fn.blockstrap.forms.input({
+                id: 'salt_pw_repeat',
+                type: 'password',
+                label: {
+                    text: 'Password Repeat',
+                    css: 'col-sm-3',
+                },
+                css: 'ignore salt-passwords',
+                placeholder: 'Better safe than sorry',
+                wrapper: {
+                    css: 'col-sm-9'
+                },
+                attributes: [
+                    {
+                        key: 'data-repeat-id',
+                        value: 'salt_pw'
+                    }
+                ]
+            });
+            if($('#blockstrap-setup-step1-left').find('.salt-passwords').length < 1)
             {
-                $('#blockstrap-setup-step1-left').append(password);
-                $('#blockstrap-setup-step1-left').find('#salt-passwords').hide(0);
+                $('#blockstrap-setup-step1-left').append(password + password_repeat);
+                $('#blockstrap-setup-step1-left').find('.salt-passwords').hide(0);
             }
-            $('#blockstrap-setup-step1-left').find('#salt-passwords').show(350, function()
+            $('#blockstrap-setup-step1-left').find('.salt-passwords').show(350, function()
             {
               
             });
         }
         else
         {
-            $('#blockstrap-setup-step1-left').find('#salt-passwords').hide(350, function()
+            $('#blockstrap-setup-step1-left').find('.salt-passwords').hide(350, function()
             {
               $(this).remove();
             });
@@ -292,6 +315,28 @@
                     }
                 ]
             });
+            var answer_repeat = $.fn.blockstrap.forms.input({
+                id: 'salt_answer_repeat',
+                type: 'password',
+                label: {
+                    text: 'Repeat Answer',
+                    css: 'col-sm-3',
+                },
+                css: 'ignore',
+                wrapper: {
+                    css: 'col-sm-9'
+                },
+                attributes: [
+                    {
+                        key: 'data-setup-type',
+                        value: 'module'
+                    },
+                    {
+                        key: 'data-repeat-id',
+                        value: 'salt_answer'
+                    }
+                ]
+            });
             var choice = $.fn.blockstrap.forms.input({
                 id: 'salt_choice',
                 type: 'checkbox',
@@ -330,7 +375,7 @@
                     }
                 ]
             });
-            var html = '<div id="temporary_question">'+question+answer+choice+'</div>';
+            var html = '<div id="temporary_question">' + question + answer + answer_repeat + choice + '</div>';
             $(form).append(html);
             $(form).find('#temporary_question').hide(0).show(350, function()
             {

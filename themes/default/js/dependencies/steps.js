@@ -861,7 +861,7 @@ var blockstrap_setup_steps = [
                                                 "value": "wallet"
                                             },
                                             {
-                                                "key": "data-pw-id",
+                                                "key": "data-repeat-id",
                                                 "value": "wallet_password"
                                             }
                                         ]
@@ -953,6 +953,27 @@ var blockstrap_setup_steps = [
                                             {
                                                 "key": "data-setup-type",
                                                 "value": "wallet"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "inputs": {
+                                        "id": "wallet_answer_repeat",
+                                        "label": {
+                                            "text": "Repeat",
+                                            "css": "col-sm-3"
+                                        },
+                                        "placeholder": "Better to be safe than sorry",
+                                        "type": "password",
+                                        "wrapper": {
+                                            "css": "col-sm-9"
+                                        },
+                                        "css": "ignore",
+                                        "attributes": [
+                                            {
+                                                "key": "data-repeat-id",
+                                                "value": "wallet_answer"
                                             }
                                         ]
                                     }

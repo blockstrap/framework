@@ -389,11 +389,11 @@
                             
                             if($(this).find('input').hasClass('ignore'))
                             {
-                                var pw_id = $(this).find('input').attr('data-pw-id');
-                                var pw_val = $('#'+pw_id).val();
-                                if(pw_val && pw_val != value)
+                                var repeat_id = $(this).find('input').attr('data-repeat-id');
+                                var repeat_val = $('#'+repeat_id).val();
+                                if(repeat_val && repeat_val != value)
                                 {
-                                    $.fn.blockstrap.core.modal('Warning', 'Password Mismatch');
+                                    $.fn.blockstrap.core.modal('Warning', 'Repeating Mismatch');
                                     continue_salting = false;
                                     wallet.cancel = true;
                                 }
