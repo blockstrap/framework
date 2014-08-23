@@ -379,8 +379,18 @@
                                     modules[$(this).find('input.hidden-input').attr('id')] = value;
                                 }
                             }
-                                
-                            if(setup_type === 'module')
+                            
+                            if($(this).find('input').hasClass('ignore'))
+                            {
+                                var pw_id = $(this).find('input').attr('data-pw-id');
+                                var pw_val = $('#'+pw_id).val();
+                                if(pw_val && pw_val != value)
+                                {
+                                    $.fn.blockstrap.core.modal('Warning', 'Password Mismatch');
+                                    continue_salting = false;
+                                }
+                            }
+                            else if(setup_type === 'module')
                             {
                                 modules[$(this).find('input').attr('id')] = value;
                             }
@@ -492,6 +502,10 @@
                         });
                     });
                 }, saved_salt);
+            }
+            else
+            {
+                $.fn.blockstrap.core.loader('close');
             }
         }
     }

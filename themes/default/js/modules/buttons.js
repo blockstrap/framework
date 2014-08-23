@@ -125,25 +125,33 @@
         if(input_value === true || input_value === 'true')
         {
             var password = '';
-            password+= '<div class="form-group" id="salt-password">';
-                password+= '<label class="control-label col-sm-3" for="salt_pw">Salt Password</label>';
-                password+= '<div class="col-sm-9">';
-                    password+= '<input type="text" data-setup-type="module" value="" placeholder="Strictly used for salt generation - not device or wallet" class="form-control " id="salt_pw">';
+            password+= '<div id="salt-passwords">';
+                password+= '<div class="form-group">';
+                    password+= '<label class="control-label col-sm-3" for="salt_pw">Salt Password</label>';
+                    password+= '<div class="col-sm-9">';
+                        password+= '<input type="password" data-setup-type="module" value="" placeholder="Strictly used for salt generation - not device or wallet" class="form-control " id="salt_pw">';
+                    password+= '</div>';
+                password+= '</div>';
+                password+= '<div class="form-group" id="salt-password-repeat">';
+                    password+= '<label class="control-label col-sm-3" for="salt_pw_repeat">Repeat Password</label>';
+                    password+= '<div class="col-sm-9">';
+                        password+= '<input type="password" data-setup-type="module" value="" placeholder="Better to be safe than sorry" class="form-control ignore" id="salt_pw_repeat" data-pw-id="salt_pw">';
+                    password+= '</div>';
                 password+= '</div>';
             password+= '</div>';
-            if($('#blockstrap-setup-step1-left').find('#salt-password').length < 1)
+            if($('#blockstrap-setup-step1-left').find('#salt-passwords').length < 1)
             {
                 $('#blockstrap-setup-step1-left').append(password);
-                $('#blockstrap-setup-step1-left').find('#salt-password').hide(0);
+                $('#blockstrap-setup-step1-left').find('#salt-passwords').hide(0);
             }
-            $('#blockstrap-setup-step1-left').find('#salt-password').show(350, function()
+            $('#blockstrap-setup-step1-left').find('#salt-passwords').show(350, function()
             {
               
             });
         }
         else
         {
-            $('#blockstrap-setup-step1-left').find('#salt-password').hide(350, function()
+            $('#blockstrap-setup-step1-left').find('#salt-passwords').hide(350, function()
             {
               $(this).remove();
             });
