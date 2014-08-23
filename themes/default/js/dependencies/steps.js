@@ -629,6 +629,46 @@ var blockstrap_setup_steps = [
                                             "css": "col-sm-6"
                                         }
                                     }
+                                },
+                                {
+                                    "inputs": {
+                                        "id": "your_question",
+                                        "css": "switch",
+                                        "label": {
+                                            "text": "Create custom question for salt?",
+                                            "css": "col-sm-6"
+                                        },
+                                        "type": "checkbox",
+                                        "attributes": [
+                                            {
+                                                "key": "data-off-color",
+                                                "value": "danger"
+                                            },
+                                            {
+                                                "key": "data-on-color",
+                                                "value": "success"
+                                            },
+                                            {
+                                                "key": "data-off-text",
+                                                "value": "NO"
+                                            },
+                                            {
+                                                "key": "data-on-text",
+                                                "value": "YES"
+                                            },
+                                            {
+                                                "key": "data-label-text",
+                                                "value": "SET"
+                                            },
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "option"
+                                            }
+                                        ],
+                                        "wrapper": {
+                                            "css": "col-sm-6"
+                                        }
+                                    }
                                 }
                             ]
                         }
