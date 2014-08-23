@@ -1018,6 +1018,8 @@ var blockstrap_functions = {
     {
         var name = slug.replace(/ /g, '_');
         name = name.replace(/-/g, '_');
+        name = name.replace(/'/g, '');
+        name = name.replace(/"/g, '');
         name = name.replace(/#/g, '');
         return name.toLowerCase();
     },

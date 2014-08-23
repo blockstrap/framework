@@ -13,12 +13,53 @@
     // EMPTY OBJECTS
     var forms = {};
     
+    forms.get = function()
+    {
+        if(localStorage && localStorage.getItem('nw_boot_forms'))
+        {
+            var raw_forms = localStorage.getItem('nw_boot_forms');
+            if(blockstrap_functions.json(raw_forms))
+            {
+                return $.parseJSON(raw_forms);
+            }
+            else
+            {
+                return raw_forms;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    forms.process = function(data, form)
+    {
+        if(!form) form = forms.get();
+        var html = Mustache.render(form, data);
+        return $.fn.blockstrap.templates.filter(html);
+    }
+    
     forms.input = function(options)
     {
         var defaults = {
-            label: false
+            label: false,
+            type: 'text'
         };
-        return '<p>Input coming soon!</p>';
+        var field = $.extend({}, defaults, options);
+        var settings = {
+            objects: [
+                {
+                    fields_only: true,
+                    fields: [
+                        {
+                            inputs: field
+                        }
+                    ]
+                }
+            ]
+        };
+        return forms.process(settings);
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE

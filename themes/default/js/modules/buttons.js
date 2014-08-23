@@ -217,15 +217,31 @@
         });
     }
     
+    buttons.salt_choice = function(button)
+    {
+        var add_question = $(button).find('input.switch').val();
+        if(add_question === true || add_question === 'true')
+        {
+            $('input#salt_question').attr('data-setup-type', 'module');
+        }
+        else
+        {
+            $('input#salt_question').attr('data-setup-type', 'option');
+        }
+    }
+    
     buttons.your_question = function(button)
     {
         var form_id = $(button).parent().find('input.switch').attr('data-form-id');
         var form = $($.fn.blockstrap.element).find('form#'+form_id);
-        if($(form).find('#temporary_question').length > 0)
+        if($(form).find('.temp-question').length > 0)
         {
-            $(form).find('#temporary_question').hide(350, function()
+            $(form).find('.temp-question').each(function(i)
             {
-                $(this).remove();
+                $(this).hide(350, function()
+                {
+                    $(this).remove();
+                });
             });
         }
         else
@@ -236,7 +252,9 @@
                     text: 'The Question',
                     css: 'col-sm-3',
                 },
-                wrapper: 'col-sm-9',
+                wrapper: {
+                    css: 'col-sm-9'
+                },
                 attributes: [
                     {
                         key: 'data-setup-type',
@@ -251,7 +269,9 @@
                     text: 'The Answer',
                     css: 'col-sm-3',
                 },
-                wrapper: 'col-sm-9',
+                wrapper: {
+                    css: 'col-sm-9'
+                },
                 attributes: [
                     {
                         key: 'data-setup-type',
@@ -266,7 +286,9 @@
                     text: 'Add question to salt too?',
                     css: 'col-sm-6',
                 },
-                wrapper: 'col-sm-6',
+                wrapper: {
+                    css: 'col-sm-6'
+                },
                 css: 'switch',
                 attributes: [
                     {
@@ -299,7 +321,14 @@
             $(form).append(html);
             $(form).find('#temporary_question').hide(0).show(350, function()
             {
-
+                $(this).find('.form-group').each(function(i)
+                {
+                    $(this).addClass('temp-question');
+                });
+                var temp_html = $(form).find('#temporary_question').html();
+                $(form).find('#temporary_question').after(temp_html);
+                $(form).find('#temporary_question').remove();
+                $.fn.blockstrap.core.new();
             });
         }
     }
@@ -339,6 +368,16 @@
     $($.fn.blockstrap.element).on('click', '.bootstrap-switch-id-your_question', function(e)
     {
         $.fn.blockstrap.buttons.your_question(this);
+    });
+    $($.fn.blockstrap.element).on('click', 'label[for="salt_choice"]', function(e)
+    {
+        var boot_switch = $(this).parent().find('.bootstrap-switch-id-salt_choice');
+        if($(boot_switch).hasClass('bootstrap-switch-off')) $(this).parent().find('input.switch').val('true');
+        else $(this).parent().find('input.switch').val('false');
+    });
+    $($.fn.blockstrap.element).on('click', '.bootstrap-switch-id-salt_choice', function(e)
+    {
+        $.fn.blockstrap.buttons.salt_choice(this);
     });
     
     $($.fn.blockstrap.element).swipe( {

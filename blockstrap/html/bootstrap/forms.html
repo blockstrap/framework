@@ -1,5 +1,7 @@
 {{#objects}}
-    <form id="{{id}}" class="{{css}}">
+
+{{^fields_only}}<form id="{{id}}" class="{{css}}">{{/fields_only}}
+        
         {{#fields}}
             <div class="form-group {{css}}">
 
@@ -260,5 +262,5 @@
         <div class="clearfix">&nbsp;</div>
         {{/buttons}}
         
-    </form>
+    {{^fields_only}}</form>{{/fields_only}}
 {{/objects}}
