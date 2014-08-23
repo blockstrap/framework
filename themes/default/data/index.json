@@ -83,12 +83,12 @@
                         {
                             "title": "Welcome back {{user.name}}",
                             "intro": "Here is an overview of your wallet and its accounts.",
-                            "html": "You currently have <a href='#'>3 Bitcoin</a> addresses, <a href='#'>2 Dogecoin</a> addresses, <a href='#'>1 Litecoin</a> address and <a href='#'>1 Peercoin</a> address.<br />This theme and the widgets seen on this dashboard can be customised within the <a href='#'>settings</a> page. <a href='#' class='btn-reset-device'>Reset</a> device.",
+                            "html": "Not sure what to put here - if anything at all ...?",
                             "buttons": [
                                 {
                                     "href": "#",
-                                    "css": "disabled",
-                                    "text": "2 months since last backup"
+                                    "css": "btn-danger btn-reset-device",
+                                    "text": "Reset Device"
                                 },
                                 {
                                     "href": "#",
@@ -256,6 +256,19 @@
                 "title": "Title",
                 "body": "<p>Content.</p>",
                 "close": "Cancel"
+            },
+            {
+                "id": "confirm",
+                "title": "Confirmation Required",
+                "body": "<p>Please re-confirm you want to do that?</p>",
+                "close": "Cancel",
+                "footer": true,
+                "actions": [
+                    {
+                        "text": "Confirm",
+                        "css": "btn-success"
+                    }
+                ]       
             },
             {
                 "id": "login-credentials",
@@ -653,6 +666,7 @@
                                     "css": "col-sm-6 hidden-label"
                                 },
                                 "type": "checkbox",
+                                "css": "ignore",
                                 "attributes": [
                                     {
                                         "key": "data-off-color",

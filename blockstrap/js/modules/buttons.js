@@ -46,6 +46,7 @@
             $.fn.blockstrap.core.new();
         }
     }
+    
     buttons.cancel = function(button, mobile, menu, elements)
     {
         if(mobile && !menu) $(elements).css({'opacity':1});
@@ -57,6 +58,7 @@
         $(button).removeClass('loading');
         $($.fn.blockstrap.element).find('.activated').removeClass('activated').addClass('active');
     }
+    
     buttons.page = function(button, e)
     {
         var menu = false;
@@ -169,123 +171,16 @@
             if(!href) e.preventDefault();
         }
     }
+    
     buttons.reset = function(button, e)
     {
-        if(e) e.preventDefault();
-        if(localStorage)
-        {
-            $.each(localStorage, function(k, v)
-            {
-                var check = k.substring(0, 3);
-                if(check === 'nw_')
-                {
-                    localStorage.removeItem(k);
-                }
-            });
-            $.fn.blockstrap.settings.info.storage = {
-                local: {
-                    used: '' + ((JSON.stringify(localStorage).length * 2) / 1000000) + ' MB',
-                    remaining: '' + ((2490000 - (JSON.stringify(localStorage).length * 2)) / 1000000) + ' MB'
-                }
-            };
-            $.fn.blockstrap.core.modal('Device Reset', $.fn.blockstrap.settings.info.storage.local.remaining + ' Local Storage Remaining');
-            location.reload();
-        }
-    }
-    buttons.filter = function(button, e)
-    {
         e.preventDefault();
-        var col = false;
-        var table = $(button).attr('data-table');
-        var header_padding = '10px 10px';
-        var body_padding = '20px 10px';
-        var all_button = $(button).parent().find('.btn-filter-all');
-        var these_buttons = $(button).parent().find('.btn-filter');
-        var active_buttons = $(button).parent().find('.btn.active').length;
-        if($(button).attr('data-col') && $(button).attr('data-col') !== '*')
+        $.fn.blockstrap.core.confirm('Confirm Device Reset', 'Please confirm that you want to completely remove all of the information from this device? If you have any coins stored, please ensure you first back-up the private keys or make a back-up of the wallet first.', function(confirmed)
         {
-            col = parseInt($(button).attr('data-col'));
-        }
-        if(!$(all_button).hasClass('active') && active_buttons === 1)
-        {
-            $(these_buttons).removeClass('active');
-            $(all_button).trigger('click');
-        }
-        else if(col && $(all_button).hasClass('active'))
-        {
-            $(these_buttons).addClass('active');
-            $(all_button).removeClass('active');
-            $(button).removeClass('active');
-            $($.fn.blockstrap.element).find('table#'+table+' thead tr th:nth-child('+col+')').each(function(i)
-            {
-                $(this).animate({'padding':0, 'width':0}, 350);
-                $($.fn.blockstrap.element).find('table#'+table+' thead tr th:nth-child('+col+') .cell').hide(350);
-            });
-            $($.fn.blockstrap.element).find('table#'+table+' tbody tr td:nth-child('+col+')').each(function(i)
-            {
-                $(this).animate({'padding':0, 'width':0}, 350);
-                $($.fn.blockstrap.element).find('table#'+table+' tbody tr td:nth-child('+col+') .cell').hide(350);
-            });
-        }
-        else if(col)
-        {
-            if($(button).hasClass('active'))
-            {
-                $(button).removeClass('active');
-                $($.fn.blockstrap.element).find('table#'+table+' thead tr th:nth-child('+col+')').each(function(i)
-                {
-                    $(this).animate({'padding':0, 'width':0}, 350);
-                    $($.fn.blockstrap.element).find('table#'+table+' thead tr th:nth-child('+col+') .cell').hide(350);
-                });
-                $($.fn.blockstrap.element).find('table#'+table+' tbody tr td:nth-child('+col+')').each(function(i)
-                {
-                    $(this).animate({'padding':0, 'width':0}, 350);
-                    $($.fn.blockstrap.element).find('table#'+table+' tbody tr td:nth-child('+col+') .cell').hide(350);
-                });
-            }
-            else
-            {
-                $(button).addClass('active');
-                $($.fn.blockstrap.element).find('table#'+table+' thead tr th').each(function(i)
-                {
-                    if(!$(this).hasClass('ribbon'))
-                    {
-                        $(this).animate({'padding':header_padding, 'width': parseInt($(this).attr('data-width'))}, 350);
-                    }
-                });
-                $($.fn.blockstrap.element).find('table#'+table+' tbody tr td').each(function(i)
-                {
-                    if(!$(this).hasClass('ribbon'))
-                    {
-                        $(this).animate({'padding':body_padding, 'width': parseInt($(this).attr('data-width'))}, 350);
-                    }
-                });
-                $($.fn.blockstrap.element).find('table#'+table+' thead tr th:nth-child('+col+') .cell').show(350)
-                $($.fn.blockstrap.element).find('table#'+table+' tbody tr td:nth-child('+col+') .cell').show(350);
-            }
-        }
-        else if(!col && !$(all_button).hasClass('active'))
-        {
-            $(these_buttons).removeClass('active');
-            $(all_button).addClass('active');
-            $($.fn.blockstrap.element).find('table#'+table+' thead tr th').each(function(i)
-            {
-                if(!$(this).hasClass('ribbon'))
-                {
-                    $(this).animate({'padding':header_padding, 'width': parseInt($(this).attr('data-width'))}, 350);
-                }
-            });
-            $($.fn.blockstrap.element).find('table#'+table+' tbody tr td').each(function(i)
-            {
-                if(!$(this).hasClass('ribbon'))
-                {
-                    $(this).animate({'padding':body_padding, 'width': parseInt($(this).attr('data-width'))}, 350);
-                }
-            });
-            $($.fn.blockstrap.element).find('table#'+table+' thead tr th .cell').show(350);
-            $($.fn.blockstrap.element).find('table#'+table+' tbody tr td .cell').show(350);
-        }
-    };
+            if(confirmed) $.fn.blockstrap.core.reset();
+        });
+    }
+    
     buttons.check = function()
     {
         var hash = false;

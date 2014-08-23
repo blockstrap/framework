@@ -563,11 +563,13 @@ var blockstrap_core = function()
                     reader.readAsDataURL(input.files[0]);
                 }
             },
-            modal: function(title, content)
+            modal: function(title, content, id)
             {
-                $('#default-modal').find('.modal-title').html(title);
-                $('#default-modal').find('.modal-body').html(content);
-                $('#default-modal').modal('show');
+                var selector = $('#default-modal');
+                if(id) selector = $('#'+id);
+                $(selector).find('.modal-title').html(title);
+                $(selector).find('.modal-body').html(content);
+                $(selector).modal('show');
             },
             modals: function(action)
             {
@@ -610,6 +612,15 @@ var blockstrap_core = function()
                         }
                     });
                 }
+            },
+            confirm: function(title, content, callback)
+            {
+                $.fn.blockstrap.core.modal(title, content, 'confirm-modal');
+                $('#confirm-modal .modal-footer .btn-success').on('click', function()
+                {
+                    $(this).addClass('loading');
+                    callback(true);
+                });
             },
             forms: function()
             {
@@ -770,6 +781,7 @@ var blockstrap_core = function()
                 }
                 else
                 {
+                    $($.fn.blockstrap.element).find('.loading').removeClass('loading');
                     $(element).find('#loader-wrapper').animate({'opacity':0}, 350, function()
                     {
                         $(element).css({'opacity':0, 'z-index': 0});
@@ -833,24 +845,23 @@ var blockstrap_core = function()
                 {
                     $.fn.blockstrap.buttons.page(this, e);
                 });
-                $($.fn.blockstrap.element).on('click', '.btn-filter', function(e)
-                {
-                    $.fn.blockstrap.buttons.filter(this, e);
-                });
                 $($.fn.blockstrap.element).on('click', '.btn-reset-device', function(e)
                 {
                     $.fn.blockstrap.buttons.reset(this, e);
                 });
                 $($.fn.blockstrap.element).on('click', '.bs-setup', function(e)
                 {
+                    $(this).addClass('loading');
                     $.fn.blockstrap.buttons.setup(this, e);
                 });
                 $($.fn.blockstrap.element).on('click', '#create-account', function(e)
                 {
+                    $(this).addClass('loading');
                     $.fn.blockstrap.buttons.account(this, e);
                 });
                 $($.fn.blockstrap.element).on('click', '#create-contact', function(e)
                 {
+                    $(this).addClass('loading');
                     $.fn.blockstrap.buttons.contact(this, e);
                 });
                 $($.fn.blockstrap.element).on('click', '.bs-toggle', function(e)
@@ -875,6 +886,7 @@ var blockstrap_core = function()
                 });
                 $($.fn.blockstrap.element).on('click', '#set-credentials', function(e)
                 {
+                    $(this).addClass('loading');
                     $.fn.blockstrap.buttons.set(this, e);
                 });
                 $($.fn.blockstrap.element).on('click', '#more-security', function(e)
@@ -896,6 +908,36 @@ var blockstrap_core = function()
                         style[values[0]] = values[1];
                     });
                     return style;
+                }
+            },
+            reset: function(reload)
+            {
+                if(reload !== false) reload = true;
+                if(localStorage)
+                {
+                    $.each(localStorage, function(k, v)
+                    {
+                        var check = k.substring(0, 3);
+                        if(check === 'nw_')
+                        {
+                            localStorage.removeItem(k);
+                        }
+                    });
+                    $.fn.blockstrap.settings.info.storage = {
+                        local: {
+                            used: '' + ((JSON.stringify(localStorage).length * 2) / 1000000) + ' MB',
+                            remaining: '' + ((2490000 - (JSON.stringify(localStorage).length * 2)) / 1000000) + ' MB'
+                        }
+                    };
+                    if(reload)
+                    {
+                        location.reload();
+                    }
+                    else
+                    {
+                        var remaining = $.fn.blockstrap.settings.info.storage.local.remaining;
+                        $.fn.blockstrap.core.modal('Device Reset', remaining + ' Local Storage Remaining');
+                    }
                 }
             },
             tests: function(run)
