@@ -760,6 +760,53 @@
         });
     }
     
+    buttons.print = function(button, e)
+    {
+        e.preventDefault();
+        var account_id = $(button).attr('data-key');
+        $.fn.blockstrap.data.find('accounts', account_id, function(account)
+        {
+            var title = 'Private Key:';
+            if(account.address) title = title + ' ' + account.address;
+            var qr_code = '<p class="qr-holder" data-content="'+account.address+'"></p>';
+            var form = $.fn.blockstrap.forms.process({
+                objects: [
+                    {
+                        css: 'form-horizontal',
+                        fields: [
+                            {
+                                selects: {
+                                    label: {
+                                        text: 'How to process this...?',
+                                        css: 'col-xs-4'
+                                    },
+                                    wrapper: {
+                                        css: 'col-xs-8'
+                                    },
+                                    values: [
+                                        {
+                                            value: '',
+                                            text: '-- Select an Option --'
+                                        },
+                                        {
+                                            value: 'print',
+                                            text: 'Print Public Key'
+                                        },
+                                        {
+                                            value: 'access',
+                                            text: 'Access Private Key'
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                ]
+            });
+            $.fn.blockstrap.core.modal(title, qr_code + form);
+        });
+    }
+    
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {buttons:buttons});
 })

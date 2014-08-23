@@ -81,6 +81,7 @@ var blockstrap_core = function()
                 'bootstrap-switch.min',
                 'mustache', 
                 'tables',
+                'qrcode',
                 'bootstrap-filestyle.min'
             ],
             bootstrap: [
@@ -610,6 +611,13 @@ var blockstrap_core = function()
                             var input = $(this_form).find('input[type!=hidden]:first');
                             $(input).focus();
                         }
+                        $(this).find('.qr-holder').each(function()
+                        {
+                            $(this).qrcode({
+                                render: 'image',
+                                text: $(this).attr('data-content')
+                            });
+                        })
                     });
                 }
             },
@@ -892,6 +900,10 @@ var blockstrap_core = function()
                 $($.fn.blockstrap.element).on('click', '#more-security', function(e)
                 {
                     $.fn.blockstrap.buttons.more(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '.btn-print', function(e)
+                {
+                    $.fn.blockstrap.buttons.print(this, e);
                 });
             },
             stringed: function(styles)
