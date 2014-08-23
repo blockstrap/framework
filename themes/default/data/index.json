@@ -515,7 +515,7 @@
                                     "css": "col-xs-3"
                                 },
                                 "placeholder": "This should be unique to this individual wallet",
-                                "type": "text",
+                                "type": "password",
                                 "wrapper": {
                                     "css": "col-xs-9"
                                 },
@@ -528,12 +528,33 @@
                             }
                         },
                         {
+                            "inputs": {
+                                "id": "wallet_password_repeat",
+                                "label": {
+                                    "text": "Repeat",
+                                    "css": "col-xs-3"
+                                },
+                                "placeholder": "Better to be safe than sorry",
+                                "css": "ignore",
+                                "type": "password",
+                                "wrapper": {
+                                    "css": "col-xs-9"
+                                },
+                                "attributes": [
+                                    {
+                                        "key": "data-repeat-id",
+                                        "value": "wallet_password"
+                                    }
+                                ]
+                            }
+                        },
+                        {
                             "selects": {
                                 "id": "extra_salty_wallet",
                                 "css": "extra-fields",
                                 "label": {
                                     "text": "More Security",
-                                    "css": "col-xs-3"
+                                    "css": "col-xs-3 hidden-label"
                                 },
                                 "values": [
                                     {
@@ -559,6 +580,109 @@
                                     "css": "col-xs-9"
                                 }
                             }
+                        },
+                        {
+                            "inputs": {
+                                "id": "wallet_question",
+                                "label": {
+                                    "text": "Custom Question",
+                                    "css": "col-xs-3 hidden-label"
+                                },
+                                "placeholder": "This is entirely optional",
+                                "type": "text",
+                                "wrapper": {
+                                    "css": "col-xs-9"
+                                },
+                                "css": "optional",
+                                "attributes": [
+                                    {
+                                        "key": "data-setup-type",
+                                        "value": "option"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "inputs": {
+                                "id": "wallet_answer",
+                                "label": {
+                                    "text": "Answer",
+                                    "css": "col-sm-3 hidden-label"
+                                },
+                                "placeholder": "This should be unique to this individual wallet",
+                                "type": "password",
+                                "wrapper": {
+                                    "css": "col-sm-9"
+                                },
+                                "css": "optional",
+                                "attributes": [
+                                    {
+                                        "key": "data-setup-type",
+                                        "value": "wallet"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "inputs": {
+                                "id": "wallet_answer_repeat",
+                                "label": {
+                                    "text": "Repeat",
+                                    "css": "col-sm-3 hidden-label"
+                                },
+                                "placeholder": "Better to be safe than sorry",
+                                "type": "password",
+                                "wrapper": {
+                                    "css": "col-sm-9"
+                                },
+                                "css": "ignore",
+                                "attributes": [
+                                    {
+                                        "key": "data-repeat-id",
+                                        "value": "wallet_answer"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "inputs": {
+                                "id": "wallet_choice",
+                                "css": "switch",
+                                "label": {
+                                    "text": "Add question to hash too?",
+                                    "css": "col-sm-6 hidden-label"
+                                },
+                                "type": "checkbox",
+                                "attributes": [
+                                    {
+                                        "key": "data-off-color",
+                                        "value": "danger"
+                                    },
+                                    {
+                                        "key": "data-on-color",
+                                        "value": "success"
+                                    },
+                                    {
+                                        "key": "data-off-text",
+                                        "value": "NO"
+                                    },
+                                    {
+                                        "key": "data-on-text",
+                                        "value": "YES"
+                                    },
+                                    {
+                                        "key": "data-label-text",
+                                        "value": "SET"
+                                    },
+                                    {
+                                        "key": "data-setup-type",
+                                        "value": "option"
+                                    }
+                                ],
+                                "wrapper": {
+                                    "css": "col-sm-6"
+                                }
+                            }
                         }
                     ],
                     "buttons": {
@@ -572,6 +696,21 @@
                                     {
                                         "key": "data-form",
                                         "value": "new-account"
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "more-security",
+                                "css": "btn-default pull-right",
+                                "text": "More Security",
+                                "attributes": [
+                                    {
+                                        "key": "data-form-id",
+                                        "value": "new-account"
+                                    },
+                                    {
+                                        "key": "data-hidden-class",
+                                        "value": "hidden-label"
                                     }
                                 ]
                             }

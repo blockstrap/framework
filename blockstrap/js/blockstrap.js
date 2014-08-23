@@ -586,6 +586,7 @@ var blockstrap_core = function()
                     $($.fn.blockstrap.element).on('show.bs.modal', '.modal', function(i)
                     {
                         var this_id = $(this).attr('id');
+                        var this_form = $(this).find('form');
                         $($.fn.blockstrap.element).find('.modal').each(function(i)
                         {
                             if($(this).attr('id') != this_id)
@@ -593,6 +594,11 @@ var blockstrap_core = function()
                                 $(this).modal('hide');
                             }
                         });
+                        $(this_form).find('label.hidden-label').each(function(i)
+                        {
+                            var wrapper = $(this).parent();
+                            $(wrapper).hide(0);
+                        })
                     });
                     $($.fn.blockstrap.element).on('shown.bs.modal', '.modal', function(i)
                     {
@@ -870,6 +876,10 @@ var blockstrap_core = function()
                 $($.fn.blockstrap.element).on('click', '#set-credentials', function(e)
                 {
                     $.fn.blockstrap.buttons.set(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '#more-security', function(e)
+                {
+                    $.fn.blockstrap.buttons.more(this, e);
                 });
             },
             stringed: function(styles)

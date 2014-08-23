@@ -182,7 +182,6 @@
                     localStorage.removeItem(k);
                 }
             });
-            console.log(localStorage);
             $.fn.blockstrap.settings.info.storage = {
                 local: {
                     used: '' + ((JSON.stringify(localStorage).length * 2) / 1000000) + ' MB',
@@ -531,7 +530,18 @@
             $(form).find('.form-group').each(function(i)
             {
                 var value = $(this).find('input').val();
-                if(value) 
+                if($(this).find('input').hasClass('ignore'))
+                {
+                    var repeat_id = $(this).find('input').attr('data-repeat-id');
+                    var repeat_val = $('#'+repeat_id).val();
+                    if(repeat_val && repeat_val != value)
+                    {
+                        $.fn.blockstrap.core.modal('Warning', 'Repeating Mismatch');
+                        continue_salting = false;
+                        wallet.cancel = true;
+                    }
+                }
+                else if(value) 
                 {
                     wallet[$(this).find('input').attr('id')] = value;
                 }
@@ -547,12 +557,20 @@
                     }
                     else if(!value && !$(this).find('select').hasClass('extra-fields'))
                     {
-                        var label = false;
-                        if($(this).find('label').html()) label = $(this).find('label').html();
-                        if(label) $.fn.blockstrap.core.modal('Error', 'Value for "'+label+'" Required');
-                        else $.fn.blockstrap.core.modal('Error', 'Value Required');
-                        $.fn.blockstrap.core.loader('close');
-                        return false;
+                        if($(this).find('input').hasClass('ignore') || $(this).find('input').hasClass('optional') || $(this).find('input').hasClass('switch'))
+                        {
+                            // Move along...
+                            
+                        }
+                        else
+                        {
+                            var label = false;
+                            if($(this).find('label').html()) label = $(this).find('label').html();
+                            if(label) $.fn.blockstrap.core.modal('Error', 'Value for "'+label+'" Required');
+                            else $.fn.blockstrap.core.modal('Error', 'Value Required');
+                            $.fn.blockstrap.core.loader('close');
+                            return false;
+                        }
                     }
                 }
             });
@@ -561,7 +579,8 @@
             wallet 
             && wallet.wallet_currency
             && wallet.wallet_name 
-            && wallet.wallet_password
+            && wallet.wallet_password 
+            && !wallet.cancel
         )
         {
             $.fn.blockstrap.accounts.new(
@@ -583,8 +602,11 @@
         else
         {
             $.fn.blockstrap.core.loader('close');
-            $.fn.blockstrap.core.modal('Error', 'Missing wallet requirements');
-            return false;
+            if(!wallet.cancel)
+            {
+                $.fn.blockstrap.core.modal('Error', 'Missing wallet requirements');
+                return false;
+            }
         }
     }
     
@@ -818,6 +840,29 @@
                 $.fn.blockstrap.core.modal('Warning', 'Missing Username & Password');
             }
         }
+    }
+    
+    buttons.more = function(button, e)
+    {
+        e.preventDefault();
+        var form_id = $(button).attr('data-form-id');
+        var hidden_class = $(button).attr('data-hidden-class');
+        var form = $('form#'+form_id);
+        $(form).find('.'+hidden_class).parent().each(function(i)
+        {
+            if($(this).css('display') === 'none')
+            {
+                $(this).show(350);
+                $(button).text('Less Security');
+                $(button).removeClass('btn-default').addClass('btn-danger');
+            }
+            else
+            {
+                $(this).hide(350);
+                $(button).text('More Security');
+                $(button).removeClass('btn-danger').addClass('btn-default');
+            }
+        });
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
