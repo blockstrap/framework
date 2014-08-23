@@ -830,7 +830,7 @@ var blockstrap_setup_steps = [
                                             "css": "col-sm-3"
                                         },
                                         "placeholder": "This should be unique to this individual wallet",
-                                        "type": "text",
+                                        "type": "password",
                                         "wrapper": {
                                             "css": "col-sm-9"
                                         },
@@ -838,6 +838,31 @@ var blockstrap_setup_steps = [
                                             {
                                                 "key": "data-setup-type",
                                                 "value": "wallet"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "inputs": {
+                                        "id": "wallet_password_repeat",
+                                        "label": {
+                                            "text": "Repeat",
+                                            "css": "col-sm-3"
+                                        },
+                                        "placeholder": "Better to be safe than sorry",
+                                        "type": "password",
+                                        "wrapper": {
+                                            "css": "col-sm-9"
+                                        },
+                                        "css": "ignore",
+                                        "attributes": [
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "wallet"
+                                            },
+                                            {
+                                                "key": "data-pw-id",
+                                                "value": "wallet_password"
                                             }
                                         ]
                                     }
@@ -888,6 +913,87 @@ var blockstrap_setup_steps = [
                                         ],
                                         "wrapper": {
                                             "css": "col-sm-9"
+                                        }
+                                    }
+                                },
+                                {
+                                    "inputs": {
+                                        "id": "wallet_question",
+                                        "label": {
+                                            "text": "Custom Question",
+                                            "css": "col-sm-3"
+                                        },
+                                        "placeholder": "This is entirely optional",
+                                        "type": "text",
+                                        "wrapper": {
+                                            "css": "col-sm-9"
+                                        },
+                                        "attributes": [
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "option"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "inputs": {
+                                        "id": "wallet_answer",
+                                        "label": {
+                                            "text": "Answer",
+                                            "css": "col-sm-3"
+                                        },
+                                        "placeholder": "This should be unique to this individual wallet",
+                                        "type": "password",
+                                        "wrapper": {
+                                            "css": "col-sm-9"
+                                        },
+                                        "css": "optional",
+                                        "attributes": [
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "wallet"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "inputs": {
+                                        "id": "wallet_choice",
+                                        "css": "switch",
+                                        "label": {
+                                            "text": "Add question to salt too?",
+                                            "css": "col-sm-6"
+                                        },
+                                        "type": "checkbox",
+                                        "attributes": [
+                                            {
+                                                "key": "data-off-color",
+                                                "value": "danger"
+                                            },
+                                            {
+                                                "key": "data-on-color",
+                                                "value": "success"
+                                            },
+                                            {
+                                                "key": "data-off-text",
+                                                "value": "NO"
+                                            },
+                                            {
+                                                "key": "data-on-text",
+                                                "value": "YES"
+                                            },
+                                            {
+                                                "key": "data-label-text",
+                                                "value": "SET"
+                                            },
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "option"
+                                            }
+                                        ],
+                                        "wrapper": {
+                                            "css": "col-sm-6"
                                         }
                                     }
                                 }

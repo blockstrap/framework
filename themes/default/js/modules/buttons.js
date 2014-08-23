@@ -230,6 +230,19 @@
         }
     }
     
+    buttons.wallet_choice = function(button)
+    {
+        var add_question = $(button).find('input.switch').val();
+        if(add_question === true || add_question === 'true')
+        {
+            $('input#wallet_question').attr('data-setup-type', 'wallet');
+        }
+        else
+        {
+            $('input#wallet_question').attr('data-setup-type', 'option');
+        }
+    }
+    
     buttons.your_question = function(button)
     {
         var form_id = $(button).parent().find('input.switch').attr('data-form-id');
@@ -378,6 +391,16 @@
     $($.fn.blockstrap.element).on('click', '.bootstrap-switch-id-salt_choice', function(e)
     {
         $.fn.blockstrap.buttons.salt_choice(this);
+    });
+    $($.fn.blockstrap.element).on('click', 'label[for="wallet_choice"]', function(e)
+    {
+        var boot_switch = $(this).parent().find('.bootstrap-switch-id-wallet_choice');
+        if($(boot_switch).hasClass('bootstrap-switch-off')) $(this).parent().find('input.switch').val('true');
+        else $(this).parent().find('input.switch').val('false');
+    });
+    $($.fn.blockstrap.element).on('click', '.bootstrap-switch-id-wallet_choice', function(e)
+    {
+        $.fn.blockstrap.buttons.wallet_choice(this);
     });
     
     $($.fn.blockstrap.element).swipe( {

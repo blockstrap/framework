@@ -38,8 +38,14 @@
                         }
                         else
                         {
+                            var data = false;
                             if($.isPlainObject(keys))
                             {
+                                if(keys.wallet_question)
+                                {
+                                    if(!$.isPlainObject(data)) data = {};
+                                    data.wallet_question = keys.wallet_question;
+                                }
                                 var values = keys;
                                 keys = [];
                                 $.each(values, function(k, v)
@@ -68,6 +74,7 @@
                                 outgoing: 0,
                                 balance: 0
                             };
+                            if(data) account.data = data;
                             $.fn.blockstrap.data.save('accounts', slug, account, function()
                             {
                                 callback(account);

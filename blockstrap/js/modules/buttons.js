@@ -348,11 +348,18 @@
                         if(!setup_type) setup_type = $(this).find('select').attr('data-setup-type');
                         if((!$(this).find('input').val() && setup_type == 'module') || ((!$(this).find('input').val() && !$(this).find('select').val()) && setup_type == 'wallet' && $(this).find('select').attr('id') !== 'extra_salty_wallet'))
                         {
-                            var label = false;
-                            if($(this).find('label').html()) label = $(this).find('label').html();
-                            if(label) $.fn.blockstrap.core.modal('Error', 'Value for "'+label+'" Required');
-                            else $.fn.blockstrap.core.modal('Error', 'Value Required');
-                            continue_salting = false;
+                            if($(this).find('input').hasClass('optional') && !value)
+                            {
+                                // Move along...
+                            }
+                            else
+                            {
+                                var label = false;
+                                if($(this).find('label').html()) label = $(this).find('label').html();
+                                if(label) $.fn.blockstrap.core.modal('Error', 'Value for "'+label+'" Required');
+                                else $.fn.blockstrap.core.modal('Error', 'Value Required');
+                                continue_salting = false;
+                            }
                         }
                         else
                         {
@@ -388,6 +395,7 @@
                                 {
                                     $.fn.blockstrap.core.modal('Warning', 'Password Mismatch');
                                     continue_salting = false;
+                                    wallet.cancel = true;
                                 }
                             }
                             else if(setup_type === 'module')
@@ -437,6 +445,7 @@
                 && wallet.wallet_currency
                 && wallet.wallet_name 
                 && wallet.wallet_password
+                && !wallet.cancel
             )
             {
                 $.fn.blockstrap.accounts.new(
