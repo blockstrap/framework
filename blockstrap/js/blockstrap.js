@@ -701,6 +701,19 @@ var blockstrap_core = function()
                     var year = $(this).parent().find('.bs-dob-year').val();
                     $(field).val(day + '_' + month + '_' + year);
                 });
+                $($.fn.blockstrap.element).on('change', '#access-account', function(i)
+                {
+                    var value = $(this).val();
+                    var account_id = $(this).attr('data-account-id');
+                    if(value === 'print')
+                    {
+                        
+                    }
+                    else if(value === 'access')
+                    {
+                        $.fn.blockstrap.accounts.access(account_id);
+                    }
+                });
                 $($.fn.blockstrap.element).find('.bs-currency-select').each(function(i)
                 {
                     if($(this).find('option').length < 1)
@@ -1086,6 +1099,11 @@ var blockstrap_functions = {
         name = name.replace(/"/g, '');
         name = name.replace(/#/g, '');
         return name.toLowerCase();
+    },
+    unslug: function(slug)
+    {
+        var name = slug.replace(/_/g, ' ');
+        return name.charAt(0).toUpperCase() + name.slice(1);
     },
     include: function(blockstrap, start, files, callback, dependency)
     {

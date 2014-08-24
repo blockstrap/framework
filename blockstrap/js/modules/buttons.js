@@ -766,7 +766,7 @@
         var account_id = $(button).attr('data-key');
         $.fn.blockstrap.data.find('accounts', account_id, function(account)
         {
-            var title = 'Private Key:';
+            var title = 'Public Key:';
             if(account.address) title = title + ' ' + account.address;
             var qr_code = '<p class="qr-holder" data-content="'+account.address+'"></p>';
             var form = $.fn.blockstrap.forms.process({
@@ -776,6 +776,7 @@
                         fields: [
                             {
                                 selects: {
+                                    id: 'access-account',
                                     label: {
                                         text: 'How to process this...?',
                                         css: 'col-xs-4'
@@ -795,6 +796,12 @@
                                         {
                                             value: 'access',
                                             text: 'Access Private Key'
+                                        }
+                                    ],
+                                    attributes: [
+                                        {
+                                            key: 'data-account-id',
+                                            value: account_id
                                         }
                                     ]
                                 }

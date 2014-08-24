@@ -150,11 +150,6 @@
         }
     }
     
-    security.verify = function()
-    {
-        
-    }
-    
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {security:security});
 })

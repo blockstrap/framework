@@ -98,18 +98,25 @@
         }
     }
     
-    accounts.get = function()
+    accounts.get = function(id)
     {
         var accounts = [];
         if($.isPlainObject(localStorage))
         {
-            $.each(localStorage, function(key, account)
+            if(id && localStorage.getItem('nw_accounts_'+id))
             {
-                if(key.substring(0, 12) === 'nw_accounts_')
+                return $.parseJSON(localStorage.getItem('nw_accounts_'+id));
+            }
+            else
+            {
+                $.each(localStorage, function(key, account)
                 {
-                    accounts.push($.parseJSON(account));
-                }
-            });
+                    if(key.substring(0, 12) === 'nw_accounts_')
+                    {
+                        accounts.push($.parseJSON(account));
+                    }
+                });
+            }
         }
         return accounts;
     }
@@ -179,6 +186,62 @@
         }
         if(prefix) return prefix + ' ' + grand_total;
         else return grand_total;
+    }
+    
+    accounts.access = function(account_id)
+    {
+        var fields = [];
+        var account = accounts.get(account_id);
+        if($.isArray(account.keys))
+        {
+            $.each(account.keys, function(k, v)
+            {
+                var group_css = '';   
+                var type = 'text';
+                var key_array = v.split('_');
+                var value = account[this_key];
+                var this_key = key_array[1];
+                if(this_key == 'password')
+                {
+                    type = 'password';
+                    value = '';
+                }
+                else if(account[this_key])
+                {
+                    type = 'hidden';
+                    group_css = 'hidden';
+                }
+                fields.push({
+                    css: group_css,
+                    inputs: {
+                        id: this_key,
+                        type: type,
+                        label: {
+                            css: 'col-xs-3',
+                            text: blockstrap_functions.unslug(this_key)
+                        },
+                        wrapper: {
+                            css: 'col-xs-9'
+                        },
+                        value: value
+                    }
+                });
+            })
+        }
+        var form = $.fn.blockstrap.forms.process({
+            objects: [
+                {
+                    id: 'verify-account',
+                    fields: fields
+                }
+            ]
+        });
+        $.fn.blockstrap.core.modal('Verify Ownership', form);
+    }
+    
+    accounts.verify = function()
+    {
+        console.log('verify?');
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
