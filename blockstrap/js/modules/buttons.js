@@ -814,6 +814,39 @@
         });
     }
     
+    buttons.verify = function(button, e)
+    {
+        e.preventDefault();
+        var fields = [];
+        var form_id = $(button).attr('data-form-id');
+        var account_id = $(button).attr('data-account-id');
+        var form = $('form#'+form_id);
+        var account = $.fn.blockstrap.accounts.get(account_id);
+        $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
+        {
+            $(form).find('.form-group').each(function(i)
+            {
+                var input = $(this).find('input');
+                var value = $(input).val();
+                var id = $(input).attr('id');
+                if(id === 'wallet_password')
+                {
+                    //var pw_obj = CryptoJS.SHA3(salt+value, { outputLength: 512 });
+                    //var pw = pw_obj.toString();
+                    //value = pw;
+                }
+                fields.push({
+                    id: id,
+                    value: value
+                });
+            });
+            $.fn.blockstrap.accounts.verify(account, fields, function(verified)
+            {
+                console.log('verified', verified);
+            });
+        });
+    }
+    
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {buttons:buttons});
 })

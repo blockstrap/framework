@@ -256,10 +256,16 @@
         {{#buttons}}
         <div class="actions">
             {{#forms}}
-                <button type="{{type}}" id="{{id}}" class="btn {{css}}">{{text}}</button>
+                <button 
+                    type="{{type}}" 
+                    id="{{id}}" 
+                    class="btn {{css}}"
+                    {{#attributes}}
+                        {{key}}="{{value}}"
+                    {{/attributes}}
+                >{{text}}</button>
             {{/forms}}
         </div>
-        <div class="clearfix">&nbsp;</div>
         {{/buttons}}
         
     {{^fields_only}}</form>{{/fields_only}}

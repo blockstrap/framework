@@ -918,6 +918,10 @@ var blockstrap_core = function()
                 {
                     $.fn.blockstrap.buttons.print(this, e);
                 });
+                $($.fn.blockstrap.element).on('click', '#submit-verification', function(e)
+                {
+                    $.fn.blockstrap.buttons.verify(this, e);
+                });
             },
             stringed: function(styles)
             {

@@ -199,8 +199,12 @@
                 var group_css = '';   
                 var type = 'text';
                 var key_array = v.split('_');
-                var value = account[this_key];
                 var this_key = key_array[1];
+                var value = account[this_key];
+                if(this_key == 'currency')
+                {
+                    value = account[this_key].code;
+                }
                 if(this_key == 'password')
                 {
                     type = 'password';
@@ -214,7 +218,7 @@
                 fields.push({
                     css: group_css,
                     inputs: {
-                        id: this_key,
+                        id: v,
                         type: type,
                         label: {
                             css: 'col-xs-3',
@@ -229,19 +233,89 @@
             })
         }
         var form = $.fn.blockstrap.forms.process({
+            css: 'form-horizontal',
             objects: [
                 {
                     id: 'verify-account',
                     fields: fields
                 }
-            ]
+            ],
+            buttons: {
+                forms: [
+                    {
+                        type: "submit",
+                        id: "submit-verification",
+                        css: 'btn-primary pull-right',
+                        text: 'Submit',
+                        attributes: [
+                            {
+                                key: 'data-account-id',
+                                value: account_id
+                            },
+                            {
+                                key: 'data-form-id',
+                                value: 'verify-account'
+                            }
+                        ]
+                    },
+                    {
+                        css: 'btn-danger pull-right',
+                        text: 'Cancel',
+                        attributes: [
+                            {
+                                key: 'data-dismiss',
+                                value: 'modal'
+                            }
+                        ]
+                    }
+                ]
+            }
         });
         $.fn.blockstrap.core.modal('Verify Ownership', form);
     }
     
-    accounts.verify = function()
+    accounts.verify = function(account, fields)
     {
-        console.log('verify?');
+        $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
+        {
+            var key = '';
+            if($.isArray(fields))
+            {
+                $.each(fields, function(k, v)
+                {
+                    key_obj = CryptoJS.SHA3(salt+key+v.id+v.value, { outputLength: 512 });
+                    key = key_obj.toString();
+                });
+            };
+            if(key)
+            {
+                var address_key = new Bitcoin.ECKey(key);
+                var address = address_key.getBitcoinAddress().toString();
+                if(address === account.address)
+                {
+                    var private_key = address_key.priv.toString();
+                    var title = 'Private Key for '+address;
+                    var intro = '<p style="word-wrap: break-word;">'+private_key+'</p>';
+                    var qr_code = '<p class="qr-holder" data-content="'+private_key+'"></p>';
+                    $.fn.blockstrap.core.modal(title, intro + qr_code);
+                    $('#default-modal').find('.qr-holder').each(function()
+                    {
+                        $(this).qrcode({
+                            render: 'image',
+                            text: $(this).attr('data-content')
+                        });
+                    });
+                }
+                else
+                {
+                    $.fn.blockstrap.core.modal('Warning', 'Credentials do not match');
+                }
+            }
+            else
+            {
+                $.fn.blockstrap.core.modal('Error', 'Unable to construct keys');
+            }
+        });
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
