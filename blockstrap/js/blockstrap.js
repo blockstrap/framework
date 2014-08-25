@@ -707,7 +707,12 @@ var blockstrap_core = function()
                     var account_id = $(this).attr('data-account-id');
                     if(value === 'print')
                     {
-                        
+                        // DEFINITELY NOT CORE MATERIAL
+                        // DIRTY HACK FOR ADAMS DEMO
+                        var modal = $(this).parent().parent().parent().parent().parent().parent().parent();
+                        var title = $(modal).find('.modal-title').html();
+                        var contents = $(modal).find('.modal-body').html();
+                        $.fn.blockstrap.core.print(title + contents);
                     }
                     else if(value === 'access')
                     {
@@ -809,6 +814,18 @@ var blockstrap_core = function()
                         $($.fn.blockstrap.element).removeClass('loading');
                     });
                 }
+            },
+            print: function(contents)
+            {
+                var mywindow = window.open('', 'my div', 'height=500,width=400');
+                mywindow.document.write('<html><head><title>my div</title>');
+                mywindow.document.write('<style>.btn { display: none; }</style>');
+                mywindow.document.write('</head><body >');
+                mywindow.document.write(contents);
+                mywindow.document.write('</body></html>');
+                mywindow.print();
+                mywindow.close();
+                return true;
             },
             table: function()
             {
@@ -914,13 +931,17 @@ var blockstrap_core = function()
                 {
                     $.fn.blockstrap.buttons.more(this, e);
                 });
-                $($.fn.blockstrap.element).on('click', '.btn-print', function(e)
+                $($.fn.blockstrap.element).on('click', '.btn-access', function(e)
                 {
-                    $.fn.blockstrap.buttons.print(this, e);
+                    $.fn.blockstrap.buttons.access(this, e);
                 });
                 $($.fn.blockstrap.element).on('click', '#submit-verification', function(e)
                 {
                     $.fn.blockstrap.buttons.verify(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '.btn-print', function(e)
+                {
+                    $.fn.blockstrap.buttons.print(this, e);
                 });
             },
             stringed: function(styles)

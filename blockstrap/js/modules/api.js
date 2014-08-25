@@ -48,6 +48,7 @@
     
     api.address = function(hash, currency, callback)
     {
+        if(!$.isPlainObject(apis[currency])) return false;
         $.fn.blockstrap.core.cache('nw_cache_api_address', false, hash, function(cache)
         {
             if(cache)
@@ -124,6 +125,7 @@
     {
         api.request(api.url('addresses', hashes, currency), function(results)
         {
+            
             var data;
             var map = apis[currency].functions;
             if(results.data[map.from.addresses.key]) data = results.data[map.from.addresses.key];

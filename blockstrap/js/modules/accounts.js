@@ -297,7 +297,8 @@
                     var title = 'Private Key for '+address;
                     var intro = '<p style="word-wrap: break-word;">'+private_key+'</p>';
                     var qr_code = '<p class="qr-holder" data-content="'+private_key+'"></p>';
-                    $.fn.blockstrap.core.modal(title, intro + qr_code);
+                    var print = '<p style="text-align: center"><a href="#" class="btn btn-danger btn-print" data-print-id="default-modal" data-print-class="modal-body" data-print-title="Private Key for '+address+'">PRINT THIS KEY</a></p>';
+                    $.fn.blockstrap.core.modal(title, intro + qr_code + print);
                     $('#default-modal').find('.qr-holder').each(function()
                     {
                         $(this).qrcode({

@@ -760,7 +760,7 @@
         });
     }
     
-    buttons.print = function(button, e)
+    buttons.access = function(button, e)
     {
         e.preventDefault();
         var account_id = $(button).attr('data-key');
@@ -829,12 +829,6 @@
                 var input = $(this).find('input');
                 var value = $(input).val();
                 var id = $(input).attr('id');
-                if(id === 'wallet_password')
-                {
-                    //var pw_obj = CryptoJS.SHA3(salt+value, { outputLength: 512 });
-                    //var pw = pw_obj.toString();
-                    //value = pw;
-                }
                 fields.push({
                     id: id,
                     value: value
@@ -845,6 +839,18 @@
                 console.log('verified', verified);
             });
         });
+    }
+    
+    buttons.print = function(button, e)
+    {
+        e.preventDefault();
+        var print_id = $(button).attr('data-print-id');
+        var print_class = $(button).attr('data-print-class');
+        var print_title = $(button).attr('data-print-title');
+        var contents = $('#'+print_id).html();
+        if(print_class) contents = $('#'+print_id).find('.'+print_class).html();
+        if(print_title) contents = '<h3>'+print_title+'</h3>'+contents;
+        $.fn.blockstrap.core.print(contents);
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
