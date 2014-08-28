@@ -660,13 +660,12 @@
                         {
                             "inputs": {
                                 "id": "wallet_choice",
-                                "css": "switch",
                                 "label": {
                                     "text": "Add question to hash too?",
-                                    "css": "col-sm-6 hidden-label"
+                                    "css": "col-sm-6 hidden-label transparent-label"
                                 },
                                 "type": "checkbox",
-                                "css": "ignore",
+                                "css": "ignore switch",
                                 "attributes": [
                                     {
                                         "key": "data-off-color",

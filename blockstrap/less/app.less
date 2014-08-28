@@ -155,10 +155,6 @@ FORMS
                 label {
                     line-height: 33px;
                 }
-                .bootstrap-switch-wrapper {
-                    float: right;
-                    max-height: 38px;
-                }
                 .group-span-filestyle {
                     label {
                         line-height: 20px;
@@ -303,7 +299,7 @@ SIDEBAR
             margin: 0;
             padding: 0;
             li {
-                a.values {
+                .values {
                     float: right;
                 }
                 padding-bottom: calc(@panel-padding / 2);
@@ -895,6 +891,10 @@ FORMS
                 line-height: 27px !important;
             }
         }
+        .bootstrap-switch-wrapper {
+            float: right;
+            max-height: 38px;
+        }
         .bootstrap-switch.bootstrap-switch-on {
             .bootstrap-switch-label {
                 margin-left: 3px;
@@ -935,6 +935,10 @@ FORMS
         div.col-xs-12, div.col-sm-12, div.col-md-12, div.col-lg-12 {
             padding-left: 0;
             padding-right: 0;
+        }
+        label.control-label.transparent-label {
+            background: transparent;
+            border-color: transparent;
         }
     }
 }

@@ -50,7 +50,7 @@
             <ul id="sidebar-list">
                 
                 {{#sidebar.accounts}}
-                    <li>{{currency}} (<span>{{count}}</span>) <a href="#accounts?currency={{code}}" class="values">{{balance}}</a></li>
+                    <li><a href="#accounts?currency={{code}}">{{currency}}</a> (<span>{{count}}</span>) <span class="values">{{balance}}</span></li>
                 {{/sidebar.accounts}}
                 
                 <li class="total">{{copy.sidebar.total}} <span>{{sidebar.total}}</span></li>

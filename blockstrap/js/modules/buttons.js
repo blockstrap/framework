@@ -17,7 +17,7 @@
     buttons.process = function(slug, content, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements)
     {
         $('#'+$.fn.blockstrap.settings.content_id).hide(effect, {direction:direction}, 500);
-        var paged_html = Mustache.render(content, filtered_data);
+        var paged_html = $.fn.blockstrap.templates.filter(Mustache.render(content, filtered_data));
         $('#'+$.fn.blockstrap.settings.content_id).html(paged_html).show(effect, {direction:reverse_direction}, 500, function()
         {
             if(mobile && !menu) $(elements).css({'opacity':1});
@@ -32,7 +32,7 @@
         {
             if(slug === $.fn.blockstrap.settings.slug_base)
             {
-                history.pushState({}, document.getElementsByTagName("title")[0].innerHTML, $.fn.blockstrap.settings.base_url);
+                history.pushState({}, document.getElementsByTagName("title")[0].innerHTML, $.fn.blockstrap.settings.base_url + location.search);
             }
             else
             {

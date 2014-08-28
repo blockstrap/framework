@@ -271,7 +271,7 @@
                 ]
             }
         });
-        $.fn.blockstrap.core.modal('Verify Ownership', form);
+        $.fn.blockstrap.core.modal('Verify Ownership of ' + account.name, form);
     }
     
     accounts.verify = function(account, fields)
