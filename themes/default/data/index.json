@@ -421,24 +421,11 @@
                                     "css": "col-xs-3"
                                 },
                                 "type": "text",
+                                "css": "bs-account-select",
                                 "placeholder": "Select Wallet",
                                 "wrapper": {
                                     "css": "col-xs-9"
-                                },
-                                "values": [
-                                    {
-                                        "value": "wallet-01",
-                                        "text": "Bitcoin (Personal)"
-                                    },
-                                    {
-                                        "value": "wallet-02",
-                                        "text": "Bitcoin (Business)"
-                                    },
-                                    {
-                                        "value": "wallet-03",
-                                        "text": "Dogecoin"
-                                    }
-                                ]
+                                }
                             }
                         },
                         {

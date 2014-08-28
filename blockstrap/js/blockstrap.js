@@ -735,6 +735,22 @@ var blockstrap_core = function()
                         }
                     }
                 });
+                $($.fn.blockstrap.element).find('.bs-account-select').each(function(i)
+                {
+                    if($(this).find('option').length < 1)
+                    {
+                        var select = $(this);
+                        var accounts = $.fn.blockstrap.accounts.get();
+                        if($.isArray(accounts))
+                        {
+                            $(select).append('<option value="">-- Select Account --</option>');
+                            $.each(accounts, function(k, account)
+                            {
+                                $(select).append('<option value="' + account.address + '">' + account.name + ' (' + account.currency.type + ')</option>');
+                            });
+                        }
+                    }
+                });
                 $($.fn.blockstrap.element).on('submit', '#blockstrap-login', function(e)
                 {
                     e.preventDefault();
