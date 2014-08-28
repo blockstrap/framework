@@ -275,7 +275,7 @@
         $.fn.blockstrap.core.modal('Verify Ownership of ' + account.name, form);
     }
     
-    accounts.verify = function(account, fields)
+    accounts.verify = function(account, fields, callback)
     {
         $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
         {
@@ -294,19 +294,8 @@
                 var address = address_key.getBitcoinAddress().toString();
                 if(address === account.address)
                 {
-                    var private_key = address_key.priv.toString();
-                    var title = 'Private Key for '+address;
-                    var intro = '<p style="word-wrap: break-word;">'+private_key+'</p>';
-                    var qr_code = '<p class="qr-holder" data-content="'+private_key+'"></p>';
-                    var print = '<p style="text-align: center"><a href="#" class="btn btn-danger btn-print" data-print-id="default-modal" data-print-class="modal-body" data-print-title="Private Key for '+address+'">PRINT THIS KEY</a></p>';
-                    $.fn.blockstrap.core.modal(title, intro + qr_code + print);
-                    $('#default-modal').find('.qr-holder').each(function()
-                    {
-                        $(this).qrcode({
-                            render: 'image',
-                            text: $(this).attr('data-content')
-                        });
-                    });
+                    if(callback) callback(true, address, address_key);
+                    else return true;
                 }
                 else
                 {
@@ -318,6 +307,19 @@
                 $.fn.blockstrap.core.modal('Error', 'Unable to construct keys');
             }
         });
+    }
+    
+    accounts.prepare = function(to, account_id, amount)
+    {
+        if(to && !$.fn.blockstrap.btc.validate(to))
+        {
+            $.fn.blockstrap.core.modal('Warning', to + ' is not a valid address');
+        }
+        else if(to, from, amount)
+        {
+            var account = $.fn.blockstrap.accounts.get(account_id);
+            $.fn.blockstrap.accounts.access(account_id);
+        }
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE

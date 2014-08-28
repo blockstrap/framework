@@ -838,9 +838,24 @@
                     value: value
                 });
             });
-            $.fn.blockstrap.accounts.verify(account, fields, function(verified)
+            $.fn.blockstrap.accounts.verify(account, fields, function(verified, address, key)
             {
-                console.log('verified', verified);
+                if(verified === true)
+                {
+                    var private_key = key.priv.toString();
+                    var title = 'Private Key for '+address;
+                    var intro = '<p style="word-wrap: break-word;">'+private_key+'</p>';
+                    var qr_code = '<p class="qr-holder" data-content="'+private_key+'"></p>';
+                    var print = '<p style="text-align: center"><a href="#" class="btn btn-danger btn-print" data-print-id="default-modal" data-print-class="modal-body" data-print-title="Private Key for '+address+'">PRINT THIS KEY</a></p>';
+                    $.fn.blockstrap.core.modal(title, intro + qr_code + print);
+                    $('#default-modal').find('.qr-holder').each(function()
+                    {
+                        $(this).qrcode({
+                            render: 'image',
+                            text: $(this).attr('data-content')
+                        });
+                    });
+                }
             });
         });
     }
@@ -855,6 +870,22 @@
         if(print_class) contents = $('#'+print_id).find('.'+print_class).html();
         if(print_title) contents = '<h3>'+print_title+'</h3>'+contents;
         $.fn.blockstrap.core.print(contents);
+    }
+    
+    buttons.send = function(button, e)
+    {
+        e.preventDefault();
+        var form = $($.fn.blockstrap.element).find('form#send');
+        var to = $(form).find('#to').val();
+        var from = $(form).find('#from').val();
+        var amount = $(form).find('#amount').val();
+        if(!to) $.fn.blockstrap.core.modal('Warning', 'Missing address to send payment to');
+        else if(!from) $.fn.blockstrap.core.modal('Warning', 'Missing account to use to send from');
+        else if(!amount) $.fn.blockstrap.core.modal('Warning', 'You have not provided the amount you want to send');
+        else
+        {
+            $.fn.blockstrap.accounts.prepare(to, from, amount);
+        }
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE

@@ -746,7 +746,7 @@ var blockstrap_core = function()
                             $(select).append('<option value="">-- Select Account --</option>');
                             $.each(accounts, function(k, account)
                             {
-                                $(select).append('<option value="' + account.address + '">' + account.name + ' (' + account.currency.type + ')</option>');
+                                $(select).append('<option value="' + account.id + '">' + account.name + ' (' + account.currency.type + ')</option>');
                             });
                         }
                     }
@@ -958,6 +958,10 @@ var blockstrap_core = function()
                 $($.fn.blockstrap.element).on('click', '.btn-print', function(e)
                 {
                     $.fn.blockstrap.buttons.print(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '#send-money', function(e)
+                {
+                    $.fn.blockstrap.buttons.send(this, e);
                 });
             },
             stringed: function(styles)
