@@ -961,6 +961,10 @@ var blockstrap_core = function()
                 });
                 $($.fn.blockstrap.element).on('click', '#send-money', function(e)
                 {
+                    $.fn.blockstrap.buttons.prepare(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '#submit-payment', function(e)
+                {
                     $.fn.blockstrap.buttons.send(this, e);
                 });
             },

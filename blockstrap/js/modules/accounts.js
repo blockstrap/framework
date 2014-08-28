@@ -189,10 +189,15 @@
         else return grand_total;
     }
     
-    accounts.access = function(account_id)
+    accounts.access = function(account_id, tx)
     {
         var fields = [];
         var account = accounts.get(account_id);
+        var is_tx = false;
+        if($.isPlainObject(tx) && tx.to && tx.from && tx.amount)
+        {
+            is_tx = true;
+        }
         if($.isArray(account.keys))
         {
             $.each(account.keys, function(k, v)
@@ -233,7 +238,7 @@
                 });
             })
         }
-        var form = $.fn.blockstrap.forms.process({
+        var options = {
             css: 'form-horizontal',
             objects: [
                 {
@@ -271,8 +276,25 @@
                     }
                 ]
             }
-        });
-        $.fn.blockstrap.core.modal('Verify Ownership of ' + account.name, form);
+        };
+        var intro = '';
+        if(is_tx === true)
+        {
+            options.buttons.forms[0].id = 'submit-payment';
+            options.buttons.forms[0].attributes.push({
+                key: 'data-to-address',
+                value: tx.to
+            });
+            options.buttons.forms[0].attributes.push({
+                key: 'data-to-amount',
+                value: tx.amount
+            });
+            var amount = parseInt(tx.amount) / 100000000;
+            amount = amount + ' ' + account.currency.type;
+            intro = '<p>Please confirm you want to send ' + amount + ' to ' + tx.to + '</p>';
+        }
+        var form = $.fn.blockstrap.forms.process(options);
+        $.fn.blockstrap.core.modal('Verify Ownership of ' + account.name, intro + form);
     }
     
     accounts.verify = function(account, fields, callback)
@@ -315,10 +337,14 @@
         {
             $.fn.blockstrap.core.modal('Warning', to + ' is not a valid address');
         }
-        else if(to, from, amount)
+        else if(to, account_id, amount)
         {
-            var account = $.fn.blockstrap.accounts.get(account_id);
-            $.fn.blockstrap.accounts.access(account_id);
+            var tx = {
+                to: to,
+                from: account_id,
+                amount: parseFloat(amount) * 100000000
+            };
+            $.fn.blockstrap.accounts.access(account_id, tx);
         }
     }
     

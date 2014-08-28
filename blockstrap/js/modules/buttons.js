@@ -872,7 +872,7 @@
         $.fn.blockstrap.core.print(contents);
     }
     
-    buttons.send = function(button, e)
+    buttons.prepare = function(button, e)
     {
         e.preventDefault();
         var form = $($.fn.blockstrap.element).find('form#send');
@@ -885,6 +885,48 @@
         else
         {
             $.fn.blockstrap.accounts.prepare(to, from, amount);
+        }
+    }
+    
+    buttons.send = function(button, e)
+    {
+        e.preventDefault();
+        var fields = [];
+        var form_id = $(button).attr('data-form-id');
+        var account_id = $(button).attr('data-account-id');
+        var to_address = $(button).attr('data-to-address');
+        var to_amount = parseFloat($(button).attr('data-to-amount')) * 100000000;
+        var form = $('form#'+form_id);
+        var account = $.fn.blockstrap.accounts.get(account_id);
+        var balance = account.balance;
+        if(balance < to_amount)
+        {
+            $.fn.blockstrap.core.modal('Warning', 'You do not have sufficient funds');
+        }
+        else
+        {
+            $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
+            {
+                $(form).find('.form-group').each(function(i)
+                {
+                    var input = $(this).find('input');
+                    var value = $(input).val();
+                    var id = $(input).attr('id');
+                    fields.push({
+                        id: id,
+                        value: value
+                    });
+                });
+                $.fn.blockstrap.accounts.verify(account, fields, function(verified, address, key)
+                {
+                    if(verified === true)
+                    {
+                        var private_key = key.priv.toString();
+                        console.log('ready to send '+to_amount+' to '+to_address);
+                        console.log('private key', private_key);
+                    }
+                });
+            });
         }
     }
     
