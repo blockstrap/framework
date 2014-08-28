@@ -110,7 +110,8 @@ var blockstrap_core = function()
             currencies: {
                 btc: {
                     currency: "Bitcoin",
-                    api: "https://mainnet.helloblock.io/v1/"
+                    api: "https://mainnet.helloblock.io/v1/",
+                    fee: 0.0001
                 },
                 ltc: {
                     currency: "Litecoin",

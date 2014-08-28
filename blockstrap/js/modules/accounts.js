@@ -272,8 +272,9 @@
                 value: tx.amount
             });
             var amount = parseInt(tx.amount) / 100000000;
+            var fee = $.fn.blockstrap.settings.currencies[account.currency.code].fee;
             amount = amount + ' ' + account.currency.type;
-            intro = '<p>Please confirm you want to send ' + amount + ' to ' + tx.to + '</p>';
+            intro = '<p>Please confirm you want to send ' + amount + ' to ' + tx.to + '</p><p>Please also note that there is a network mining fee of ' + fee + ' ' + account.currency.type + ' applied to this transaction to ensure that it is propergated throughout the network quickly.</p>';
         }
         var form = $.fn.blockstrap.forms.process(options);
         $.fn.blockstrap.core.modal('Verify Ownership of ' + account.name, intro + form);

@@ -895,11 +895,12 @@
         var form_id = $(button).attr('data-form-id');
         var account_id = $(button).attr('data-account-id');
         var to_address = $(button).attr('data-to-address');
-        var to_amount = parseFloat($(button).attr('data-to-amount')) * 100000000;
+        var to_amount = parseFloat($(button).attr('data-to-amount'));
         var form = $('form#'+form_id);
         var account = $.fn.blockstrap.accounts.get(account_id);
         var balance = account.balance;
-        if(balance < to_amount)
+        var fee = parseFloat($.fn.blockstrap.settings.currencies.btc.fee) * 100000000;
+        if(balance < to_amount + fee)
         {
             $.fn.blockstrap.core.modal('Warning', 'You do not have sufficient funds');
         }
