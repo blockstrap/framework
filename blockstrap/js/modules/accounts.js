@@ -100,7 +100,7 @@
     
     accounts.get = function(id)
     {
-        var accounts = [];
+        var accounts = false;
         if($.isPlainObject(localStorage))
         {
             if(id && localStorage.getItem('nw_accounts_'+id))
@@ -113,6 +113,7 @@
                 {
                     if(key.substring(0, 12) === 'nw_accounts_')
                     {
+                        if(!$.isArray(accounts)) accounts = [];
                         accounts.push($.parseJSON(account));
                     }
                 });

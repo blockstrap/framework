@@ -463,11 +463,6 @@
                                 "id": "send-money",
                                 "css": "btn-primary pull-right",
                                 "text": "Send"
-                            },
-                            {
-                                "id": "authorize-payment",
-                                "css": "btn-default pull-right",
-                                "text": "Authorize"
                             }
                         ]
                     }

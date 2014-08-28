@@ -77,13 +77,14 @@
     
     contacts.get = function()
     {
-        var contacts = [];
+        var contacts = false;
         if($.isPlainObject(localStorage))
         {
             $.each(localStorage, function(key, contact)
             {
                 if(key.substring(0, 12) === 'nw_contacts_')
                 {
+                    if(!$.isArray(contacts)) contacts = [];
                     contacts.push($.parseJSON(contact));
                 }
             });

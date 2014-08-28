@@ -647,6 +647,10 @@
                     });
                 }
             }
+            else if(state == 'input')
+            {
+                $.fn.blockstrap.core.modal('Reminder', 'You do not yet have any contacts');
+            }
         }
     }
     
