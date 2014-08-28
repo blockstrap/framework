@@ -13,7 +13,8 @@
                     "objects": [
                         {
                             "title": "Your Contacts",
-                            "intro": "You currently have 3 contacts.",
+                            "intro": "These are your contacts. Contacts make it easier to send money to addresses where you may send more than once.",
+                            "html": "Do we want to display any additional content for contacts here below the primary taglines?",
                             "buttons": [
                                 {
                                     "href": "#",

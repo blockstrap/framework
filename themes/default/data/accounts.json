@@ -13,7 +13,8 @@
                     "objects": [
                         {
                             "title": "Your Accounts",
-                            "intro": "You currently have 3 Bitcoin addresses, 2 Dogecoin addresses, 1 Litecoin address and 1 Peercoin address.",
+                            "intro": "These are all the different accounts you have in different currencies. More advanced filtering coming soon!",
+                            "html": "Do we want to display any additional content for accounts here below the primary taglines?",
                             "buttons": [
                                 {
                                     "href": "#",
