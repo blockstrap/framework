@@ -119,8 +119,9 @@ var blockstrap_core = function()
             },
             cache: {
                 api: {
-                    address: 60000
+                    address: 60000 // 1 Minute
                 },
+                accounts: 120000 // 2 Minutes = 120000
             },
             exchange: {
                 btc: 500,
@@ -488,27 +489,29 @@ var blockstrap_core = function()
                 {
                     $.fn.blockstrap.templates.render('index', function()
                     {
-                        $.fn.blockstrap.accounts.balances(true);
-                        $.fn.blockstrap.styles.set();
-                        $.fn.blockstrap.core.modals();
-                        $.fn.blockstrap.core.buttons();
-                        $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
-                        {
-                            $.fn.blockstrap.core.loading();
-                            $.fn.blockstrap.core.new();
-                            $(window).resize(function(e)
+                        //$.fn.blockstrap.accounts.balances(true, function()
+                        //{
+                            $.fn.blockstrap.styles.set();
+                            $.fn.blockstrap.core.modals();
+                            $.fn.blockstrap.core.buttons();
+                            $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
                             {
-                                $.fn.blockstrap.core.resize();
-                            })
-                        });
-                        var run_tests = false;
-                        var tests = blockstrap_functions.vars('tests');
-                        if(tests) run_tests = true;
-                        $.fn.blockstrap.core.tests(run_tests);
-                        if(window.location.hash)
-                        {
-                            $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id).find('#' + blockstrap_functions.slug(window.location.hash)).trigger('click');
-                        }
+                                $.fn.blockstrap.core.loading();
+                                $.fn.blockstrap.core.new();
+                                $(window).resize(function(e)
+                                {
+                                    $.fn.blockstrap.core.resize();
+                                })
+                            });
+                            var run_tests = false;
+                            var tests = blockstrap_functions.vars('tests');
+                            if(tests) run_tests = true;
+                            $.fn.blockstrap.core.tests(run_tests);
+                            if(window.location.hash)
+                            {
+                                $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id).find('#' + blockstrap_functions.slug(window.location.hash)).trigger('click');
+                            }
+                        //});
                     });
                 }
             },

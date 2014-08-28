@@ -70,8 +70,7 @@
                                 password: pw,
                                 keys: keys,
                                 address: address,
-                                incoming: 0,
-                                outgoing: 0,
+                                tx_count: 0,
                                 balance: 0
                             };
                             if(data) account.data = data;
@@ -122,54 +121,37 @@
         return accounts;
     }
     
-    accounts.balance = function(address, currency, callback, update)
-    {
-        if(update && callback)
-        {
-            var balance = 0;
-            if(address)
-            {
-                $.fn.blockstrap.api.address(address, currency, function(address)
-                {
-                    if(address.balance) callback(address.balance)
-                    else callback(balance);
-                })
-            }
-        }
-        else
-        {
-            if(callback) callback(false);
-            else return false;
-        }
-    }
-    
-    accounts.balances = function(update)
+    accounts.balances = function()
     {
         var balances = {};
-        if($.isArray(accounts.get()))
+        var accounts = $.fn.blockstrap.accounts.get();
+        if($.isArray(accounts))
         {
-            $.each(accounts.get(), function(k, v)
+            $.each(accounts, function(k, v)
             {
-                accounts.balance(v.address, v.currency.code, function(balance)
+                var balance = 0;
+                if(v.balance) balance = parseInt(v.balance);
+                if(balances[v.currency.code])
                 {
-                    if(!balance) balance = parseInt(v.balance);
-                    if(balances[v.currency.code])
-                    {
-                        balances[v.currency.code].balance = parseInt(balances[v.currency.code].balance) + balance;
-                        balances[v.currency.code].count++;
-                        balances[v.currency.code].name = v.currency.type;
-                    }
-                    else
-                    {
-                        balances[v.currency.code] = {};
-                        balances[v.currency.code].balance = parseInt(balance);
-                        balances[v.currency.code].count = 1;
-                        balances[v.currency.code].name = v.currency.type;
-                    }
-                }, update);
+                    balances[v.currency.code].balance = parseInt(balances[v.currency.code].balance) + balance;
+                    balances[v.currency.code].count++;
+                    balances[v.currency.code].name = v.currency.type;
+                }
+                else
+                {
+                    balances[v.currency.code] = {};
+                    balances[v.currency.code].balance = parseInt(balance);
+                    balances[v.currency.code].count = 1;
+                    balances[v.currency.code].name = v.currency.type;
+                }
             });
+            $.each(balances, function(currency, obj)
+            {
+                var this_balance = balances[currency].balance;
+                balances[currency].balance = parseInt(this_balance) / 100000000;
+            });
+            return balances;
         }
-        return balances;
     }
     
     accounts.total = function(rate, prefix)
@@ -181,12 +163,12 @@
         {
             $.each(balances, function(code, currency)
             {
-                var total = parseInt(currency.balance) * parseInt(exchange_rates[rate]);
+                var total = (parseFloat(currency.balance) * 100000000) * parseFloat(exchange_rates[rate]);
                 grand_total = grand_total + total;
             });
         }
-        if(prefix) return prefix + ' ' + grand_total;
-        else return grand_total;
+        if(prefix) return prefix + ' ' + parseInt(grand_total) / 100000000;
+        else return parseInt(grand_total) / 100000000;
     }
     
     accounts.access = function(account_id, tx)
@@ -345,6 +327,36 @@
                 amount: parseFloat(amount) * 100000000
             };
             $.fn.blockstrap.accounts.access(account_id, tx);
+        }
+    }
+    
+    accounts.update = function(account, callback)
+    {
+        if($.isPlainObject(account))
+        {
+            var ts = 0;
+            var now = new Date().getTime();
+            var cache_time = $.fn.blockstrap.settings.cache.accounts;
+            if(account.ts) ts = account.ts;
+            if(ts + cache_time < now)
+            {
+                $.fn.blockstrap.api.address(account.address, account.currency.code, function(results)
+                {
+                    account.balance = results.balance;
+                    account.tx_count = results.tx_count;
+                    account.ts = now;
+                    $.fn.blockstrap.data.save('accounts', account.id, account, function(obj)
+                    {
+                        if(callback) callback(obj);
+                        else return obj;
+                    });
+                })
+            }
+            else
+            {
+                if(callback) callback(false);
+                else return false;
+            }
         }
     }
     

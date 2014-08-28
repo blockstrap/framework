@@ -69,7 +69,9 @@
             {
                 if(key.substring(0, 12) === 'nw_accounts_')
                 {
-                    accounts.push($.parseJSON(account));
+                    var this_account = $.parseJSON(account);
+                    this_account.balance = parseInt(this_account.balance) / 100000000;
+                    accounts.push(this_account);
                 }
             });
         }

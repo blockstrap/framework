@@ -12,6 +12,7 @@
 {
     // EMPTY OBJECTS
     var api = {};
+    var active_requests = {};
     var apis = $.fn.blockstrap.settings.maps.apis;
     var currencies = $.fn.blockstrap.settings.currencies;
     
