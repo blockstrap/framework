@@ -99,12 +99,13 @@ var blockstrap_core = function()
             },
             tests: {
                 api: {
-                    address: '1121cQLqCsDsLPAkJW5ddTCREZ7Bp4ufrk',
+                    address: '1Nz5RqevRodefPyGVB8EpdwSEGS4Ax2f1k',
                     transaction: '06032a172f88ba823785f87341eab26ee7a2eb2de9d2f105220d6580e3affc16',
-                    transactions: '1121cQLqCsDsLPAkJW5ddTCREZ7Bp4ufrk',
+                    transactions: '1Nz5RqevRodefPyGVB8EpdwSEGS4Ax2f1k',
                     addresses: '1121cQLqCsDsLPAkJW5ddTCREZ7Bp4ufrk&addresses=12higDjoCCNXSA95xZMWUdPvXNmkAduhWv',
                     block: '15968',
-                    relay: '0100000001ec71e2ceac8476bea21fbc4a97062c000f07def6c8ef8d9171fb1a5e113418e0010000008c493046022100e6f39b4393794ef03b0f9dc71395e0835a211015b42ab4329cb6a6c1c8b3c6ea022100f1ccae451f35e5c5ad25a8f7e7b5e778bafc4dc69dd560fab1cbadbb88767916014104e1934263e84e202ebffca95246b63c18c07cd369c4f02de76dbd1db89e6255dacb3ab1895af0422e24e1d1099e80f01b899cfcdf9b947575352dbc1af57466b5ffffffff0210270000000000001976a914652c453e3f8768d6d6e1f2985cb8939db91a4e0588ace065f81f000000001976a914cf0dfe6e0fa6ea5dda32c58ff699071b672e1faf88ac00000000'
+                    relay: '0100000001ec71e2ceac8476bea21fbc4a97062c000f07def6c8ef8d9171fb1a5e113418e0010000008c493046022100e6f39b4393794ef03b0f9dc71395e0835a211015b42ab4329cb6a6c1c8b3c6ea022100f1ccae451f35e5c5ad25a8f7e7b5e778bafc4dc69dd560fab1cbadbb88767916014104e1934263e84e202ebffca95246b63c18c07cd369c4f02de76dbd1db89e6255dacb3ab1895af0422e24e1d1099e80f01b899cfcdf9b947575352dbc1af57466b5ffffffff0210270000000000001976a914652c453e3f8768d6d6e1f2985cb8939db91a4e0588ace065f81f000000001976a914cf0dfe6e0fa6ea5dda32c58ff699071b672e1faf88ac00000000',
+                    unspents: '1Nz5RqevRodefPyGVB8EpdwSEGS4Ax2f1k'
                 }
             },
             currencies: {
@@ -149,7 +150,8 @@ var blockstrap_core = function()
                                 transactions: 'addresses/$call/transactions?limit=100',
                                 block: 'blocks/',
                                 relay: 'transactions/',
-                                relay_param: 'rawTxHex'
+                                relay_param: 'rawTxHex',
+                                unspents: 'addresses/$call/unspents?limit=100'
                             },
                             from: {
                                 address: {
@@ -198,6 +200,13 @@ var blockstrap_core = function()
                                 },
                                 relay: {
                                     txid: 'txHash'
+                                },
+                                unspents: {
+                                    key: 'unspents',
+                                    txid: 'txHash',
+                                    index: 'index',
+                                    value: 'value',
+                                    script: 'scriptPubKey'
                                 }
                             }
                         }
@@ -1046,6 +1055,10 @@ var blockstrap_core = function()
                     $.fn.blockstrap.api.relay($.fn.blockstrap.settings.tests.api.relay, 'btc', function(results)
                     {
                         console.log('relay', results);
+                    });
+                    $.fn.blockstrap.api.relay($.fn.blockstrap.settings.tests.api.unspents, 'btc', function(results)
+                    {
+                        console.log('unspents', results);
                     });
                 }
             }

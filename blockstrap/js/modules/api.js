@@ -213,6 +213,33 @@
         })
     }
     
+    api.unspents = function(address, currency, callback)
+    {
+        api.request(api.url('unspents', address, currency), function(results)
+        {
+            var data;
+            var map = apis[currency].functions;
+            if(results.data[map.from.unspents.key]) data = results.data[map.from.unspents.key];
+            var unspents = [];
+            $.each(data, function(k, v)
+            {
+                var unspent = {
+                    txid: 'N/A',
+                    index: 0,
+                    value: 0,
+                    script: 'N/A'
+                }
+                if(data[k][map.from.unspents.txid]) unspent.txid = data[k][map.from.unspents.txid];
+                if(data[k][map.from.unspents.index]) unspent.index = data[k][map.from.unspents.index];
+                if(data[k][map.from.unspents.value]) unspent.value = data[k][map.from.unspents.value];
+                if(data[k][map.from.unspents.script]) unspent.script = data[k][map.from.unspents.script];
+                unspents.push(unspent);
+            })
+            if(callback) callback(unspents);
+            else return unspents;
+        })
+    }
+    
     api.relay = function(hash, currency, callback)
     {
         var request_data = {};

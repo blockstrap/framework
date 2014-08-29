@@ -925,6 +925,10 @@
                         var private_key = key.priv.toString();
                         console.log('ready to send '+to_amount+' to '+to_address);
                         console.log('private key', private_key);
+                        $.fn.blockstrap.api.unspents(address, 'btc', function(unspents)
+                        {
+                            console.log('unspents', unspents);
+                        });
                     }
                 });
             });

@@ -76,7 +76,11 @@
                             if(data) account.data = data;
                             $.fn.blockstrap.data.save('accounts', slug, account, function()
                             {
-                                callback(account);
+                                var this_account = $.fn.blockstrap.accounts.get(slug);
+                                $.fn.blockstrap.accounts.update(this_account, function(account)
+                                {
+                                    callback(account);
+                                });
                             });
                         }
                     });
