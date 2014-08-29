@@ -842,7 +842,7 @@
             {
                 if(verified === true)
                 {
-                    var private_key = key.priv.toString();
+                    var private_key = key;
                     var title = 'Private Key for '+address;
                     var intro = '<p style="word-wrap: break-word;">'+private_key+'</p>';
                     var qr_code = '<p class="qr-holder" data-content="'+private_key+'"></p>';
@@ -900,6 +900,7 @@
         var account = $.fn.blockstrap.accounts.get(account_id);
         var balance = account.balance;
         var fee = parseFloat($.fn.blockstrap.settings.currencies.btc.fee) * 100000000;
+        var from_address = account.address;
         if(balance < to_amount + fee)
         {
             $.fn.blockstrap.core.modal('Warning', 'You do not have sufficient funds');
@@ -922,12 +923,28 @@
                 {
                     if(verified === true)
                     {
-                        var private_key = key.priv.toString();
-                        console.log('ready to send '+to_amount+' to '+to_address);
-                        console.log('private key', private_key);
+                        var private_key = key;
                         $.fn.blockstrap.api.unspents(address, 'btc', function(unspents)
                         {
-                            console.log('unspents', unspents);
+                            if($.isArray(unspents))
+                            {
+                                var inputs = [];
+                                var outputs = [{
+                                    'address': to_address,
+                                    'value': to_amount
+                                }];
+                                $.each(unspents, function(k, unspent)
+                                {
+                                    inputs.push({
+                                        txid: unspent.txid,
+                                        n: unspent.index,
+                                        value: unspent.value,
+                                        script: unspent.script
+                                    });
+                                });
+                                var raw_transaction = $.fn.blockstrap.btc.raw(from_address, private_key, inputs, outputs, fee, to_amount);
+                                console.log('raw', raw_transaction);
+                            }
                         });
                     }
                 });

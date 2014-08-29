@@ -76,6 +76,7 @@ var blockstrap_core = function()
                 'effects', 
                 'crypto',
                 'bitcoinjs',
+                'tx',
                 'steps',
                 'bootstrap.min', 
                 'bootstrap-switch.min',

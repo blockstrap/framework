@@ -54,7 +54,30 @@
         return bytes;
     }
 
-    
+    btc.encode = function(pt, compressed)
+    {
+        var x = pt.getX().toBigInteger();
+        var y = pt.getY().toBigInteger();
+        var enc = integerToBytes(x, 32);
+        if(compressed)
+        {
+            if(y.isEven())
+            {
+                enc.unshift(0x02);
+            }
+            else
+            {
+                enc.unshift(0x03);
+            }
+        }
+        else
+        {
+            enc.unshift(0x04);
+            enc = enc.concat(integerToBytes(y, 32));
+        }
+        return enc;
+    }
+        
     btc.check = function(input)
     {
         var bytes = btc.decode(input);
@@ -81,6 +104,36 @@
         {
             return false;
         }
+    }
+    
+    btc.raw = function(return_address, privkey, these_inputs, these_outputs, this_fee, amount_to_send)
+    {
+        var secret = btc.decode(privkey).slice(1, 33);
+        var secret = Bitcoin.Base58.decode(privkey).slice(1, 33);
+        var eckey = new Bitcoin.ECKey(secret);
+        var fee = 0;
+        var balance = 0;
+        var total = 0;
+        if(this_fee) fee = this_fee;
+        if(amount_to_send) total = amount_to_send;
+        TX.init(eckey);
+        $.each(these_inputs, function(i, o)
+        {
+            balance+= o.value;
+            var unspent = {'txid':o.txid, 'n': o.n, 'script':o.script,'value': o.value*1};
+            TX.addInputs(unspent, TX.getAddress());
+        });
+        $.each(these_outputs, function(i, o)
+        {
+            TX.addOutput(these_outputs[i].address, parseFloat(these_outputs[i].value));
+        });
+        if(balance > (total + fee))
+        {
+            var change = balance - (total + fee);
+            TX.addOutput(return_address, parseFloat(change / 100000000).toFixed(8));
+        }
+        var sendTx = (TX.construct());
+        return Crypto.util.bytesToHex(sendTx.serialize());
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE

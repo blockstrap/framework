@@ -272,6 +272,10 @@
                 value: tx.to
             });
             options.buttons.forms[0].attributes.push({
+                key: 'data-from-address',
+                value: tx.from
+            });
+            options.buttons.forms[0].attributes.push({
                 key: 'data-to-amount',
                 value: tx.amount
             });
@@ -299,11 +303,18 @@
             };
             if(key)
             {
-                var address_key = new Bitcoin.ECKey(key);
-                var address = address_key.getBitcoinAddress().toString();
+                var hash = Crypto.util.hexToBytes(key);
+                var eckey = new Bitcoin.ECKey(key);
+                var curve = getSECCurveByName("secp256k1");
+                var gen_pt = curve.getG().multiply(eckey.priv);
+                eckey.pub = $.fn.blockstrap.btc.encode(gen_pt, false);
+                eckey.pubKeyHash = Bitcoin.Util.sha256ripe160(eckey.pub);
+                var pub = eckey.getBitcoinAddress();
+                var priv = new Bitcoin.Address(hash);
+                var address = eckey.getBitcoinAddress().toString();
                 if(address === account.address)
                 {
-                    if(callback) callback(true, address, address_key);
+                    if(callback) callback(true, address, priv);
                     else return true;
                 }
                 else
