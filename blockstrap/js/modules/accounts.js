@@ -108,7 +108,8 @@
         {
             if(id && localStorage.getItem('nw_accounts_'+id))
             {
-                return $.parseJSON(localStorage.getItem('nw_accounts_'+id));
+                var this_account = $.parseJSON(localStorage.getItem('nw_accounts_'+id));
+                return this_account;
             }
             else
             {
@@ -121,8 +122,8 @@
                     }
                 });
             }
+            return accounts;
         }
-        return accounts;
     }
     
     accounts.balances = function()
@@ -366,6 +367,33 @@
                 if(callback) callback(false);
                 else return false;
             }
+        }
+    }
+    
+    accounts.updates = function(index, callback)
+    {
+        if(!index) index = 0;
+        var accounts = $.fn.blockstrap.accounts.get();
+        var account_length = Object.keys(accounts).length;
+        if($.isArray(accounts))
+        {
+            var account = accounts[index];
+            index++;
+            $.fn.blockstrap.accounts.update(account, function()
+            {
+                if(index >= account_length)
+                {
+                    if(callback) callback();
+                }
+                else
+                {
+                    $.fn.blockstrap.accounts.updates(index, callback);
+                }
+            });
+        }
+        else
+        {
+            if(callback) callback();
         }
     }
     
