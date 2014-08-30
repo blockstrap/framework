@@ -77,6 +77,11 @@
         }
         return enc;
     }
+    
+    btc.encrypt = function(string, key)
+    {
+        return '' + CryptoJS.AES.encrypt(string, Crypto.SHA256(key));
+    }
         
     btc.check = function(input)
     {
@@ -106,32 +111,64 @@
         }
     }
     
-    btc.raw = function(return_address, privkey, these_inputs, these_outputs, this_fee, amount_to_send)
+    btc.keys = function(secret, password)
+    {
+        // 2HEbpmyPv3Z2gXQv52DAkvaa79Qo4opyK7cTMSs9YhsGD7EVhtpSWcFCfsWywDYsYPA8skCyMx9kqS5Dt7pD6xq66Kpe118
+        // My Second Wallet PUB = 1MhSTEreDEK76R14ZsgbJyKvtwSoWnVjUZ
+        // PRIV = 5Jcq9XgnavbMemP7Z4goELkXg2YUmL9xHwNjro1aydTFcosqoj2
+        var hash_str = Crypto.SHA256(secret);
+        var hash = Crypto.util.hexToBytes(hash_str);
+        var eckey = new Bitcoin.ECKey(hash);
+        var pass = password || hash_str;
+        var result = false;
+        try
+        {
+            var curve = getSECCurveByName("secp256k1");
+            var gen_pt = curve.getG().multiply(eckey.priv);
+            eckey.pub = this.encode(gen_pt, false);
+            eckey.pubKeyHash = Bitcoin.Util.sha256ripe160(eckey.pub);
+            var pub = eckey.getBitcoinAddress();
+            var priv = new Bitcoin.Address(hash);
+            priv.version = 128;
+            var payload = this.encrypt(hash_str+','+pub+','+priv, hash_str);
+            result = {'result':1, 'secret':hash_str, 'pubkey':pub, 'privkey':priv, 'payload':payload, 'payload_hash':Crypto.SHA256(payload), 'response':'keys generated'};
+        }
+        catch(error)
+        {
+            result = {'result':0, 'error':error, 'response':base.lang('Invalid secret exponent (must be non-zero value)')};
+        }
+        return result;
+    }
+    
+    btc.raw = function(return_address, privkey, inputs, outputs, this_fee, amount_to_send)
     {
         var secret = btc.decode(privkey).slice(1, 33);
-        var secret = Bitcoin.Base58.decode(privkey).slice(1, 33);
+        //var secret = Bitcoin.Base58.decode(privkey).slice(1, 33);
         var eckey = new Bitcoin.ECKey(secret);
         var fee = 0;
         var balance = 0;
         var total = 0;
         if(this_fee) fee = this_fee;
         if(amount_to_send) total = amount_to_send;
+        console.log('amount_to_send', amount_to_send);
         TX.init(eckey);
-        $.each(these_inputs, function(i, o)
+        $.each(inputs, function(i, o)
         {
             balance+= o.value;
-            var unspent = {'txid':o.txid, 'n': o.n, 'script':o.script,'value': o.value*1};
-            TX.addInputs(unspent, TX.getAddress());
+            TX.addInputs(o, TX.getAddress());
         });
-        $.each(these_outputs, function(i, o)
+        $.each(outputs, function(i, o)
         {
-            TX.addOutput(these_outputs[i].address, parseFloat(these_outputs[i].value));
+            TX.addOutput(outputs[i].address, parseInt(outputs[i].value) / 100000000);
         });
-        if(balance > (total + fee))
+        if(balance >= (total + fee))
         {
             var change = balance - (total + fee);
-            TX.addOutput(return_address, parseFloat(change / 100000000).toFixed(8));
+            TX.addOutput(return_address, parseInt(change) / 100000000);
         }
+        console.log('fee', fee);
+        console.log('balance', balance);
+        console.log('change', change);
         var sendTx = (TX.construct());
         return Crypto.util.bytesToHex(sendTx.serialize());
     }

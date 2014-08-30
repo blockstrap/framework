@@ -55,8 +55,8 @@
                                     key = key_obj.toString();
                                 });
                             };
-                            var address_key = new Bitcoin.ECKey(key);
-                            var address = address_key.getBitcoinAddress().toString();
+                            var address_keys = $.fn.blockstrap.btc.keys(key);
+                            var address = address_keys.pubkey.toString();
                             var pw_obj = CryptoJS.SHA3(salt+password, { outputLength: 512 });
                             var pw = pw_obj.toString();
                             var currency_name =  $.fn.blockstrap.settings.currencies[currency].currency;
@@ -288,7 +288,7 @@
         $.fn.blockstrap.core.modal('Verify Ownership of ' + account.name, intro + form);
     }
     
-    accounts.verify = function(account, fields, callback)
+    accounts.verify = function(account, fields, callback, password)
     {
         $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
         {
@@ -303,18 +303,11 @@
             };
             if(key)
             {
-                var hash = Crypto.util.hexToBytes(key);
-                var eckey = new Bitcoin.ECKey(key);
-                var curve = getSECCurveByName("secp256k1");
-                var gen_pt = curve.getG().multiply(eckey.priv);
-                eckey.pub = $.fn.blockstrap.btc.encode(gen_pt, false);
-                eckey.pubKeyHash = Bitcoin.Util.sha256ripe160(eckey.pub);
-                var pub = eckey.getBitcoinAddress();
-                var priv = new Bitcoin.Address(hash);
-                var address = eckey.getBitcoinAddress().toString();
-                if(address === account.address)
+                
+                var keys = $.fn.blockstrap.btc.keys(key);
+                if(keys.pubkey.toString() === account.address)
                 {
-                    if(callback) callback(true, address, priv);
+                    if(callback) callback(true, keys);
                     else return true;
                 }
                 else
@@ -340,7 +333,7 @@
             var tx = {
                 to: to,
                 from: account_id,
-                amount: parseFloat(amount) * 100000000
+                amount: amount
             };
             $.fn.blockstrap.accounts.access(account_id, tx);
         }

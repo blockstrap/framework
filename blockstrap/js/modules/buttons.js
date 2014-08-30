@@ -838,11 +838,12 @@
                     value: value
                 });
             });
-            $.fn.blockstrap.accounts.verify(account, fields, function(verified, address, key)
+            $.fn.blockstrap.accounts.verify(account, fields, function(verified, keys)
             {
                 if(verified === true)
                 {
-                    var private_key = key;
+                    var private_key = keys.privkey.toString();
+                    var address = keys.pubkey.toString();
                     var title = 'Private Key for '+address;
                     var intro = '<p style="word-wrap: break-word;">'+private_key+'</p>';
                     var qr_code = '<p class="qr-holder" data-content="'+private_key+'"></p>';
@@ -878,7 +879,7 @@
         var form = $($.fn.blockstrap.element).find('form#send');
         var to = $(form).find('#to').val();
         var from = $(form).find('#from').val();
-        var amount = $(form).find('#amount').val();
+        var amount = parseFloat($(form).find('#amount').val()) * 100000000;
         if(!to) $.fn.blockstrap.core.modal('Warning', 'Missing address to send payment to');
         else if(!from) $.fn.blockstrap.core.modal('Warning', 'Missing account to use to send from');
         else if(!amount) $.fn.blockstrap.core.modal('Warning', 'You have not provided the amount you want to send');
@@ -895,11 +896,11 @@
         var form_id = $(button).attr('data-form-id');
         var account_id = $(button).attr('data-account-id');
         var to_address = $(button).attr('data-to-address');
-        var to_amount = parseFloat($(button).attr('data-to-amount'));
+        var to_amount = parseInt($(button).attr('data-to-amount'));
         var form = $('form#'+form_id);
         var account = $.fn.blockstrap.accounts.get(account_id);
         var balance = account.balance;
-        var fee = parseFloat($.fn.blockstrap.settings.currencies.btc.fee) * 100000000;
+        var fee = $.fn.blockstrap.settings.currencies.btc.fee * 100000000;
         var from_address = account.address;
         if(balance < to_amount + fee)
         {
@@ -919,12 +920,12 @@
                         value: value
                     });
                 });
-                $.fn.blockstrap.accounts.verify(account, fields, function(verified, address, key)
+                $.fn.blockstrap.accounts.verify(account, fields, function(verified, keys)
                 {
                     if(verified === true)
                     {
-                        var private_key = key;
-                        $.fn.blockstrap.api.unspents(address, 'btc', function(unspents)
+                        var private_key = keys.privkey.toString();
+                        $.fn.blockstrap.api.unspents(keys.pubkey.toString(), 'btc', function(unspents)
                         {
                             if($.isArray(unspents))
                             {
@@ -938,12 +939,15 @@
                                     inputs.push({
                                         txid: unspent.txid,
                                         n: unspent.index,
+                                        script: unspent.script,
                                         value: unspent.value,
-                                        script: unspent.script
                                     });
                                 });
                                 var raw_transaction = $.fn.blockstrap.btc.raw(from_address, private_key, inputs, outputs, fee, to_amount);
-                                console.log('raw', raw_transaction);
+                                $.fn.blockstrap.api.relay(raw_transaction, 'btc', function(results)
+                                {
+                                    console.log('results', results);
+                                });
                             }
                         });
                     }

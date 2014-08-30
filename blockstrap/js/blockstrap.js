@@ -72,18 +72,19 @@ var blockstrap_core = function()
             ],
             dependencies: [
                 'sonic', 
+                'crypto',
                 'swipe', 
                 'effects', 
-                'crypto',
-                'bitcoinjs',
-                'tx',
                 'steps',
                 'bootstrap.min', 
                 'bootstrap-switch.min',
                 'mustache', 
                 'tables',
                 'qrcode',
-                'bootstrap-filestyle.min'
+                'bootstrap-filestyle.min',
+                'bitcoinjs',
+                'tx',
+                'sha3'
             ],
             bootstrap: [
                 'lists', 
@@ -1183,75 +1184,66 @@ var blockstrap_functions = {
         
         if($.isArray(files))
         {
-            $.each(files, function(order, file_name)
+            var js = '';
+            var file_name = files[start];
+            var js_file = localStorage.getItem('nw_js_'+file_name);
+
+            if(!js_file || refresh)
             {
-                var js_file = localStorage.getItem('nw_js_'+file_name);
-                if(!js_file || refresh)
+                // INCLUDE CORE
+                var filename = blockstrap.settings.core_base + blockstrap.settings.dependency_base + file_name + '.js';
+                if(!dependency)
                 {
-                    // INCLUDE CORE
-                    var filename = blockstrap.settings.core_base + blockstrap.settings.dependency_base + file_name + '.js';
+                    filename = blockstrap.settings.core_base + blockstrap.settings.module_base + file_name + '.js';
+                }
+                $.getScript(filename, function(core_js)
+                {
+
+                    if(core_js != '404')
+                    {
+                        js+= "\n" + core_js;
+                    }
+                    
+                    var theme_filename = 'themes/'+blockstrap.settings.theme+'/js/dependencies/' + file_name + '.js';
                     if(!dependency)
                     {
-                        filename = blockstrap.settings.core_base + blockstrap.settings.module_base + file_name + '.js';
+                        theme_filename = 'themes/'+blockstrap.settings.theme+'/js/modules/' + file_name + '.js';
                     }
-                    $.ajax({
-                        url: filename,
-                        type: 'GET',
-                        dataType: 'HTML',
-                        complete: function(results)
+                    $.getScript(theme_filename, function(theme_js)
+                    {
+                        if(theme_js != '404')
                         {
-                            var js = '';
-                            if(results.responseText && results.responseText !== '404' && results.status === 200) js+= results.responseText+"\n";
-                            var theme_filename = 'themes/'+blockstrap.settings.theme+'/js/dependencies/' + file_name + '.js';
-                            if(!dependency)
-                            {
-                                theme_filename = 'themes/'+blockstrap.settings.theme+'/js/modules/' + file_name + '.js';
-                            }
-                            $.ajax({
-                                url: theme_filename,
-                                type: 'GET',
-                                dataType: 'HTML',
-                                complete: function(results)
-                                {
-                                    if(results.responseText && results.responseText !== '404' && results.status === 200) js+= results.responseText+"\n";
-                                    blockstrap_js_files[blockstrap_functions.slug(file_name)] = js;
-                                    start++;
-                                    
-                                    var new_script = document.createElement("script");
-                                    new_script.setAttribute('type', 'text/javascript');
-                                    new_script.setAttribute('id', file_name);
-                                    new_script.text = js;
-                                    new_script.onload = function()
-                                    {
-                                        console.log('loaded');
-                                    };
-                                    head.appendChild(new_script);  
-                                    localStorage.setItem('nw_js_'+file_name, js);
-                                    
-                                    if(start >= limit)
-                                    {
-                                        callback();
-                                    }
-                                }
-                            })
+                            js+= "\n" + theme_js;
+                        }
 
+                        localStorage.setItem('nw_js_'+file_name, js);
+
+                        if(start >= limit)
+                        {
+                            callback();
+                        }
+                        else
+                        {
+                            start++;
+                            blockstrap_functions.include(blockstrap, start, files, callback, dependency);
                         }
                     });
-                }
-                else
+                });
+
+            }
+            else
+            {
+                start++;
+                var new_script = document.createElement("script");
+                new_script.setAttribute('type', 'text/javascript');
+                new_script.setAttribute('id', file_name);
+                new_script.text = js_file;
+                head.appendChild(new_script);
+                if(start >= limit)
                 {
-                    start++;
-                    var new_script = document.createElement("script");
-                    new_script.setAttribute('type', 'text/javascript');
-                    new_script.setAttribute('id', file_name);
-                    new_script.text = js_file;
-                    head.appendChild(new_script);
-                    if(start >= limit)
-                    {
-                        callback();
-                    }
+                    callback();
                 }
-            });
+            }
         }
     },
     update: function(version, callback)
