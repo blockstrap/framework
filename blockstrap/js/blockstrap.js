@@ -201,7 +201,8 @@ var blockstrap_core = function()
                                     time: 'blockTime'
                                 },
                                 relay: {
-                                    txid: 'txHash'
+                                    txid: 'txHash',
+                                    inner: 'transaction'
                                 },
                                 unspents: {
                                     key: 'unspents',

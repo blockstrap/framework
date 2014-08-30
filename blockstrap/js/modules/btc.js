@@ -113,9 +113,6 @@
     
     btc.keys = function(secret, password)
     {
-        // 2HEbpmyPv3Z2gXQv52DAkvaa79Qo4opyK7cTMSs9YhsGD7EVhtpSWcFCfsWywDYsYPA8skCyMx9kqS5Dt7pD6xq66Kpe118
-        // My Second Wallet PUB = 1MhSTEreDEK76R14ZsgbJyKvtwSoWnVjUZ
-        // PRIV = 5Jcq9XgnavbMemP7Z4goELkXg2YUmL9xHwNjro1aydTFcosqoj2
         var hash_str = Crypto.SHA256(secret);
         var hash = Crypto.util.hexToBytes(hash_str);
         var eckey = new Bitcoin.ECKey(hash);
@@ -143,14 +140,12 @@
     btc.raw = function(return_address, privkey, inputs, outputs, this_fee, amount_to_send)
     {
         var secret = btc.decode(privkey).slice(1, 33);
-        //var secret = Bitcoin.Base58.decode(privkey).slice(1, 33);
         var eckey = new Bitcoin.ECKey(secret);
         var fee = 0;
         var balance = 0;
         var total = 0;
         if(this_fee) fee = this_fee;
         if(amount_to_send) total = amount_to_send;
-        console.log('amount_to_send', amount_to_send);
         TX.init(eckey);
         $.each(inputs, function(i, o)
         {
@@ -166,9 +161,6 @@
             var change = balance - (total + fee);
             TX.addOutput(return_address, parseInt(change) / 100000000);
         }
-        console.log('fee', fee);
-        console.log('balance', balance);
-        console.log('change', change);
         var sendTx = (TX.construct());
         return Crypto.util.bytesToHex(sendTx.serialize());
     }

@@ -908,6 +908,8 @@
         }
         else
         {
+            $.fn.blockstrap.core.modals('close_all');
+            $.fn.blockstrap.core.loader('open');
             $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
             {
                 $(form).find('.form-group').each(function(i)
@@ -946,7 +948,13 @@
                                 var raw_transaction = $.fn.blockstrap.btc.raw(from_address, private_key, inputs, outputs, fee, to_amount);
                                 $.fn.blockstrap.api.relay(raw_transaction, 'btc', function(results)
                                 {
-                                    console.log('results', results);
+                                    $.fn.blockstrap.core.loader('close');
+                                    if(results && results.url && results.txid)
+                                    {
+                                        var title = 'Sent ' + parseInt(to_amount) / 100000000 + ' Bitcoin to ' + to_address;
+                                        var content = '<p>Transaction ID: ' + results.txid + '</p><p>You can <a href="' + results.url + '">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchain.info/tx/' + results.txid + '">this</a>.</p>';
+                                        $.fn.blockstrap.core.modal(title, content);
+                                    }
                                 });
                             }
                         });
