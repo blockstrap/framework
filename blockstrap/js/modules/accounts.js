@@ -374,7 +374,7 @@
     {
         if(!index) index = 0;
         var accounts = $.fn.blockstrap.accounts.get();
-        var account_length = Object.keys(accounts).length;
+        var account_length = blockstrap_functions.array_length(accounts);
         if($.isArray(accounts))
         {
             var account = accounts[index];

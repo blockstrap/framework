@@ -1180,6 +1180,15 @@ var blockstrap_functions = {
         var name = slug.replace(/_/g, ' ');
         return name.charAt(0).toUpperCase() + name.slice(1);
     },
+    array_length: function(obj)
+    {
+        var length = 0;
+        if($.isArray(obj))
+        {
+            length = Object.keys(obj).length;
+        }
+        return length;
+    },
     include: function(blockstrap, start, files, callback, dependency)
     {
         var head = document.getElementsByTagName('head')[0];
