@@ -160,17 +160,17 @@ var blockstrap_core = function()
                                     key: 'address',
                                     address: 'address',
                                     hash: 'hash160',
-                                    tx_count: 'confirmedTxsCount',
+                                    tx_count: 'txsCount',
                                     received: 'confirmedReceivedValue',
-                                    balance: 'confirmedBalance'
+                                    balance: 'balance'
                                 },
                                 addresses: {
                                     key: 'addresses',
                                     address: 'address',
                                     hash: 'hash160',
-                                    tx_count: 'confirmedTxsCount',
+                                    tx_count: 'txsCount',
                                     received: 'confirmedReceivedValue',
-                                    balance: 'confirmedBalance'
+                                    balance: 'balance'
                                 },
                                 transaction: {
                                     key: 'transaction',
