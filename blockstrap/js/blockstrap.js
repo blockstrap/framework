@@ -333,61 +333,58 @@ var blockstrap_core = function()
                                     {
                                         $.fn.blockstrap.buttons.reset(false, false);
                                     }
-
-
                                     blockstrap_functions.update($.fn.blockstrap.settings.v, function()
                                     {
-
-                                            // ADD TEMPLATES
-                                            $.fn.blockstrap.snippets = {};                            
-                                            var snippet_count = 0;
-                                            var snippet_limit = 0;
-                                            if($.isArray($.fn.blockstrap.settings.bootstrap))
+                                        // ADD TEMPLATES
+                                        $.fn.blockstrap.snippets = {};                            
+                                        var snippet_count = 0;
+                                        var snippet_limit = 0;
+                                        if($.isArray($.fn.blockstrap.settings.bootstrap))
+                                        {
+                                            snippet_limit = $.fn.blockstrap.settings.bootstrap.length;
+                                        }
+                                        if($.isArray($.fn.blockstrap.settings.bootstrap))
+                                        {
+                                            $.each($.fn.blockstrap.settings.bootstrap, function(k, v)
                                             {
-                                                snippet_limit = $.fn.blockstrap.settings.bootstrap.length;
-                                            }
-                                            if($.isArray($.fn.blockstrap.settings.bootstrap))
-                                            {
-                                                $.each($.fn.blockstrap.settings.bootstrap, function(k, v)
+                                                $.fn.blockstrap.data.find('boot', v, function(results)
                                                 {
-                                                    $.fn.blockstrap.data.find('boot', v, function(results)
+                                                    var refresh = blockstrap_functions.vars('refresh');
+                                                    if(refresh === true || !results)
                                                     {
-                                                        var refresh = blockstrap_functions.vars('refresh');
-                                                        if(refresh === true || !results)
-                                                        {
-                                                            $.fn.blockstrap.templates.get($.fn.blockstrap.settings.core_base+'html/bootstrap/'+v, 'html', function(html)
-                                                            {                                        
-                                                                $.fn.blockstrap.data.save('boot', v, html, function(results)
-                                                                {
-                                                                    $.fn.blockstrap.snippets[v] = html;
-                                                                    snippet_count++;
-                                                                    if(snippet_count >= snippet_limit)
-                                                                    {
-                                                                        // INITIATE CORE
-                                                                        $.fn.blockstrap.core.init();
-                                                                    }
-                                                                })
-
-                                                            });
-                                                        }
-                                                        else
-                                                        {
-                                                            $.fn.blockstrap.snippets[v] = results;
-                                                            snippet_count++;
-                                                            if(snippet_count >= snippet_limit)
+                                                        $.fn.blockstrap.templates.get($.fn.blockstrap.settings.core_base+'html/bootstrap/'+v, 'html', function(html)
+                                                        {                                        
+                                                            $.fn.blockstrap.data.save('boot', v, html, function(results)
                                                             {
-                                                                // INITIATE CORE
-                                                                $.fn.blockstrap.core.init();
-                                                            }
+                                                                $.fn.blockstrap.snippets[v] = html;
+                                                                snippet_count++;
+                                                                if(snippet_count >= snippet_limit)
+                                                                {
+                                                                    // INITIATE CORE
+                                                                    $.fn.blockstrap.core.init();
+                                                                }
+                                                            })
+
+                                                        });
+                                                    }
+                                                    else
+                                                    {
+                                                        $.fn.blockstrap.snippets[v] = results;
+                                                        snippet_count++;
+                                                        if(snippet_count >= snippet_limit)
+                                                        {
+                                                            // INITIATE CORE
+                                                            $.fn.blockstrap.core.init();
                                                         }
-                                                    });
+                                                    }
                                                 });
-                                            }
-                                            else
-                                            {
-                                                // INITIATE CORE
-                                                $.fn.blockstrap.core.init();
-                                            }
+                                            });
+                                        }
+                                        else
+                                        {
+                                            // INITIATE CORE
+                                            $.fn.blockstrap.core.init();
+                                        }
 
                                     }) 
                                 });
@@ -1281,6 +1278,7 @@ var blockstrap_functions = {
                     if(parseInt(current_version_array[k]) > parseInt(v))
                     {
                         $.fn.blockstrap.settings.vars.refresh = true;
+                        callback();
                     }
                     if(k >= ($(current_version_array).length - 1))
                     {
