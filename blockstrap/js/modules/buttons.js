@@ -945,7 +945,7 @@
                                             $.fn.blockstrap.core.refresh(function()
                                             {
                                                 var title = 'Sent ' + parseInt(to_amount) / 100000000 + ' Bitcoin to ' + to_address;
-                                                var content = '<p>Transaction ID: ' + results.txid + '</p><p>You can <a href="' + results.url + '">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchain.info/tx/' + results.txid + '">this</a>.</p>';
+                                                var content = '<p>Transaction ID: ' + results.txid + '</p><p>You can <a href="' + results.url + '">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchain.info/tx/' + results.txid + '">this</a>.</p><p>Please note that upon refreshing or switching pages, balances may return to their previous totals when transactions are successful but unconfirmed, where they can take anywhere upto 10 minutes to be confirmed. We will provide dual balances for each currency in the next release.</p>';
                                                 $.fn.blockstrap.core.modal(title, content);
                                             });
                                         });
