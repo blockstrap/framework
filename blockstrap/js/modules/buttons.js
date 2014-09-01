@@ -142,25 +142,7 @@
                         $.fn.blockstrap.data.put(slug, filtered_data);
                         $.fn.blockstrap.data.find('html', slug, function(results)
                         {
-                            var html = results;
-                            if(refresh === true || !html)
-                            {
-                                $.fn.blockstrap.templates.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.html_base+slug, 'html', function(content)
-                                {
-                                    if(content.status && content.status === 404)
-                                    {
-                                        buttons.cancel(button, mobile, menu, elements);
-                                    }
-                                    else
-                                    {
-                                        buttons.process(slug, content, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
-                                    }
-                                });
-                            }
-                            else
-                            {
-                                buttons.process(slug, html, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
-                            }
+                            buttons.process(slug, results, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
                         });
                     }
                 });
@@ -668,13 +650,12 @@
                 localStorage.removeItem('nw_' + collection + '_' + key);
                 $($.fn.blockstrap.element).find('#' + element).hide(350, function()
                 {
-                    $(this).remove();
-                    var page = $.fn.blockstrap.settings.page;
-                    console.log('page', page);
-                    $.fn.blockstrap.templates.render(page, function()
+                    var this_element = $(this);
+                    $(this_element).remove();
+                    $.fn.blockstrap.core.refresh(function()
                     {
                         
-                    }, true);
+                    });
                 })
             }
         }

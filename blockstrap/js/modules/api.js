@@ -50,41 +50,29 @@
     api.address = function(hash, currency, callback)
     {
         if(!$.isPlainObject(apis[currency])) return false;
-        $.fn.blockstrap.core.cache('nw_cache_api_address', false, hash, function(cache)
+        api.request(api.url('address', hash, currency), function(results)
         {
-            if(cache)
-            {
-                if(callback) callback(cache);
-                else return cache
+            var data;
+            var map = apis[currency].functions;
+            if(results.data[map.from.address.key]) data = results.data[map.from.address.key];
+            var address = {
+                url: '#',
+                address: 'N/A',
+                hash: 'N/A',
+                tx_count: 0,
+                currency: currency,
+                received: 0,
+                balance: 0,
             }
-            else
-            {
-                api.request(api.url('address', hash, currency), function(results)
-                {
-                    var data;
-                    var map = apis[currency].functions;
-                    if(results.data[map.from.address.key]) data = results.data[map.from.address.key];
-                    var address = {
-                        url: '#',
-                        address: 'N/A',
-                        hash: 'N/A',
-                        tx_count: 0,
-                        currency: currency,
-                        received: 0,
-                        balance: 0,
-                    }
-                    if(data[map.from.address.address]) address.url = '#address?key='+data[map.from.address.address];
-                    if(data[map.from.address.address]) address.address = data[map.from.address.address];
-                    if(data[map.from.address.hash]) address.hash = data[map.from.address.hash];
-                    if(data[map.from.address.tx_count]) address.tx_count = data[map.from.address.tx_count];
-                    if(data[map.from.address.received]) address.received = data[map.from.address.received];
-                    if(data[map.from.address.balance]) address.balance = data[map.from.address.balance];
-                    $.fn.blockstrap.core.cache('nw_cache_api_address', JSON.stringify(address), hash);
-                    if(callback) callback(address);
-                    else return address;
-                })
-            }
-        }, $.fn.blockstrap.settings.cache.api.address);
+            if(data[map.from.address.address]) address.url = '#address?key='+data[map.from.address.address];
+            if(data[map.from.address.address]) address.address = data[map.from.address.address];
+            if(data[map.from.address.hash]) address.hash = data[map.from.address.hash];
+            if(data[map.from.address.tx_count]) address.tx_count = data[map.from.address.tx_count];
+            if(data[map.from.address.received]) address.received = data[map.from.address.received];
+            if(data[map.from.address.balance]) address.balance = data[map.from.address.balance];
+            if(callback) callback(address);
+            else return address;
+        });
     }
     
     api.transactions = function(address, currency, callback)

@@ -545,44 +545,15 @@ var blockstrap_core = function()
                 {
                     $.fn.blockstrap.settings.page = 'index';
                 }
+                return $.fn.blockstrap.settings.page;
             },
-            cache: function(key, value, variable, callback, time_to_live)
+            refresh: function(callback)
             {
-                if(!time_to_live) time_to_live = 60000; // 1 Minute
-                key = key+'_'+variable;
-                
-                var now = new Date().getTime();
-                var val = localStorage.getItem(key);
-                if(blockstrap_functions.json(val))
+                var page = $.fn.blockstrap.core.page();
+                $.fn.blockstrap.templates.render(page, function()
                 {
-                    val = $.parseJSON(localStorage.getItem(key));
-                }
-                var time = time_to_live;
-                if(val && val.ts) time = val.ts + time_to_live;
-                if(value && time < now)
-                {
-                    var obj = {
-                        value: value,
-                        ts: now
-                    };
-                    localStorage.setItem(key, JSON.stringify(obj));
-                    if(callback) callback(true);
-                    else return true;
-                }
-                else
-                {
-                    if(time < now)
-                    {
-                        if(callback) callback(false);
-                        else return false;
-                    }
-                    else
-                    {
-                        if($.isPlainObject(val) && val.value) return val.value;
-                        else if(callback) callback(false);
-                        else return false;
-                    }
-                }
+                    if(callback) callback();
+                }, true);
             },
             image: function(input, callback)
             {
