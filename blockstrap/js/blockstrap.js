@@ -73,7 +73,6 @@ var blockstrap_core = function()
             dependencies: [
                 'sonic', 
                 'crypto',
-                'swipe', 
                 'effects', 
                 'steps',
                 'bootstrap.min', 
@@ -463,6 +462,7 @@ var blockstrap_core = function()
                 {
                     $.fn.blockstrap.core.table();
                     $.fn.blockstrap.core.forms();
+                    $.fn.blockstrap.core.page();
 
                     // Not handling lack of these being activated ...
                     $.fn.blockstrap.theme.new();
@@ -532,6 +532,18 @@ var blockstrap_core = function()
                             //});
                         });
                     });
+                }
+            },
+            page: function()
+            {
+                if(window.location.hash)
+                {
+                    var slug_array = window.location.hash.split('#');
+                    $.fn.blockstrap.settings.page = slug_array[1];
+                }
+                else
+                {
+                    $.fn.blockstrap.settings.page = 'index';
                 }
             },
             cache: function(key, value, variable, callback, time_to_live)

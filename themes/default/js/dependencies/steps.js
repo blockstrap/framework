@@ -82,7 +82,7 @@ var blockstrap_setup_steps = [
                             "buttons": [
                                 {
                                     "href": "#",
-                                    "css": "btn-default",
+                                    "css": "btn-default btn-reset-device",
                                     "text": "Reset"
                                 }
                             ]
@@ -466,7 +466,7 @@ var blockstrap_setup_steps = [
                             "buttons": [
                                 {
                                     "href": "#",
-                                    "css": "btn-default",
+                                    "css": "btn-default btn-reset-device",
                                     "text": "Reset"
                                 }
                             ]
@@ -764,7 +764,7 @@ var blockstrap_setup_steps = [
                             "buttons": [
                                 {
                                     "href": "#",
-                                    "css": "btn-default",
+                                    "css": "btn-default btn-reset-device",
                                     "text": "Reset"
                                 }
                             ]

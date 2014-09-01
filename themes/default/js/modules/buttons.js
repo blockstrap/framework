@@ -122,6 +122,7 @@
     buttons.auth_salt = function(button)
     {
         var input_value = $(button).find('input.switch').val();
+        var toggle_groups = $('#blockstrap-setup-step1-left').find('.salt-passwords').parent().parent();
         if(input_value === true || input_value === 'true')
         {
             var password = $.fn.blockstrap.forms.input({
@@ -165,16 +166,17 @@
             if($('#blockstrap-setup-step1-left').find('.salt-passwords').length < 1)
             {
                 $('#blockstrap-setup-step1-left').append(password + password_repeat);
-                $('#blockstrap-setup-step1-left').find('.salt-passwords').hide(0);
+                toggle_groups = $('#blockstrap-setup-step1-left').find('.salt-passwords').parent().parent();
+                $(toggle_groups).hide(0).show(350);
             }
-            $('#blockstrap-setup-step1-left').find('.salt-passwords').show(350, function()
+            $(toggle_groups).show(350, function()
             {
               
             });
         }
         else
         {
-            $('#blockstrap-setup-step1-left').find('.salt-passwords').hide(350, function()
+            $(toggle_groups).hide(350, function()
             {
               $(this).remove();
             });
@@ -448,6 +450,12 @@
         $.fn.blockstrap.buttons.wallet_choice(this);
     });
     
+    /*
+    
+    REMOVED FOR NOW DUE TO IT PREVENTING TEXT COIPY AND PASTE
+    
+    ADD "swipe" TO DEPENDENCIES AND UNCOMMENT TO ACTIVATE / TEST
+    
     $($.fn.blockstrap.element).swipe( {
         //Generic swipe handler for all directions
         swipeLeft:function(event, direction, distance, duration, fingerCount) 
@@ -487,6 +495,8 @@
         //Default is 75px, set to 0 for demo so any distance triggers swipe
         threshold:100
     });
+    
+    */
     
     $(window).resize(function(e)
     {

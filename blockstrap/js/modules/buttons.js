@@ -658,7 +658,6 @@
     {
         e.preventDefault();
         var key = $(button).attr('data-key');
-        var parent = $(button).attr('data-parent');
         var element = $(button).attr('data-element');
         var collection = $(button).attr('data-collection');
         if($.isPlainObject(localStorage))
@@ -667,9 +666,15 @@
             if(item)
             {
                 localStorage.removeItem('nw_' + collection + '_' + key);
-                $($.fn.blockstrap.element).find('#' + parent).find('#' + element).hide(350, function()
+                $($.fn.blockstrap.element).find('#' + element).hide(350, function()
                 {
-                   $(this).remove();
+                    $(this).remove();
+                    var page = $.fn.blockstrap.settings.page;
+                    console.log('page', page);
+                    $.fn.blockstrap.templates.render(page, function()
+                    {
+                        
+                    }, true);
                 })
             }
         }
