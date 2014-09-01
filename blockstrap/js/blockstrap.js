@@ -26,7 +26,7 @@ var blockstrap_core = function()
         var $this = this;
         var plugin_name = 'blockstrap';
         var defaults = {
-            v: '1.0.2.9',
+            v: '1.0.3.0.1',
             salt: '',
             autoload: true,
             id: plugin_name,
