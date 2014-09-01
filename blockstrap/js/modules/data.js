@@ -23,15 +23,6 @@
     }
     
     // FUNCTIONS FOR OBJECT
-    data.get = function(key)
-    {
-        if(!key) key = 'index';
-        return $.fn.blockstrap.data[key];
-    };
-    data.put = function(key, value)
-    {
-        $.fn.blockstrap.data[key] = value;
-    };
     data.item = function(collection, key)
     {
         return 'nw_' + collection + '_' + key;
@@ -39,7 +30,8 @@
     data.option = function(key)
     {
         var value = false;
-        var options = $.parseJSON(localStorage.getItem('nw_blockstrap_options'));
+        var options = localStorage.getItem('nw_blockstrap_options');
+        if(blockstrap_functions.json(options)) options = $.parseJSON(options);
         if(options)
         {
             $.each(options, function(k, v)
@@ -54,15 +46,8 @@
         if(localStorage && localStorage.getItem(data.item(collection, key)))
         {
             var obj = localStorage.getItem(data.item(collection, key));
-            if(obj && blockstrap_functions.json(obj))
-            {
-                var json = $.parseJSON(obj);
-                callback(json);
-            }
-            else
-            {
-                callback(obj);
-            }
+            if(blockstrap_functions.json(obj)) obj = $.parseJSON(obj);
+            callback(obj);
         }
         else
         {

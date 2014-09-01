@@ -458,8 +458,8 @@ var blockstrap_core = function()
                 NEW HTML IS LOADED INTO THE DOM
 
                 */
-                $.fn.blockstrap.accounts.updates(0, function()
-                {
+                //$.fn.blockstrap.accounts.updates(0, function()
+                //{
                     $.fn.blockstrap.core.table();
                     $.fn.blockstrap.core.forms();
                     $.fn.blockstrap.core.page();
@@ -468,7 +468,7 @@ var blockstrap_core = function()
                     $.fn.blockstrap.theme.new();
                     $.fn.blockstrap.buttons.new();
                     //$.fn.blockstrap.templates.filter();
-                });
+                //});
             },
             resize: function()
             {
@@ -507,29 +507,26 @@ var blockstrap_core = function()
                     {
                         $.fn.blockstrap.templates.render('index', function()
                         {
-                            //$.fn.blockstrap.accounts.balances(true, function()
-                            //{
-                                $.fn.blockstrap.styles.set();
-                                $.fn.blockstrap.core.modals();
-                                $.fn.blockstrap.core.buttons();
-                                $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
+                            $.fn.blockstrap.styles.set();
+                            $.fn.blockstrap.core.modals();
+                            $.fn.blockstrap.core.buttons();
+                            $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
+                            {
+                                $.fn.blockstrap.core.loading();
+                                $.fn.blockstrap.core.new();
+                                $(window).resize(function(e)
                                 {
-                                    $.fn.blockstrap.core.loading();
-                                    $.fn.blockstrap.core.new();
-                                    $(window).resize(function(e)
-                                    {
-                                        $.fn.blockstrap.core.resize();
-                                    })
-                                });
-                                var run_tests = false;
-                                var tests = blockstrap_functions.vars('tests');
-                                if(tests) run_tests = true;
-                                $.fn.blockstrap.core.tests(run_tests);
-                                if(window.location.hash)
-                                {
-                                    $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id).find('#' + blockstrap_functions.slug(window.location.hash)).trigger('click');
-                                }
-                            //});
+                                    $.fn.blockstrap.core.resize();
+                                })
+                            });
+                            var run_tests = false;
+                            var tests = blockstrap_functions.vars('tests');
+                            if(tests) run_tests = true;
+                            $.fn.blockstrap.core.tests(run_tests);
+                            if(window.location.hash)
+                            {
+                                $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id).find('#' + blockstrap_functions.slug(window.location.hash)).trigger('click');
+                            }
                         });
                     });
                 }
@@ -550,9 +547,22 @@ var blockstrap_core = function()
             refresh: function(callback)
             {
                 var page = $.fn.blockstrap.core.page();
-                $.fn.blockstrap.templates.render(page, function()
+                $.fn.blockstrap.templates.render('index', function()
                 {
-                    if(callback) callback();
+                    if(page != 'index')
+                    {
+                        //$($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id).find('#' + page).trigger('click');
+                        $.fn.blockstrap.templates.render(page, function()
+                        {
+                            $.fn.blockstrap.core.new();
+                            if(callback) callback();
+                        }, true);
+                    }
+                    else
+                    {
+                        $.fn.blockstrap.core.new();
+                        if(callback) callback();
+                    }
                 }, true);
             },
             image: function(input, callback)
@@ -726,10 +736,11 @@ var blockstrap_core = function()
                 });
                 $($.fn.blockstrap.element).find('.bs-currency-select').each(function(i)
                 {
-                    if($(this).find('option').length < 1)
-                    {
+                    //if($(this).find('option').length < 1)
+                    //{
                         var select = $(this);
                         var currencies = $.fn.blockstrap.settings.currencies;
+                        $(select).html('');
                         if($.isPlainObject(currencies))
                         {
                             $(select).append('<option value="">-- Select Currency --</option>');
@@ -738,14 +749,15 @@ var blockstrap_core = function()
                                 $(select).append('<option value="'+currency+'">'+v.currency+'</option>');
                             });
                         }
-                    }
+                    //}
                 });
                 $($.fn.blockstrap.element).find('.bs-account-select').each(function(i)
                 {
-                    if($(this).find('option').length < 1)
-                    {
+                    //if($(this).find('option').length < 1)
+                    //{
                         var select = $(this);
                         var accounts = $.fn.blockstrap.accounts.get();
+                        $(select).html('');
                         if($.isArray(accounts))
                         {
                             $(select).append('<option value="">-- Select Account --</option>');
@@ -754,7 +766,7 @@ var blockstrap_core = function()
                                 $(select).append('<option value="' + account.id + '">' + account.name + ' (' + account.currency.type + ')</option>');
                             });
                         }
-                    }
+                    //}
                 });
                 $($.fn.blockstrap.element).on('submit', '#blockstrap-login', function(e)
                 {

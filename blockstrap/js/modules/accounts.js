@@ -111,7 +111,8 @@
         {
             if(id && localStorage.getItem('nw_accounts_'+id))
             {
-                var this_account = $.parseJSON(localStorage.getItem('nw_accounts_'+id));
+                var this_account = localStorage.getItem('nw_accounts_'+id);
+                if(blockstrap_functions.json(this_account)) this_account = $.parseJSON(this_account);
                 return this_account;
             }
             else
@@ -121,7 +122,8 @@
                     if(key.substring(0, 12) === 'nw_accounts_')
                     {
                         if(!$.isArray(accounts)) accounts = [];
-                        accounts.push($.parseJSON(account));
+                        if(blockstrap_functions.json(account)) account = $.parseJSON(account);
+                        accounts.push(account);
                     }
                 });
             }
@@ -360,8 +362,11 @@
                     account.ts = now;
                     $.fn.blockstrap.data.save('accounts', account.id, account, function(obj)
                     {
-                        if(callback) callback(obj);
-                        else return obj;
+                        $.fn.blockstrap.core.refresh(function()
+                        {
+                            if(callback) callback(obj);
+                            else return obj;
+                        });
                     });
                 })
             }

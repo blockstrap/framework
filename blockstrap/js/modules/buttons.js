@@ -104,7 +104,6 @@
                             else
                             {
                                 var filtered_data = $.fn.blockstrap.core.filter(data);
-                                $.fn.blockstrap.data.put(slug, filtered_data);
                                 $.fn.blockstrap.data.save('data', slug, data, function(res)
                                 {
                                     $.fn.blockstrap.data.find('html', slug, function(results)
@@ -139,7 +138,6 @@
                     else
                     {
                         var filtered_data = $.fn.blockstrap.core.filter(data);
-                        $.fn.blockstrap.data.put(slug, filtered_data);
                         $.fn.blockstrap.data.find('html', slug, function(results)
                         {
                             buttons.process(slug, results, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
@@ -888,6 +886,8 @@
         var balance = account.balance;
         var fee = $.fn.blockstrap.settings.currencies.btc.fee * 100000000;
         var from_address = account.address;
+        var change = balance - (to_amount + fee);
+        var current_tx_count = account.tx_count;
         if(balance < to_amount + fee)
         {
             $.fn.blockstrap.core.modal('Warning', 'You do not have sufficient funds');
@@ -937,9 +937,18 @@
                                     $.fn.blockstrap.core.loader('close');
                                     if(results && results.url && results.txid)
                                     {
-                                        var title = 'Sent ' + parseInt(to_amount) / 100000000 + ' Bitcoin to ' + to_address;
-                                        var content = '<p>Transaction ID: ' + results.txid + '</p><p>You can <a href="' + results.url + '">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchain.info/tx/' + results.txid + '">this</a>.</p>';
-                                        $.fn.blockstrap.core.modal(title, content);
+                                        account.ts = new Date().getTime();
+                                        account.balance = change;
+                                        account.tx_count++;
+                                        $.fn.blockstrap.data.save('accounts', account_id, account, function()
+                                        {
+                                            $.fn.blockstrap.core.refresh(function()
+                                            {
+                                                var title = 'Sent ' + parseInt(to_amount) / 100000000 + ' Bitcoin to ' + to_address;
+                                                var content = '<p>Transaction ID: ' + results.txid + '</p><p>You can <a href="' + results.url + '">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchain.info/tx/' + results.txid + '">this</a>.</p>';
+                                                $.fn.blockstrap.core.modal(title, content);
+                                            });
+                                        });
                                     }
                                 });
                             }

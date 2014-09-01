@@ -74,7 +74,6 @@
                 templates.get('themes/' + $.fn.blockstrap.settings.theme + '/' + $.fn.blockstrap.settings.data_base + slug, 'json', function(data)
                 {
                     var filtered_data = $.fn.blockstrap.core.filter(data);
-                    $.fn.blockstrap.data.put(slug, filtered_data);
                     $.fn.blockstrap.data.save('data', slug, data, function()
                     {
                         $.fn.blockstrap.data.find('html', slug, function(results)
@@ -94,6 +93,11 @@
                                     else if(force_refresh)
                                     {
                                         $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.content_id).html(paged_html);
+                                    }
+                                    else if(slug === 'index')
+                                    {
+                                        $($.fn.blockstrap.element).html('');
+                                        $($.fn.blockstrap.element).append(paged_html);
                                     }
                                     else
                                     {
@@ -115,7 +119,9 @@
             else
             {
                 var filtered_data = $.fn.blockstrap.core.filter(data);
-                $.fn.blockstrap.data.put(slug, filtered_data);
+                
+                if(slug === 'index') $($.fn.blockstrap.element).html('');
+                
                 $.fn.blockstrap.data.find('html', slug, function(results)
                 {
                     var html = results;
