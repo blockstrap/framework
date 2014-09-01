@@ -295,124 +295,6 @@ var blockstrap_core = function()
             }
             
             // LOAD DEPENDENCIES FIRST
-            if($.isArray($.fn.blockstrap.settings.dependencies))
-            {
-                blockstrap_functions.include($.fn.blockstrap, 0, $.fn.blockstrap.settings.dependencies, function()
-                {
-                    // THEN LOAD MODULES
-                    if($.isArray($.fn.blockstrap.settings.modules))
-                    {
-                        $.fn.blockstrap.core.css(function()
-                        {
-                            blockstrap_functions.include($.fn.blockstrap, 0, $.fn.blockstrap.settings.modules, function()
-                            {
-                                // RESET IF REQUIRED
-                                if(blockstrap_functions.vars('reset') === true)
-                                {
-                                    $.fn.blockstrap.buttons.reset(false, false);
-                                }
-                                
-                                
-                                blockstrap_functions.update($.fn.blockstrap.settings.v, function()
-                                {
-                                    // INJECT LESS.css EARLY IF REQUIRED
-                                    $.fn.blockstrap.data.find('inc', 'less', function(less)
-                                    {
-                                        var refresh = blockstrap_functions.vars('refresh');
-                                        if(!less || refresh === true) 
-                                        {
-                                            $('head').append('<link rel="stylesheet/less" type="text/css" href="'+$.fn.blockstrap.settings.core_base+'less/blockstrap.less">');
-                                            blockstrap_functions.js('js-blockstrap-less', $.fn.blockstrap.settings.core_base+'js/less.js', function()
-                                            {
-                                                var less_styles = false;
-                                                $('style').each(function()
-                                                {
-                                                    // less-blockstrap
-                                                    var id = $(this).attr('id');
-                                                    var string_to_count = 'less-blockstrap';
-                                                    var string_length = string_to_count.length;
-                                                    if(id)
-                                                    {
-                                                        var check = id.substring(0, 5);
-                                                        var double_check = id.substring((id.length - string_length), id.length);
-                                                        if(check === 'less:' && double_check === 'less-blockstrap')
-                                                        {
-                                                            less_styles = $(this).html();
-                                                        }
-                                                        if(less_styles)
-                                                        {
-                                                            $.fn.blockstrap.data.save('inc', 'less', less_styles, function()
-                                                            {
-
-                                                            });
-                                                        }
-                                                    }
-                                                })
-                                            });
-                                        }
-                                        else
-                                        {
-                                            $('head').append('<style id="nw-css">'+less+'</style>');
-                                        }
-                                    });
-
-
-                                    // ADD TEMPLATES
-                                    $.fn.blockstrap.snippets = {};                            
-                                    var snippet_count = 0;
-                                    var snippet_limit = 0;
-                                    if($.isArray($.fn.blockstrap.settings.bootstrap))
-                                    {
-                                        snippet_limit = $.fn.blockstrap.settings.bootstrap.length;
-                                    }
-                                    if($.isArray($.fn.blockstrap.settings.bootstrap))
-                                    {
-                                        $.each($.fn.blockstrap.settings.bootstrap, function(k, v)
-                                        {
-                                            $.fn.blockstrap.data.find('boot', v, function(results)
-                                            {
-                                                var refresh = blockstrap_functions.vars('refresh');
-                                                if(refresh === true || !results)
-                                                {
-                                                    $.fn.blockstrap.templates.get($.fn.blockstrap.settings.core_base+'html/bootstrap/'+v, 'html', function(html)
-                                                    {                                        
-                                                        $.fn.blockstrap.data.save('boot', v, html, function(results)
-                                                        {
-                                                            $.fn.blockstrap.snippets[v] = html;
-                                                            snippet_count++;
-                                                            if(snippet_count >= snippet_limit)
-                                                            {
-                                                                // INITIATE CORE
-                                                                $.fn.blockstrap.core.init();
-                                                            }
-                                                        })
-
-                                                    });
-                                                }
-                                                else
-                                                {
-                                                    $.fn.blockstrap.snippets[v] = results;
-                                                    snippet_count++;
-                                                    if(snippet_count >= snippet_limit)
-                                                    {
-                                                        // INITIATE CORE
-                                                        $.fn.blockstrap.core.init();
-                                                    }
-                                                }
-                                            });
-                                        });
-                                    }
-                                    else
-                                    {
-                                        // INITIATE CORE
-                                        $.fn.blockstrap.core.init();
-                                    }
-                                }) 
-                            });
-                        })
-                    };
-                }, true);
-            }
             $.ajax({
                 url: $.fn.blockstrap.settings.core_base + 'html/' + 'loading.html',
                 dataType: 'HTML',
@@ -431,6 +313,87 @@ var blockstrap_core = function()
                             $($.fn.blockstrap.element).append(loading);
                         }
                     }
+                }
+            });
+            $.fn.blockstrap.core.less(function()
+            {
+                if($.isArray($.fn.blockstrap.settings.dependencies))
+                {
+                    blockstrap_functions.include($.fn.blockstrap, 0, $.fn.blockstrap.settings.dependencies, function()
+                    {
+                        // THEN LOAD MODULES
+                        if($.isArray($.fn.blockstrap.settings.modules))
+                        {
+                            $.fn.blockstrap.core.css(function()
+                            {
+                                blockstrap_functions.include($.fn.blockstrap, 0, $.fn.blockstrap.settings.modules, function()
+                                {
+                                    // RESET IF REQUIRED
+                                    if(blockstrap_functions.vars('reset') === true)
+                                    {
+                                        $.fn.blockstrap.buttons.reset(false, false);
+                                    }
+
+
+                                    blockstrap_functions.update($.fn.blockstrap.settings.v, function()
+                                    {
+
+                                            // ADD TEMPLATES
+                                            $.fn.blockstrap.snippets = {};                            
+                                            var snippet_count = 0;
+                                            var snippet_limit = 0;
+                                            if($.isArray($.fn.blockstrap.settings.bootstrap))
+                                            {
+                                                snippet_limit = $.fn.blockstrap.settings.bootstrap.length;
+                                            }
+                                            if($.isArray($.fn.blockstrap.settings.bootstrap))
+                                            {
+                                                $.each($.fn.blockstrap.settings.bootstrap, function(k, v)
+                                                {
+                                                    $.fn.blockstrap.data.find('boot', v, function(results)
+                                                    {
+                                                        var refresh = blockstrap_functions.vars('refresh');
+                                                        if(refresh === true || !results)
+                                                        {
+                                                            $.fn.blockstrap.templates.get($.fn.blockstrap.settings.core_base+'html/bootstrap/'+v, 'html', function(html)
+                                                            {                                        
+                                                                $.fn.blockstrap.data.save('boot', v, html, function(results)
+                                                                {
+                                                                    $.fn.blockstrap.snippets[v] = html;
+                                                                    snippet_count++;
+                                                                    if(snippet_count >= snippet_limit)
+                                                                    {
+                                                                        // INITIATE CORE
+                                                                        $.fn.blockstrap.core.init();
+                                                                    }
+                                                                })
+
+                                                            });
+                                                        }
+                                                        else
+                                                        {
+                                                            $.fn.blockstrap.snippets[v] = results;
+                                                            snippet_count++;
+                                                            if(snippet_count >= snippet_limit)
+                                                            {
+                                                                // INITIATE CORE
+                                                                $.fn.blockstrap.core.init();
+                                                            }
+                                                        }
+                                                    });
+                                                });
+                                            }
+                                            else
+                                            {
+                                                // INITIATE CORE
+                                                $.fn.blockstrap.core.init();
+                                            }
+
+                                    }) 
+                                });
+                            })
+                        };
+                    }, true);
                 }
             });
         }
@@ -546,6 +509,7 @@ var blockstrap_core = function()
             },
             refresh: function(callback)
             {
+                $.fn.blockstrap.core.loader('open');
                 var page = $.fn.blockstrap.core.page();
                 $.fn.blockstrap.templates.render('index', function()
                 {
@@ -555,12 +519,14 @@ var blockstrap_core = function()
                         $.fn.blockstrap.templates.render(page, function()
                         {
                             $.fn.blockstrap.core.new();
+                            $.fn.blockstrap.core.loader('close');
                             if(callback) callback();
                         }, true);
                     }
                     else
                     {
                         $.fn.blockstrap.core.new();
+                        $.fn.blockstrap.core.loader('close');
                         if(callback) callback();
                     }
                 }, true);
@@ -793,6 +759,46 @@ var blockstrap_core = function()
                             callback();
                         }
                     })
+                }
+            },
+            less: function(callback)
+            {
+                var less = localStorage.getItem('nw_inc_less');
+                if(blockstrap_functions.json(less)) less = $.parseJSON(less);
+                var refresh = blockstrap_functions.vars('refresh');
+                if(!less || refresh === true) 
+                {
+                    $('head').append('<link rel="stylesheet/less" type="text/css" href="'+$.fn.blockstrap.settings.core_base+'less/blockstrap.less">');
+                    blockstrap_functions.js('js-blockstrap-less', $.fn.blockstrap.settings.core_base+'js/less.js', function()
+                    {
+                        var less_styles = false;
+                        $('style').each(function()
+                        {
+                            // less-blockstrap
+                            var id = $(this).attr('id');
+                            var string_to_count = 'less-blockstrap';
+                            var string_length = string_to_count.length;
+                            if(id)
+                            {
+                                var check = id.substring(0, 5);
+                                var double_check = id.substring((id.length - string_length), id.length);
+                                if(check === 'less:' && double_check === 'less-blockstrap')
+                                {
+                                    less_styles = $(this).html();
+                                }
+                                if(less_styles)
+                                {
+                                    localStorage.setItem('nw_inc_less', JSON.stringify(less_styles));
+                                    if(callback) callback();
+                                }
+                            }
+                        })
+                    });
+                }
+                else
+                {
+                    $('head').append('<style id="nw-css">'+less+'</style>');
+                    if(callback) callback();
                 }
             },
             loading: function()

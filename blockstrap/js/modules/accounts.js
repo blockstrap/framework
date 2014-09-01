@@ -362,11 +362,11 @@
                     account.ts = now;
                     $.fn.blockstrap.data.save('accounts', account.id, account, function(obj)
                     {
-                        $.fn.blockstrap.core.refresh(function()
-                        {
+                        //$.fn.blockstrap.core.refresh(function()
+                        //{
                             if(callback) callback(obj);
                             else return obj;
-                        });
+                        //});
                     });
                 })
             }
