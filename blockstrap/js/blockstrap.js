@@ -24,9 +24,10 @@ var blockstrap_core = function()
     {
         // SET DEFAULTS
         var $this = this;
+        var init_bs = false;
         var plugin_name = 'blockstrap';
         var defaults = {
-            v: '1.1.3.1.1',
+            v: '1.1.3.1.2',
             salt: '',
             autoload: true,
             id: plugin_name,
@@ -451,42 +452,60 @@ var blockstrap_core = function()
             },
             init: function()
             {
-                // Check for login credentials...?
-                if(!$.fn.blockstrap.security.logged_in())
+                if(!init_bs)
                 {
-                    $.fn.blockstrap.templates.render('../../../blockstrap/html/bootstrap/login', function()
+                    init_bs = true;
+                    // Check for login credentials...?
+                    if(!$.fn.blockstrap.security.logged_in())
                     {
-                        $.fn.blockstrap.styles.set();
-                        $.fn.blockstrap.core.modals();
-                        $.fn.blockstrap.core.buttons();
-                        $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
+                        $.fn.blockstrap.templates.render('../../../blockstrap/html/bootstrap/login', function()
                         {
-                            $.fn.blockstrap.core.loading();
-                            $.fn.blockstrap.core.new();
-                            $(window).resize(function(e)
+                            $.fn.blockstrap.styles.set();
+                            $.fn.blockstrap.core.modals();
+                            $.fn.blockstrap.core.buttons();
+                            $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
                             {
-                                $.fn.blockstrap.core.resize();
-                            })
+                                $.fn.blockstrap.core.loading();
+                                $.fn.blockstrap.core.new();
+                                $(window).resize(function(e)
+                                {
+                                    $.fn.blockstrap.core.resize();
+                                })
+                            });
                         });
-                    });
-                }
-                else
-                {
-                    $.fn.blockstrap.accounts.updates(0, function()
+                    }
+                    else
                     {
-                        $.fn.blockstrap.templates.render('index', function()
+                        $.fn.blockstrap.accounts.updates(0, function()
                         {
-                            if(window.location.hash)
+                            $.fn.blockstrap.templates.render('index', function()
                             {
-                                $.fn.blockstrap.core.refresh(function()
+                                if(window.location.hash)
+                                {
+                                    $.fn.blockstrap.core.refresh(function()
+                                    {
+                                        $.fn.blockstrap.styles.set();
+                                        $.fn.blockstrap.core.modals();
+                                        $.fn.blockstrap.core.buttons();
+                                        var nav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id);
+                                        $(nav).find('.active').removeClass('active');
+                                        $(nav).find(window.location.hash).addClass('active');
+                                        $.fn.blockstrap.core.new();
+                                        $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
+                                        {
+                                            $.fn.blockstrap.core.loading();
+                                            $(window).resize(function(e)
+                                            {
+                                                $.fn.blockstrap.core.resize();
+                                            })
+                                        });
+                                    }, blockstrap_functions.slug(window.location.hash));
+                                }
+                                else
                                 {
                                     $.fn.blockstrap.styles.set();
                                     $.fn.blockstrap.core.modals();
                                     $.fn.blockstrap.core.buttons();
-                                    var nav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id);
-                                    $(nav).find('.active').removeClass('active');
-                                    $(nav).find(window.location.hash).addClass('active');
-                                    $.fn.blockstrap.core.new();
                                     $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
                                     {
                                         $.fn.blockstrap.core.loading();
@@ -495,28 +514,14 @@ var blockstrap_core = function()
                                             $.fn.blockstrap.core.resize();
                                         })
                                     });
-                                }, blockstrap_functions.slug(window.location.hash));
-                            }
-                            else
-                            {
-                                $.fn.blockstrap.styles.set();
-                                $.fn.blockstrap.core.modals();
-                                $.fn.blockstrap.core.buttons();
-                                $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
-                                {
-                                    $.fn.blockstrap.core.loading();
-                                    $(window).resize(function(e)
-                                    {
-                                        $.fn.blockstrap.core.resize();
-                                    })
-                                });
-                            }
-                            var run_tests = false;
-                            var tests = blockstrap_functions.vars('tests');
-                            if(tests) run_tests = true;
-                            $.fn.blockstrap.core.tests(run_tests);
+                                }
+                                var run_tests = false;
+                                var tests = blockstrap_functions.vars('tests');
+                                if(tests) run_tests = true;
+                                $.fn.blockstrap.core.tests(run_tests);
+                            });
                         });
-                    });
+                    }
                 }
             },
             page: function()
@@ -543,14 +548,14 @@ var blockstrap_core = function()
                     {
                         $.fn.blockstrap.templates.render(page, function()
                         {
-                            $.fn.blockstrap.core.new();
+                            //$.fn.blockstrap.core.new();
                             //$.fn.blockstrap.core.loader('close');
                             if(callback) callback();
                         }, true);
                     }
                     else
                     {
-                        $.fn.blockstrap.core.new();
+                        //$.fn.blockstrap.core.new();
                         //$.fn.blockstrap.core.loader('close');
                         if(callback) callback();
                     }

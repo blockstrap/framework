@@ -1,5 +1,5 @@
 {
-    "dashboard": {
+    "address": {
         "panels": [
             {
                 "id": "welcome-message",
@@ -9,8 +9,8 @@
                     "type": "jumbotrons",
                     "objects": [
                         {
-                            "title": "Welcome back {{user.name}}",
-                            "intro": "Here is an overview of your wallet and its accounts.",
+                            "title": "Address: {{vars.key}}",
+                            "intro": "This information about the address comes from the blockchain, not the device.",
                             "html": "Not sure what to put here - if anything at all ...?",
                             "buttons": [
                                 {
@@ -42,44 +42,13 @@
                 "id": "recent-transactions",
                 "css": "col-md-6 odd",
                 "header": "Recent Transactions",
-                "body": {
-                    "func": "txs"
-                }
+                "body": "soon"
             },
             {
                 "id": "market-conditions",
                 "css": "col-md-6 even",
                 "header": "Market Conditions",
-                "body": {
-                    "func": "bootstrap",
-                    "type": "panels",
-                    "objects": [
-                        {
-                            "css": "col-sm-6",
-                            "html": "<span class='panel-value'>US$ 555</span><span class='panel-description'>BTC to USD</span>"
-                        },
-                        {
-                            "css": "col-sm-6",
-                            "html": "<span class='panel-value'>2,424,687</span><span class='panel-description'>Daily TXs</span>"
-                        },
-                        {
-                            "css": "col-sm-6",
-                            "html": "<span class='panel-value'>24,687</span><span class='panel-description'>Daily BTC Sent</span>"
-                        },
-                        {
-                            "css": "col-sm-6",
-                            "html": "<span class='panel-value'>5,332,369</span><span class='panel-description'>Hash Rate GH/s</span>"
-                        },
-                        {
-                            "css": "col-sm-6",
-                            "html": "<span class='panel-value'>12.2 Million</span><span class='panel-description'>BTC Discovered</span>"
-                        },
-                        {
-                            "css": "col-sm-6",
-                            "html": "<span class='panel-value'>10.4 Billion</span><span class='panel-description'>Market Cap USD</span>"
-                        }
-                    ]
-                }
+                "body": "soon"
             }
         ]
     }

@@ -42,12 +42,14 @@
             var placeholders = [
                 'urls.root', 
                 'user.name',
-                'vars.txid'
+                'vars.txid',
+                'vars.key'
             ];
             var replacements = [
                 $.fn.blockstrap.settings.base_url,
                 name,
-                blockstrap_functions.vars('txid')
+                blockstrap_functions.vars('txid'),
+                blockstrap_functions.vars('key')
             ];
         }
         for(var i = 0; i < placeholders.length; i++) 

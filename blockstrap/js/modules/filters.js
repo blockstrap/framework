@@ -178,8 +178,12 @@
                 });
             }
         });
+        txs.sort(function(a,b) 
+        { 
+            return parseFloat(b.time) - parseFloat(a.time) 
+        });
         var items = [];
-        $.each(txs, function(k, tx)
+        $.each(txs.slice(0, limit), function(k, tx)
         {
             var css = 'from';
             var address = false;
@@ -190,22 +194,23 @@
                 value = Math.abs(value);
                 css = 'to';
             }
+            var base = $.fn.blockstrap.settings.base_url;
             var intro = value + ' ' + $.fn.blockstrap.settings.currencies[txc].currency;
-            var html = '<a href="' + tx.url +'">' + intro + '</a>';
+            var html = '<a href="' + base + '?txid=' + tx.txid +'#transaction">' + intro + '</a>';
             $.each(tx.outputs, function(k, out)
             {
-                if(out.adress != tx.acc) address = out.address;
+                if(out.address !== tx.acc) address = out.address;
             });
-            address = '<a href="#address?key=' + address + '">' + address + '</a>';
-            html+= ' ' + css + ' ' + address + ' ' + $.fn.blockstrap.core.ago(tx.time);
+            address = '<a href="' +base+ '?key=' + address + '#address">' + address + '</a>';
+            html+= ' ' + css + ' ' + address;
             items.push({
                 css: css,
                 html: html,
                 buttons: [
                     {
-                        href: '#',
-                        css: 'btn-danger btn-xs pull-right btn-remove',
-                        text: 'Remove'
+                        href: '',
+                        css: 'btn-disabled disabled btn-xs pull-right',
+                        text: $.fn.blockstrap.core.ago(tx.time)
                     }
                 ]
             });

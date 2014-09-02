@@ -56,7 +56,6 @@
             var map = apis[currency].functions;
             if(results.data[map.from.address.key]) data = results.data[map.from.address.key];
             var address = {
-                url: '#',
                 address: 'N/A',
                 hash: 'N/A',
                 tx_count: 0,
@@ -64,7 +63,6 @@
                 received: 0,
                 balance: 0,
             }
-            if(data[map.from.address.address]) address.url = '#address?key='+data[map.from.address.address];
             if(data[map.from.address.address]) address.address = data[map.from.address.address];
             if(data[map.from.address.hash]) address.hash = data[map.from.address.hash];
             if(data[map.from.address.tx_count]) address.tx_count = data[map.from.address.tx_count];
@@ -86,7 +84,6 @@
             $.each(data, function(k, v)
             {
                 var transaction = {
-                    url: '#',
                     currency: currency,
                     txid: 'N/A',
                     size: 'N/A',
@@ -99,7 +96,6 @@
                     value: 0,
                     fees: 0
                 }
-                if(data[k][map.from.transaction.txid]) transaction.url = '#transaction?txid='+data[k][map.from.transaction.txid];
                 if(data[k][map.from.transaction.txid]) transaction.txid = data[k][map.from.transaction.txid];
                 if(data[k][map.from.transaction.size]) transaction.size = data[k][map.from.transaction.size];
                 if(data[k][map.from.transaction.block]) transaction.block = data[k][map.from.transaction.block];
@@ -128,7 +124,6 @@
             $.each(data, function(k, v)
             {
                 var address = {
-                    url: '#',
                     address: 'N/A',
                     hash: 'N/A',
                     tx_count: 0,
@@ -136,7 +131,6 @@
                     received: 0,
                     balance: 0
                 }
-                if(data[k][map.from.addresses.address]) address.url = '#address?key='+data[k][map.from.addresses.address];
                 if(data[k][map.from.addresses.address]) address.address = data[k][map.from.addresses.address];
                 if(data[k][map.from.addresses.hash]) address.hash = data[k][map.from.addresses.hash];
                 if(data[k][map.from.addresses.tx_count]) address.tx_count = data[k][map.from.addresses.tx_count];
@@ -157,7 +151,6 @@
             var map = apis[currency].functions;
             if(results.data[map.from.transaction.key]) data = results.data[map.from.transaction.key];
             var transaction = {
-                url: '#',
                 currency: currency,
                 txid: 'N/A',
                 size: 'N/A',
@@ -170,7 +163,6 @@
                 value: 0,
                 fees: 0
             }
-            if(data[map.from.transaction.txid]) transaction.url = '#transaction?txid='+data[map.from.transaction.txid];
             if(data[map.from.transaction.txid]) transaction.txid = data[map.from.transaction.txid];
             if(data[map.from.transaction.size]) transaction.size = data[map.from.transaction.size];
             if(data[map.from.transaction.block]) transaction.block = data[map.from.transaction.block];
@@ -192,7 +184,6 @@
             var map = apis[currency].functions;
             if(results.data[map.from.block.key]) data = results.data[map.from.block.key];
             var block = {
-                url: '#',
                 currency: currency,
                 height: 'N/A',
                 hash: 'N/A',
@@ -200,7 +191,6 @@
                 tx_count: 0,
                 time: 0
             }
-            if(data[map.from.block.height]) block.url = '#block?height='+data[map.from.block.height];
             if(data[map.from.block.height]) block.height = data[map.from.block.height];
             if(data[map.from.block.hash]) block.hash = data[map.from.block.hash];
             if(data[map.from.block.prev]) block.prev = data[map.from.block.prev];
@@ -217,6 +207,7 @@
         {
             var data;
             var map = apis[currency].functions;
+            var base = $.fn.blockstrap.settings.base_url;
             if(results.data[map.from.unspents.key]) data = results.data[map.from.unspents.key];
             var unspents = [];
             $.each(data, function(k, v)
@@ -260,7 +251,6 @@
                 if(data)
                 {
                     tx = {
-                        url: '#transaction?txid='+data,
                         currency: currency,
                         txid: data
                     }
