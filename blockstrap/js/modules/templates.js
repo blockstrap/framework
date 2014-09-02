@@ -89,6 +89,7 @@
                                     {
                                         $($.fn.blockstrap.element).html('');
                                         $($.fn.blockstrap.element).append(paged_html);
+                                        $.fn.blockstrap.core.loader('open');
                                     }
                                     else if(force_refresh)
                                     {
@@ -98,6 +99,7 @@
                                     {
                                         $($.fn.blockstrap.element).html('');
                                         $($.fn.blockstrap.element).append(paged_html);
+                                        $.fn.blockstrap.core.loader('open');
                                     }
                                     else
                                     {
@@ -131,6 +133,7 @@
                         {
                             var paged_html = templates.filter(Mustache.render(content, filtered_data));
                             $($.fn.blockstrap.element).append(paged_html);
+                            $.fn.blockstrap.core.loader('open');
                             $.fn.blockstrap.data.save('html', slug, content, callback);
                         });
                     }
@@ -138,6 +141,7 @@
                     {
                         var paged_html = templates.filter(Mustache.render(html, filtered_data));
                         $($.fn.blockstrap.element).append(paged_html);
+                        $.fn.blockstrap.core.loader('open');
                         if(callback) callback();
                     }
                 });

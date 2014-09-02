@@ -469,26 +469,45 @@ var blockstrap_core = function()
                     {
                         $.fn.blockstrap.templates.render('index', function()
                         {
-                            $.fn.blockstrap.styles.set();
-                            $.fn.blockstrap.core.modals();
-                            $.fn.blockstrap.core.buttons();
-                            $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
+                            if(window.location.hash)
                             {
-                                $.fn.blockstrap.core.loading();
-                                $.fn.blockstrap.core.new();
-                                $(window).resize(function(e)
+                                $.fn.blockstrap.core.refresh(function()
                                 {
-                                    $.fn.blockstrap.core.resize();
-                                })
-                            });
+                                    $.fn.blockstrap.styles.set();
+                                    $.fn.blockstrap.core.modals();
+                                    $.fn.blockstrap.core.buttons();
+                                    var nav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id);
+                                    $(nav).find('.active').removeClass('active');
+                                    $(nav).find(window.location.hash).addClass('active');
+                                    $.fn.blockstrap.core.new();
+                                    $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
+                                    {
+                                        $.fn.blockstrap.core.loading();
+                                        $(window).resize(function(e)
+                                        {
+                                            $.fn.blockstrap.core.resize();
+                                        })
+                                    });
+                                }, blockstrap_functions.slug(window.location.hash));
+                            }
+                            else
+                            {
+                                $.fn.blockstrap.styles.set();
+                                $.fn.blockstrap.core.modals();
+                                $.fn.blockstrap.core.buttons();
+                                $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
+                                {
+                                    $.fn.blockstrap.core.loading();
+                                    $(window).resize(function(e)
+                                    {
+                                        $.fn.blockstrap.core.resize();
+                                    })
+                                });
+                            }
                             var run_tests = false;
                             var tests = blockstrap_functions.vars('tests');
                             if(tests) run_tests = true;
                             $.fn.blockstrap.core.tests(run_tests);
-                            if(window.location.hash)
-                            {
-                                $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id).find('#' + blockstrap_functions.slug(window.location.hash)).trigger('click');
-                            }
                         });
                     });
                 }
@@ -506,26 +525,26 @@ var blockstrap_core = function()
                 }
                 return $.fn.blockstrap.settings.page;
             },
-            refresh: function(callback)
+            refresh: function(callback, slug)
             {
-                $.fn.blockstrap.core.loader('open');
+                //$.fn.blockstrap.core.loader('open');
                 var page = $.fn.blockstrap.core.page();
+                if(slug) page = slug;
                 $.fn.blockstrap.templates.render('index', function()
                 {
                     if(page != 'index')
                     {
-                        //$($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id).find('#' + page).trigger('click');
                         $.fn.blockstrap.templates.render(page, function()
                         {
                             $.fn.blockstrap.core.new();
-                            $.fn.blockstrap.core.loader('close');
+                            //$.fn.blockstrap.core.loader('close');
                             if(callback) callback();
                         }, true);
                     }
                     else
                     {
                         $.fn.blockstrap.core.new();
-                        $.fn.blockstrap.core.loader('close');
+                        //$.fn.blockstrap.core.loader('close');
                         if(callback) callback();
                     }
                 }, true);
