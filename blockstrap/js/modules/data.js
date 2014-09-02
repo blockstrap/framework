@@ -62,9 +62,10 @@
             if(value === 'true' || value === 'false') simple = true;
             if(value === 'true') value = true;
             else if(value === 'false') value = false;
-            var results = localStorage.setItem(data.item(collection, key), JSON.stringify(value));
-            if(simple === true) results = localStorage.setItem(data.item(collection, key), value);
-            callback(results);
+            var results = JSON.stringify(value);
+            if(simple === true) results = value;
+            localStorage.setItem(data.item(collection, key), results);
+            callback(value);
         }
         else
         {

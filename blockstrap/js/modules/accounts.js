@@ -71,7 +71,8 @@
                                 keys: keys,
                                 address: address,
                                 tx_count: 0,
-                                balance: 0
+                                balance: 0,
+                                txs: {}
                             };
                             if(data) account.data = data;
                             $.fn.blockstrap.data.save('accounts', slug, account, function()
@@ -353,6 +354,7 @@
             var now = new Date().getTime();
             var cache_time = $.fn.blockstrap.settings.cache.accounts;
             if(account.ts) ts = account.ts;
+            if(blockstrap_functions.vars('refresh')) ts = 0;
             if(ts + cache_time < now)
             {
                 $.fn.blockstrap.api.address(account.address, account.currency.code, function(results)
@@ -362,11 +364,31 @@
                     account.ts = now;
                     $.fn.blockstrap.data.save('accounts', account.id, account, function(obj)
                     {
-                        //$.fn.blockstrap.core.refresh(function()
-                        //{
+                        var txs = blockstrap_functions.array_length(obj.txs);
+                        if(obj.tx_count > txs)
+                        {
+                            $.fn.blockstrap.api.transactions(account.address, account.currency.code, function(transactions)
+                            {
+                                if(!$.isPlainObject(obj.txs)) obj.txs = {};
+                                if($.isArray(transactions))
+                                {
+                                    $.each(transactions, function(k, transaction)
+                                    {
+                                        obj.txs['txid_'+transaction.txid] = transaction;
+                                    });
+                                }
+                                $.fn.blockstrap.data.save('accounts', obj.id, obj, function(updated_account)
+                                {
+                                    if(callback) callback(updated_account);
+                                    else return updated_account;
+                                });
+                            });
+                        }
+                        else
+                        {
                             if(callback) callback(obj);
                             else return obj;
-                        //});
+                        }
                     });
                 })
             }
