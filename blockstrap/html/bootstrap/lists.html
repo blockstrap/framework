@@ -35,6 +35,11 @@
             {{/href}}
         
         {{/items}}
+        {{^items}}
+            <li class="list-group-item {{css}}">
+                {{{missing}}}
+            </li>
+        {{/items}}
 
     </ul>
 {{/objects}}

@@ -219,7 +219,8 @@
         var html = $.fn.blockstrap.templates.process({
             objects: [
                 {
-                    items: items
+                    items: items,
+                    missing: '<p>You do not have any transactions yet.</p><p>You may want to create a new <a href="#accounts" class="btn-page">account</a> or <a href="#" data-target="#send-modal" data-toggle="modal">send</a> some to one of your <a href="#contacts" class="btn-page">contacts</a>.</p>'
                 }
             ]
         }, lists);
