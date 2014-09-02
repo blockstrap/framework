@@ -53,7 +53,8 @@ var blockstrap_core = function()
                 'accounts',
                 'contacts',
                 'balances',
-                'total'
+                'total',
+                'last'
             ],
             store: ['app_url', 'your_name'],
             modules: [
@@ -83,7 +84,8 @@ var blockstrap_core = function()
                 'bootstrap-filestyle.min',
                 'bitcoinjs',
                 'tx',
-                'sha3'
+                'sha3',
+                'ago'
             ],
             bootstrap: [
                 'lists', 
@@ -913,6 +915,12 @@ var blockstrap_core = function()
                 });
                 return data;
             },
+            ago: function(time)
+            {
+                var date = new Date();;
+                if(time) date = new Date(time * 1000);
+                return jQuery.timeago(date)
+            },
             buttons: function()
             {
                 $($.fn.blockstrap.element).on('click', '.btn-page', function(e)
@@ -1180,11 +1188,7 @@ var blockstrap_functions = {
     },
     array_length: function(obj)
     {
-        var length = 0;
-        if($.isArray(obj))
-        {
-            length = Object.keys(obj).length;
-        }
+        length = Object.keys(obj).length;
         return length;
     },
     include: function(blockstrap, start, files, callback, dependency)

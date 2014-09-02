@@ -14,7 +14,11 @@
             "func": "avatars",
             "default": "blockstrap/img/avatar.jpg"
         },
-        "last": "last transaction 12 hours ago",
+        "last": {
+            "func": "last",
+            "html": "last transaction {{ago}}",
+            "type": "tx"
+        },
         "urls": {
             "profile": "#profile"
         }

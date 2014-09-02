@@ -122,6 +122,38 @@
         return blockstrap.accounts.total(rate, prefix);
     }
     
+    filters.last = function(blockstrap, data)
+    {
+        var html = '';
+        var type = 'tx';
+        if(data.html) html = data.html;
+        if(data.type) type = data.type;
+        if(type == 'tx')
+        {
+            var latest = 0;
+            var accounts = $.fn.blockstrap.accounts.get();
+            
+            if($.isArray(accounts))
+            {
+                $.each(accounts, function(k, account)
+                {
+                    if($.isPlainObject(account.txs) && blockstrap_functions.array_length(account.txs) > 0)
+                    {
+                        $.each(account.txs, function(key, tx)
+                        {
+                            if(tx.time && tx.time > latest) latest = tx.time;
+                        });
+                    };
+                });
+            }   
+            var ago = $.fn.blockstrap.core.ago(latest);
+            var placeholders = ['ago'];
+            var replacements = [ago];
+            html = $.fn.blockstrap.templates.filter(html, placeholders, replacements);
+        }
+        return html;
+    }
+    
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {filters:filters});
 })

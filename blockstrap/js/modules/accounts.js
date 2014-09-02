@@ -72,6 +72,7 @@
                                 address: address,
                                 tx_count: 0,
                                 balance: 0,
+                                ts: 0,
                                 txs: {}
                             };
                             if(data) account.data = data;
