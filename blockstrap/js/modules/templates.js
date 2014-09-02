@@ -39,10 +39,15 @@
 
             if(blockstrap_functions.json(raw_name)) name = $.parseJSON(raw_name);
 
-            var placeholders = ['urls.root', 'user.name'];
+            var placeholders = [
+                'urls.root', 
+                'user.name',
+                'vars.txid'
+            ];
             var replacements = [
                 $.fn.blockstrap.settings.base_url,
-                name
+                name,
+                blockstrap_functions.vars('txid')
             ];
         }
         for(var i = 0; i < placeholders.length; i++) 
@@ -61,6 +66,32 @@
             }
         }
     }
+    
+    templates.bootstrap = function(type)
+    {
+        var snippet = localStorage.getItem('nw_boot_'+type);
+        if(snippet)
+        {
+            if(blockstrap_functions.json(snippet)) snippet = $.parseJSON(snippet);
+            return snippet;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    templates.process = function(data, html)
+    {
+        var results = '';
+        if(data && html)
+        {
+            data = $.fn.blockstrap.core.filter(data);
+            html = templates.filter(Mustache.render(html, data));
+            results = html;
+        }
+        return results;
+    }       
     
     templates.render = function(slug, callback, force_refresh)
     {

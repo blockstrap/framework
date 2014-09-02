@@ -154,6 +154,73 @@
         return html;
     }
     
+    filters.txs = function(blockstrap, data)
+    {
+        var txs = [];
+        var id = false;
+        var limit = 7;
+        if(data.id) id = data.id;
+        if(data.limit) limit = parseInt(data.limit);
+        var accounts = $.fn.blockstrap.accounts.get();
+        if(id)
+        {
+            accounts = [];
+            accounts.push($.fn.blockstrap.accounts.get(id));
+        }
+        $.each(accounts, function(key, account)
+        {
+            if(account.txs && blockstrap_functions.array_length(account.txs) > 0)
+            {
+                $.each(account.txs, function(k, transaction)
+                {
+                    transaction.acc = account.address;
+                    txs.push(transaction);
+                });
+            }
+        });
+        var items = [];
+        $.each(txs, function(k, tx)
+        {
+            var css = 'from';
+            var address = false;
+            var txc = tx.currency;
+            var value = parseInt(tx.value) / 100000000;
+            if(tx.value < 0)
+            {
+                value = Math.abs(value);
+                css = 'to';
+            }
+            var intro = value + ' ' + $.fn.blockstrap.settings.currencies[txc].currency;
+            var html = '<a href="' + tx.url +'">' + intro + '</a>';
+            $.each(tx.outputs, function(k, out)
+            {
+                if(out.adress != tx.acc) address = out.address;
+            });
+            address = '<a href="#address?key=' + address + '">' + address + '</a>';
+            html+= ' ' + css + ' ' + address + ' ' + $.fn.blockstrap.core.ago(tx.time);
+            items.push({
+                css: css,
+                html: html,
+                buttons: [
+                    {
+                        href: '#',
+                        css: 'btn-danger btn-xs pull-right btn-remove',
+                        text: 'Remove'
+                    }
+                ]
+            });
+        });
+        var lists = $.fn.blockstrap.templates.bootstrap('lists');
+        var html = $.fn.blockstrap.templates.process({
+            objects: [
+                {
+                    items: items
+                }
+            ]
+        }, lists);
+        return html;
+    }
+    
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {filters:filters});
 })

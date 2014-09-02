@@ -1,0 +1,55 @@
+{
+    "dashboard": {
+        "panels": [
+            {
+                "id": "welcome-message",
+                "css": "col-md-12 ribbon",
+                "body": {
+                    "func": "bootstrap",
+                    "type": "jumbotrons",
+                    "objects": [
+                        {
+                            "title": "Transaction ID: {{vars.txid}}",
+                            "intro": "This information about the transaction comes from the blockchain, not the device.",
+                            "html": "Not sure what to put here - if anything at all ...?",
+                            "buttons": [
+                                {
+                                    "href": "#",
+                                    "css": "btn-danger btn-reset-device",
+                                    "text": "Reset Device"
+                                },
+                                {
+                                    "href": "#",
+                                    "css": "btn-default",
+                                    "text": "Backup",
+                                    "attributes": [
+                                        {
+                                            "key": "data-toggle",
+                                            "value": "modal"
+                                        },
+                                        {
+                                            "key": "data-target",
+                                            "value": "#backup-modal"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "recent-transactions",
+                "css": "col-md-6 odd",
+                "header": "Recent Transactions",
+                "body": "soon"
+            },
+            {
+                "id": "market-conditions",
+                "css": "col-md-6 even",
+                "header": "Market Conditions",
+                "body": "soon"
+            }
+        ]
+    }
+}

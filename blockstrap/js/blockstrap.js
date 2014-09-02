@@ -26,7 +26,7 @@ var blockstrap_core = function()
         var $this = this;
         var plugin_name = 'blockstrap';
         var defaults = {
-            v: '1.0.3.0.1',
+            v: '1.1.3.1.1',
             salt: '',
             autoload: true,
             id: plugin_name,
@@ -54,7 +54,8 @@ var blockstrap_core = function()
                 'contacts',
                 'balances',
                 'total',
-                'last'
+                'last',
+                'txs'
             ],
             store: ['app_url', 'your_name'],
             modules: [
@@ -180,7 +181,10 @@ var blockstrap_core = function()
                                     block: 'blockHeight',
                                     time: 'blockTime',
                                     input: 'totalInputsValue',
+                                    inputs: 'inputs',
                                     output: 'totalOutputsValue',
+                                    outputs: 'outputs',
+                                    value: 'estimatedTxValue',
                                     fees: 'fees'
                                 },
                                 transactions: {
@@ -190,7 +194,10 @@ var blockstrap_core = function()
                                     block: 'blockHeight',
                                     time: 'blockTime',
                                     input: 'totalInputsValue',
+                                    inputs: 'inputs',
                                     output: 'totalOutputsValue',
+                                    outputs: 'outputs',
+                                    value: 'estimatedTxValue',
                                     fees: 'fees'
                                 },
                                 block: {
@@ -1207,7 +1214,8 @@ var blockstrap_functions = {
     },
     array_length: function(obj)
     {
-        length = Object.keys(obj).length;
+        length = 0;
+        if(obj) length = Object.keys(obj).length;
         return length;
     },
     include: function(blockstrap, start, files, callback, dependency)

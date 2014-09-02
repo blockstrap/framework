@@ -94,6 +94,9 @@
                     time: 0,
                     input: 0,
                     output: 0,
+                    inputs: false,
+                    outputs: false,
+                    value: 0,
                     fees: 0
                 }
                 if(data[k][map.from.transaction.txid]) transaction.url = '#transaction?txid='+data[k][map.from.transaction.txid];
@@ -103,7 +106,10 @@
                 if(data[k][map.from.transaction.time]) transaction.time = data[k][map.from.transaction.time];
                 if(data[k][map.from.transaction.input]) transaction.input = data[k][map.from.transaction.input];
                 if(data[k][map.from.transaction.output]) transaction.output = data[k][map.from.transaction.output];
+                if(data[k][map.from.transaction.inputs]) transaction.inputs = data[k][map.from.transaction.inputs];
+                if(data[k][map.from.transaction.outputs]) transaction.outputs = data[k][map.from.transaction.outputs];
                 if(data[k][map.from.transaction.fees]) transaction.fees = data[k][map.from.transaction.fees];
+                if(data[k][map.from.transaction.value]) transaction.value = data[k][map.from.transaction.value];
                 transactions.push(transaction);
             });
             if(callback) callback(transactions);
@@ -159,6 +165,9 @@
                 time: 0,
                 input: 0,
                 output: 0,
+                inputs: false,
+                outputs: false,
+                value: 0,
                 fees: 0
             }
             if(data[map.from.transaction.txid]) transaction.url = '#transaction?txid='+data[map.from.transaction.txid];
@@ -166,9 +175,10 @@
             if(data[map.from.transaction.size]) transaction.size = data[map.from.transaction.size];
             if(data[map.from.transaction.block]) transaction.block = data[map.from.transaction.block];
             if(data[map.from.transaction.time]) transaction.time = data[map.from.transaction.time];
-            if(data[map.from.transaction.input]) transaction.input = data[map.from.transaction.input];
-            if(data[map.from.transaction.output]) transaction.output = data[map.from.transaction.output];
-            if(data[map.from.transaction.fees]) transaction.fees = data[map.from.transaction.fees];
+            if(data[k][map.from.transaction.inputs]) transaction.inputs = data[k][map.from.transaction.inputs];
+            if(data[k][map.from.transaction.outputs]) transaction.outputs = data[k][map.from.transaction.outputs];
+            if(data[k][map.from.transaction.fees]) transaction.fees = data[k][map.from.transaction.fees];
+            if(data[k][map.from.transaction.value]) transaction.value = data[k][map.from.transaction.value];
             if(callback) callback(transaction);
             else return transaction;
         })

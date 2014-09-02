@@ -652,7 +652,7 @@
                     $(this_element).remove();
                     $.fn.blockstrap.core.refresh(function()
                     {
-                        
+                        $.fn.blockstrap.core.loader('close');
                     });
                 })
             }
