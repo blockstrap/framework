@@ -56,6 +56,24 @@
                                             "text": "{{tx.size}}"
                                         }
                                     ]
+                                },
+                                {
+                                    "html": "Time",
+                                    "buttons": [
+                                        {
+                                            "css": "btn-xs disabled pull-right",
+                                            "text": "{{tx.time}}"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "html": "Block",
+                                    "buttons": [
+                                        {
+                                            "css": "btn-xs disabled pull-right",
+                                            "text": "{{tx.block}}"
+                                        }
+                                    ]
                                 }
                             ]
                         }
@@ -78,6 +96,24 @@
                                         {
                                             "css": "btn-xs disabled pull-right",
                                             "text": "{{tx.input}}"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "html": "Total Output",
+                                    "buttons": [
+                                        {
+                                            "css": "btn-xs disabled pull-right",
+                                            "text": "{{tx.output}}"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "html": "Fees",
+                                    "buttons": [
+                                        {
+                                            "css": "btn-xs disabled pull-right",
+                                            "text": "{{tx.fees}}"
                                         }
                                     ]
                                 }

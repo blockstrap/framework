@@ -54,7 +54,11 @@
                 'vars.txid',
                 'vars.key',
                 'tx.size',
-                'tx.input'
+                'tx.time',
+                'tx.block',
+                'tx.input',
+                'tx.output',
+                'tx.fees'
             ];
             var replacements = [
                 $.fn.blockstrap.settings.base_url,
@@ -62,7 +66,11 @@
                 txid,
                 key,
                 tx.size + ' (Bytes)',
-                parseInt(tx.input) / 100000000 + ' ' + currency
+                tx.time,
+                tx.block,
+                parseInt(tx.input) / 100000000 + ' ' + currency,
+                parseInt(tx.output) / 100000000 + ' ' + currency,
+                parseInt(tx.fees) / 100000000 + ' ' + currency
             ];
         }
         for(var i = 0; i < placeholders.length; i++) 
