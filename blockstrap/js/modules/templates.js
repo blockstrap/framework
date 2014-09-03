@@ -38,18 +38,31 @@
             var name = raw_name;
 
             if(blockstrap_functions.json(raw_name)) name = $.parseJSON(raw_name);
+            
+            var currency = 'Bitcoin';
+            var key = blockstrap_functions.vars('key');
+            var txid = blockstrap_functions.vars('txid');
+            var tx = $.fn.blockstrap.accounts.tx(txid);
+            if($.fn.blockstrap.settings.currencies[tx.currency])
+            {
+                currency = $.fn.blockstrap.settings.currencies[tx.currency].currency;
+            }
 
             var placeholders = [
                 'urls.root', 
                 'user.name',
                 'vars.txid',
-                'vars.key'
+                'vars.key',
+                'tx.size',
+                'tx.input'
             ];
             var replacements = [
                 $.fn.blockstrap.settings.base_url,
                 name,
-                blockstrap_functions.vars('txid'),
-                blockstrap_functions.vars('key')
+                txid,
+                key,
+                tx.size + ' (Bytes)',
+                parseInt(tx.input) / 100000000 + ' ' + currency
             ];
         }
         for(var i = 0; i < placeholders.length; i++) 

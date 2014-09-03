@@ -503,6 +503,7 @@ var blockstrap_core = function()
                                 }
                                 else
                                 {
+                                    $.fn.blockstrap.core.new();
                                     $.fn.blockstrap.styles.set();
                                     $.fn.blockstrap.core.modals();
                                     $.fn.blockstrap.core.buttons();

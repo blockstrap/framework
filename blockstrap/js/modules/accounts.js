@@ -433,6 +433,29 @@
         }
     }
     
+    accounts.tx = function(txid, account_id)
+    {
+        var accounts = [];
+        var transaction = false;
+        if(account_id) accounts.push($.fn.blockstrap.accounts.get(account_id));
+        else accounts = $.fn.blockstrap.accounts.get();
+        $.each(accounts, function(k, account)
+        {
+            var txs = account.txs;
+            if($.isPlainObject(txs))
+            {
+                $.each(txs, function(k, tx)
+                {
+                    if(tx.txid == txid)
+                    {
+                        transaction = tx;
+                    }
+                });
+            }
+        });
+        return transaction;
+    }
+    
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {accounts:accounts});
 })
