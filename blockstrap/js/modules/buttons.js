@@ -952,7 +952,6 @@
                                 var raw_transaction = $.fn.blockstrap.btc.raw(from_address, private_key, inputs, outputs, fee, to_amount);
                                 $.fn.blockstrap.api.relay(raw_transaction, 'btc', function(tx)
                                 {
-                                    $.fn.blockstrap.core.loader('close');
                                     if(tx && tx.txid)
                                     {
                                         account.ts = new Date().getTime();
@@ -966,6 +965,7 @@
                                                 var base = $.fn.blockstrap.settings.base_url;
                                                 var content = '<p>Transaction ID: ' + tx.txid + '</p><p>You can <a href="' + base + '?txid=' + tx.txid + '#transaction">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchain.info/tx/' + tx.txid + '">this</a>.</p><p>Please note that upon refreshing or switching pages, balances may return to their previous totals when transactions are successful but unconfirmed, where they can take anywhere upto 10 minutes to be confirmed. We will provide dual balances for each currency in the next release.</p>';
                                                 $.fn.blockstrap.core.modal(title, content);
+                                                $.fn.blockstrap.core.loader('close');
                                             });
                                         });
                                     }
