@@ -5,7 +5,7 @@ var blockstrap_setup_steps = [
         "info": "(Here to help you get started)",
         "help": {
             "title": "SALT GENERATION",
-            "body": "<p>A salt is an extra layer of encryption that makes hashing passwords more secure. A salt is added to make an already difficult combination more difficult. A salt value is generated entirely at random and lowers the possibility of someone discovering your hash.</p>"
+            "body": "<p>The first step in creating your account is generating a salt. Every piece of information you enter is hashed and additionally hashed again with each new field. At the end of the process a salt is generated for your account.</p> <p><b>Once enetered you cannot change these details later.</b></p>"
         },
         "progress": {
             "func": "bootstrap",
@@ -13,12 +13,12 @@ var blockstrap_setup_steps = [
             "objects": [
                 {
                     "id": "",
-                    "after": "10% complete (1 of 3)",
+                    "after": "Step 1 of 3",
                     "stacks": [
                         {
                             "class": "progress-bar-success progress-bar-striped active",
-                            "value": "20",
-                            "text": "10%"
+                            "value": "33",
+                            "text": "33%"
                         }
                     ]
                 }
@@ -29,19 +29,19 @@ var blockstrap_setup_steps = [
                 "id": "step1",
                 "css": "btn-page active",
                 "href": "",
-                "text": "STEP ONE"
+                "text": "SALT GENERATION"
             },
             {
                 "id": "step2",
                 "css": "btn-page",
                 "href": "",
-                "text": "STEP TWO"
+                "text": "ADDITIONAL SECURITY"
             },
             {
                 "id": "step3",
                 "css": "btn-page",
                 "href": "",
-                "text": "ACTIVATE"
+                "text": "CREATE ACCOUNT"
             }
         ],
         "actions": [
@@ -77,8 +77,8 @@ var blockstrap_setup_steps = [
                     "objects": [
                         {
                             "title": "Generating Your Device Salt",
-                            "intro": "This is a one time installation process. Please read the instructions carefully.",
-                            "html": "<b>REMINDER:</b> We do not store or keep a record of your private keys or personal information anywhere. Instead we take these memorable pieces of information and turn them into 'hashes' which we use to create a device Salt that is stored in your browser. It is through reacreating the steps in this process that you generate your Salt and access your wallet. As we do not keep this information it is important that you remember the details you enter and keep them safe. <b>REMEMBER: If you cannot recreate this process, you cannot access your wallet.</b>",
+                            "intro": "This is a one time installation process. Please read the instructions carefully...",
+                            "html": "<b>REMINDER:</b> We do not store or keep a record of your private keys or personal information anywhere. Instead we take these memorable pieces of information and turn them into 'hashes' which we use to create a salt that is stored in your browser. It is through recreating the steps in this process that you generate your salt and access the accounts in your wallet. As we do not keep this information it is important that you remember the details you enter and keep them safe. <b>REMEMBER: If you cannot recreate this process, you will not be able to access the accounts in your wallet. You cannot change this information later.</b>",
                             "buttons": [
                                 {
                                     "href": "#",
@@ -130,7 +130,7 @@ var blockstrap_setup_steps = [
                                             "css": "col-sm-3"
                                         },
                                         "type": "text",
-                                        "placeholder": "If you use your real name you might remember it",
+                                        "placeholder": "Using your actual name is easier to remember",
                                         "value": "",
                                         "wrapper": {
                                             "css": "col-sm-9"
@@ -257,7 +257,7 @@ var blockstrap_setup_steps = [
                                         "id": "auth_session",
                                         "css": "switch",
                                         "label": {
-                                            "text": "Authenticate Each Session",
+                                            "text": "Add Password to Salt",
                                             "css": "col-sm-6"
                                         },
                                         "type": "checkbox",
@@ -389,7 +389,7 @@ var blockstrap_setup_steps = [
         "info": "(Here to help you)",
         "help": {
             "title": "ADDITIONAL SECURITY",
-            "body": "If you wish you can configure your wallet to include extra security infromation. Just like before this information isn't stored anywhere, so make sure you record this information in a safe place.</p>"
+            "body": "<p>Now you have succesfully generated your salt you can add additional layers of infromation which will be compounded and added to your current salt. Just like before this information isn't stored anywhere, so make sure you record your details in a safe place.</p>"
         },
         "progress": {
             "func": "bootstrap",
@@ -397,12 +397,12 @@ var blockstrap_setup_steps = [
             "objects": [
                 {
                     "id": "",
-                    "after": "40% complete (2 of 3)",
+                    "after": "Step 2 of 3",
                     "stacks": [
                         {
                             "class": "progress-bar-success progress-bar-striped active",
-                            "value": "40",
-                            "text": "40%"
+                            "value": "66",
+                            "text": "66%"
                         }
                     ]
                 }
@@ -413,19 +413,19 @@ var blockstrap_setup_steps = [
                 "id": "step1",
                 "css": "btn-page",
                 "href": "",
-                "text": "STEP ONE"
+                "text": "SALT GENERATION"
             },
             {
                 "id": "step2",
                 "css": "btn-page active",
                 "href": "",
-                "text": "STEP TWO"
+                "text": "ADDITIONAL SECURITY"
             },
             {
                 "id": "step3",
                 "css": "btn-page",
                 "href": "",
-                "text": "ACTIVATE"
+                "text": "ACTIVATE ACCOUNT"
             }
         ],
         "actions": [
@@ -461,8 +461,8 @@ var blockstrap_setup_steps = [
                     "objects": [
                         {
                             "title": "Extend Your Security Settings",
-                            "intro": "Configure your wallet to include extra security modules (Reccomended)",
-                            "html": "<b>REMINDER:</b> We do not store or keep a record of your private keys or personal information anywhere. Instead we take these memorable pieces of information and turn them into 'hashes' which we use to create a device Salt that is stored in your browser. It is through reacreating the steps in this process that you generate your Salt and access your wallet. As we do not keep this information it is important that you remember the details you enter and keep them safe. <b>REMEMBER: If you cannot recreate this process, you cannot access your wallet.</b>",
+                            "intro": "Configure your account to include extra security modules (Reccomended)",
+                            "html": "Here your device can be configured to include extra security modules. Like before this information is not stored anywhere and must be recreated to access your account. You can also use your account photo as an additional layer of entropy to your salt - as with all other information in this set up process, if you lose your image, you will also lose access to your account.<b>REMEMBER: If you cannot recreate this process, you will not be able to access the accounts in your wallet. You cannot change this information later.</b>",
                             "buttons": [
                                 {
                                     "href": "#",
@@ -686,8 +686,8 @@ var blockstrap_setup_steps = [
         "name": "Setup Wizard",
         "info": "(Here to help you )",
         "help": {
-            "title": "What is a Salt...?",
-            "body": "<p>Not entirely sure exactly what to say here but do know that Johnny has some work to do throughout to help make it pukka!</p><p>Not entirely sure exactly what to say here but do know that Johnny has some work to do throughout to help make it pukka!</p>"
+            "title": "CHOOSING A PASSWORD",
+            "body": "<p><b>TIP:</b>The best passwords are seemigly random characters that are easy to remember. For example, The Quick Brown Fox Jumps Over The Lazy Dog would become TQBFJOTLD</p><p><b>BONUS TIP:</b> Don't actually use TQBFJOTLD as your password.</p>"
         },
         "progress": {
             "func": "bootstrap",
@@ -695,12 +695,12 @@ var blockstrap_setup_steps = [
             "objects": [
                 {
                     "id": "",
-                    "after": "40% complete (3 of 3)",
+                    "after": "Step 3 of 3",
                     "stacks": [
                         {
                             "class": "progress-bar-success progress-bar-striped active",
-                            "value": "80",
-                            "text": "80%"
+                            "value": "99",
+                            "text": "99%"
                         }
                     ]
                 }
@@ -711,19 +711,19 @@ var blockstrap_setup_steps = [
                 "id": "step1",
                 "css": "btn-page",
                 "href": "",
-                "text": "Salt Check"
+                "text": "SALT GENERATION"
             },
             {
                 "id": "step2",
                 "css": "btn-page",
                 "href": "",
-                "text": "Additional Entropy"
+                "text": "ADDITIONAL SECURITY"
             },
             {
                 "id": "step3",
                 "css": "btn-page active",
                 "href": "",
-                "text": "First Wallet"
+                "text": "CREATE ACCOUNT"
             }
         ],
         "actions": [
@@ -758,9 +758,9 @@ var blockstrap_setup_steps = [
                     "type": "jumbotrons",
                     "objects": [
                         {
-                            "title": "Generating Wallets",
-                            "intro": "Now on Step 3 of 3",
-                            "html": "Not sure what to put here yet... Any ideas are much appreciated...?.",
+                            "title": "Activating Your Account",
+                            "intro": "You're almost ready to get started...",
+                            "html": "Now you have generated your salt it's time to create your account.",
                             "buttons": [
                                 {
                                     "href": "#",
@@ -775,7 +775,7 @@ var blockstrap_setup_steps = [
             {
                 "id": "additional-modules",
                 "css": "col-md-6 odd",
-                "header": "Wallet Requirements",
+                "header": "Account Settings",
                 "body": {
                     "func": "bootstrap",
                     "type": "forms",
@@ -846,10 +846,10 @@ var blockstrap_setup_steps = [
                                     "inputs": {
                                         "id": "wallet_password_repeat",
                                         "label": {
-                                            "text": "Repeat",
+                                            "text": "Repeat Password",
                                             "css": "col-sm-3"
                                         },
-                                        "placeholder": "Better to be safe than sorry",
+                                        "placeholder": "Please enter your password again",
                                         "type": "password",
                                         "wrapper": {
                                             "css": "col-sm-9"
@@ -875,7 +875,7 @@ var blockstrap_setup_steps = [
             {
                 "id": "application-settings",
                 "css": "col-md-6 even",
-                "header": "Additional Wallet Options",
+                "header": "Additional Account Options",
                 "body": {
                     "func": "bootstrap",
                     "type": "forms",
@@ -943,7 +943,7 @@ var blockstrap_setup_steps = [
                                             "text": "Answer",
                                             "css": "col-sm-3"
                                         },
-                                        "placeholder": "This should be unique to this individual wallet",
+                                        "placeholder": "Enter the answer to your custom question",
                                         "type": "password",
                                         "wrapper": {
                                             "css": "col-sm-9"
@@ -983,7 +983,7 @@ var blockstrap_setup_steps = [
                                         "id": "wallet_choice",
                                         "css": "switch",
                                         "label": {
-                                            "text": "Add question to salt too?",
+                                            "text": "Add question to Salt?",
                                             "css": "col-sm-6"
                                         },
                                         "type": "checkbox",
