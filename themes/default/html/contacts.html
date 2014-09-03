@@ -43,7 +43,7 @@
                         <tr id="table-row-{{id}}">
                             <td>
                                 <div class="cell">
-                                    <a href="?id={{id}}#contact">{{name}}</a>
+                                    {{name}}
                                 </div>
                             </td>
                             <td>
@@ -52,7 +52,7 @@
                                         {{#addresses}}
                                             <p>
                                                 {{currency}}: 
-                                                <a href="?key={{key}}#accounts">{{key}}</a>
+                                                <a href="?key={{key}}#address">{{key}}</a>
                                             </p>
                                         {{/addresses}}
                                     {{/currencies}}
@@ -81,7 +81,6 @@
                                        data-parent="contacts"
                                        data-element="table-row-{{id}}"
                                        data-key="{{id}}"
-                                       data-confirm="true"
                                     >Remove</a>
                                 </div>
                             </td>

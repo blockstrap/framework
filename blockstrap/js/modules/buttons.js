@@ -27,7 +27,8 @@
                 if($('#sidebar-toggle').hasClass('open')) $('#sidebar-toggle').trigger('click');
             }
         });
-        $(button).removeClass('loading');
+        var nav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id);
+        $(nav).find('.loading').removeClass('loading');
         if(history.pushState) 
         {
             if(slug === $.fn.blockstrap.settings.slug_base)
@@ -82,9 +83,10 @@
         if($('#menu-toggle').hasClass('open') || $('#sidebar-toggle').hasClass('open')) menu = true;
         if(slugs[0] === "" && href)
         {
-            slug = slugs[1];
-            $($.fn.blockstrap.element).find('.btn-page.active').removeClass('active').addClass('activated');
-            $(button).addClass('active loading');
+            slug = slugs[1];            
+            var nav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id);
+            $(nav).find('.active').removeClass('active');
+            $(nav).find('#'+slug).addClass('active loading');
             if(mobile && !menu) $(elements).css({'opacity':0});
             if($.fn.blockstrap.settings.data_base && $.fn.blockstrap.settings.html_base)
             {
@@ -640,22 +642,38 @@
         var key = $(button).attr('data-key');
         var element = $(button).attr('data-element');
         var collection = $(button).attr('data-collection');
-        if($.isPlainObject(localStorage))
+        var confirm = $(button).attr('data-confirm');
+        var callback = function(collection, key, element)
         {
-            var item = localStorage.getItem('nw_' + collection + '_' + key);
-            if(item)
+            if($.isPlainObject(localStorage))
             {
-                localStorage.removeItem('nw_' + collection + '_' + key);
-                $($.fn.blockstrap.element).find('#' + element).hide(350, function()
+                var item = localStorage.getItem('nw_' + collection + '_' + key);
+                if(item)
                 {
-                    var this_element = $(this);
-                    $(this_element).remove();
-                    $.fn.blockstrap.core.refresh(function()
+                    localStorage.removeItem('nw_' + collection + '_' + key);
+                    $($.fn.blockstrap.element).find('#' + element).hide(350, function()
                     {
-                        $.fn.blockstrap.core.loader('close');
-                    });
-                })
+                        var this_element = $(this);
+                        $(this_element).remove();
+                        $.fn.blockstrap.core.refresh(function()
+                        {
+                            $.fn.blockstrap.core.loader('close');
+                        });
+                    })
+                }
             }
+        }
+        if(confirm)
+        {
+            var text = 'Please confirm removal of this account. You will not be able to use any of the coins on the account unless you can accurately re-create them or first back-up the private key. We hope you understand the risks.';
+            $.fn.blockstrap.core.confirm('Confirmation Required', text, function()
+            {
+                callback(collection, key, element);
+            });
+        }
+        else
+        {
+            callback(collection, key, element);
         }
     }
     

@@ -27,7 +27,7 @@ var blockstrap_core = function()
         var init_bs = false;
         var plugin_name = 'blockstrap';
         var defaults = {
-            v: '1.1.3.1.2',
+            v: '1.1.3.1.3',
             salt: '',
             autoload: true,
             id: plugin_name,
@@ -548,14 +548,17 @@ var blockstrap_core = function()
                     {
                         $.fn.blockstrap.templates.render(page, function()
                         {
-                            //$.fn.blockstrap.core.new();
+                            var nav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id);
+                            $(nav).find('.active').removeClass('active');
+                            $(nav).find('#'+page).addClass('active');
+                            $.fn.blockstrap.core.new();
                             //$.fn.blockstrap.core.loader('close');
                             if(callback) callback();
                         }, true);
                     }
                     else
                     {
-                        //$.fn.blockstrap.core.new();
+                        $.fn.blockstrap.core.new();
                         //$.fn.blockstrap.core.loader('close');
                         if(callback) callback();
                     }

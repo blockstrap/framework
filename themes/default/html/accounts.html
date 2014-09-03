@@ -53,7 +53,7 @@
                         <tr id="table-row-{{id}}">
                             <td>
                                 <div class="cell">
-                                    <a href="?id={{id}}#account">{{name}}</a>
+                                    {{name}}
                                 </div>
                             </td>
                             <td>
@@ -90,7 +90,7 @@
                                        data-collection="accounts"
                                        data-element="table-row-{{id}}"
                                        data-key="{{id}}"
-                                       data-confirm="true"
+                                       data-confirm="{{password}}"
                                     >Remove</a>
                                 </div>
                             </td>
