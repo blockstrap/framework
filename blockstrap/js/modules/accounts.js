@@ -456,6 +456,22 @@
         return transaction;
     }
     
+    accounts.address = function(key, account_id)
+    {
+        var accounts = [];
+        var address = false;
+        if(account_id) accounts.push($.fn.blockstrap.accounts.get(account_id));
+        else accounts = $.fn.blockstrap.accounts.get();
+        $.each(accounts, function(k, account)
+        {
+            if(account.address == key)
+            {
+                address = account;
+            }
+        });
+        return address;
+    }
+    
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {accounts:accounts});
 })

@@ -39,16 +39,61 @@
                 }
             },
             {
-                "id": "recent-transactions",
+                "id": "address-sumary",
                 "css": "col-md-6 odd",
-                "header": "Recent Transactions",
-                "body": "soon"
+                "header": "Address Summary",
+                "body": {
+                    "func": "bootstrap",
+                    "type": "lists",
+                    "objects": [
+                        {
+                            "items": [
+                                {
+                                    "html": "TX Count",
+                                    "buttons": [
+                                        {
+                                            "css": "btn-xs disabled pull-right",
+                                            "text": "{{address.tx_count}}"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "html": "Current Balance",
+                                    "buttons": [
+                                        {
+                                            "css": "btn-xs disabled pull-right",
+                                            "text": "{{address.balance}}"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
             },
             {
-                "id": "market-conditions",
+                "id": "tx-amounts",
                 "css": "col-md-6 even",
-                "header": "Market Conditions",
-                "body": "soon"
+                "header": "Transactions",
+                "body": {
+                    "func": "bootstrap",
+                    "type": "lists",
+                    "objects": [
+                        {
+                            "items": [
+                                {
+                                    "html": "Coming soon!",
+                                    "buttons": [
+                                        {
+                                            "css": "btn-xs disabled pull-right",
+                                            "text": "next release"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
             }
         ]
     }

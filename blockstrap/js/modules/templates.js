@@ -39,13 +39,30 @@
 
             if(blockstrap_functions.json(raw_name)) name = $.parseJSON(raw_name);
             
-            var currency = 'Bitcoin';
+            // ADDRESS INFO
+            var add_currency = 'Bitcoin';
             var key = blockstrap_functions.vars('key');
+            var account = $.fn.blockstrap.accounts.address(key);
+            if(!account)
+            {
+                account = {};
+                account.tx_count = 0;
+                account.receievd = 0;
+                account.balance = 0;
+                account.currency = false;
+            }
+            if($.fn.blockstrap.settings.currencies[account.currency])
+            {
+                add_currency = $.fn.blockstrap.settings.currencies[account.currency].currency;
+            }
+            
+            // TX INFO
+            var tx_currency = 'Bitcoin';
             var txid = blockstrap_functions.vars('txid');
             var tx = $.fn.blockstrap.accounts.tx(txid);
             if($.fn.blockstrap.settings.currencies[tx.currency])
             {
-                currency = $.fn.blockstrap.settings.currencies[tx.currency].currency;
+                tx_currency = $.fn.blockstrap.settings.currencies[tx.currency].currency;
             }
 
             var placeholders = [
@@ -58,7 +75,9 @@
                 'tx.block',
                 'tx.input',
                 'tx.output',
-                'tx.fees'
+                'tx.fees',
+                'address.tx_count',
+                'address.balance'
             ];
             var replacements = [
                 $.fn.blockstrap.settings.base_url,
@@ -68,9 +87,11 @@
                 tx.size + ' (Bytes)',
                 tx.time,
                 tx.block,
-                parseInt(tx.input) / 100000000 + ' ' + currency,
-                parseInt(tx.output) / 100000000 + ' ' + currency,
-                parseInt(tx.fees) / 100000000 + ' ' + currency
+                parseInt(tx.input) / 100000000 + ' ' + tx_currency,
+                parseInt(tx.output) / 100000000 + ' ' + tx_currency,
+                parseInt(tx.fees) / 100000000 + ' ' + tx_currency,
+                account.tx_count,
+                parseInt(account.balance) / 100000000 + ' ' + add_currency
             ];
         }
         for(var i = 0; i < placeholders.length; i++) 
