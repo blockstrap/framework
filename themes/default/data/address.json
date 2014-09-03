@@ -15,23 +15,8 @@
                             "buttons": [
                                 {
                                     "href": "#",
-                                    "css": "btn-danger btn-reset-device",
-                                    "text": "Reset Device"
-                                },
-                                {
-                                    "href": "#",
-                                    "css": "btn-default",
-                                    "text": "Backup",
-                                    "attributes": [
-                                        {
-                                            "key": "data-toggle",
-                                            "value": "modal"
-                                        },
-                                        {
-                                            "key": "data-target",
-                                            "value": "#backup-modal"
-                                        }
-                                    ]
+                                    "css": "btn-success",
+                                    "text": "JSON VIEW"
                                 }
                             ]
                         }
