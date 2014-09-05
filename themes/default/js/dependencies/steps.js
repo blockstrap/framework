@@ -217,7 +217,7 @@ var blockstrap_setup_steps = [
                                         "id": "auth_salt",
                                         "css": "switch",
                                         "label": {
-                                            "text": "Authenticate Salt Generation",
+                                            "text": "Add Password to Salt",
                                             "css": "col-sm-6"
                                         },
                                         "type": "checkbox",
@@ -257,7 +257,7 @@ var blockstrap_setup_steps = [
                                         "id": "auth_session",
                                         "css": "switch",
                                         "label": {
-                                            "text": "Add Password to Salt",
+                                            "text": "Authenticate Each Session",
                                             "css": "col-sm-6"
                                         },
                                         "type": "checkbox",
