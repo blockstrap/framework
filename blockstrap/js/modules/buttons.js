@@ -12,8 +12,21 @@
 {
     // EMPTY OBJECT
     var buttons = {};
-    var page_cache_time = 60000;
+    var page_cache_time = $.fn.blockstrap.settings.cache.pages;
     var pages_cached = {};
+    
+    window.onpopstate = function(event) 
+    {
+        if($.isPlainObject(event.state) && event.state.slug)
+        {
+            // HARDCODED HACK FOR NOW
+            var slug = event.state.slug;
+            if(slug == 'index') slug = 'dashboard';
+            var element = $.fn.blockstrap.element;
+            var nav = $(element).find('#'+$.fn.blockstrap.settings.navigation_id);
+            $(nav).find('#'+slug).trigger('click');
+        }
+    }
     
     // FUNCTIONS FOR OBJECT
     buttons.process = function(slug, content, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements)
@@ -35,11 +48,11 @@
         {
             if(slug === $.fn.blockstrap.settings.slug_base)
             {
-                history.pushState({}, document.getElementsByTagName("title")[0].innerHTML, $.fn.blockstrap.settings.base_url + location.search);
+                history.pushState({slug:'index'}, document.getElementsByTagName("title")[0].innerHTML, $.fn.blockstrap.settings.base_url + location.search);
             }
             else
             {
-                history.pushState({}, document.getElementsByTagName("title")[0].innerHTML, '#'+slug);
+                history.pushState({slug:slug}, document.getElementsByTagName("title")[0].innerHTML, '#'+slug);
             }
             $($.fn.blockstrap.element).find('.activated').removeClass('activated');
             $.fn.blockstrap.core.new();

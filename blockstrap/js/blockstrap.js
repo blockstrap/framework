@@ -128,6 +128,7 @@ var blockstrap_core = function()
                 api: {
                     address: 60000 // 1 Minute
                 },
+                pages: 60000,
                 accounts: 60000 // 2 Minutes = 120000
             },
             exchange: {
