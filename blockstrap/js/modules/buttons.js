@@ -12,6 +12,8 @@
 {
     // EMPTY OBJECT
     var buttons = {};
+    var page_cache_time = 60000;
+    var pages_cached = {};
     
     // FUNCTIONS FOR OBJECT
     buttons.process = function(slug, content, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements)
@@ -72,6 +74,8 @@
         var direction = 'left';
         var reverse_direction = 'right';
         var elements = '#sidebar, #navigation';
+        var now = new Date().getTime();
+        
         if($(button).attr('data-elements')) elements = $(button).attr('data-elements');
         if($(button).attr('data-effect')) effect = $(button).attr('data-effect');
         if($(button).hasClass('up')) 
@@ -95,46 +99,55 @@
                 {
                     var data = results;
                     var refresh = blockstrap_functions.vars('refresh');
+                    if(!pages_cached[slug]) pages_cached[slug] = now;
+                    if(pages_cached[slug] + page_cache_time < now)
+                    {
+                        refresh = true;
+                        pages_cached[slug] = now;
+                    }
                     if(refresh === true || !data)
                     {
-                        $.fn.blockstrap.templates.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.data_base+slug, 'json', function(data)
+                        $.fn.blockstrap.accounts.updates(0, function()
                         {
-                            if(data.status)
+                                                                $.fn.blockstrap.templates.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.data_base+slug, 'json', function(data)
                             {
-                                buttons.cancel(button, mobile, menu, elements);
-                            }
-                            else
-                            {
-                                var filtered_data = $.fn.blockstrap.core.filter(data);
-                                $.fn.blockstrap.data.save('data', slug, data, function(res)
+                                if(data.status)
                                 {
-                                    $.fn.blockstrap.data.find('html', slug, function(results)
+                                    buttons.cancel(button, mobile, menu, elements);
+                                }
+                                else
+                                {
+                                    var filtered_data = $.fn.blockstrap.core.filter(data);
+                                    $.fn.blockstrap.data.save('data', slug, data, function(res)
                                     {
-                                        var html = results;
-                                        if(refresh === true || !html)
+                                        $.fn.blockstrap.data.find('html', slug, function(results)
                                         {
-                                            $.fn.blockstrap.templates.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.html_base+slug, 'html', function(content)
+                                            var html = results;
+                                            if(refresh === true || !html)
                                             {
-                                                if(content.status && content.status === 404)
+                                                $.fn.blockstrap.templates.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.html_base+slug, 'html', function(content)
                                                 {
-                                                    buttons.cancel(button, mobile, menu, elements);
-                                                }
-                                                else
-                                                {
-                                                    $.fn.blockstrap.data.save('html', slug, content, function()
+                                                    if(content.status && content.status === 404)
                                                     {
-                                                        buttons.process(slug, content, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
-                                                    });
-                                                }
-                                            });
-                                        }
-                                        else
-                                        {                                            
-                                            buttons.process(slug, html, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
-                                        }
+                                                        buttons.cancel(button, mobile, menu, elements);
+                                                    }
+                                                    else
+                                                    {
+                                                        $.fn.blockstrap.data.save('html', slug, content, function()
+                                                        {
+                                                            buttons.process(slug, content, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                            else
+                                            {                                            
+                                                buttons.process(slug, html, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
+                                            }
+                                        });
                                     });
-                                });
-                            }
+                                }
+                            });
                         });
                     }
                     else
@@ -977,6 +990,25 @@
             });
         }
     }
+    
+    buttons.refresh = function(button, e)
+    {
+        e.preventDefault();
+        var collection = $(button).attr('data-collection');
+        var key = $(button).attr('data-key');
+        if(collection == 'accounts')
+        {
+            $.fn.blockstrap.core.loader('open');
+            var account = $.fn.blockstrap.accounts.get(key);
+            $.fn.blockstrap.accounts.update(account, function()
+            {
+                $.fn.blockstrap.core.refresh(function()
+                {
+                    $.fn.blockstrap.core.loader('close');
+                });
+            }, true);
+        }
+    }       
     
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {buttons:buttons});

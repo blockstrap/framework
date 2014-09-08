@@ -347,7 +347,7 @@
         }
     }
     
-    accounts.update = function(account, callback)
+    accounts.update = function(account, callback, force_refresh)
     {
         if($.isPlainObject(account))
         {
@@ -356,6 +356,7 @@
             var cache_time = $.fn.blockstrap.settings.cache.accounts;
             if(account.ts) ts = account.ts;
             if(blockstrap_functions.vars('refresh')) ts = 0;
+            if(force_refresh) ts = 0;
             if(ts + cache_time < now)
             {
                 $.fn.blockstrap.api.address(account.address, account.currency.code, function(results)

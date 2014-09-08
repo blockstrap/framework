@@ -1030,6 +1030,10 @@ var blockstrap_core = function()
                 {
                     $.fn.blockstrap.buttons.send(this, e);
                 });
+                $($.fn.blockstrap.element).on('click', '.btn-refresh', function(e)
+                {
+                    $.fn.blockstrap.buttons.refresh(this, e);
+                });
             },
             stringed: function(styles)
             {
