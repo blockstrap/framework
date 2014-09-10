@@ -234,7 +234,14 @@
                             component+= '<input type="text" data-setup-type="'+setup_type+'" class="form-control" id="'+value+'">';
                         component+= '</div>';
                     component+= '</div>';
-                    $(form).prepend(component);
+                    if($(button).attr('data-before'))
+                    {
+                        $(form).find('#'+$(button).attr('data-before')).parent().parent().before(component);
+                    }
+                    else
+                    {
+                        $(form).prepend(component);
+                    }
                     $(form).find('#extra-'+value).hide(0);
                     $(form).find('#extra-'+value).show(350);
                 }

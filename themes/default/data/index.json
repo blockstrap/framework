@@ -487,6 +487,10 @@
                                         "value": "new-account"
                                     },
                                     {
+                                        "key": "data-before",
+                                        "value": "extra_salty_wallet"
+                                    },
+                                    {
                                         "key": "data-setup-type",
                                         "value": "wallet"
                                     }

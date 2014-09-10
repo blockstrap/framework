@@ -635,6 +635,13 @@ var blockstrap_core = function()
                             });
                         })
                     });
+                    $($.fn.blockstrap.element).on('show.bs.modal', '#new-account-modal', function(i)
+                    {
+                        if($(this).find('#more-security').html() == 'Less Security')
+                        {
+                            $(this).find('#more-security').trigger('click');
+                        }
+                    });
                 }
             },
             confirm: function(title, content, callback)
