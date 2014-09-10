@@ -185,11 +185,18 @@
     
     buttons.reset = function(button, e)
     {
-        e.preventDefault();
-        $.fn.blockstrap.core.confirm('Confirm Device Reset', 'Please confirm that you want to completely remove all of the information from this device? If you have any coins stored, please ensure you first back-up the private keys or make a back-up of the wallet first.', function(confirmed)
+        if(e)
         {
-            if(confirmed) $.fn.blockstrap.core.reset();
-        });
+            e.preventDefault();
+            $.fn.blockstrap.core.confirm('Confirm Device Reset', 'Please confirm that you want to completely remove all of the information from this device? If you have any coins stored, please ensure you first back-up the private keys or make a back-up of the wallet first.', function(confirmed)
+            {
+                if(confirmed) $.fn.blockstrap.core.reset();
+            });
+        }
+        else
+        {
+            $.fn.blockstrap.core.reset();
+        }
     }
     
     buttons.check = function()

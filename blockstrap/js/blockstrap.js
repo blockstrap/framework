@@ -27,7 +27,7 @@ var blockstrap_core = function()
         var init_bs = false;
         var plugin_name = 'blockstrap';
         var defaults = {
-            v: '1.1.3.1.4',
+            v: '0.2.0.3',
             salt: '',
             autoload: true,
             id: plugin_name,
@@ -326,85 +326,84 @@ var blockstrap_core = function()
                     }
                 }
             });
-            $.fn.blockstrap.core.less(function()
+            
+            blockstrap_functions.update($.fn.blockstrap.settings.v, function()
             {
-                if($.isArray($.fn.blockstrap.settings.dependencies))
+                $.fn.blockstrap.core.less(function()
                 {
-                    blockstrap_functions.include($.fn.blockstrap, 0, $.fn.blockstrap.settings.dependencies, function()
+                    if($.isArray($.fn.blockstrap.settings.dependencies))
                     {
-                        // THEN LOAD MODULES
-                        if($.isArray($.fn.blockstrap.settings.modules))
+                        blockstrap_functions.include($.fn.blockstrap, 0, $.fn.blockstrap.settings.dependencies, function()
                         {
-                            $.fn.blockstrap.core.css(function()
+                            // THEN LOAD MODULES
+                            if($.isArray($.fn.blockstrap.settings.modules))
                             {
-                                blockstrap_functions.include($.fn.blockstrap, 0, $.fn.blockstrap.settings.modules, function()
+                                $.fn.blockstrap.core.css(function()
                                 {
-                                    // RESET IF REQUIRED
-                                    if(blockstrap_functions.vars('reset') === true)
+                                    blockstrap_functions.include($.fn.blockstrap, 0, $.fn.blockstrap.settings.modules, function()
                                     {
-                                        $.fn.blockstrap.buttons.reset(false, false);
-                                    }
-                                    blockstrap_functions.update($.fn.blockstrap.settings.v, function()
-                                    {
-                                        // ADD TEMPLATES
-                                        $.fn.blockstrap.snippets = {};                            
-                                        var snippet_count = 0;
-                                        var snippet_limit = 0;
-                                        if($.isArray($.fn.blockstrap.settings.bootstrap))
-                                        {
-                                            snippet_limit = $.fn.blockstrap.settings.bootstrap.length;
-                                        }
-                                        if($.isArray($.fn.blockstrap.settings.bootstrap))
-                                        {
-                                            $.each($.fn.blockstrap.settings.bootstrap, function(k, v)
+
+                                            // ADD TEMPLATES
+                                            $.fn.blockstrap.snippets = {};                            
+                                            var snippet_count = 0;
+                                            var snippet_limit = 0;
+                                            if($.isArray($.fn.blockstrap.settings.bootstrap))
                                             {
-                                                $.fn.blockstrap.data.find('boot', v, function(results)
+                                                snippet_limit = $.fn.blockstrap.settings.bootstrap.length;
+                                            }
+                                            if($.isArray($.fn.blockstrap.settings.bootstrap))
+                                            {
+                                                $.each($.fn.blockstrap.settings.bootstrap, function(k, v)
                                                 {
-                                                    var refresh = blockstrap_functions.vars('refresh');
-                                                    if(refresh === true || !results)
+                                                    $.fn.blockstrap.data.find('boot', v, function(results)
                                                     {
-                                                        $.fn.blockstrap.templates.get($.fn.blockstrap.settings.core_base+'html/bootstrap/'+v, 'html', function(html)
-                                                        {                                        
-                                                            $.fn.blockstrap.data.save('boot', v, html, function(results)
-                                                            {
-                                                                $.fn.blockstrap.snippets[v] = html;
-                                                                snippet_count++;
-                                                                if(snippet_count >= snippet_limit)
-                                                                {
-                                                                    // INITIATE CORE
-                                                                    $.fn.blockstrap.core.init();
-                                                                }
-                                                            })
-
-                                                        });
-                                                    }
-                                                    else
-                                                    {
-                                                        $.fn.blockstrap.snippets[v] = results;
-                                                        snippet_count++;
-                                                        if(snippet_count >= snippet_limit)
+                                                        var refresh = blockstrap_functions.vars('refresh');
+                                                        if(refresh === true || !results)
                                                         {
-                                                            // INITIATE CORE
-                                                            $.fn.blockstrap.core.init();
-                                                        }
-                                                    }
-                                                });
-                                            });
-                                        }
-                                        else
-                                        {
-                                            // INITIATE CORE
-                                            $.fn.blockstrap.core.init();
-                                        }
+                                                            $.fn.blockstrap.templates.get($.fn.blockstrap.settings.core_base+'html/bootstrap/'+v, 'html', function(html)
+                                                            {                                        
+                                                                $.fn.blockstrap.data.save('boot', v, html, function(results)
+                                                                {
+                                                                    $.fn.blockstrap.snippets[v] = html;
+                                                                    snippet_count++;
+                                                                    if(snippet_count >= snippet_limit)
+                                                                    {
+                                                                        // INITIATE CORE
+                                                                        $.fn.blockstrap.core.init();
+                                                                    }
+                                                                })
 
-                                    }) 
-                                });
-                            })
-                        };
-                    }, true);
-                }
+                                                            });
+                                                        }
+                                                        else
+                                                        {
+                                                            $.fn.blockstrap.snippets[v] = results;
+                                                            snippet_count++;
+                                                            if(snippet_count >= snippet_limit)
+                                                            {
+                                                                // INITIATE CORE
+                                                                $.fn.blockstrap.core.init();
+                                                            }
+                                                        }
+                                                    });
+                                                });
+                                            }
+                                            else
+                                            {
+                                                // INITIATE CORE
+                                                $.fn.blockstrap.core.init();
+                                            }
+
+
+                                    });
+                                })
+                            };
+                        }, true);
+                    }
+                });
             });
         }
+                                         
         
         // PREVENT DUPLICATES
         $.fn[plugin_name] = function(options)
@@ -453,7 +452,12 @@ var blockstrap_core = function()
             },
             init: function()
             {
-                if(!init_bs)
+                // RESET IF REQUIRED
+                if(blockstrap_functions.vars('reset') === true)
+                {
+                    $.fn.blockstrap.buttons.reset(false, false);
+                }
+                else if(!init_bs)
                 {
                     init_bs = true;
                     // Check for login credentials...?
@@ -1080,7 +1084,22 @@ var blockstrap_core = function()
                     };
                     if(reload)
                     {
-                        location.reload();
+                        if(location.search.indexOf('reset=true') > -1)
+                        {
+                            var slug = $.fn.blockstrap.core.page();
+                            if(slug != 'index')
+                            {
+                                location.href = $.fn.blockstrap.settings.base_url + slug;
+                            }
+                            else
+                            {
+                                location.href = $.fn.blockstrap.settings.base_url;
+                            }
+                        }
+                        else
+                        {
+                            location.reload();
+                        }
                     }
                     else
                     {
@@ -1319,37 +1338,31 @@ var blockstrap_functions = {
     update: function(version, callback)
     {
         var current_version_array = version.split('.');
-        $.fn.blockstrap.data.find('blockstrap', 'version', function(results)
+        var results = localStorage.getItem('nw_blockstrap_v');
+        var stored_version_array = false;
+        if(results) stored_version_array = $.parseJSON(results).split('.');
+        if($.isArray(stored_version_array))
         {
-            var stored_version_array = false;
-            if(results) stored_version_array = results.split('.');
-            if($.isArray(stored_version_array))
+            $.each(stored_version_array, function(k, v)
             {
-                $.each(stored_version_array, function(k, v)
+                if(parseInt(current_version_array[k]) > parseInt(v))
                 {
-                    if(parseInt(current_version_array[k]) > parseInt(v))
-                    {
-                        $.fn.blockstrap.settings.vars.refresh = true;
-                        callback();
-                    }
-                    if(k >= ($(current_version_array).length - 1))
-                    {
-                        $.fn.blockstrap.data.save('blockstrap', 'version', version, function(results)
-                        {
-                            callback();
-                        });
-                    }
-                })
-            }
-            else
-            {
-                $.fn.blockstrap.settings.vars.refresh = true;
-                $.fn.blockstrap.data.save('blockstrap', 'version', version, function(results)
-                {
+                    $.fn.blockstrap.settings.vars.refresh = true;
                     callback();
-                });
-            }
-        })
+                }
+                if(k >= (blockstrap_functions.array_length(stored_version_array) - 1))
+                {
+                    localStorage.setItem('nw_blockstrap_v', JSON.stringify(version));
+                    callback();
+                }
+            })
+        }
+        else
+        {
+            $.fn.blockstrap.settings.vars.refresh = true;
+            localStorage.setItem('nw_blockstrap_v', JSON.stringify(version));
+            callback();
+        }
     }
 };
 var blockstrap_js_scripts;
