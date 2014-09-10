@@ -639,10 +639,10 @@ var blockstrap_core = function()
             },
             confirm: function(title, content, callback)
             {
+                $('#confirm-modal .modal-footer .btn-success').unbind();
                 $.fn.blockstrap.core.modal(title, content, 'confirm-modal');
-                $('#confirm-modal .modal-footer .btn-success').on('click', function()
+                $('#confirm-modal .modal-footer .btn-success').bind('click', function()
                 {
-                    $(this).addClass('loading');
                     callback(true);
                 });
             },

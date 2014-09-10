@@ -669,37 +669,23 @@
         var element = $(button).attr('data-element');
         var collection = $(button).attr('data-collection');
         var confirm = $(button).attr('data-confirm');
-        var callback = function(collection, key, element)
-        {
-            if($.isPlainObject(localStorage))
-            {
-                var item = localStorage.getItem('nw_' + collection + '_' + key);
-                if(item)
-                {
-                    localStorage.removeItem('nw_' + collection + '_' + key);
-                    $($.fn.blockstrap.element).find('#' + element).hide(350, function()
-                    {
-                        var this_element = $(this);
-                        $(this_element).remove();
-                        $.fn.blockstrap.core.refresh(function()
-                        {
-                            $.fn.blockstrap.core.loader('close');
-                        });
-                    })
-                }
-            }
-        }
         if(confirm)
         {
-            var text = 'Please confirm removal of this account. You will not be able to use any of the coins on the account unless you can accurately re-create them or first back-up the private key. We hope you understand the risks.';
+            var form = $.fn.blockstrap.forms.input({
+                label: 'Password',
+                type: 'password',
+                id: 'confirm-pw',
+                placeholder: 'Type your password to allow account removal'
+            });
+            var text = '<p>Please confirm removal of this account. You will not be able to use any of the coins on the account unless you can accurately re-create them or first back-up the private key. We hope you understand the risks. Please type the account password below and then press confirm to remove account.</p><p>'+form+'</p>';
             $.fn.blockstrap.core.confirm('Confirmation Required', text, function()
             {
-                callback(collection, key, element);
+                $.fn.blockstrap.accounts.remove(collection, key, element, confirm);
             });
         }
         else
         {
-            callback(collection, key, element);
+            $.fn.blockstrap.accounts.remove(collection, key, element, false);
         }
     }
     

@@ -473,6 +473,46 @@
         return address;
     }
     
+    accounts.remove = function(collection, key, element, confirm)
+    {
+        if($.isPlainObject(localStorage))
+        {
+            var item = localStorage.getItem('nw_' + collection + '_' + key);
+            if(item && blockstrap_functions.json(item))
+            {
+                var item_object = $.parseJSON(item);
+                var pw = item_object.password;
+                var pw_value = $('#confirm-modal #confirm-pw').val();
+                var salted = localStorage.getItem('nw_blockstrap_salt');
+                var salt = $.parseJSON(salted);
+                var password_object = CryptoJS.SHA3(salt+pw_value, { outputLength: 512 });
+                var password = password_object.toString();
+                if(confirm == password)
+                {
+                    $('#confirm-modal').modal('hide');
+                    localStorage.removeItem('nw_' + collection + '_' + key);
+                    $($.fn.blockstrap.element).find('#' + element).hide(350, function()
+                    {
+                        var this_element = $(this);
+                        $(this_element).remove();
+                        $.fn.blockstrap.core.refresh(function()
+                        {
+                            $.fn.blockstrap.core.loader('close');
+                        });
+                    })
+                }
+                else
+                {
+                    $.fn.blockstrap.core.modal('Warning', 'Incorrect password provided');
+                }
+            }
+            else
+            {
+                $.fn.blockstrap.core.loader('close');
+            }
+        }
+    }
+    
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {accounts:accounts});
 })
