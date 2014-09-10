@@ -46,13 +46,16 @@
         $(nav).find('.loading').removeClass('loading');
         if(history.pushState) 
         {
+            var refresh = '';
+            if(location.search.indexOf('refresh=true') > -1) refresh = '?refresh=true';
+            var url = $.fn.blockstrap.settings.base_url;
             if(slug === $.fn.blockstrap.settings.slug_base)
             {
-                history.pushState({slug:'index'}, document.getElementsByTagName("title")[0].innerHTML, $.fn.blockstrap.settings.base_url + location.search);
+                history.pushState({slug:'index'}, document.getElementsByTagName("title")[0].innerHTML, url + refresh);
             }
             else
             {
-                history.pushState({slug:slug}, document.getElementsByTagName("title")[0].innerHTML, '#'+slug);
+                history.pushState({slug:slug}, document.getElementsByTagName("title")[0].innerHTML, url + refresh + '#'+slug);
             }
             $($.fn.blockstrap.element).find('.activated').removeClass('activated');
             $.fn.blockstrap.core.new();
