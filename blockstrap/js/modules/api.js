@@ -42,8 +42,9 @@
             },
             error: function()
             {
-                callback(false)
-            }
+                if(callback) callback(false)
+            },
+            timeout: 15000 // 15 Seconds
         })
     }
     
@@ -52,9 +53,9 @@
         if(!$.isPlainObject(apis[currency])) return false;
         api.request(api.url('address', hash, currency), function(results)
         {
-            var data;
+            var data = false;
             var map = apis[currency].functions;
-            if(results.data[map.from.address.key]) data = results.data[map.from.address.key];
+            if(results.data && results.data[map.from.address.key]) data = results.data[map.from.address.key];
             var address = {
                 address: 'N/A',
                 hash: 'N/A',
@@ -77,9 +78,9 @@
     {
         api.request(api.url('transactions', address, currency), function(results)
         {
-            var data;
+            var data = false;
             var map = apis[currency].functions;
-            if(results.data[map.from.transactions.key]) data = results.data[map.from.transactions.key];
+            if(results.data && results.data[map.from.transactions.key]) data = results.data[map.from.transactions.key];
             var transactions = [];
             $.each(data, function(k, v)
             {
@@ -117,9 +118,9 @@
         api.request(api.url('addresses', hashes, currency), function(results)
         {
             
-            var data;
+            var data = false;
             var map = apis[currency].functions;
-            if(results.data[map.from.addresses.key]) data = results.data[map.from.addresses.key];
+            if(results.data && results.data[map.from.addresses.key]) data = results.data[map.from.addresses.key];
             var addresses = [];
             $.each(data, function(k, v)
             {
@@ -147,9 +148,9 @@
     {
         api.request(api.url('transaction', txid, currency), function(results)
         {
-            var data;
+            var data = false;
             var map = apis[currency].functions;
-            if(results.data[map.from.transaction.key]) data = results.data[map.from.transaction.key];
+            if(results.data && results.data[map.from.transaction.key]) data = results.data[map.from.transaction.key];
             var transaction = {
                 currency: currency,
                 txid: 'N/A',
@@ -180,9 +181,9 @@
     {
         api.request(api.url('block', height, currency), function(results)
         {
-            var data;
+            var data = false;
             var map = apis[currency].functions;
-            if(results.data[map.from.block.key]) data = results.data[map.from.block.key];
+            if(results.data && results.data[map.from.block.key]) data = results.data[map.from.block.key];
             var block = {
                 currency: currency,
                 height: 'N/A',
@@ -205,10 +206,10 @@
     {
         api.request(api.url('unspents', address, currency), function(results)
         {
-            var data;
+            var data = false;
             var map = apis[currency].functions;
             var base = $.fn.blockstrap.settings.base_url;
-            if(results.data[map.from.unspents.key]) data = results.data[map.from.unspents.key];
+            if(results.data && results.data[map.from.unspents.key]) data = results.data[map.from.unspents.key];
             var unspents = [];
             $.each(data, function(k, v)
             {
@@ -236,7 +237,7 @@
         request_data[map.to.relay_param] = hash;
         api.request(api.url('relay', '', currency), function(results)
         {
-            var data;
+            var data = false;
             var tx = false;
             if(results.data)
             {
