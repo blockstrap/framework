@@ -109,7 +109,7 @@
     accounts.get = function(id)
     {
         var accounts = false;
-        if($.isPlainObject(localStorage))
+        if(localStorage)
         {
             if(id && localStorage.getItem('nw_accounts_'+id))
             {
@@ -440,7 +440,7 @@
         var transaction = false;
         if(account_id) accounts.push($.fn.blockstrap.accounts.get(account_id));
         else accounts = $.fn.blockstrap.accounts.get();
-        if(accounts)
+        if($.isArray(accounts))
         {
             $.each(accounts, function(k, account)
             {
@@ -466,7 +466,7 @@
         var address = false;
         if(account_id) accounts.push($.fn.blockstrap.accounts.get(account_id));
         else accounts = $.fn.blockstrap.accounts.get();
-        if(accounts)
+        if($.isArray(accounts))
         {
             $.each(accounts, function(k, account)
             {
@@ -481,7 +481,7 @@
     
     accounts.remove = function(collection, key, element, confirm)
     {
-        if($.isPlainObject(localStorage))
+        if(localStorage)
         {
             var item = localStorage.getItem('nw_' + collection + '_' + key);
             if(item && blockstrap_functions.json(item))

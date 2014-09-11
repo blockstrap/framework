@@ -648,7 +648,7 @@ var blockstrap_core = function()
             {
                 // PERHAPS FORMS NEEDS ITS OWN MODULE...?
                 var backup = '';
-                if($.isPlainObject(localStorage))
+                if(localStorage)
                 {
                     var objs = {};
                     $.each(localStorage, function(key, value)

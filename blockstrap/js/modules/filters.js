@@ -63,7 +63,7 @@
     filters.accounts = function(blockstrap, data)
     {
         var accounts = [];
-        if($.isPlainObject(localStorage))
+        if(localStorage)
         {
             $.each(localStorage, function(key, account)
             {
@@ -100,7 +100,7 @@
     filters.contacts = function(blockstrap, data)
     {
         var contacts = [];
-        if($.isPlainObject(localStorage))
+        if(localStorage)
         {
             $.each(localStorage, function(key, contact)
             {
@@ -172,13 +172,10 @@
         {
             $.each(accounts, function(key, account)
             {
-                console.log('c');
                 if(account.txs && blockstrap_functions.array_length(account.txs) > 0)
                 {
-                    console.log('d');
                     $.each(account.txs, function(k, transaction)
                     {
-                        console.log('e');
                         transaction.acc = account.address;
                         txs.push(transaction);
                     });

@@ -63,6 +63,20 @@
             {
                 tx_currency = $.fn.blockstrap.settings.currencies[tx.currency].currency;
             }
+            else
+            {
+                txid = '';
+                key = '';
+                tx = {
+                    size: 0,
+                    time: 0,
+                    block: '',
+                    input: 0,
+                    output: 0,
+                    fees: 0,
+                    tx_count: 0
+                };
+            }
             var placeholders = [
                 'urls.root', 
                 'user.name',

@@ -78,7 +78,7 @@
     contacts.get = function()
     {
         var contacts = false;
-        if($.isPlainObject(localStorage))
+        if(localStorage)
         {
             $.each(localStorage, function(key, contact)
             {
