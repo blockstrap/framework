@@ -177,6 +177,22 @@ BOOTSTRAP BREAKPOINTS
             width: 100%;
             margin: 0 0 5px;
         }
+        .list-group-item {
+            text-align: center;
+            .btn-xs.pull-right {
+                float: none !important;
+                left: auto;
+                margin: 0;
+                position: relative;
+                right: auto;
+                text-align: right;
+                top: auto;
+                width: auto;
+            }
+        }
+        .panel-body .jumbotron {
+            border: none;
+        }
         .panel-wrapper {
             form {
                 .col-sm-3,
@@ -205,6 +221,12 @@ BOOTSTRAP BREAKPOINTS
                             text-align: center;
                         }
                     }
+                    tr td:first-child {
+                        .hidden {
+                            display: inline !important;
+                            visibility: visible !important;
+                        }
+                    }
                 }
             }
         }
@@ -227,6 +249,8 @@ BOOTSTRAP BREAKPOINTS
             z-index: 999999;
             width: 100%;
             top: 0;
+            left: 0;
+            right: 0;
         }
         #main-content,
         #navigation:before,
