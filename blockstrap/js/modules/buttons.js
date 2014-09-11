@@ -22,15 +22,15 @@
             // HARDCODED HACK FOR NOW
             var slug = event.state.slug;
             if(slug == 'index') slug = 'dashboard';
-            var element = $.fn.blockstrap.element;
-            var nav = $(element).find('#'+$.fn.blockstrap.settings.navigation_id);
-            $(nav).find('#'+slug).trigger('click');
+            $.fn.blockstrap.core.nav(slug);
         }
     }
     
     // FUNCTIONS FOR OBJECT
     buttons.process = function(slug, content, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements)
     {
+        $("html, body").animate({ scrollTop: 0 }, 350);
+        if(direction == 'up') $.fn.blockstrap.core.loader('close');
         $('#'+$.fn.blockstrap.settings.content_id).hide(effect, {direction:direction}, 500);
         var paged_html = $.fn.blockstrap.templates.filter(Mustache.render(content, filtered_data));
         $('#'+$.fn.blockstrap.settings.content_id).html(paged_html).show(effect, {direction:reverse_direction}, 500, function()
@@ -43,7 +43,9 @@
             }
         });
         var nav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id);
+        var mnav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.mobile_nav_id);
         $(nav).find('.loading').removeClass('loading');
+        $(mnav).find('.loading').removeClass('loading');
         if(history.pushState) 
         {
             var refresh = '';
@@ -99,14 +101,16 @@
             direction = 'up';
             reverse_direction = 'down';
         }
+        
+        if(direction == 'up') $.fn.blockstrap.core.loader('open');
+        
+        // PRIME EXAMPLE OF WHY THIS WHOLE FUNCTION IS NASTY AS ROTTEN EGGS
         if($('#mobile-footer').css('display') === 'block') mobile = true;
         if($('#menu-toggle').hasClass('open') || $('#sidebar-toggle').hasClass('open')) menu = true;
         if(slugs[0] === "" && href)
         {
             slug = slugs[1];            
-            var nav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id);
-            $(nav).find('.active').removeClass('active');
-            $(nav).find('#'+slug).addClass('active loading');
+            $.fn.blockstrap.core.nav(slug);
             if(mobile && !menu) $(elements).css({'opacity':0});
             if($.fn.blockstrap.settings.data_base && $.fn.blockstrap.settings.html_base)
             {
@@ -391,6 +395,7 @@
                         {
                             $.fn.blockstrap.data.save('blockstrap', 'salt', salt, function()
                             {
+                                $("html, body").animate({ scrollTop: 0 }, 350);
                                 if(current_step >= steps)
                                 {
                                     /* NEED TO RESET THE INDEX HTML AND DATA */

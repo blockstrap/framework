@@ -74,7 +74,7 @@ FUNKY SIDEBARS ON MOBILE
 
 */
 @media(max-width:767px){
-    html body.blockstrap-open-menu 
+    html body.blockstrap-open-menu
     .blockstrap-wrapper {
         overflow: auto;
         overflow-x: hidden;
@@ -172,6 +172,42 @@ BOOTSTRAP BREAKPOINTS
     */
     @media(max-width:660px){
         overflow-x: visible;
+        .modal-footer .btn,
+        .btn {
+            width: 100%;
+            margin: 0 0 5px;
+        }
+        .panel-wrapper {
+            form {
+                .col-sm-3,
+                .col-sm-6 {
+                    width: 100%;
+                    text-align: center;
+                }
+                .bootstrap-switch-wrapper {
+                    float: none;
+                }
+                .col-sm-4.bs-dobs {
+                    width: 32%;
+                }
+                .form-group {
+                    padding: 10px 0 30px;
+                }
+            }
+            table {
+                tbody {
+                    tr td:first-child,
+                    tr td:last-child {
+                        width: 100%;
+                        float: left;
+                        .cell {
+                            width: 100%;
+                            text-align: center;
+                        }
+                    }
+                }
+            }
+        }
         #sidebar {
             top: calc(@header-height);
             left: 60px;
@@ -204,10 +240,23 @@ BOOTSTRAP BREAKPOINTS
             position: relative;
             overflow: visible;
             top: 0;
-            padding-top: calc(@header-height + @panel-padding);
+            padding-top: calc(@header-height + 5);
             padding-bottom: calc(@header-height + @panel-padding);
             .panel .panel-heading {
                 text-align: center;
+            }
+            .panel-wrapper,
+            .panel-wrapper.col-md-6.odd,
+            .panel-wrapper.col-md-6.even {
+                padding-left: 5px;
+                padding-right: 5px;
+                margin-bottom: 10px;
+            }
+            .panel {
+                margin-bottom: 5px;
+            }
+            .actions.col-md-12 {
+                padding-top: @panel-padding;
             }
         }
         .panel-body .jumbotron h1 {

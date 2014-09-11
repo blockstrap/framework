@@ -44,6 +44,7 @@ var blockstrap_core = function()
             base_url: '',
             content_id: 'main-content',
             navigation_id: 'navigation',
+            mobile_nav_id: 'mobile-footer',
             css: ['font-awesome'],
             store: ['app_url', 'your_name'],
             modules: [
@@ -479,9 +480,7 @@ var blockstrap_core = function()
                                         $.fn.blockstrap.styles.set();
                                         $.fn.blockstrap.core.modals();
                                         $.fn.blockstrap.core.buttons();
-                                        var nav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id);
-                                        $(nav).find('.active').removeClass('active');
-                                        $(nav).find(window.location.hash).addClass('active');
+                                        $.fn.blockstrap.core.nav(window.location.hash);
                                         $.fn.blockstrap.core.new();
                                         $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
                                         {
@@ -530,6 +529,16 @@ var blockstrap_core = function()
                 }
                 return $.fn.blockstrap.settings.page;
             },
+            nav: function(slug)
+            {
+                var nav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id);
+                var mnav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.mobile_nav_id);
+                $(nav).find('.active').removeClass('active');
+                $(mnav).find('.active').removeClass('active');
+                if(slug.charAt(0) != '#') slug = '#' + slug;
+                $(nav).find(slug).addClass('active');
+                $(mnav).find(slug).addClass('active');
+            },
             refresh: function(callback, slug)
             {
                 //$.fn.blockstrap.core.loader('open');
@@ -541,9 +550,7 @@ var blockstrap_core = function()
                     {
                         $.fn.blockstrap.templates.render(page, function()
                         {
-                            var nav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id);
-                            $(nav).find('.active').removeClass('active');
-                            $(nav).find('#'+page).addClass('active');
+                            $.fn.blockstrap.core.nav(page);
                             $.fn.blockstrap.core.new();
                             //$.fn.blockstrap.core.loader('close');
                             if(callback) callback();
