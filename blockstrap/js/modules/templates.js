@@ -38,7 +38,6 @@
             var name = raw_name;
 
             if(blockstrap_functions.json(raw_name)) name = $.parseJSON(raw_name);
-            
             // ADDRESS INFO
             var add_currency = 'Bitcoin';
             var key = blockstrap_functions.vars('key');
@@ -51,7 +50,7 @@
                 account.balance = 0;
                 account.currency = false;
             }
-            if($.fn.blockstrap.settings.currencies[account.currency])
+            if(account.currency && $.fn.blockstrap.settings.currencies[account.currency])
             {
                 add_currency = $.fn.blockstrap.settings.currencies[account.currency].currency;
             }
@@ -60,11 +59,10 @@
             var tx_currency = 'Bitcoin';
             var txid = blockstrap_functions.vars('txid');
             var tx = $.fn.blockstrap.accounts.tx(txid);
-            if($.fn.blockstrap.settings.currencies[tx.currency])
+            if(tx.currency && $.fn.blockstrap.settings.currencies[tx.currency])
             {
                 tx_currency = $.fn.blockstrap.settings.currencies[tx.currency].currency;
             }
-
             var placeholders = [
                 'urls.root', 
                 'user.name',
@@ -160,7 +158,8 @@
                             {
                                 templates.get('themes/' + $.fn.blockstrap.settings.theme + '/' + $.fn.blockstrap.settings.html_base + slug, 'html', function(content)
                                 {
-                                    var paged_html = templates.filter(Mustache.render(content, filtered_data));
+                                    var rendered_html = Mustache.render(content, filtered_data);
+                                    var paged_html = templates.filter(rendered_html);
                                     if(!skip)
                                     {
                                         if(force_refresh && slug === 'index')

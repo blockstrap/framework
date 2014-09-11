@@ -396,7 +396,6 @@ var blockstrap_setup_steps = [
             "type": "bars",
             "objects": [
                 {
-                    "id": "",
                     "after": "Step 2 of 3",
                     "stacks": [
                         {

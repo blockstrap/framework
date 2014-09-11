@@ -45,19 +45,6 @@ var blockstrap_core = function()
             content_id: 'main-content',
             navigation_id: 'navigation',
             css: ['font-awesome'],
-            filters: [
-                'bootstrap', 
-                'got', 
-                'setup', 
-                'get', 
-                'avatars', 
-                'accounts',
-                'contacts',
-                'balances',
-                'total',
-                'last',
-                'txs'
-            ],
             store: ['app_url', 'your_name'],
             modules: [
                 'forms',

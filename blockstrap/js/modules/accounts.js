@@ -440,20 +440,23 @@
         var transaction = false;
         if(account_id) accounts.push($.fn.blockstrap.accounts.get(account_id));
         else accounts = $.fn.blockstrap.accounts.get();
-        $.each(accounts, function(k, account)
+        if(accounts)
         {
-            var txs = account.txs;
-            if($.isPlainObject(txs))
+            $.each(accounts, function(k, account)
             {
-                $.each(txs, function(k, tx)
+                var txs = account.txs;
+                if($.isPlainObject(txs))
                 {
-                    if(tx.txid == txid)
+                    $.each(txs, function(k, tx)
                     {
-                        transaction = tx;
-                    }
-                });
-            }
-        });
+                        if(tx.txid == txid)
+                        {
+                            transaction = tx;
+                        }
+                    });
+                }
+            });
+        }
         return transaction;
     }
     
@@ -463,13 +466,16 @@
         var address = false;
         if(account_id) accounts.push($.fn.blockstrap.accounts.get(account_id));
         else accounts = $.fn.blockstrap.accounts.get();
-        $.each(accounts, function(k, account)
+        if(accounts)
         {
-            if(account.address == key)
+            $.each(accounts, function(k, account)
             {
-                address = account;
-            }
-        });
+                if(account.address == key)
+                {
+                    address = account;
+                }
+            });
+        }
         return address;
     }
     

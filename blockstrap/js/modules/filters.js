@@ -157,6 +157,7 @@
     filters.txs = function(blockstrap, data)
     {
         var txs = [];
+        var items = [];
         var id = false;
         var limit = 7;
         if(data.id) id = data.id;
@@ -167,54 +168,69 @@
             accounts = [];
             accounts.push($.fn.blockstrap.accounts.get(id));
         }
-        $.each(accounts, function(key, account)
+        if(blockstrap_functions.array_length(accounts) > 0)
         {
-            if(account.txs && blockstrap_functions.array_length(account.txs) > 0)
+            $.each(accounts, function(key, account)
             {
-                $.each(account.txs, function(k, transaction)
+                console.log('c');
+                if(account.txs && blockstrap_functions.array_length(account.txs) > 0)
                 {
-                    transaction.acc = account.address;
-                    txs.push(transaction);
-                });
-            }
-        });
-        txs.sort(function(a,b) 
-        { 
-            return parseFloat(b.time) - parseFloat(a.time) 
-        });
-        var items = [];
-        $.each(txs.slice(0, limit), function(k, tx)
-        {
-            var css = 'from';
-            var address = false;
-            var txc = tx.currency;
-            var value = parseInt(tx.value) / 100000000;
-            if(tx.value < 0)
-            {
-                value = Math.abs(value);
-                css = 'to';
-            }
-            var base = $.fn.blockstrap.settings.base_url;
-            var intro = value + ' ' + $.fn.blockstrap.settings.currencies[txc].currency;
-            var html = '<a href="' + base + '?txid=' + tx.txid +'#transaction">' + intro + '</a>';
-            $.each(tx.outputs, function(k, out)
-            {
-                if(out.address !== tx.acc) address = out.address;
-            });
-            address = '<a href="' +base+ '?key=' + address + '#address">' + address + '</a>';
-            html+= ' ' + css + ' ' + address;
-            items.push({
-                css: css,
-                html: html,
-                buttons: [
+                    console.log('d');
+                    $.each(account.txs, function(k, transaction)
                     {
-                        href: '',
-                        css: 'btn-disabled disabled btn-xs pull-right',
-                        text: $.fn.blockstrap.core.ago(tx.time)
+                        console.log('e');
+                        transaction.acc = account.address;
+                        txs.push(transaction);
+                    });
+                }
+            });
+            txs.sort(function(a,b) 
+            { 
+                return parseFloat(b.time) - parseFloat(a.time) 
+            });
+            $.each(txs.slice(0, limit), function(k, tx)
+            {
+                var css = 'from';
+                var address = false;
+                var txc = tx.currency;
+                var value = parseInt(tx.value) / 100000000;
+                if(tx.value < 0)
+                {
+                    value = Math.abs(value);
+                    css = 'to';
+                }
+                var base = $.fn.blockstrap.settings.base_url;
+                var intro = value + ' ' + $.fn.blockstrap.settings.currencies[txc].currency;
+                var html = '<a href="' + base + '?txid=' + tx.txid +'#transaction">' + intro + '</a>';
+                $.each(tx.outputs, function(k, out)
+                {
+                    if(out.address !== tx.acc) address = out.address;
+                });
+                address = '<a href="' +base+ '?key=' + address + '#address">' + address + '</a>';
+                html+= ' ' + css + ' ' + address;
+                items.push({
+                    css: css,
+                    html: html,
+                    buttons: [
+                        {
+                            href: '',
+                            css: 'btn-disabled disabled btn-xs pull-right',
+                            text: $.fn.blockstrap.core.ago(tx.time)
+                        }
+                    ]
+                });
+            });
+            var lists = $.fn.blockstrap.templates.bootstrap('lists');
+            var html = $.fn.blockstrap.templates.process({
+                objects: [
+                    {
+                        items: items,
+                        missing: '<p>You do not have any transactions yet.</p><p>You may want to create a new <a href="#accounts" class="btn-page">account</a> or <a href="#" data-target="#send-modal" data-toggle="modal">send</a> some to one of your <a href="#contacts" class="btn-page">contacts</a>.</p>'
                     }
                 ]
-            });
-        });
+            }, lists);
+            return html;
+        }
         var lists = $.fn.blockstrap.templates.bootstrap('lists');
         var html = $.fn.blockstrap.templates.process({
             objects: [
