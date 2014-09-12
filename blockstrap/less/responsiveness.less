@@ -398,6 +398,18 @@ BOOTSTRAP BREAKPOINTS
     }       
     
     /* POINT OF SEARCH HITTING NAV */
+    @media(max-width:991px){
+        table {
+            tbody {
+                tr td:first-child {
+                    .hidden {
+                        display: inline !important;
+                        visibility: visible !important;
+                    }
+                }
+            }
+        }
+    }
     @media(min-width:992px){
         .collapsable {
             display: inline-block;

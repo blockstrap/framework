@@ -44,6 +44,13 @@
                             <td>
                                 <div class="cell">
                                     {{name}}
+                                    <div class="hidden">
+                                    {{#currencies}}
+                                        {{#addresses}}
+                                            <a href="?key={{key}}#address">{{key}}</a>
+                                        {{/addresses}}
+                                    {{/currencies}}
+                                    </div>
                                 </div>
                             </td>
                             <td>
