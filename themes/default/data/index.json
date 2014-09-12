@@ -369,7 +369,13 @@
                                 "type": "submit",
                                 "id": "send-money",
                                 "css": "btn-primary pull-right",
-                                "text": "Send"
+                                "text": "Send",
+                                "attributes": [
+                                    {
+                                        "key": "data-form-id",
+                                        "value": "send"
+                                    }
+                                ]
                             }
                         ]
                     }

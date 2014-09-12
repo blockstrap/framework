@@ -905,7 +905,7 @@
     buttons.prepare = function(button, e)
     {
         e.preventDefault();
-        var form = $($.fn.blockstrap.element).find('form#send');
+        var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form-id'));
         var to = $(form).find('#to').val();
         var from = $(form).find('#from').val();
         var amount = parseFloat($(form).find('#amount').val()) * 100000000;

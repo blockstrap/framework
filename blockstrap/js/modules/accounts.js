@@ -274,16 +274,16 @@
         var intro = '';
         if(is_tx === true)
         {
-            options.buttons.forms[0].id = 'submit-payment';
-            options.buttons.forms[0].attributes.push({
+            options.buttons.forms[1].id = 'submit-payment';
+            options.buttons.forms[1].attributes.push({
                 key: 'data-to-address',
                 value: tx.to
             });
-            options.buttons.forms[0].attributes.push({
+            options.buttons.forms[1].attributes.push({
                 key: 'data-from-address',
                 value: tx.from
             });
-            options.buttons.forms[0].attributes.push({
+            options.buttons.forms[1].attributes.push({
                 key: 'data-to-amount',
                 value: tx.amount
             });
@@ -321,11 +321,13 @@
                 else
                 {
                     $.fn.blockstrap.core.modal('Warning', 'Credentials do not match');
+                    $.fn.blockstrap.core.loader('close');
                 }
             }
             else
             {
                 $.fn.blockstrap.core.modal('Error', 'Unable to construct keys');
+                $.fn.blockstrap.core.loader('close');
             }
         });
     }
