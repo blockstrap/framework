@@ -66,6 +66,16 @@ REMEMBER TO REMOVE FROM MAIN CSS IF RESET HERE FIRST
     #mobile-footer {
         display: none;
     }
+    form .actions .btn-split.pull-right,
+    .btn-split.pull-right {
+        margin-left: 0;
+        float: left !important;
+    }
+    form .actions .btn-split.pull-right:last-child,
+    .btn-split.pull-right:last-child {
+        float: right !important;
+        margin-left: calc(@panel-padding / 2);
+    }
 }
 
 /*
