@@ -607,20 +607,8 @@
                     "buttons": {
                         "forms": [
                             {
-                                "type": "submit",
-                                "id": "create-account",
-                                "css": "btn-primary pull-right",
-                                "text": "Create",
-                                "attributes": [
-                                    {
-                                        "key": "data-form",
-                                        "value": "new-account"
-                                    }
-                                ]
-                            },
-                            {
                                 "id": "more-security",
-                                "css": "btn-default pull-right",
+                                "css": "btn-default pull-right btn-split",
                                 "text": "More Security",
                                 "attributes": [
                                     {
@@ -630,6 +618,18 @@
                                     {
                                         "key": "data-hidden-class",
                                         "value": "hidden-label"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "submit",
+                                "id": "create-account",
+                                "css": "btn-primary pull-right btn-split",
+                                "text": "Create",
+                                "attributes": [
+                                    {
+                                        "key": "data-form",
+                                        "value": "new-account"
                                     }
                                 ]
                             }

@@ -243,9 +243,19 @@
             buttons: {
                 forms: [
                     {
+                        css: 'btn-danger pull-right btn-split',
+                        text: 'Cancel',
+                        attributes: [
+                            {
+                                key: 'data-dismiss',
+                                value: 'modal'
+                            }
+                        ]
+                    },
+                    {
                         type: "submit",
                         id: "submit-verification",
-                        css: 'btn-primary pull-right',
+                        css: 'btn-primary pull-right btn-split',
                         text: 'Submit',
                         attributes: [
                             {
@@ -255,16 +265,6 @@
                             {
                                 key: 'data-form-id',
                                 value: 'verify-account'
-                            }
-                        ]
-                    },
-                    {
-                        css: 'btn-danger pull-right',
-                        text: 'Cancel',
-                        attributes: [
-                            {
-                                key: 'data-dismiss',
-                                value: 'modal'
                             }
                         ]
                     }

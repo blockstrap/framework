@@ -173,9 +173,22 @@ BOOTSTRAP BREAKPOINTS
     @media(max-width:660px){
         overflow-x: visible;
         .modal-footer .btn,
+        .actions .btn,
         .btn {
             width: 100%;
             margin: 0 0 5px;
+            outline: 0;
+        }
+        form .actions .btn-split.pull-right,
+        .btn-split.pull-right {
+            width: 47%;
+            margin-left: 0;
+            float: left !important;
+        }
+        form .actions .btn-split.pull-right:last-child,
+        .btn-split.pull-right:last-child {
+            float: right !important;
+            margin-left: calc(@panel-padding / 2);
         }
         .list-group-item {
             text-align: center;
@@ -193,8 +206,29 @@ BOOTSTRAP BREAKPOINTS
         .panel-body .jumbotron {
             border: none;
         }
+        .modal form.form-horizontal,
+        .modal form {
+            label.control-label,
+            label {
+                width: 100%;
+                text-align: center;
+                border-radius: @border-radius @border-radius 0 0;
+            }
+            .col-xs-8,
+            .col-xs-9,
+            .col-xs-12 {
+                width: 100%;
+                input, select {
+                    text-align: center;
+                    border-radius: 0 0 @border-radius @border-radius;
+                }
+            }
+        }
         .panel-wrapper {
             form {
+                .col-xs-3,
+                .col-xs-6,
+                .col-xs-9,
                 .col-sm-3,
                 .col-sm-6 {
                     width: 100%;
@@ -208,6 +242,15 @@ BOOTSTRAP BREAKPOINTS
                 }
                 .form-group {
                     padding: 10px 0 30px;
+                }
+                .actions {
+                    padding: @panel-padding;
+                    height: 90px;
+                }
+                .col-xs-9 .glyphicon {
+                    position: absolute;
+                    top: 10px;
+                    right: 25px;
                 }
             }
             table {
