@@ -30,7 +30,7 @@
     buttons.process = function(slug, content, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements)
     {
         $("html, body").animate({ scrollTop: 0 }, 350);
-        if(direction == 'up') $.fn.blockstrap.core.loader('close');
+        if(direction == 'up' || menu === true) $.fn.blockstrap.core.loader('close');
         $('#'+$.fn.blockstrap.settings.content_id).hide(effect, {direction:direction}, 500);
         var paged_html = $.fn.blockstrap.templates.filter(Mustache.render(content, filtered_data));
         $('#'+$.fn.blockstrap.settings.content_id).html(paged_html).show(effect, {direction:reverse_direction}, 500, function()
@@ -112,6 +112,10 @@
             slug = slugs[1];            
             $.fn.blockstrap.core.nav(slug);
             if(mobile && !menu) $(elements).css({'opacity':0});
+            if(menu)
+            {
+                $.fn.blockstrap.core.loader('open');
+            }
             if($.fn.blockstrap.settings.data_base && $.fn.blockstrap.settings.html_base)
             {
                 e.preventDefault();
