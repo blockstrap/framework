@@ -412,17 +412,23 @@
     accounts.updates = function(index, callback)
     {
         if(!index) index = 0;
+        var objs = [];
         var accounts = $.fn.blockstrap.accounts.get();
         var account_length = blockstrap_functions.array_length(accounts);
         if($.isArray(accounts))
         {
             var account = accounts[index];
+            var current_tx_count = account.tx_count;
             index++;
-            $.fn.blockstrap.accounts.update(account, function()
+            $.fn.blockstrap.accounts.update(account, function(obj)
             {
+                if(obj.tx_count > current_tx_count)
+                {
+                    objs.push(obj);
+                }
                 if(index >= account_length)
                 {
-                    if(callback) callback();
+                    if(callback) callback(objs);
                 }
                 else
                 {
@@ -518,6 +524,33 @@
             {
                 $.fn.blockstrap.core.loader('close');
             }
+        }
+    }
+    
+    accounts.poll = function(wait, callback)
+    {
+        var now = new Date().getTime();
+        var delay = $.fn.blockstrap.settings.cache.accounts;
+        var polls = localStorage.getItem('nw_blockstrap_polls');
+        if(blockstrap_functions.json(polls)) polls = $.parseJSON(polls);
+        if(!$.isPlainObject(polls)) polls = {};
+        if(!polls.accounts) polls.accounts = now;
+        if(wait)
+        {
+            delay = wait;
+        }   
+        if(polls.accounts + delay >= now)
+        {
+            $.fn.blockstrap.accounts.updates(0, function(objs)
+            {
+                if($.isArray(objs) && blockstrap_functions.array_length(objs) > 0)
+                {
+                    var title = 'New Transaction';
+                    var content = 'A new transaction has taken place!';
+                    $.fn.blockstrap.core.modal(title, content);
+                }
+                if(callback) callback();
+            });
         }
     }
     

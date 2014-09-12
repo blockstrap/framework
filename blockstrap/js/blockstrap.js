@@ -471,6 +471,11 @@ var blockstrap_core = function()
                     {
                         $.fn.blockstrap.accounts.updates(0, function()
                         {
+                            
+                            setInterval(function()
+                            {
+                                $.fn.blockstrap.accounts.poll();
+                            }, $.fn.blockstrap.settings.cache.accounts);
                             $.fn.blockstrap.templates.render('index', function()
                             {
                                 if(window.location.hash)

@@ -130,48 +130,44 @@
                         pages_cached[slug] = now;
                     }
                     if(refresh === true || !data)
-                    {
-                        $.fn.blockstrap.accounts.updates(0, function()
+                    {                              $.fn.blockstrap.templates.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.data_base+slug, 'json', function(data)
                         {
-                                                                $.fn.blockstrap.templates.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.data_base+slug, 'json', function(data)
+                            if(data.status)
                             {
-                                if(data.status)
+                                buttons.cancel(button, mobile, menu, elements);
+                            }
+                            else
+                            {
+                                var filtered_data = $.fn.blockstrap.core.filter(data);
+                                $.fn.blockstrap.data.save('data', slug, data, function(res)
                                 {
-                                    buttons.cancel(button, mobile, menu, elements);
-                                }
-                                else
-                                {
-                                    var filtered_data = $.fn.blockstrap.core.filter(data);
-                                    $.fn.blockstrap.data.save('data', slug, data, function(res)
+                                    $.fn.blockstrap.data.find('html', slug, function(results)
                                     {
-                                        $.fn.blockstrap.data.find('html', slug, function(results)
+                                        var html = results;
+                                        if(refresh === true || !html)
                                         {
-                                            var html = results;
-                                            if(refresh === true || !html)
+                                            $.fn.blockstrap.templates.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.html_base+slug, 'html', function(content)
                                             {
-                                                $.fn.blockstrap.templates.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.html_base+slug, 'html', function(content)
+                                                if(content.status && content.status === 404)
                                                 {
-                                                    if(content.status && content.status === 404)
+                                                    buttons.cancel(button, mobile, menu, elements);
+                                                }
+                                                else
+                                                {
+                                                    $.fn.blockstrap.data.save('html', slug, content, function()
                                                     {
-                                                        buttons.cancel(button, mobile, menu, elements);
-                                                    }
-                                                    else
-                                                    {
-                                                        $.fn.blockstrap.data.save('html', slug, content, function()
-                                                        {
-                                                            buttons.process(slug, content, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
-                                                        });
-                                                    }
-                                                });
-                                            }
-                                            else
-                                            {                                            
-                                                buttons.process(slug, html, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
-                                            }
-                                        });
+                                                        buttons.process(slug, content, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
+                                                    });
+                                                }
+                                            });
+                                        }
+                                        else
+                                        {                                            
+                                            buttons.process(slug, html, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
+                                        }
                                     });
-                                }
-                            });
+                                });
+                            }
                         });
                     }
                     else
