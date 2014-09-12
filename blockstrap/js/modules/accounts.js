@@ -361,11 +361,15 @@
             if(force_refresh) ts = 0;
             if(ts + cache_time < now)
             {
+                var current_tx_count = account.tx_count;
                 $.fn.blockstrap.api.address(account.address, account.currency.code, function(results)
                 {
-                    account.balance = results.balance;
-                    account.tx_count = results.tx_count;
-                    account.ts = now;
+                    if(results.tx_count && results.tx_count > current_tx_count)
+                    {
+                        account.balance = results.balance;
+                        account.tx_count = results.tx_count;
+                        account.ts = now;
+                    }
                     $.fn.blockstrap.data.save('accounts', account.id, account, function(obj)
                     {
                         var txs = blockstrap_functions.array_length(obj.txs);
@@ -412,7 +416,6 @@
     accounts.updates = function(index, callback)
     {
         if(!index) index = 0;
-        var objs = [];
         var accounts = $.fn.blockstrap.accounts.get();
         var account_length = blockstrap_functions.array_length(accounts);
         if($.isArray(accounts))
@@ -422,13 +425,26 @@
             index++;
             $.fn.blockstrap.accounts.update(account, function(obj)
             {
+                var new_txs = [];
+                var new_tx_count = 0;
                 if(obj.tx_count > current_tx_count)
                 {
-                    objs.push(obj);
+                    new_tx_count = obj.tx_count - current_tx_count;
+                    if($.isPlainObject(obj.txs))
+                    {
+                        $.each(obj.txs, function(key, tx)
+                        {
+                            new_txs.push(tx);
+                        });
+                    }
+                    new_txs.sort(function(a,b) 
+                    { 
+                        return parseFloat(b.time) + parseFloat(a.time) 
+                    });
                 }
                 if(index >= account_length)
                 {
-                    if(callback) callback(objs);
+                    if(callback) callback(new_txs.slice(0, new_tx_count));
                 }
                 else
                 {
@@ -466,6 +482,32 @@
             });
         }
         return transaction;
+    }
+    
+    accounts.txs = function(account_id)
+    {
+        var transactions = [];
+        if(account_id) accounts.push($.fn.blockstrap.accounts.get(account_id));
+        else accounts = $.fn.blockstrap.accounts.get();
+        if($.isArray(accounts))
+        {
+            $.each(accounts, function(k, account)
+            {
+                var txs = account.txs;
+                if($.isPlainObject(txs))
+                {
+                    $.each(txs, function(k, tx)
+                    {
+                        transactions.push(tx);
+                    });
+                }
+            });
+        }
+        transactions.sort(function(a,b) 
+        { 
+            return parseFloat(b.time) - parseFloat(a.time) 
+        });
+        return transactions;
     }
     
     accounts.address = function(key, account_id)
@@ -541,15 +583,42 @@
         }   
         if(polls.accounts + delay >= now)
         {
-            $.fn.blockstrap.accounts.updates(0, function(objs)
+            $.fn.blockstrap.accounts.updates(0, function(txs)
             {
-                if($.isArray(objs) && blockstrap_functions.array_length(objs) > 0)
+                if($.isArray(txs) && blockstrap_functions.array_length(txs) > 0)
                 {
-                    var title = 'New Transaction';
-                    var content = 'A new transaction has taken place!';
+                    var title = '1 New Transaction';
+                    var content = '<p>A new transaction has taken place.</p>';
+                    if(blockstrap_functions.array_length(txs) > 1)
+                    {
+                        title = blockstrap_functions.array_length(txs) + ' New Transactions';
+                        content = '<p>New transactions have taken place.</p>';
+                    }
+                    if($.isArray(txs))
+                    {
+                        $.each(txs, function(k, tx)
+                        {
+                            var value = tx.value;
+                            var val = '' + parseInt(tx.value) / 100000000;
+                            var currency = $.fn.blockstrap.settings.currencies[tx.currency].currency;
+                            var amount = '<strong>' + val + '</strong> ' + currency;
+                            var context = amount + ' <strong>recieved</strong>';
+                            var base = $.fn.blockstrap.settings.base_url;
+                            var url = base + '?txid=' + tx.txid + '#transaction';
+                            if(value < 0) context = '<strong>' + val.substring(1) + '</strong> ' + currency + ' <strong>sent</strong>';
+                            content+= '<p>' + context + ':<br /><a href="' + url + '">' + tx.txid + '</a></p>';
+                        });
+                    }
                     $.fn.blockstrap.core.modal(title, content);
+                    $.fn.blockstrap.core.refresh(function()
+                    {
+                        if(callback) callback();
+                    });
                 }
-                if(callback) callback();
+                else
+                {
+                    if(callback) callback();
+                }
             });
         }
     }

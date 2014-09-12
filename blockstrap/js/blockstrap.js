@@ -563,9 +563,12 @@ var blockstrap_core = function()
                     }
                     else
                     {
-                        $.fn.blockstrap.core.new();
-                        //$.fn.blockstrap.core.loader('close');
-                        if(callback) callback();
+                        $.fn.blockstrap.templates.render($.fn.blockstrap.settings.slug_base, function()
+                        {
+                            $.fn.blockstrap.core.new();
+                            //$.fn.blockstrap.core.loader('close');
+                            if(callback) callback();
+                        }, true);
                     }
                 }, true, true);
             },
