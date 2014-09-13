@@ -82,6 +82,7 @@
             var map = apis[currency].functions;
             if(results.data && results.data[map.from.transactions.key]) data = results.data[map.from.transactions.key];
             var transactions = [];
+            var now = new Date().getTime();
             $.each(data, function(k, v)
             {
                 var transaction = {
@@ -89,7 +90,7 @@
                     txid: 'N/A',
                     size: 'N/A',
                     block: 'N/A',
-                    time: 0,
+                    time: parseInt(now / 1000),
                     input: 0,
                     output: 0,
                     inputs: false,
@@ -151,12 +152,13 @@
             var data = false;
             var map = apis[currency].functions;
             if(results.data && results.data[map.from.transaction.key]) data = results.data[map.from.transaction.key];
+            var now = new Date().getTime();
             var transaction = {
                 currency: currency,
                 txid: 'N/A',
                 size: 'N/A',
                 block: 'N/A',
-                time: 0,
+                time: parseInt(now / 1000),
                 input: 0,
                 output: 0,
                 inputs: false,

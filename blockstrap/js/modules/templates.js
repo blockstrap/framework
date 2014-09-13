@@ -174,7 +174,7 @@
                                 {
                                     var rendered_html = Mustache.render(content, filtered_data);
                                     var paged_html = templates.filter(rendered_html);
-                                    if(!skip)
+                                    if(skip !== true)
                                     {
                                         if(force_refresh && slug === 'index')
                                         {
@@ -196,8 +196,12 @@
                                         {
                                             $($.fn.blockstrap.element).append(paged_html);
                                         }
+                                        $.fn.blockstrap.data.save('html', slug, content, callback);
                                     }
-                                    $.fn.blockstrap.data.save('html', slug, content, callback);
+                                    else
+                                    {
+                                        if(callback) callback();
+                                    }
                                 });
                             }
                             else
@@ -227,18 +231,22 @@
                         templates.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.html_base+slug, 'html', function(content)
                         {
                             var paged_html = templates.filter(Mustache.render(content, filtered_data));
-                            if(!skip)
+                            if(skip !== true)
                             {
                                 $($.fn.blockstrap.element).append(paged_html);
                                 $.fn.blockstrap.core.loader('open');
+                                $.fn.blockstrap.data.save('html', slug, content, callback);
                             }
-                            $.fn.blockstrap.data.save('html', slug, content, callback);
+                            else
+                            {
+                                if(callback) callback();
+                            }
                         });
                     }
                     else
                     {
                         var paged_html = templates.filter(Mustache.render(html, filtered_data));
-                        if(!skip)
+                        if(skip !== true)
                         {
                             $($.fn.blockstrap.element).append(paged_html);
                             $.fn.blockstrap.core.loader('open');

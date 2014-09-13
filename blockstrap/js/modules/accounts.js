@@ -373,6 +373,7 @@
                     $.fn.blockstrap.data.save('accounts', account.id, account, function(obj)
                     {
                         var txs = blockstrap_functions.array_length(obj.txs);
+                        var txs = 0;
                         if(obj.tx_count > txs)
                         {
                             $.fn.blockstrap.api.transactions(account.address, account.currency.code, function(transactions)
