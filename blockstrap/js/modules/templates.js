@@ -10,25 +10,21 @@
 
 (function($) 
 {
-    // EMPTY OBJECT
     var templates = {};
     
-    // FUNCTIONS FOR OBJECT
-    templates.get = function(file, extension, callback)
+    templates.bootstrap = function(type)
     {
-        $.ajax({
-            url: file + '.' + extension,
-            dataType: extension,
-            success: function(results)
-            {
-                if(callback) callback(results, file, extension);
-            },
-            error: function(results)
-            {
-                if(callback) callback(results, file, extension);
-            }
-        });
-    };
+        var snippet = localStorage.getItem('nw_boot_'+type);
+        if(snippet)
+        {
+            if(blockstrap_functions.json(snippet)) snippet = $.parseJSON(snippet);
+            return snippet;
+        }
+        else
+        {
+            return false;
+        }
+    }
     
     templates.filter = function(html, placeholders, replacements)
     {
@@ -123,19 +119,21 @@
         }
     }
     
-    templates.bootstrap = function(type)
+    templates.get = function(file, extension, callback)
     {
-        var snippet = localStorage.getItem('nw_boot_'+type);
-        if(snippet)
-        {
-            if(blockstrap_functions.json(snippet)) snippet = $.parseJSON(snippet);
-            return snippet;
-        }
-        else
-        {
-            return false;
-        }
-    }
+        $.ajax({
+            url: file + '.' + extension,
+            dataType: extension,
+            success: function(results)
+            {
+                if(callback) callback(results, file, extension);
+            },
+            error: function(results)
+            {
+                if(callback) callback(results, file, extension);
+            }
+        });
+    };
     
     templates.process = function(data, html)
     {

@@ -10,178 +10,7 @@
 
 (function($) 
 {
-    // EMPTY OBJECT
     var accounts = {};
-    
-    // FUNCTIONS FOR OBJECT
-    accounts.new = function(currency, name, password, keys, callback)
-    {
-        if(currency && name && password && keys && callback && $.isPlainObject($.fn.blockstrap.settings.currencies[currency]))
-        {
-            var key = '';
-            var slug = blockstrap_functions.slug(name);
-            $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
-            {
-                if(!salt)
-                {
-                    $.fn.blockstrap.core.loader('close');
-                    $.fn.blockstrap.core.modal('Error', 'No salt set for this device');
-                }
-                else
-                {
-                    $.fn.blockstrap.data.find('accounts', slug, function(account)
-                    {
-                        if(account)
-                        {
-                            $.fn.blockstrap.core.loader('close');
-                            $.fn.blockstrap.core.modal('Warning', 'This account already exists');
-                        }
-                        else
-                        {
-                            var data = false;
-                            if($.isPlainObject(keys))
-                            {
-                                if(keys.wallet_question)
-                                {
-                                    if(!$.isPlainObject(data)) data = {};
-                                    data.wallet_question = keys.wallet_question;
-                                }
-                                var values = keys;
-                                keys = [];
-                                $.each(values, function(k, v)
-                                {
-                                    keys.push(k);
-                                    key_obj = CryptoJS.SHA3(salt+key+k+v, { outputLength: 512 });
-                                    key = key_obj.toString();
-                                });
-                            };
-                            var address_keys = $.fn.blockstrap.btc.keys(key);
-                            var address = address_keys.pubkey.toString();
-                            var pw_obj = CryptoJS.SHA3(salt+password, { outputLength: 512 });
-                            var pw = pw_obj.toString();
-                            var currency_name =  $.fn.blockstrap.settings.currencies[currency].currency;
-                            var account = {
-                                id: slug,
-                                currency: {
-                                    type: currency_name,
-                                    code: currency
-                                },
-                                name: name,
-                                password: pw,
-                                keys: keys,
-                                address: address,
-                                tx_count: 0,
-                                balance: 0,
-                                ts: 0,
-                                txs: {}
-                            };
-                            if(data) account.data = data;
-                            $.fn.blockstrap.data.save('accounts', slug, account, function()
-                            {
-                                var this_account = $.fn.blockstrap.accounts.get(slug);
-                                $.fn.blockstrap.accounts.update(this_account, function(account)
-                                {
-                                    $.fn.blockstrap.core.refresh(function()
-                                    {
-                                        callback(account);
-                                    });
-                                });
-                            });
-                        }
-                    });
-                }
-            });
-        }
-        else
-        {
-            $.fn.blockstrap.core.loader('close');
-            if($.isPlainObject($.fn.blockstrap.settings.currencies[currency]))
-            {
-                $.fn.blockstrap.core.modal('Warning', 'Missing device requirements');
-            }
-            else
-            {
-                $.fn.blockstrap.core.modal('Warning', 'Currency not supported');
-            }
-        }
-    }
-    
-    accounts.get = function(id)
-    {
-        var accounts = false;
-        if(localStorage)
-        {
-            if(id && localStorage.getItem('nw_accounts_'+id))
-            {
-                var this_account = localStorage.getItem('nw_accounts_'+id);
-                if(blockstrap_functions.json(this_account)) this_account = $.parseJSON(this_account);
-                return this_account;
-            }
-            else
-            {
-                $.each(localStorage, function(key, account)
-                {
-                    if(key.substring(0, 12) === 'nw_accounts_')
-                    {
-                        if(!$.isArray(accounts)) accounts = [];
-                        if(blockstrap_functions.json(account)) account = $.parseJSON(account);
-                        accounts.push(account);
-                    }
-                });
-            }
-            return accounts;
-        }
-    }
-    
-    accounts.balances = function()
-    {
-        var balances = {};
-        var accounts = $.fn.blockstrap.accounts.get();
-        if($.isArray(accounts))
-        {
-            $.each(accounts, function(k, v)
-            {
-                var balance = 0;
-                if(v.balance) balance = parseInt(v.balance);
-                if(balances[v.currency.code])
-                {
-                    balances[v.currency.code].balance = parseInt(balances[v.currency.code].balance) + balance;
-                    balances[v.currency.code].count++;
-                    balances[v.currency.code].name = v.currency.type;
-                }
-                else
-                {
-                    balances[v.currency.code] = {};
-                    balances[v.currency.code].balance = parseInt(balance);
-                    balances[v.currency.code].count = 1;
-                    balances[v.currency.code].name = v.currency.type;
-                }
-            });
-            $.each(balances, function(currency, obj)
-            {
-                var this_balance = balances[currency].balance;
-                balances[currency].balance = parseInt(this_balance) / 100000000;
-            });
-            return balances;
-        }
-    }
-    
-    accounts.total = function(rate, prefix)
-    {
-        var grand_total = 0;
-        var exchange_rates = $.fn.blockstrap.settings.exchange;
-        var balances = accounts.balances();
-        if($.isPlainObject(balances))
-        {
-            $.each(balances, function(code, currency)
-            {
-                var total = (parseFloat(currency.balance) * 100000000) * parseFloat(exchange_rates[rate]);
-                grand_total = grand_total + total;
-            });
-        }
-        if(prefix) return prefix + ' ' + parseInt(grand_total) / 100000000;
-        else return parseInt(grand_total) / 100000000;
-    }
     
     accounts.access = function(account_id, tx)
     {
@@ -296,40 +125,229 @@
         $.fn.blockstrap.core.modal('Verify Ownership of ' + account.name, intro + form);
     }
     
-    accounts.verify = function(account, fields, callback, password)
+    accounts.address = function(key, account_id)
     {
-        $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
+        var accounts = [];
+        var address = false;
+        if(account_id) accounts.push($.fn.blockstrap.accounts.get(account_id));
+        else accounts = $.fn.blockstrap.accounts.get();
+        if($.isArray(accounts))
         {
-            var key = '';
-            if($.isArray(fields))
+            $.each(accounts, function(k, account)
             {
-                $.each(fields, function(k, v)
+                if(account.address == key)
                 {
-                    key_obj = CryptoJS.SHA3(salt+key+v.id+v.value, { outputLength: 512 });
-                    key = key_obj.toString();
-                });
-            };
-            if(key)
+                    address = account;
+                }
+            });
+        }
+        return address;
+    }
+    
+    accounts.balances = function()
+    {
+        var balances = {};
+        var accounts = $.fn.blockstrap.accounts.get();
+        if($.isArray(accounts))
+        {
+            $.each(accounts, function(k, v)
             {
-                
-                var keys = $.fn.blockstrap.btc.keys(key);
-                if(keys.pubkey.toString() === account.address)
+                var balance = 0;
+                if(v.balance) balance = parseInt(v.balance);
+                if(balances[v.currency.code])
                 {
-                    if(callback) callback(true, keys);
-                    else return true;
+                    balances[v.currency.code].balance = parseInt(balances[v.currency.code].balance) + balance;
+                    balances[v.currency.code].count++;
+                    balances[v.currency.code].name = v.currency.type;
                 }
                 else
                 {
-                    $.fn.blockstrap.core.modal('Warning', 'Credentials do not match');
-                    $.fn.blockstrap.core.loader('close');
+                    balances[v.currency.code] = {};
+                    balances[v.currency.code].balance = parseInt(balance);
+                    balances[v.currency.code].count = 1;
+                    balances[v.currency.code].name = v.currency.type;
                 }
+            });
+            $.each(balances, function(currency, obj)
+            {
+                var this_balance = balances[currency].balance;
+                balances[currency].balance = parseInt(this_balance) / 100000000;
+            });
+            return balances;
+        }
+    }
+    
+    accounts.get = function(id)
+    {
+        var accounts = false;
+        if(localStorage)
+        {
+            if(id && localStorage.getItem('nw_accounts_'+id))
+            {
+                var this_account = localStorage.getItem('nw_accounts_'+id);
+                if(blockstrap_functions.json(this_account)) this_account = $.parseJSON(this_account);
+                return this_account;
             }
             else
             {
-                $.fn.blockstrap.core.modal('Error', 'Unable to construct keys');
-                $.fn.blockstrap.core.loader('close');
+                $.each(localStorage, function(key, account)
+                {
+                    if(key.substring(0, 12) === 'nw_accounts_')
+                    {
+                        if(!$.isArray(accounts)) accounts = [];
+                        if(blockstrap_functions.json(account)) account = $.parseJSON(account);
+                        accounts.push(account);
+                    }
+                });
             }
-        });
+            return accounts;
+        }
+    }
+    
+    accounts.new = function(currency, name, password, keys, callback)
+    {
+        if(currency && name && password && keys && callback && $.isPlainObject($.fn.blockstrap.settings.currencies[currency]))
+        {
+            var key = '';
+            var slug = blockstrap_functions.slug(name);
+            $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
+            {
+                if(!salt)
+                {
+                    $.fn.blockstrap.core.loader('close');
+                    $.fn.blockstrap.core.modal('Error', 'No salt set for this device');
+                }
+                else
+                {
+                    $.fn.blockstrap.data.find('accounts', slug, function(account)
+                    {
+                        if(account)
+                        {
+                            $.fn.blockstrap.core.loader('close');
+                            $.fn.blockstrap.core.modal('Warning', 'This account already exists');
+                        }
+                        else
+                        {
+                            var data = false;
+                            if($.isPlainObject(keys))
+                            {
+                                if(keys.wallet_question)
+                                {
+                                    if(!$.isPlainObject(data)) data = {};
+                                    data.wallet_question = keys.wallet_question;
+                                }
+                                var values = keys;
+                                keys = [];
+                                $.each(values, function(k, v)
+                                {
+                                    keys.push(k);
+                                    key_obj = CryptoJS.SHA3(salt+key+k+v, { outputLength: 512 });
+                                    key = key_obj.toString();
+                                });
+                            };
+                            var address_keys = $.fn.blockstrap.btc.keys(key);
+                            var address = address_keys.pubkey.toString();
+                            var pw_obj = CryptoJS.SHA3(salt+password, { outputLength: 512 });
+                            var pw = pw_obj.toString();
+                            var currency_name =  $.fn.blockstrap.settings.currencies[currency].currency;
+                            var account = {
+                                id: slug,
+                                currency: {
+                                    type: currency_name,
+                                    code: currency
+                                },
+                                name: name,
+                                password: pw,
+                                keys: keys,
+                                address: address,
+                                tx_count: 0,
+                                balance: 0,
+                                ts: 0,
+                                txs: {}
+                            };
+                            if(data) account.data = data;
+                            $.fn.blockstrap.data.save('accounts', slug, account, function()
+                            {
+                                var this_account = $.fn.blockstrap.accounts.get(slug);
+                                $.fn.blockstrap.accounts.update(this_account, function(account)
+                                {
+                                    $.fn.blockstrap.core.refresh(function()
+                                    {
+                                        callback(account);
+                                    });
+                                });
+                            });
+                        }
+                    });
+                }
+            });
+        }
+        else
+        {
+            $.fn.blockstrap.core.loader('close');
+            if($.isPlainObject($.fn.blockstrap.settings.currencies[currency]))
+            {
+                $.fn.blockstrap.core.modal('Warning', 'Missing device requirements');
+            }
+            else
+            {
+                $.fn.blockstrap.core.modal('Warning', 'Currency not supported');
+            }
+        }
+    }
+    
+    accounts.poll = function(wait, callback)
+    {
+        var now = new Date().getTime();
+        var delay = $.fn.blockstrap.settings.cache.accounts;
+        var polls = localStorage.getItem('nw_blockstrap_polls');
+        if(blockstrap_functions.json(polls)) polls = $.parseJSON(polls);
+        if(!$.isPlainObject(polls)) polls = {};
+        if(!polls.accounts) polls.accounts = now;
+        if(wait)
+        {
+            delay = wait;
+        }   
+        if(polls.accounts + delay >= now)
+        {
+            $.fn.blockstrap.accounts.updates(0, function(txs)
+            {
+                if($.isArray(txs) && blockstrap_functions.array_length(txs) > 0)
+                {
+                    var title = '1 New Transaction';
+                    var content = '<p>A new transaction has taken place.</p>';
+                    if(blockstrap_functions.array_length(txs) > 1)
+                    {
+                        title = blockstrap_functions.array_length(txs) + ' New Transactions';
+                        content = '<p>New transactions have taken place.</p>';
+                    }
+                    if($.isArray(txs))
+                    {
+                        $.each(txs, function(k, tx)
+                        {
+                            var value = tx.value;
+                            var val = '' + parseInt(tx.value) / 100000000;
+                            var currency = $.fn.blockstrap.settings.currencies[tx.currency].currency;
+                            var amount = '<strong>' + val + '</strong> ' + currency;
+                            var context = amount + ' <strong>recieved</strong>';
+                            var base = $.fn.blockstrap.settings.base_url;
+                            var url = base + '?txid=' + tx.txid + '#transaction';
+                            if(value < 0) context = '<strong>' + val.substring(1) + '</strong> ' + currency + ' <strong>sent</strong>';
+                            content+= '<p>' + context + ':<br /><a href="' + url + '">' + tx.txid + '</a></p>';
+                        });
+                    }
+                    $.fn.blockstrap.core.modal(title, content);
+                    $.fn.blockstrap.core.refresh(function()
+                    {
+                        if(callback) callback();
+                    });
+                }
+                else
+                {
+                    if(callback) callback();
+                }
+            });
+        }
     }
     
     accounts.prepare = function(to, account_id, amount)
@@ -347,6 +365,115 @@
             };
             $.fn.blockstrap.accounts.access(account_id, tx);
         }
+    }
+    
+    accounts.remove = function(collection, key, element, confirm)
+    {
+        if(localStorage)
+        {
+            var item = localStorage.getItem('nw_' + collection + '_' + key);
+            if(item && blockstrap_functions.json(item))
+            {
+                var item_object = $.parseJSON(item);
+                var pw = item_object.password;
+                var pw_value = $('#confirm-modal #confirm-pw').val();
+                var salted = localStorage.getItem('nw_blockstrap_salt');
+                var salt = $.parseJSON(salted);
+                var password_object = CryptoJS.SHA3(salt+pw_value, { outputLength: 512 });
+                var password = password_object.toString();
+                if(confirm == password)
+                {
+                    $('#confirm-modal').modal('hide');
+                    localStorage.removeItem('nw_' + collection + '_' + key);
+                    $($.fn.blockstrap.element).find('#' + element).hide(350, function()
+                    {
+                        var this_element = $(this);
+                        $(this_element).remove();
+                        $.fn.blockstrap.core.refresh(function()
+                        {
+                            $.fn.blockstrap.core.loader('close');
+                        });
+                    })
+                }
+                else
+                {
+                    $.fn.blockstrap.core.modal('Warning', 'Incorrect password provided');
+                }
+            }
+            else
+            {
+                $.fn.blockstrap.core.loader('close');
+            }
+        }
+    }
+    
+    accounts.total = function(rate, prefix)
+    {
+        var grand_total = 0;
+        var exchange_rates = $.fn.blockstrap.settings.exchange;
+        var balances = accounts.balances();
+        if($.isPlainObject(balances))
+        {
+            $.each(balances, function(code, currency)
+            {
+                var total = (parseFloat(currency.balance) * 100000000) * parseFloat(exchange_rates[rate]);
+                grand_total = grand_total + total;
+            });
+        }
+        if(prefix) return prefix + ' ' + parseInt(grand_total) / 100000000;
+        else return parseInt(grand_total) / 100000000;
+    }
+    
+    accounts.tx = function(txid, account_id)
+    {
+        var accounts = [];
+        var transaction = false;
+        if(account_id) accounts.push($.fn.blockstrap.accounts.get(account_id));
+        else accounts = $.fn.blockstrap.accounts.get();
+        if($.isArray(accounts))
+        {
+            $.each(accounts, function(k, account)
+            {
+                var txs = account.txs;
+                if($.isPlainObject(txs))
+                {
+                    $.each(txs, function(k, tx)
+                    {
+                        if(tx.txid == txid)
+                        {
+                            transaction = tx;
+                        }
+                    });
+                }
+            });
+        }
+        return transaction;
+    }
+    
+    accounts.txs = function(account_id)
+    {
+        var transactions = [];
+        if(account_id) accounts.push($.fn.blockstrap.accounts.get(account_id));
+        else accounts = $.fn.blockstrap.accounts.get();
+        if($.isArray(accounts))
+        {
+            $.each(accounts, function(k, account)
+            {
+                var txs = account.txs;
+                if($.isPlainObject(txs))
+                {
+                    $.each(txs, function(k, tx)
+                    {
+                        transactions.push(tx);
+                    });
+                }
+            });
+        }
+        transactions.sort(function(a,b) 
+        { 
+            return parseFloat(b.time) - parseFloat(a.time) 
+        });
+        return transactions;
     }
     
     accounts.update = function(account, callback, force_refresh)
@@ -459,169 +586,40 @@
         }
     }
     
-    accounts.tx = function(txid, account_id)
+    accounts.verify = function(account, fields, callback, password)
     {
-        var accounts = [];
-        var transaction = false;
-        if(account_id) accounts.push($.fn.blockstrap.accounts.get(account_id));
-        else accounts = $.fn.blockstrap.accounts.get();
-        if($.isArray(accounts))
+        $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
         {
-            $.each(accounts, function(k, account)
+            var key = '';
+            if($.isArray(fields))
             {
-                var txs = account.txs;
-                if($.isPlainObject(txs))
+                $.each(fields, function(k, v)
                 {
-                    $.each(txs, function(k, tx)
-                    {
-                        if(tx.txid == txid)
-                        {
-                            transaction = tx;
-                        }
-                    });
-                }
-            });
-        }
-        return transaction;
-    }
-    
-    accounts.txs = function(account_id)
-    {
-        var transactions = [];
-        if(account_id) accounts.push($.fn.blockstrap.accounts.get(account_id));
-        else accounts = $.fn.blockstrap.accounts.get();
-        if($.isArray(accounts))
-        {
-            $.each(accounts, function(k, account)
+                    key_obj = CryptoJS.SHA3(salt+key+v.id+v.value, { outputLength: 512 });
+                    key = key_obj.toString();
+                });
+            };
+            if(key)
             {
-                var txs = account.txs;
-                if($.isPlainObject(txs))
+                
+                var keys = $.fn.blockstrap.btc.keys(key);
+                if(keys.pubkey.toString() === account.address)
                 {
-                    $.each(txs, function(k, tx)
-                    {
-                        transactions.push(tx);
-                    });
-                }
-            });
-        }
-        transactions.sort(function(a,b) 
-        { 
-            return parseFloat(b.time) - parseFloat(a.time) 
-        });
-        return transactions;
-    }
-    
-    accounts.address = function(key, account_id)
-    {
-        var accounts = [];
-        var address = false;
-        if(account_id) accounts.push($.fn.blockstrap.accounts.get(account_id));
-        else accounts = $.fn.blockstrap.accounts.get();
-        if($.isArray(accounts))
-        {
-            $.each(accounts, function(k, account)
-            {
-                if(account.address == key)
-                {
-                    address = account;
-                }
-            });
-        }
-        return address;
-    }
-    
-    accounts.remove = function(collection, key, element, confirm)
-    {
-        if(localStorage)
-        {
-            var item = localStorage.getItem('nw_' + collection + '_' + key);
-            if(item && blockstrap_functions.json(item))
-            {
-                var item_object = $.parseJSON(item);
-                var pw = item_object.password;
-                var pw_value = $('#confirm-modal #confirm-pw').val();
-                var salted = localStorage.getItem('nw_blockstrap_salt');
-                var salt = $.parseJSON(salted);
-                var password_object = CryptoJS.SHA3(salt+pw_value, { outputLength: 512 });
-                var password = password_object.toString();
-                if(confirm == password)
-                {
-                    $('#confirm-modal').modal('hide');
-                    localStorage.removeItem('nw_' + collection + '_' + key);
-                    $($.fn.blockstrap.element).find('#' + element).hide(350, function()
-                    {
-                        var this_element = $(this);
-                        $(this_element).remove();
-                        $.fn.blockstrap.core.refresh(function()
-                        {
-                            $.fn.blockstrap.core.loader('close');
-                        });
-                    })
+                    if(callback) callback(true, keys);
+                    else return true;
                 }
                 else
                 {
-                    $.fn.blockstrap.core.modal('Warning', 'Incorrect password provided');
+                    $.fn.blockstrap.core.modal('Warning', 'Credentials do not match');
+                    $.fn.blockstrap.core.loader('close');
                 }
             }
             else
             {
+                $.fn.blockstrap.core.modal('Error', 'Unable to construct keys');
                 $.fn.blockstrap.core.loader('close');
             }
-        }
-    }
-    
-    accounts.poll = function(wait, callback)
-    {
-        var now = new Date().getTime();
-        var delay = $.fn.blockstrap.settings.cache.accounts;
-        var polls = localStorage.getItem('nw_blockstrap_polls');
-        if(blockstrap_functions.json(polls)) polls = $.parseJSON(polls);
-        if(!$.isPlainObject(polls)) polls = {};
-        if(!polls.accounts) polls.accounts = now;
-        if(wait)
-        {
-            delay = wait;
-        }   
-        if(polls.accounts + delay >= now)
-        {
-            $.fn.blockstrap.accounts.updates(0, function(txs)
-            {
-                if($.isArray(txs) && blockstrap_functions.array_length(txs) > 0)
-                {
-                    var title = '1 New Transaction';
-                    var content = '<p>A new transaction has taken place.</p>';
-                    if(blockstrap_functions.array_length(txs) > 1)
-                    {
-                        title = blockstrap_functions.array_length(txs) + ' New Transactions';
-                        content = '<p>New transactions have taken place.</p>';
-                    }
-                    if($.isArray(txs))
-                    {
-                        $.each(txs, function(k, tx)
-                        {
-                            var value = tx.value;
-                            var val = '' + parseInt(tx.value) / 100000000;
-                            var currency = $.fn.blockstrap.settings.currencies[tx.currency].currency;
-                            var amount = '<strong>' + val + '</strong> ' + currency;
-                            var context = amount + ' <strong>recieved</strong>';
-                            var base = $.fn.blockstrap.settings.base_url;
-                            var url = base + '?txid=' + tx.txid + '#transaction';
-                            if(value < 0) context = '<strong>' + val.substring(1) + '</strong> ' + currency + ' <strong>sent</strong>';
-                            content+= '<p>' + context + ':<br /><a href="' + url + '">' + tx.txid + '</a></p>';
-                        });
-                    }
-                    $.fn.blockstrap.core.modal(title, content);
-                    $.fn.blockstrap.core.refresh(function()
-                    {
-                        if(callback) callback();
-                    });
-                }
-                else
-                {
-                    if(callback) callback();
-                }
-            });
-        }
+        });
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE

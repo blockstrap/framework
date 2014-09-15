@@ -10,55 +10,7 @@
 
 (function($) 
 {
-    // EMPTY OBJECT
     var filters = {};
-    
-    filters.bootstrap = function(blockstrap, data)
-    {
-        var snippet = blockstrap.snippets[data.type];
-        var html = Mustache.render(snippet, data);
-        return html;
-    }
-    
-    filters.got = function(blockstrap, data)
-    {
-        if(data.collection && data.key)
-        {
-            var obj = localStorage.getItem('nw_'+data.collection+'_'+data.key);
-            if(obj) return true;
-            else return false;
-        }
-        else return false;
-    }
-    
-    filters.get = function(blockstrap, data)
-    {
-        if(data.collection && data.key)
-        {
-            var obj = localStorage.getItem('nw_'+data.collection+'_'+data.key);
-            if(blockstrap_functions.json(obj)) return $.parseJSON(obj);
-            else return obj;
-        }
-        else return false;
-    }
-    
-    filters.setup = function(blockstrap, data)
-    {
-        if(data.step)
-        {
-            var step = parseInt(data.step) - 1;
-            return blockstrap.core.filter(blockstrap_setup_steps[step]);
-        }
-        else return data;
-    }
-    
-    filters.avatars = function(blockstrap, data)
-    {
-        var photo = blockstrap.data.option('your_photo');
-        if(!photo && data.default) photo = data.default;
-        var image = '<img class="avatar" src="'+photo+'" />';
-        return image;
-    }
     
     filters.accounts = function(blockstrap, data)
     {
@@ -76,6 +28,14 @@
             });
         }
         return accounts;
+    }
+    
+    filters.avatars = function(blockstrap, data)
+    {
+        var photo = blockstrap.data.option('your_photo');
+        if(!photo && data.default) photo = data.default;
+        var image = '<img class="avatar" src="'+photo+'" />';
+        return image;
     }
     
     filters.balances = function(blockstrap, data)
@@ -97,6 +57,13 @@
         return data;
     }
     
+    filters.bootstrap = function(blockstrap, data)
+    {
+        var snippet = blockstrap.snippets[data.type];
+        var html = Mustache.render(snippet, data);
+        return html;
+    }
+    
     filters.contacts = function(blockstrap, data)
     {
         var contacts = [];
@@ -113,13 +80,26 @@
         return contacts;
     }
     
-    filters.total = function(blockstrap, data)
+    filters.get = function(blockstrap, data)
     {
-        var rate = 'btc';
-        var prefix = 'US$';
-        if(data.rate) rate = data.rate;
-        if(data.prefix) prefix = data.prefix;
-        return blockstrap.accounts.total(rate, prefix);
+        if(data.collection && data.key)
+        {
+            var obj = localStorage.getItem('nw_'+data.collection+'_'+data.key);
+            if(blockstrap_functions.json(obj)) return $.parseJSON(obj);
+            else return obj;
+        }
+        else return false;
+    }
+    
+    filters.got = function(blockstrap, data)
+    {
+        if(data.collection && data.key)
+        {
+            var obj = localStorage.getItem('nw_'+data.collection+'_'+data.key);
+            if(obj) return true;
+            else return false;
+        }
+        else return false;
     }
     
     filters.last = function(blockstrap, data)
@@ -152,6 +132,25 @@
             html = $.fn.blockstrap.templates.filter(html, placeholders, replacements);
         }
         return html;
+    }
+    
+    filters.setup = function(blockstrap, data)
+    {
+        if(data.step)
+        {
+            var step = parseInt(data.step) - 1;
+            return blockstrap.core.filter(blockstrap_setup_steps[step]);
+        }
+        else return data;
+    }
+    
+    filters.total = function(blockstrap, data)
+    {
+        var rate = 'btc';
+        var prefix = 'US$';
+        if(data.rate) rate = data.rate;
+        if(data.prefix) prefix = data.prefix;
+        return blockstrap.accounts.total(rate, prefix);
     }
     
     filters.txs = function(blockstrap, data)

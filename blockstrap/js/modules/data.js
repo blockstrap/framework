@@ -10,7 +10,6 @@
 
 (function($) 
 {
-    // EMPTY OBJECTS
     var data = {};
     if(localStorage)
     {
@@ -22,11 +21,25 @@
         };
     }
     
-    // FUNCTIONS FOR OBJECT
+    data.find = function(collection, key, callback)
+    {
+        if(localStorage && localStorage.getItem(data.item(collection, key)))
+        {
+            var obj = localStorage.getItem(data.item(collection, key));
+            if(blockstrap_functions.json(obj)) obj = $.parseJSON(obj);
+            callback(obj);
+        }
+        else
+        {
+            callback(false);
+        }
+    };
+    
     data.item = function(collection, key)
     {
         return 'nw_' + collection + '_' + key;
     };
+    
     data.option = function(key)
     {
         var value = false;
@@ -41,19 +54,7 @@
         }
         return value
     }
-    data.find = function(collection, key, callback)
-    {
-        if(localStorage && localStorage.getItem(data.item(collection, key)))
-        {
-            var obj = localStorage.getItem(data.item(collection, key));
-            if(blockstrap_functions.json(obj)) obj = $.parseJSON(obj);
-            callback(obj);
-        }
-        else
-        {
-            callback(false);
-        }
-    };
+    
     data.save = function(collection, key, value, callback)
     {
         if(localStorage)
@@ -72,10 +73,12 @@
             callback(false);
         }
     };
+    
     data.size = function(callback)
     {
         callback()
-    };    
+    };  
+    
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {data:data});
 })

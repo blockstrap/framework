@@ -10,10 +10,25 @@
 
 (function($) 
 {
-    // EMPTY OBJECT
     var contacts = {};
     
-    // FUNCTIONS FOR OBJECT
+    contacts.get = function()
+    {
+        var contacts = false;
+        if(localStorage)
+        {
+            $.each(localStorage, function(key, contact)
+            {
+                if(key.substring(0, 12) === 'nw_contacts_')
+                {
+                    if(!$.isArray(contacts)) contacts = [];
+                    contacts.push($.parseJSON(contact));
+                }
+            });
+        }
+        return contacts;
+    }
+    
     contacts.new = function(name, address, currency, fields, callback)
     {
         if(!$.fn.blockstrap.btc.validate(address))
@@ -73,23 +88,6 @@
             $.fn.blockstrap.core.loader('close');
             $.fn.blockstrap.core.modal('Warning', 'Currency not supported');
         }
-    }
-    
-    contacts.get = function()
-    {
-        var contacts = false;
-        if(localStorage)
-        {
-            $.each(localStorage, function(key, contact)
-            {
-                if(key.substring(0, 12) === 'nw_contacts_')
-                {
-                    if(!$.isArray(contacts)) contacts = [];
-                    contacts.push($.parseJSON(contact));
-                }
-            });
-        }
-        return contacts;
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE

@@ -10,56 +10,7 @@
 
 (function($) 
 {
-    // EMPTY OBJECT
     var security = {};
-    
-    // FUNCTIONS FOR OBJECT
-    security.salt = function(modules, callback, salt)
-    {
-        if(!salt) salt = $.fn.blockstrap.settings.id;
-        var keys = [];
-        if($.isPlainObject(modules))
-        {
-            var count = 0;
-            var key_count = Object.keys(modules).length;
-            if(key_count === count)
-            {
-                callback(salt, keys);
-            }
-            else
-            {
-                $.each(modules, function(k, v)
-                {
-                    count++;
-                    keys.push(k);
-
-                    if($.isArray($.fn.blockstrap.settings.store))
-                    {
-                        $.each($.fn.blockstrap.settings.store, function(store_index, store_key)
-                        {
-                            if(store_key === k)
-                            {
-                                $.fn.blockstrap.data.save('keys', store_key, v, function()
-                                {
-
-                                });
-                            }
-                        });
-                    }
-
-                    salt = CryptoJS.SHA3(salt+k+blockstrap_functions.slug(v), { outputLength: 512 });
-                    if(count >= key_count && callback)
-                    {
-                        callback(salt.toString(), keys);
-                    }
-                })
-            }
-        }
-        else
-        {
-            callback(salt, keys);
-        }
-    }
     
     security.credentials = function(username, password, callback)
     {
@@ -87,6 +38,21 @@
             {
                 $.fn.blockstrap.core.modal('Warning', 'Salt required before creating login credentials');
             }
+        }
+    }
+    
+    security.logged_in = function()
+    {
+        var login_status = localStorage.getItem('nw_blockstrap_login');
+        if(blockstrap_functions.json(login_status))
+        {
+            login_status = $.parseJSON(login_status);
+            if(login_status.logged_in && login_status.logged_in === true) return true;
+            else return false;
+        }
+        else
+        {
+            return true;
         }
     }
     
@@ -135,18 +101,50 @@
         }
     }
     
-    security.logged_in = function()
+    security.salt = function(modules, callback, salt)
     {
-        var login_status = localStorage.getItem('nw_blockstrap_login');
-        if(blockstrap_functions.json(login_status))
+        if(!salt) salt = $.fn.blockstrap.settings.id;
+        var keys = [];
+        if($.isPlainObject(modules))
         {
-            login_status = $.parseJSON(login_status);
-            if(login_status.logged_in && login_status.logged_in === true) return true;
-            else return false;
+            var count = 0;
+            var key_count = Object.keys(modules).length;
+            if(key_count === count)
+            {
+                callback(salt, keys);
+            }
+            else
+            {
+                $.each(modules, function(k, v)
+                {
+                    count++;
+                    keys.push(k);
+
+                    if($.isArray($.fn.blockstrap.settings.store))
+                    {
+                        $.each($.fn.blockstrap.settings.store, function(store_index, store_key)
+                        {
+                            if(store_key === k)
+                            {
+                                $.fn.blockstrap.data.save('keys', store_key, v, function()
+                                {
+
+                                });
+                            }
+                        });
+                    }
+
+                    salt = CryptoJS.SHA3(salt+k+blockstrap_functions.slug(v), { outputLength: 512 });
+                    if(count >= key_count && callback)
+                    {
+                        callback(salt.toString(), keys);
+                    }
+                })
+            }
         }
         else
         {
-            return true;
+            callback(salt, keys);
         }
     }
     

@@ -10,10 +10,27 @@
 
 (function($) 
 {
-    // EMPTY OBJECT
     var styles = {};
     
-    // FUNCTIONS FOR OBJECT
+    styles.element = function(key)
+    {
+        var map = styles.map('elements');
+        var element = '#' + $.fn.blockstrap.settings.id + ' ' + map[key];
+        return element;
+    };
+    
+    styles.map = function(type)
+    {
+        return $.fn.blockstrap.settings.maps.styles[type];
+    }
+    
+    styles.rule = function(key, value)
+    {
+        var map = styles.map('rules');
+        var rule = map[key] + ': ' + value;
+        return rule;
+    };
+    
     styles.set = function(id, index)
     {
         if(!index) index = 0;
@@ -49,22 +66,6 @@
             });
         }
     };
-    styles.rule = function(key, value)
-    {
-        var map = styles.map('rules');
-        var rule = map[key] + ': ' + value;
-        return rule;
-    };
-    styles.element = function(key)
-    {
-        var map = styles.map('elements');
-        var element = '#' + $.fn.blockstrap.settings.id + ' ' + map[key];
-        return element;
-    };
-    styles.map = function(type)
-    {
-        return $.fn.blockstrap.settings.maps.styles[type];
-    }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {styles:styles});

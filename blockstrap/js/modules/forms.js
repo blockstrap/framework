@@ -10,7 +10,6 @@
 
 (function($) 
 {
-    // EMPTY OBJECTS
     var forms = {};
     
     forms.get = function()
@@ -33,13 +32,6 @@
         }
     }
     
-    forms.process = function(data, form)
-    {
-        if(!form) form = forms.get();
-        var html = Mustache.render(form, data);
-        return $.fn.blockstrap.templates.filter(html);
-    }
-    
     forms.input = function(options)
     {
         var defaults = {
@@ -60,6 +52,13 @@
             ]
         };
         return forms.process(settings);
+    }
+    
+    forms.process = function(data, form)
+    {
+        if(!form) form = forms.get();
+        var html = Mustache.render(form, data);
+        return $.fn.blockstrap.templates.filter(html);
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE

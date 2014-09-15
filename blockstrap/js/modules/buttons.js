@@ -10,7 +10,6 @@
 
 (function($) 
 {
-    // EMPTY OBJECT
     var buttons = {};
     var page_cache_time = $.fn.blockstrap.settings.cache.pages;
     var pages_cached = {};
@@ -26,45 +25,149 @@
         }
     }
     
-    // FUNCTIONS FOR OBJECT
-    buttons.process = function(slug, content, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements)
+    buttons.access = function(button, e)
     {
-        $("html, body").animate({ scrollTop: 0 }, 350);
-        if(direction == 'up' || menu === true) $.fn.blockstrap.core.loader('close');
-        $('#'+$.fn.blockstrap.settings.content_id).hide(effect, {direction:direction}, 500);
-        var paged_html = $.fn.blockstrap.templates.filter(Mustache.render(content, filtered_data));
-        $('#'+$.fn.blockstrap.settings.content_id).html(paged_html).show(effect, {direction:reverse_direction}, 500, function()
+        e.preventDefault();
+        var account_id = $(button).attr('data-key');
+        $.fn.blockstrap.data.find('accounts', account_id, function(account)
         {
-            if(mobile && !menu) $(elements).css({'opacity':1});
-            if(menu)
-            {
-                if($('#menu-toggle').hasClass('open')) $('#menu-toggle').trigger('click');
-                if($('#sidebar-toggle').hasClass('open')) $('#sidebar-toggle').trigger('click');
-            }
+            var title = 'Public Key:';
+            if(account.address) title = title + ' ' + account.address;
+            var qr_code = '<p class="qr-holder" data-content="'+account.address+'"></p>';
+            var form = $.fn.blockstrap.forms.process({
+                objects: [
+                    {
+                        css: 'form-horizontal',
+                        fields: [
+                            {
+                                selects: {
+                                    id: 'access-account',
+                                    label: {
+                                        text: 'How to process this...?',
+                                        css: 'col-xs-4'
+                                    },
+                                    wrapper: {
+                                        css: 'col-xs-8'
+                                    },
+                                    values: [
+                                        {
+                                            value: '',
+                                            text: '-- Select an Option --'
+                                        },
+                                        {
+                                            value: 'print',
+                                            text: 'Print Public Key'
+                                        },
+                                        {
+                                            value: 'access',
+                                            text: 'Access Private Key'
+                                        }
+                                    ],
+                                    attributes: [
+                                        {
+                                            key: 'data-account-id',
+                                            value: account_id
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                ]
+            });
+            $.fn.blockstrap.core.modal(title, qr_code + form);
         });
-        var nav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id);
-        var mnav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.mobile_nav_id);
-        $(nav).find('.loading').removeClass('loading');
-        $(mnav).find('.loading').removeClass('loading');
-        if(history.pushState) 
+    }
+    
+    buttons.account = function(button, e)
+    {
+        e.preventDefault();
+        var wallet = {};
+        var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form'));
+        $.fn.blockstrap.core.loader('open');
+        $.fn.blockstrap.core.modals('close_all');
+        if($(form).length > 0)
         {
-            var refresh = '';
-            if(location.search.indexOf('refresh=true') > -1) refresh = '?refresh=true';
-            var url = $.fn.blockstrap.settings.base_url;
-            if(slug === $.fn.blockstrap.settings.slug_base)
+            $(form).find('.form-group').each(function(i)
             {
-                history.pushState({slug:'index'}, document.getElementsByTagName("title")[0].innerHTML, url + refresh);
-            }
-            else
-            {
-                history.pushState({slug:slug}, document.getElementsByTagName("title")[0].innerHTML, url + refresh + '#'+slug);
-            }
-            $($.fn.blockstrap.element).find('.activated').removeClass('activated');
-            $.fn.blockstrap.core.ready();
+                var value = $(this).find('input').val();
+                if($(this).find('input').hasClass('ignore'))
+                {
+                    var repeat_id = $(this).find('input').attr('data-repeat-id');
+                    var repeat_val = $('#'+repeat_id).val();
+                    if(repeat_val && repeat_val != value)
+                    {
+                        $.fn.blockstrap.core.modal('Warning', 'Repeating Mismatch');
+                        continue_salting = false;
+                        wallet.cancel = true;
+                    }
+                }
+                else if(value) 
+                {
+                    wallet[$(this).find('input').attr('id')] = value;
+                }
+                else
+                {
+                    if($(this).find('select').length > 0 && !$(this).find('select').hasClass('extra-fields'))
+                    {
+                        value = $(this).find('select').val();
+                        if(value)
+                        {
+                            wallet[$(this).find('select').attr('id')] = value;
+                        }
+                    }
+                    else if(!value && !$(this).find('select').hasClass('extra-fields'))
+                    {
+                        if($(this).find('input').hasClass('ignore') || $(this).find('input').hasClass('optional') || $(this).find('input').hasClass('switch'))
+                        {
+                            // Move along...
+                            
+                        }
+                        else
+                        {
+                            var label = false;
+                            if($(this).find('label').html()) label = $(this).find('label').html();
+                            if(label) $.fn.blockstrap.core.modal('Error', 'Value for "'+label+'" Required');
+                            else $.fn.blockstrap.core.modal('Error', 'Value Required');
+                            $.fn.blockstrap.core.loader('close');
+                            return false;
+                        }
+                    }
+                }
+            });
+        }
+        if(
+            wallet 
+            && wallet.wallet_currency
+            && wallet.wallet_name 
+            && wallet.wallet_password 
+            && !wallet.cancel
+        )
+        {
+            $.fn.blockstrap.accounts.new(
+                wallet.wallet_currency, 
+                wallet.wallet_name,
+                wallet.wallet_password,
+                wallet,
+                function(account)
+                {
+                    /* NEED TO RESET THE INDEX HTML AND DATA */
+                    $.fn.blockstrap.templates.render('accounts', function()
+                    {
+                        $.fn.blockstrap.core.ready();
+                        $.fn.blockstrap.core.loader('close');
+                    }, true);
+                }
+            )
         }
         else
         {
-            $.fn.blockstrap.core.ready();
+            $.fn.blockstrap.core.loader('close');
+            if(!wallet.cancel)
+            {
+                $.fn.blockstrap.core.modal('Error', 'Missing wallet requirements');
+                return false;
+            }
         }
     }
     
@@ -78,6 +181,164 @@
         }
         $(button).removeClass('loading');
         $($.fn.blockstrap.element).find('.activated').removeClass('activated').addClass('active');
+    }
+    
+    buttons.check = function()
+    {
+        var hash = false;
+        if(window.location.href.split('#').length === 2) 
+        {
+            hash = window.location.href.split('#')[1];
+        }
+        if(hash)
+        {
+            $($.fn.blockstrap.element).find('.btn-page').each(function()
+            {
+                if($(this).attr('href') === '#'+hash)
+                {
+                    if($('#mobile-footer').css('display') === 'block')
+                    {
+                        if($(this).parent().attr('id') === 'mobile-footer')
+                        {
+                            $(this).trigger('click');
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        $(this).trigger('click');
+                        return false;
+                    }
+                }
+            })
+        }
+    }
+    
+    buttons.contact = function(button, e)
+    {
+        e.preventDefault();
+        var contact = {};
+        var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form'));
+        $.fn.blockstrap.core.loader('open');
+        $.fn.blockstrap.core.modals('close_all');
+        if($(form).length > 0)
+        {
+            $(form).find('.form-group').each(function(i)
+            {
+                var value = $(this).find('input').val();
+                if(value && !$(this).find('input').hasClass('optional')) 
+                {
+                    contact[$(this).find('input').attr('id')] = value;
+                }
+                else
+                {
+                    if($(this).find('select').length > 0 && !$(this).find('select').hasClass('extra-fields') || $(this).find('.optional').length > 0)
+                    {
+                        value = $(this).find('select').val();
+                        if(value && $(this).find('.optional').length < 1)
+                        {
+                            contact[$(this).find('select').attr('id')] = value;
+                        }
+                    }
+                    else if(!value && !$(this).find('select').hasClass('extra-fields'))
+                    {
+                        var label = false;
+                        if($(this).find('label').html()) label = $(this).find('label').html();
+                        if(label) $.fn.blockstrap.core.modal('Error', 'Value for "'+label+'" Required');
+                        else $.fn.blockstrap.core.modal('Error', 'Value Required');
+                        $.fn.blockstrap.core.loader('close');
+                        return false;
+                    }
+                }
+            });
+        }
+        if(
+            contact 
+            && contact.contact_name
+            && contact.contact_address 
+            && contact.contact_currency 
+        )
+        {
+            $.fn.blockstrap.contacts.new(
+                contact.contact_name, 
+                contact.contact_address,
+                contact.contact_currency,
+                contact,
+                function(contact)
+                {
+                    /* NEED TO RESET THE INDEX HTML AND DATA */
+                    $.fn.blockstrap.templates.render('contacts', function()
+                    {
+                        $.fn.blockstrap.core.ready();
+                        $.fn.blockstrap.core.loader('close');
+                    }, true);
+                }
+            )
+        }
+        else
+        {
+            $.fn.blockstrap.core.loader('close');
+            $.fn.blockstrap.core.modal('Error', 'Missing contact requirements');
+            return false;
+        }
+    }
+    
+    buttons.credentials = function(button, e)
+    {
+        e.preventDefault();
+        $('#login-credentials-modal').modal('show');
+    }
+    
+    buttons.login = function(button, e)
+    {
+        e.preventDefault();
+        var form_id = $(button).attr('data-form');
+        var username_id = $(button).attr('data-field-username');
+        var password_id = $(button).attr('data-field-password');
+        var form = $('form#'+form_id);
+        var username = $(form).find('#'+username_id).val();
+        var password = $(form).find('#'+password_id).val();
+        $.fn.blockstrap.security.login(username, password, function()
+        {
+            if($.fn.blockstrap.security.logged_in) location.reload();
+        });
+    }
+    
+    buttons.logout = function(button, e)
+    {
+        e.preventDefault();
+        var login_status = localStorage.getItem('nw_blockstrap_login');
+        if(blockstrap_functions.json(login_status))
+        {
+            $.fn.blockstrap.security.logout();
+        }
+        else
+        {
+            $.fn.blockstrap.core.modal('Warning', '<p>No login information has been established yet. Would you like to create login credentials now?<p><p><a href="#" class="btn btn-sm btn-success" id="create-login-credentials">Create Credentials</a> <a href="#" class="btn btn-sm btn-danger" data-dismiss="modal">Cancel</a></p>');
+        }
+    }
+    
+    buttons.more = function(button, e)
+    {
+        e.preventDefault();
+        var form_id = $(button).attr('data-form-id');
+        var hidden_class = $(button).attr('data-hidden-class');
+        var form = $('form#'+form_id);
+        $(form).find('.'+hidden_class).parent().each(function(i)
+        {
+            if($(this).css('display') === 'none')
+            {
+                $(this).show(350);
+                $(button).text('Less Security');
+                $(button).removeClass('btn-default').addClass('btn-danger');
+            }
+            else
+            {
+                $(this).hide(350);
+                $(button).text('More Security');
+                $(button).removeClass('btn-danger').addClass('btn-default');
+            }
+        });
     }
     
     buttons.page = function(button, e)
@@ -187,6 +448,120 @@
         }
     }
     
+    buttons.prepare = function(button, e)
+    {
+        e.preventDefault();
+        var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form-id'));
+        var to = $(form).find('#to').val();
+        var from = $(form).find('#from').val();
+        var amount = parseFloat($(form).find('#amount').val()) * 100000000;
+        if(!to) $.fn.blockstrap.core.modal('Warning', 'Missing address to send payment to');
+        else if(!from) $.fn.blockstrap.core.modal('Warning', 'Missing account to use to send from');
+        else if(!amount) $.fn.blockstrap.core.modal('Warning', 'You have not provided the amount you want to send');
+        else
+        {
+            $.fn.blockstrap.accounts.prepare(to, from, amount);
+        }
+    }
+    
+    buttons.print = function(button, e)
+    {
+        e.preventDefault();
+        var print_id = $(button).attr('data-print-id');
+        var print_class = $(button).attr('data-print-class');
+        var print_title = $(button).attr('data-print-title');
+        var contents = $('#'+print_id).html();
+        if(print_class) contents = $('#'+print_id).find('.'+print_class).html();
+        if(print_title) contents = '<h3>'+print_title+'</h3>'+contents;
+        $.fn.blockstrap.core.print(contents);
+    }
+    
+    buttons.process = function(slug, content, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements)
+    {
+        $("html, body").animate({ scrollTop: 0 }, 350);
+        if(direction == 'up' || menu === true) $.fn.blockstrap.core.loader('close');
+        $('#'+$.fn.blockstrap.settings.content_id).hide(effect, {direction:direction}, 500);
+        var paged_html = $.fn.blockstrap.templates.filter(Mustache.render(content, filtered_data));
+        $('#'+$.fn.blockstrap.settings.content_id).html(paged_html).show(effect, {direction:reverse_direction}, 500, function()
+        {
+            if(mobile && !menu) $(elements).css({'opacity':1});
+            if(menu)
+            {
+                if($('#menu-toggle').hasClass('open')) $('#menu-toggle').trigger('click');
+                if($('#sidebar-toggle').hasClass('open')) $('#sidebar-toggle').trigger('click');
+            }
+        });
+        var nav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id);
+        var mnav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.mobile_nav_id);
+        $(nav).find('.loading').removeClass('loading');
+        $(mnav).find('.loading').removeClass('loading');
+        if(history.pushState) 
+        {
+            var refresh = '';
+            if(location.search.indexOf('refresh=true') > -1) refresh = '?refresh=true';
+            var url = $.fn.blockstrap.settings.base_url;
+            if(slug === $.fn.blockstrap.settings.slug_base)
+            {
+                history.pushState({slug:'index'}, document.getElementsByTagName("title")[0].innerHTML, url + refresh);
+            }
+            else
+            {
+                history.pushState({slug:slug}, document.getElementsByTagName("title")[0].innerHTML, url + refresh + '#'+slug);
+            }
+            $($.fn.blockstrap.element).find('.activated').removeClass('activated');
+            $.fn.blockstrap.core.ready();
+        }
+        else
+        {
+            $.fn.blockstrap.core.ready();
+        }
+    }
+    buttons.refresh = function(button, e)
+    {
+        e.preventDefault();
+        var collection = $(button).attr('data-collection');
+        var key = $(button).attr('data-key');
+        if(collection == 'accounts')
+        {
+            $.fn.blockstrap.core.loader('open');
+            var account = $.fn.blockstrap.accounts.get(key);
+            $.fn.blockstrap.accounts.update(account, function()
+            {
+                $.fn.blockstrap.core.refresh(function()
+                {
+                    $.fn.blockstrap.core.loader('close');
+                });
+            }, true);
+        }
+    }      
+    
+    buttons.remove = function(button, e)
+    {
+        e.preventDefault();
+        var key = $(button).attr('data-key');
+        var element = $(button).attr('data-element');
+        var collection = $(button).attr('data-collection');
+        var confirm = $(button).attr('data-confirm');
+        if(confirm)
+        {
+            var form = $.fn.blockstrap.forms.input({
+                label: 'Password',
+                type: 'password',
+                id: 'confirm-pw',
+                placeholder: 'Type your password to allow account removal'
+            });
+            var text = '<p>Please confirm removal of this account. You will not be able to use any of the coins on the account unless you can accurately re-create them or first back-up the private key. We hope you understand the risks. Please type the account password below and then press confirm to remove account.</p><p>'+form+'</p>';
+            $.fn.blockstrap.core.confirm('Confirmation Required', text, function()
+            {
+                $.fn.blockstrap.accounts.remove(collection, key, element, confirm);
+            });
+        }
+        else
+        {
+            $.fn.blockstrap.accounts.remove(collection, key, element, false);
+        }
+    }
+    
     buttons.reset = function(button, e)
     {
         if(e)
@@ -203,34 +578,121 @@
         }
     }
     
-    buttons.check = function()
+    buttons.send = function(button, e)
     {
-        var hash = false;
-        if(window.location.href.split('#').length === 2) 
+        e.preventDefault();
+        var fields = [];
+        var form_id = $(button).attr('data-form-id');
+        var account_id = $(button).attr('data-account-id');
+        var to_address = $(button).attr('data-to-address');
+        var to_amount = parseInt($(button).attr('data-to-amount'));
+        var form = $('form#'+form_id);
+        var account = $.fn.blockstrap.accounts.get(account_id);
+        var balance = account.balance;
+        var fee = $.fn.blockstrap.settings.currencies.btc.fee * 100000000;
+        var from_address = account.address;
+        var change = balance - (to_amount + fee);
+        var current_tx_count = account.tx_count;
+        if(balance < to_amount + fee)
         {
-            hash = window.location.href.split('#')[1];
+            $.fn.blockstrap.core.modal('Warning', 'You do not have sufficient funds');
         }
-        if(hash)
+        else
         {
-            $($.fn.blockstrap.element).find('.btn-page').each(function()
+            $.fn.blockstrap.core.modals('close_all');
+            $.fn.blockstrap.core.loader('open');
+            $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
             {
-                if($(this).attr('href') === '#'+hash)
+                $(form).find('.form-group').each(function(i)
                 {
-                    if($('#mobile-footer').css('display') === 'block')
+                    var input = $(this).find('input');
+                    var value = $(input).val();
+                    var id = $(input).attr('id');
+                    fields.push({
+                        id: id,
+                        value: value
+                    });
+                });
+                $.fn.blockstrap.accounts.verify(account, fields, function(verified, keys)
+                {
+                    if(verified === true)
                     {
-                        if($(this).parent().attr('id') === 'mobile-footer')
+                        var private_key = keys.privkey.toString();
+                        $.fn.blockstrap.api.unspents(keys.pubkey.toString(), 'btc', function(unspents)
                         {
-                            $(this).trigger('click');
-                            return false;
-                        }
+                            if($.isArray(unspents))
+                            {
+                                var inputs = [];
+                                var outputs = [{
+                                    'address': to_address,
+                                    'value': to_amount
+                                }];
+                                $.each(unspents, function(k, unspent)
+                                {
+                                    inputs.push({
+                                        txid: unspent.txid,
+                                        n: unspent.index,
+                                        script: unspent.script,
+                                        value: unspent.value,
+                                    });
+                                });
+                                var raw_transaction = $.fn.blockstrap.btc.raw(from_address, private_key, inputs, outputs, fee, to_amount);
+                                $.fn.blockstrap.api.relay(raw_transaction, 'btc', function(tx)
+                                {
+                                    if(tx && tx.txid)
+                                    {
+                                        account.ts = new Date().getTime();
+                                        account.balance = change;
+                                        account.tx_count++;
+                                        $.fn.blockstrap.data.save('accounts', account_id, account, function(obj)
+                                        {
+                                            $.fn.blockstrap.core.refresh(function()
+                                            {
+                                                var title = 'Sent ' + parseInt(to_amount) / 100000000 + ' Bitcoin to ' + to_address;
+                                                var base = $.fn.blockstrap.settings.base_url;
+                                                var content = '<p>Transaction ID: ' + tx.txid + '</p><p>You can <a href="' + base + '?txid=' + tx.txid + '#transaction">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchain.info/tx/' + tx.txid + '">this</a>.</p><p>Please note that upon refreshing or switching pages, balances may return to their previous totals when transactions are successful but unconfirmed, where they can take anywhere upto 10 minutes to be confirmed. We will provide dual balances for each currency in the next release.</p>';
+                                                $.fn.blockstrap.core.modal(title, content);
+                                                $.fn.blockstrap.core.loader('close');
+                                            });
+                                        });
+                                    }
+                                });
+                            }
+                        });
                     }
-                    else
-                    {
-                        $(this).trigger('click');
-                        return false;
-                    }
-                }
-            })
+                });
+            });
+        }
+    } 
+    
+    buttons.set = function(button, e)
+    {
+        e.preventDefault();
+        var form_id = $(button).attr('data-form');
+        var username_id = $(button).attr('data-field-username');
+        var password_id = $(button).attr('data-field-password');
+        var repeat_id = $(button).attr('data-field-repeat');
+        var form = $($.fn.blockstrap.element).find('#'+form_id);
+        var username = $(form).find('#'+username_id).val();
+        var password = $(form).find('#'+password_id).val();
+        var repeat = $(form).find('#'+repeat_id).val();
+        if(username && password && password == repeat)
+        {
+            $.fn.blockstrap.security.credentials(username, password, function()
+            {
+                location.reload();
+            });
+        }
+        else
+        {
+            if(password != repeat)
+            {
+                $.fn.blockstrap.core.modal('Warning', 'Password Mismatch');
+            }
+            else
+            {
+                $.fn.blockstrap.core.modal('Warning', 'Missing Username & Password');
+            }
         }
     }
     
@@ -436,167 +898,6 @@
         }
     }
     
-    buttons.account = function(button, e)
-    {
-        e.preventDefault();
-        var wallet = {};
-        var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form'));
-        $.fn.blockstrap.core.loader('open');
-        $.fn.blockstrap.core.modals('close_all');
-        if($(form).length > 0)
-        {
-            $(form).find('.form-group').each(function(i)
-            {
-                var value = $(this).find('input').val();
-                if($(this).find('input').hasClass('ignore'))
-                {
-                    var repeat_id = $(this).find('input').attr('data-repeat-id');
-                    var repeat_val = $('#'+repeat_id).val();
-                    if(repeat_val && repeat_val != value)
-                    {
-                        $.fn.blockstrap.core.modal('Warning', 'Repeating Mismatch');
-                        continue_salting = false;
-                        wallet.cancel = true;
-                    }
-                }
-                else if(value) 
-                {
-                    wallet[$(this).find('input').attr('id')] = value;
-                }
-                else
-                {
-                    if($(this).find('select').length > 0 && !$(this).find('select').hasClass('extra-fields'))
-                    {
-                        value = $(this).find('select').val();
-                        if(value)
-                        {
-                            wallet[$(this).find('select').attr('id')] = value;
-                        }
-                    }
-                    else if(!value && !$(this).find('select').hasClass('extra-fields'))
-                    {
-                        if($(this).find('input').hasClass('ignore') || $(this).find('input').hasClass('optional') || $(this).find('input').hasClass('switch'))
-                        {
-                            // Move along...
-                            
-                        }
-                        else
-                        {
-                            var label = false;
-                            if($(this).find('label').html()) label = $(this).find('label').html();
-                            if(label) $.fn.blockstrap.core.modal('Error', 'Value for "'+label+'" Required');
-                            else $.fn.blockstrap.core.modal('Error', 'Value Required');
-                            $.fn.blockstrap.core.loader('close');
-                            return false;
-                        }
-                    }
-                }
-            });
-        }
-        if(
-            wallet 
-            && wallet.wallet_currency
-            && wallet.wallet_name 
-            && wallet.wallet_password 
-            && !wallet.cancel
-        )
-        {
-            $.fn.blockstrap.accounts.new(
-                wallet.wallet_currency, 
-                wallet.wallet_name,
-                wallet.wallet_password,
-                wallet,
-                function(account)
-                {
-                    /* NEED TO RESET THE INDEX HTML AND DATA */
-                    $.fn.blockstrap.templates.render('accounts', function()
-                    {
-                        $.fn.blockstrap.core.ready();
-                        $.fn.blockstrap.core.loader('close');
-                    }, true);
-                }
-            )
-        }
-        else
-        {
-            $.fn.blockstrap.core.loader('close');
-            if(!wallet.cancel)
-            {
-                $.fn.blockstrap.core.modal('Error', 'Missing wallet requirements');
-                return false;
-            }
-        }
-    }
-    
-    buttons.contact = function(button, e)
-    {
-        e.preventDefault();
-        var contact = {};
-        var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form'));
-        $.fn.blockstrap.core.loader('open');
-        $.fn.blockstrap.core.modals('close_all');
-        if($(form).length > 0)
-        {
-            $(form).find('.form-group').each(function(i)
-            {
-                var value = $(this).find('input').val();
-                if(value && !$(this).find('input').hasClass('optional')) 
-                {
-                    contact[$(this).find('input').attr('id')] = value;
-                }
-                else
-                {
-                    if($(this).find('select').length > 0 && !$(this).find('select').hasClass('extra-fields') || $(this).find('.optional').length > 0)
-                    {
-                        value = $(this).find('select').val();
-                        if(value && $(this).find('.optional').length < 1)
-                        {
-                            contact[$(this).find('select').attr('id')] = value;
-                        }
-                    }
-                    else if(!value && !$(this).find('select').hasClass('extra-fields'))
-                    {
-                        var label = false;
-                        if($(this).find('label').html()) label = $(this).find('label').html();
-                        if(label) $.fn.blockstrap.core.modal('Error', 'Value for "'+label+'" Required');
-                        else $.fn.blockstrap.core.modal('Error', 'Value Required');
-                        $.fn.blockstrap.core.loader('close');
-                        return false;
-                    }
-                }
-            });
-        }
-        if(
-            contact 
-            && contact.contact_name
-            && contact.contact_address 
-            && contact.contact_currency 
-        )
-        {
-            $.fn.blockstrap.contacts.new(
-                contact.contact_name, 
-                contact.contact_address,
-                contact.contact_currency,
-                contact,
-                function(contact)
-                {
-                    /* NEED TO RESET THE INDEX HTML AND DATA */
-                    $.fn.blockstrap.templates.render('contacts', function()
-                    {
-                        $.fn.blockstrap.core.ready();
-                        $.fn.blockstrap.core.loader('close');
-                    }, true);
-                }
-            )
-        }
-        else
-        {
-            $.fn.blockstrap.core.loader('close');
-            $.fn.blockstrap.core.modal('Error', 'Missing contact requirements');
-            return false;
-        }
-    }
-    
     buttons.toggle = function(button, e)
     {
         e.preventDefault();
@@ -677,176 +978,6 @@
         }
     }
     
-    buttons.remove = function(button, e)
-    {
-        e.preventDefault();
-        var key = $(button).attr('data-key');
-        var element = $(button).attr('data-element');
-        var collection = $(button).attr('data-collection');
-        var confirm = $(button).attr('data-confirm');
-        if(confirm)
-        {
-            var form = $.fn.blockstrap.forms.input({
-                label: 'Password',
-                type: 'password',
-                id: 'confirm-pw',
-                placeholder: 'Type your password to allow account removal'
-            });
-            var text = '<p>Please confirm removal of this account. You will not be able to use any of the coins on the account unless you can accurately re-create them or first back-up the private key. We hope you understand the risks. Please type the account password below and then press confirm to remove account.</p><p>'+form+'</p>';
-            $.fn.blockstrap.core.confirm('Confirmation Required', text, function()
-            {
-                $.fn.blockstrap.accounts.remove(collection, key, element, confirm);
-            });
-        }
-        else
-        {
-            $.fn.blockstrap.accounts.remove(collection, key, element, false);
-        }
-    }
-    
-    buttons.logout = function(button, e)
-    {
-        e.preventDefault();
-        var login_status = localStorage.getItem('nw_blockstrap_login');
-        if(blockstrap_functions.json(login_status))
-        {
-            $.fn.blockstrap.security.logout();
-        }
-        else
-        {
-            $.fn.blockstrap.core.modal('Warning', '<p>No login information has been established yet. Would you like to create login credentials now?<p><p><a href="#" class="btn btn-sm btn-success" id="create-login-credentials">Create Credentials</a> <a href="#" class="btn btn-sm btn-danger" data-dismiss="modal">Cancel</a></p>');
-        }
-    }
-    
-    buttons.login = function(button, e)
-    {
-        e.preventDefault();
-        var form_id = $(button).attr('data-form');
-        var username_id = $(button).attr('data-field-username');
-        var password_id = $(button).attr('data-field-password');
-        var form = $('form#'+form_id);
-        var username = $(form).find('#'+username_id).val();
-        var password = $(form).find('#'+password_id).val();
-        $.fn.blockstrap.security.login(username, password, function()
-        {
-            if($.fn.blockstrap.security.logged_in) location.reload();
-        });
-    }
-    
-    buttons.credentials = function(button, e)
-    {
-        e.preventDefault();
-        $('#login-credentials-modal').modal('show');
-    }
-    
-    buttons.set = function(button, e)
-    {
-        e.preventDefault();
-        var form_id = $(button).attr('data-form');
-        var username_id = $(button).attr('data-field-username');
-        var password_id = $(button).attr('data-field-password');
-        var repeat_id = $(button).attr('data-field-repeat');
-        var form = $($.fn.blockstrap.element).find('#'+form_id);
-        var username = $(form).find('#'+username_id).val();
-        var password = $(form).find('#'+password_id).val();
-        var repeat = $(form).find('#'+repeat_id).val();
-        if(username && password && password == repeat)
-        {
-            $.fn.blockstrap.security.credentials(username, password, function()
-            {
-                location.reload();
-            });
-        }
-        else
-        {
-            if(password != repeat)
-            {
-                $.fn.blockstrap.core.modal('Warning', 'Password Mismatch');
-            }
-            else
-            {
-                $.fn.blockstrap.core.modal('Warning', 'Missing Username & Password');
-            }
-        }
-    }
-    
-    buttons.more = function(button, e)
-    {
-        e.preventDefault();
-        var form_id = $(button).attr('data-form-id');
-        var hidden_class = $(button).attr('data-hidden-class');
-        var form = $('form#'+form_id);
-        $(form).find('.'+hidden_class).parent().each(function(i)
-        {
-            if($(this).css('display') === 'none')
-            {
-                $(this).show(350);
-                $(button).text('Less Security');
-                $(button).removeClass('btn-default').addClass('btn-danger');
-            }
-            else
-            {
-                $(this).hide(350);
-                $(button).text('More Security');
-                $(button).removeClass('btn-danger').addClass('btn-default');
-            }
-        });
-    }
-    
-    buttons.access = function(button, e)
-    {
-        e.preventDefault();
-        var account_id = $(button).attr('data-key');
-        $.fn.blockstrap.data.find('accounts', account_id, function(account)
-        {
-            var title = 'Public Key:';
-            if(account.address) title = title + ' ' + account.address;
-            var qr_code = '<p class="qr-holder" data-content="'+account.address+'"></p>';
-            var form = $.fn.blockstrap.forms.process({
-                objects: [
-                    {
-                        css: 'form-horizontal',
-                        fields: [
-                            {
-                                selects: {
-                                    id: 'access-account',
-                                    label: {
-                                        text: 'How to process this...?',
-                                        css: 'col-xs-4'
-                                    },
-                                    wrapper: {
-                                        css: 'col-xs-8'
-                                    },
-                                    values: [
-                                        {
-                                            value: '',
-                                            text: '-- Select an Option --'
-                                        },
-                                        {
-                                            value: 'print',
-                                            text: 'Print Public Key'
-                                        },
-                                        {
-                                            value: 'access',
-                                            text: 'Access Private Key'
-                                        }
-                                    ],
-                                    attributes: [
-                                        {
-                                            key: 'data-account-id',
-                                            value: account_id
-                                        }
-                                    ]
-                                }
-                            }
-                        ]
-                    }
-                ]
-            });
-            $.fn.blockstrap.core.modal(title, qr_code + form);
-        });
-    }
-    
     buttons.verify = function(button, e)
     {
         e.preventDefault();
@@ -889,140 +1020,6 @@
             });
         });
     }
-    
-    buttons.print = function(button, e)
-    {
-        e.preventDefault();
-        var print_id = $(button).attr('data-print-id');
-        var print_class = $(button).attr('data-print-class');
-        var print_title = $(button).attr('data-print-title');
-        var contents = $('#'+print_id).html();
-        if(print_class) contents = $('#'+print_id).find('.'+print_class).html();
-        if(print_title) contents = '<h3>'+print_title+'</h3>'+contents;
-        $.fn.blockstrap.core.print(contents);
-    }
-    
-    buttons.prepare = function(button, e)
-    {
-        e.preventDefault();
-        var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form-id'));
-        var to = $(form).find('#to').val();
-        var from = $(form).find('#from').val();
-        var amount = parseFloat($(form).find('#amount').val()) * 100000000;
-        if(!to) $.fn.blockstrap.core.modal('Warning', 'Missing address to send payment to');
-        else if(!from) $.fn.blockstrap.core.modal('Warning', 'Missing account to use to send from');
-        else if(!amount) $.fn.blockstrap.core.modal('Warning', 'You have not provided the amount you want to send');
-        else
-        {
-            $.fn.blockstrap.accounts.prepare(to, from, amount);
-        }
-    }
-    
-    buttons.send = function(button, e)
-    {
-        e.preventDefault();
-        var fields = [];
-        var form_id = $(button).attr('data-form-id');
-        var account_id = $(button).attr('data-account-id');
-        var to_address = $(button).attr('data-to-address');
-        var to_amount = parseInt($(button).attr('data-to-amount'));
-        var form = $('form#'+form_id);
-        var account = $.fn.blockstrap.accounts.get(account_id);
-        var balance = account.balance;
-        var fee = $.fn.blockstrap.settings.currencies.btc.fee * 100000000;
-        var from_address = account.address;
-        var change = balance - (to_amount + fee);
-        var current_tx_count = account.tx_count;
-        if(balance < to_amount + fee)
-        {
-            $.fn.blockstrap.core.modal('Warning', 'You do not have sufficient funds');
-        }
-        else
-        {
-            $.fn.blockstrap.core.modals('close_all');
-            $.fn.blockstrap.core.loader('open');
-            $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
-            {
-                $(form).find('.form-group').each(function(i)
-                {
-                    var input = $(this).find('input');
-                    var value = $(input).val();
-                    var id = $(input).attr('id');
-                    fields.push({
-                        id: id,
-                        value: value
-                    });
-                });
-                $.fn.blockstrap.accounts.verify(account, fields, function(verified, keys)
-                {
-                    if(verified === true)
-                    {
-                        var private_key = keys.privkey.toString();
-                        $.fn.blockstrap.api.unspents(keys.pubkey.toString(), 'btc', function(unspents)
-                        {
-                            if($.isArray(unspents))
-                            {
-                                var inputs = [];
-                                var outputs = [{
-                                    'address': to_address,
-                                    'value': to_amount
-                                }];
-                                $.each(unspents, function(k, unspent)
-                                {
-                                    inputs.push({
-                                        txid: unspent.txid,
-                                        n: unspent.index,
-                                        script: unspent.script,
-                                        value: unspent.value,
-                                    });
-                                });
-                                var raw_transaction = $.fn.blockstrap.btc.raw(from_address, private_key, inputs, outputs, fee, to_amount);
-                                $.fn.blockstrap.api.relay(raw_transaction, 'btc', function(tx)
-                                {
-                                    if(tx && tx.txid)
-                                    {
-                                        account.ts = new Date().getTime();
-                                        account.balance = change;
-                                        account.tx_count++;
-                                        $.fn.blockstrap.data.save('accounts', account_id, account, function(obj)
-                                        {
-                                            $.fn.blockstrap.core.refresh(function()
-                                            {
-                                                var title = 'Sent ' + parseInt(to_amount) / 100000000 + ' Bitcoin to ' + to_address;
-                                                var base = $.fn.blockstrap.settings.base_url;
-                                                var content = '<p>Transaction ID: ' + tx.txid + '</p><p>You can <a href="' + base + '?txid=' + tx.txid + '#transaction">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchain.info/tx/' + tx.txid + '">this</a>.</p><p>Please note that upon refreshing or switching pages, balances may return to their previous totals when transactions are successful but unconfirmed, where they can take anywhere upto 10 minutes to be confirmed. We will provide dual balances for each currency in the next release.</p>';
-                                                $.fn.blockstrap.core.modal(title, content);
-                                                $.fn.blockstrap.core.loader('close');
-                                            });
-                                        });
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
-            });
-        }
-    }
-    
-    buttons.refresh = function(button, e)
-    {
-        e.preventDefault();
-        var collection = $(button).attr('data-collection');
-        var key = $(button).attr('data-key');
-        if(collection == 'accounts')
-        {
-            $.fn.blockstrap.core.loader('open');
-            var account = $.fn.blockstrap.accounts.get(key);
-            $.fn.blockstrap.accounts.update(account, function()
-            {
-                $.fn.blockstrap.core.refresh(function()
-                {
-                    $.fn.blockstrap.core.loader('close');
-                });
-            }, true);
-        }
-    }       
     
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {buttons:buttons});

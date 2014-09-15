@@ -10,13 +10,27 @@
 
 (function($) 
 {
-    // EMPTY OBJECTS
     var btc = {};
     var vals = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
     var positions = {};
     for (var i=0 ; i < vals.length ; ++i) 
     {
         positions[vals[i]] = i;
+    }
+    
+    btc.check = function(input)
+    {
+        var bytes = btc.decode(input);
+        var front = bytes.slice(0,bytes.length-4);
+        var back = bytes.slice(bytes.length-4);
+        var checksum = Crypto.SHA256(Crypto.SHA256(front,{asBytes: true}), {asBytes: true}).slice(0,4);
+        if (""+checksum != ""+back)
+        {
+            throw new Error("Checksum failed");
+        }
+        var o = front.slice(1);
+        o.version = front[0];
+        return o;
     }
     
     btc.decode = function(input)
@@ -82,34 +96,6 @@
     {
         return '' + CryptoJS.AES.encrypt(string, Crypto.SHA256(key));
     }
-        
-    btc.check = function(input)
-    {
-        var bytes = btc.decode(input);
-        var front = bytes.slice(0,bytes.length-4);
-        var back = bytes.slice(bytes.length-4);
-        var checksum = Crypto.SHA256(Crypto.SHA256(front,{asBytes: true}), {asBytes: true}).slice(0,4);
-        if (""+checksum != ""+back)
-        {
-            throw new Error("Checksum failed");
-        }
-        var o = front.slice(1);
-        o.version = front[0];
-        return o;
-    }
-    
-    btc.validate = function(address)
-    {
-        try 
-        {
-            btc.check(address);
-            return true;
-        } 
-        catch(e) 
-        {
-            return false;
-        }
-    }
     
     btc.keys = function(secret, password)
     {
@@ -163,6 +149,19 @@
         }
         var sendTx = (TX.construct());
         return Crypto.util.bytesToHex(sendTx.serialize());
+    }
+    
+    btc.validate = function(address)
+    {
+        try 
+        {
+            btc.check(address);
+            return true;
+        } 
+        catch(e) 
+        {
+            return false;
+        }
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
