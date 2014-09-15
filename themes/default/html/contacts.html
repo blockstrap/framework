@@ -79,7 +79,13 @@
                             </td>
                             <td>
                                 <div class="cell">
-                                    <a href="#" class="btn btn-primary btn-xs">Send</a>
+                                    
+                                    {{#currencies}}
+                                        {{#addresses}}
+                                            <a href="{{urls.root}}?key={{key}}#send" class="btn btn-primary btn-xs">Send</a>
+                                        {{/addresses}}
+                                    {{/currencies}}
+                                    
                                     <a href="#" class="btn btn-default btn-xs">Edit</a>
                                     <a 
                                        href="#" 

@@ -62,7 +62,6 @@
             else
             {
                 txid = '';
-                key = '';
                 tx = {
                     size: 0,
                     time: 0,
