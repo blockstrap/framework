@@ -395,7 +395,7 @@
                 var temp_html = $(form).find('#temporary_question').html();
                 $(form).find('#temporary_question').after(temp_html);
                 $(form).find('#temporary_question').remove();
-                $.fn.blockstrap.core.new();
+                $.fn.blockstrap.core.ready();
             });
         }
     }

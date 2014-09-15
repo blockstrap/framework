@@ -60,11 +60,11 @@
                 history.pushState({slug:slug}, document.getElementsByTagName("title")[0].innerHTML, url + refresh + '#'+slug);
             }
             $($.fn.blockstrap.element).find('.activated').removeClass('activated');
-            $.fn.blockstrap.core.new();
+            $.fn.blockstrap.core.ready();
         }
         else
         {
-            $.fn.blockstrap.core.new();
+            $.fn.blockstrap.core.ready();
         }
     }
     
@@ -419,7 +419,7 @@
                                             $($.fn.blockstrap.element).append(page);
                                             $($.fn.blockstrap.element).addClass('loading');
                                             $($.fn.blockstrap.element).find('#blockstrap-loader').css({'opacity': 1, 'z-index': 9999999});
-                                            $.fn.blockstrap.core.new();
+                                            $.fn.blockstrap.core.ready();
                                             $.fn.blockstrap.core.loader();
                                         });
                                     });
@@ -511,7 +511,7 @@
                     /* NEED TO RESET THE INDEX HTML AND DATA */
                     $.fn.blockstrap.templates.render('accounts', function()
                     {
-                        $.fn.blockstrap.core.new();
+                        $.fn.blockstrap.core.ready();
                         $.fn.blockstrap.core.loader('close');
                     }, true);
                 }
@@ -583,7 +583,7 @@
                     /* NEED TO RESET THE INDEX HTML AND DATA */
                     $.fn.blockstrap.templates.render('contacts', function()
                     {
-                        $.fn.blockstrap.core.new();
+                        $.fn.blockstrap.core.ready();
                         $.fn.blockstrap.core.loader('close');
                     }, true);
                 }

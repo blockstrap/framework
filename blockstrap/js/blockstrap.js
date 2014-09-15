@@ -26,6 +26,8 @@ var blockstrap_core = function()
         var $this = this;
         var init_bs = false;
         var plugin_name = 'blockstrap';
+        var resize_time = new Date();
+        var resize_timeout = false;
         var defaults = {
             v: '0.2.0.5',
             salt: '',
@@ -408,7 +410,7 @@ var blockstrap_core = function()
 
         // CORE FUNCTIONS
         $.fn.blockstrap.core = {
-            new: function()
+            ready: function()
             {
                 /* 
 
@@ -416,27 +418,43 @@ var blockstrap_core = function()
                 NEW HTML IS LOADED INTO THE DOM
 
                 */
-                //$.fn.blockstrap.accounts.updates(0, function()
-                //{
-                    $.fn.blockstrap.core.table();
-                    $.fn.blockstrap.core.forms();
-                    $.fn.blockstrap.core.page();
-
-                    // Not handling lack of these being activated ...
-                    $.fn.blockstrap.theme.new();
-                    $.fn.blockstrap.buttons.new();
-                    //$.fn.blockstrap.templates.filter();
-                //});
-            },
-            resize: function()
-            {
-                /* 
-
-                THESE FUNCTIONS NEED TO RUN EVERY TIME
-                DOCUMENT IS RESIZED - NEEDS TIMER
-
-                */
                 $.fn.blockstrap.core.table();
+                $.fn.blockstrap.core.forms();
+                $.fn.blockstrap.core.page();
+
+                // TODO: 
+                // Handle inactive modules?
+                $.fn.blockstrap.theme.new();
+                $.fn.blockstrap.buttons.new();
+            },
+            resize: function(delay)
+            {
+                if(!delay) delay = 200;
+                resize_time = new Date();
+                if(resize_timeout === false) 
+                {
+                    resize_timeout = true;
+                    setTimeout($.fn.blockstrap.core.resized, delay);
+                }
+            },
+            resized: function(delay)
+            {
+                if(!delay) delay = 200;
+                if(new Date() - resize_time < delay) 
+                {
+                    setTimeout($.fn.blockstrap.core.resized, delay);
+                } 
+                else 
+                {
+                    resize_timeout = false;
+                    /* 
+
+                    THESE FUNCTIONS NEED TO RUN EVERY TIME
+                    THE WINDOW IS RESIZED - TODO: NEEDS TIMER
+
+                    */
+                    $.fn.blockstrap.core.table();
+                }   
             },
             init: function()
             {
@@ -459,7 +477,7 @@ var blockstrap_core = function()
                             $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
                             {
                                 $.fn.blockstrap.core.loading();
-                                $.fn.blockstrap.core.new();
+                                $.fn.blockstrap.core.ready();
                                 $(window).resize(function(e)
                                 {
                                     $.fn.blockstrap.core.resize();
@@ -486,7 +504,7 @@ var blockstrap_core = function()
                                         $.fn.blockstrap.core.modals();
                                         $.fn.blockstrap.core.buttons();
                                         $.fn.blockstrap.core.nav(window.location.hash);
-                                        $.fn.blockstrap.core.new();
+                                        $.fn.blockstrap.core.ready();
                                         $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
                                         {
                                             $.fn.blockstrap.core.loading();
@@ -499,7 +517,7 @@ var blockstrap_core = function()
                                 }
                                 else
                                 {
-                                    $.fn.blockstrap.core.new();
+                                    $.fn.blockstrap.core.ready();
                                     $.fn.blockstrap.styles.set();
                                     $.fn.blockstrap.core.modals();
                                     $.fn.blockstrap.core.buttons();
@@ -556,7 +574,7 @@ var blockstrap_core = function()
                         $.fn.blockstrap.templates.render(page, function()
                         {
                             $.fn.blockstrap.core.nav(page);
-                            $.fn.blockstrap.core.new();
+                            $.fn.blockstrap.core.ready();
                             //$.fn.blockstrap.core.loader('close');
                             if(callback) callback();
                         }, true);
@@ -565,7 +583,7 @@ var blockstrap_core = function()
                     {
                         $.fn.blockstrap.templates.render($.fn.blockstrap.settings.slug_base, function()
                         {
-                            $.fn.blockstrap.core.new();
+                            $.fn.blockstrap.core.ready();
                             //$.fn.blockstrap.core.loader('close');
                             if(callback) callback();
                         }, true);
