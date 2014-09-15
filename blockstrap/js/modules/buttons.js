@@ -299,16 +299,20 @@
         if(blockstrap_functions.json(obj)) obj = $.parseJSON(obj);
         if($.isPlainObject(obj))
         {
-            console.log('obj', obj);
             var title = 'Edit Contact Details';
             var contact_fields = [
                 {
-                    "inputs": {
-                        "label": {
-                            "text": "Name"
+                    inputs: {
+                        id: "name",
+                        label: {
+                            text: "Name",
+                            css: "col-xs-3"
                         },
-                        "type": "text",
-                        "value": obj.name
+                        type: "text",
+                        value: obj.name,
+                        wrapper: {
+                            css: "col-xs-9"
+                        }
                     }
                 }
             ];
@@ -328,12 +332,17 @@
                             $.each(currency.addresses, function(key, address)
                             {
                                 fields.push({
-                                    "inputs": {
-                                        "label": {
-                                            "text": currency.currency + " Address"
+                                    inputs: {
+                                        id: "currencies."+k+".addresses."+key+".key",
+                                        label: {
+                                            text: currency.currency + " Address",
+                                            css: "col-xs-3"
                                         },
-                                        "type": "text",
-                                        "value": address.key
+                                        type: "text",
+                                        value: address.key,
+                                        wrapper: {
+                                            css: "col-xs-9"
+                                        }
                                     }
                                 });
                             });
@@ -344,12 +353,33 @@
             var form = $.fn.blockstrap.forms.process({
                 objects: [
                     {
+                        id: "edit-" + collection,
+                        css: "form-horizontal",
                         fields: fields,
                         buttons: {
                             forms: [
                                 {
-                                    "css": "btn-success pull-right",
-                                    "text": "Save"
+                                    id: "edit-object",
+                                    css: "btn-success pull-right",
+                                    text: "Save",
+                                    attributes: [
+                                        {
+                                            key: "data-key",
+                                            value: key
+                                        },
+                                        {
+                                            key: "data-collection",
+                                            value: collection
+                                        },
+                                        {
+                                            key: "data-element",
+                                            value: element
+                                        },
+                                        {
+                                            key: "data-form-id",
+                                            value: "edit-" + collection
+                                        }
+                                    ]       
                                 }
                             ]
                         }
@@ -587,6 +617,7 @@
             $.fn.blockstrap.core.ready();
         }
     }
+    
     buttons.refresh = function(button, e)
     {
         e.preventDefault();
@@ -647,6 +678,51 @@
         {
             $.fn.blockstrap.core.reset();
         }
+    }
+    
+    buttons.save = function(button, e)
+    {
+        e.preventDefault();
+        var key = $(button).attr('data-key');
+        var element = $(button).attr('data-element');
+        var collection = $(button).attr('data-collection');
+        var form_id = $(button).attr('data-form-id');
+        var form = $($.fn.blockstrap.element).find('form#' + form_id);
+        var obj = localStorage.getItem('nw_' + collection + '_' + key);
+        if(blockstrap_functions.json(obj)) obj = $.parseJSON(obj);
+        $(form).find('.form-group').each(function(i)
+        {
+            var input = $(this).find('input');
+            var value = $(input).val();
+            var id = $(input).attr('id');
+            if(id.indexOf('.') > -1)
+            {
+                var ids = id.split('.');
+                var address = value;
+                if($.fn.blockstrap.btc.validate(address))
+                {
+                    obj[ids[0]][ids[1]][ids[2]][ids[3]].key = address;
+                    if(i >= $(form).find('.form-group').length - 1)
+                    {
+                        $.fn.blockstrap.data.save(collection, key, obj, function()
+                        {
+                            $.fn.blockstrap.core.refresh(function()
+                            {
+                                $.fn.blockstrap.core.modal('Success', 'Edit Saved');
+                            });
+                        });
+                    }
+                }
+                else
+                {
+                    $.fn.blockstrap.core.modal('Warning', 'Not a valid address');
+                }
+            }
+            else
+            {
+                obj[id] = value;
+            }
+        });
     }
     
     buttons.send = function(button, e)

@@ -381,7 +381,7 @@
                 var salt = $.parseJSON(salted);
                 var password_object = CryptoJS.SHA3(salt+pw_value, { outputLength: 512 });
                 var password = password_object.toString();
-                if(confirm == password)
+                if(!confirm || confirm && confirm == password)
                 {
                     $('#confirm-modal').modal('hide');
                     localStorage.removeItem('nw_' + collection + '_' + key);

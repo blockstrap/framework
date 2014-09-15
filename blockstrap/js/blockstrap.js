@@ -498,6 +498,10 @@ var blockstrap_core = function()
                 {
                     $.fn.blockstrap.buttons.refresh(this, e);
                 });
+                $($.fn.blockstrap.element).on('click', '#edit-object', function(e)
+                {
+                    $.fn.blockstrap.buttons.save(this, e);
+                });
             },
             confirm: function(title, content, callback)
             {
