@@ -626,29 +626,30 @@ var blockstrap_core = function()
                 });
                 $($.fn.blockstrap.element).find('.bs-currency-select').each(function(i)
                 {
-                    //if($(this).find('option').length < 1)
-                    //{
-                        var select = $(this);
-                        var currencies = $.fn.blockstrap.settings.currencies;
-                        $(select).html('');
-                        if($.isPlainObject(currencies))
+                    var select = $(this);
+                    var currencies = $.fn.blockstrap.settings.currencies;
+                    $(select).html('');
+                    if($.isPlainObject(currencies))
+                    {
+                        $(select).append('<option value="">-- Select Currency --</option>');
+                        $.each(currencies, function(currency, v)
                         {
-                            $(select).append('<option value="">-- Select Currency --</option>');
-                            $.each(currencies, function(currency, v)
-                            {
-                                $(select).append('<option value="'+currency+'">'+v.currency+'</option>');
-                            });
-                        }
-                    //}
+                            $(select).append('<option value="'+currency+'">'+v.currency+'</option>');
+                        });
+                    }
                 });
                 $($.fn.blockstrap.element).find('.bs-account-select').each(function(i)
                 {
-                    //if($(this).find('option').length < 1)
-                    //{
-                        var select = $(this);
-                        var accounts = $.fn.blockstrap.accounts.get();
-                        $(select).html('');
-                        if($.isArray(accounts))
+                    var select = $(this);
+                    var accounts = $.fn.blockstrap.accounts.get();
+                    $(select).html('');
+                    if($.isArray(accounts))
+                    {
+                        if(blockstrap_functions.array_length(accounts) === 1)
+                        {
+                            $(select).append('<option value="' + accounts[0].id + '">' + accounts[0].name + ' (' + accounts[0].currency.type + ')</option>');
+                        }
+                        else
                         {
                             $(select).append('<option value="">-- Select Account --</option>');
                             $.each(accounts, function(k, account)
@@ -656,7 +657,7 @@ var blockstrap_core = function()
                                 $(select).append('<option value="' + account.id + '">' + account.name + ' (' + account.currency.type + ')</option>');
                             });
                         }
-                    //}
+                    }
                 });
                 $($.fn.blockstrap.element).on('submit', '#blockstrap-login', function(e)
                 {
