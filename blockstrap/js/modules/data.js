@@ -74,11 +74,6 @@
         }
     };
     
-    data.size = function(callback)
-    {
-        callback()
-    };  
-    
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {data:data});
 })

@@ -1256,12 +1256,11 @@ var blockstrap_functions = {
                 new_script.text = js_file;
                 head.appendChild(new_script);
                 blockstrap_functions.include(blockstrap, start, files, callback, dependency);
-
             }
         }
         else
         {
-            callback();
+            if(callback) callback();
         }
     },
     initialize: function()
