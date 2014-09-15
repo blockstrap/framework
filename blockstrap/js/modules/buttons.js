@@ -289,6 +289,77 @@
         $('#login-credentials-modal').modal('show');
     }
     
+    buttons.edit = function(button, e)
+    {
+        e.preventDefault();
+        var key = $(button).attr('data-key');
+        var element = $(button).attr('data-element');
+        var collection = $(button).attr('data-collection');
+        var obj = localStorage.getItem('nw_' + collection + '_' + key);
+        if(blockstrap_functions.json(obj)) obj = $.parseJSON(obj);
+        if($.isPlainObject(obj))
+        {
+            console.log('obj', obj);
+            var title = 'Edit Contact Details';
+            var contact_fields = [
+                {
+                    "inputs": {
+                        "label": {
+                            "text": "Name"
+                        },
+                        "type": "text",
+                        "value": obj.name
+                    }
+                }
+            ];
+            fields = contact_fields;
+            if(collection == 'accounts')
+            {
+                fields = account_fields;
+            }
+            else
+            {
+                if($.isArray(obj.currencies))
+                {
+                    $.each(obj.currencies, function(k, currency)
+                    {
+                        if($.isArray(currency.addresses))
+                        {
+                            $.each(currency.addresses, function(key, address)
+                            {
+                                fields.push({
+                                    "inputs": {
+                                        "label": {
+                                            "text": currency.currency + " Address"
+                                        },
+                                        "type": "text",
+                                        "value": address.key
+                                    }
+                                });
+                            });
+                        }
+                    });
+                }
+            }
+            var form = $.fn.blockstrap.forms.process({
+                objects: [
+                    {
+                        fields: fields,
+                        buttons: {
+                            forms: [
+                                {
+                                    "css": "btn-success pull-right",
+                                    "text": "Save"
+                                }
+                            ]
+                        }
+                    }
+                ]               
+            });
+            $.fn.blockstrap.core.modal(title, form);
+        }
+    }
+    
     buttons.login = function(button, e)
     {
         e.preventDefault();

@@ -449,6 +449,10 @@ var blockstrap_core = function()
                 {
                     $.fn.blockstrap.buttons.remove(this, e);
                 });
+                $($.fn.blockstrap.element).on('click', '.btn-edit', function(e)
+                {
+                    $.fn.blockstrap.buttons.edit(this, e);
+                });
                 $($.fn.blockstrap.element).on('click', '.btn-logout', function(e)
                 {
                     $.fn.blockstrap.buttons.logout(this, e);
