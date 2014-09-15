@@ -1206,7 +1206,7 @@ var blockstrap_functions = {
         if(!dependency) dependency = false;
         if(!start) start = 0;
         
-        if($.isArray(files))
+        if($.isArray(files) && files[start])
         {
             var js = '';
             var file_name = files[start];
@@ -1241,16 +1241,8 @@ var blockstrap_functions = {
                         }
 
                         localStorage.setItem('nw_js_'+file_name, js);
-
-                        if(start >= limit)
-                        {
-                            callback();
-                        }
-                        else
-                        {
-                            start++;
-                            blockstrap_functions.include(blockstrap, start, files, callback, dependency);
-                        }
+                        start++;
+                        blockstrap_functions.include(blockstrap, start, files, callback, dependency);
                     });
                 });
 
@@ -1263,15 +1255,13 @@ var blockstrap_functions = {
                 new_script.setAttribute('id', file_name);
                 new_script.text = js_file;
                 head.appendChild(new_script);
-                if(start >= limit)
-                {
-                    callback();
-                }
-                else
-                {
-                    blockstrap_functions.include(blockstrap, start, files, callback, dependency);
-                }
+                blockstrap_functions.include(blockstrap, start, files, callback, dependency);
+
             }
+        }
+        else
+        {
+            callback();
         }
     },
     initialize: function()
