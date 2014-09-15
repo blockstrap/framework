@@ -410,263 +410,90 @@ var blockstrap_core = function()
 
         // CORE FUNCTIONS
         $.fn.blockstrap.core = {
-            ready: function()
+            ago: function(time)
             {
-                /* 
-
-                THESE FUNCTIONS NEED TO RUN EVERY TIME
-                NEW HTML IS LOADED INTO THE DOM
-
-                */
-                $.fn.blockstrap.core.table();
-                $.fn.blockstrap.core.forms();
-                $.fn.blockstrap.core.page();
-
-                // TODO: 
-                // Handle inactive modules?
-                $.fn.blockstrap.theme.new();
-                $.fn.blockstrap.buttons.new();
+                var date = new Date();;
+                if(time) date = new Date(time * 1000);
+                return jQuery.timeago(date)
             },
-            resize: function(delay)
+            buttons: function()
             {
-                if(!delay) delay = 200;
-                resize_time = new Date();
-                if(resize_timeout === false) 
+                $($.fn.blockstrap.element).on('click', '.btn-page', function(e)
                 {
-                    resize_timeout = true;
-                    setTimeout($.fn.blockstrap.core.resized, delay);
-                }
-            },
-            resized: function(delay)
-            {
-                if(!delay) delay = 200;
-                if(new Date() - resize_time < delay) 
+                    $.fn.blockstrap.buttons.page(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '.btn-reset-device', function(e)
                 {
-                    setTimeout($.fn.blockstrap.core.resized, delay);
-                } 
-                else 
+                    $.fn.blockstrap.buttons.reset(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '.bs-setup', function(e)
                 {
-                    resize_timeout = false;
-                    /* 
-
-                    THESE FUNCTIONS NEED TO RUN EVERY TIME
-                    THE WINDOW IS RESIZED - TODO: NEEDS TIMER
-
-                    */
-                    $.fn.blockstrap.core.table();
-                }   
-            },
-            init: function()
-            {
-                // RESET IF REQUIRED
-                if(blockstrap_functions.vars('reset') === true)
+                    $(this).addClass('loading');
+                    $.fn.blockstrap.buttons.setup(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '#create-account', function(e)
                 {
-                    $.fn.blockstrap.buttons.reset(false, false);
-                }
-                else if(!init_bs)
+                    $(this).addClass('loading');
+                    $.fn.blockstrap.buttons.account(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '#create-contact', function(e)
                 {
-                    init_bs = true;
-                    // Check for login credentials...?
-                    if(!$.fn.blockstrap.security.logged_in())
-                    {
-                        $.fn.blockstrap.templates.render('../../../blockstrap/html/bootstrap/login', function()
-                        {
-                            $.fn.blockstrap.styles.set();
-                            $.fn.blockstrap.core.modals();
-                            $.fn.blockstrap.core.buttons();
-                            $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
-                            {
-                                $.fn.blockstrap.core.loading();
-                                $.fn.blockstrap.core.ready();
-                                $(window).resize(function(e)
-                                {
-                                    $.fn.blockstrap.core.resize();
-                                })
-                            });
-                        });
-                    }
-                    else
-                    {
-                        $.fn.blockstrap.accounts.updates(0, function()
-                        {
-                            
-                            setInterval(function()
-                            {
-                                $.fn.blockstrap.accounts.poll();
-                            }, $.fn.blockstrap.settings.cache.accounts);
-                            $.fn.blockstrap.templates.render('index', function()
-                            {
-                                if(window.location.hash)
-                                {
-                                    $.fn.blockstrap.core.refresh(function()
-                                    {
-                                        $.fn.blockstrap.styles.set();
-                                        $.fn.blockstrap.core.modals();
-                                        $.fn.blockstrap.core.buttons();
-                                        $.fn.blockstrap.core.nav(window.location.hash);
-                                        $.fn.blockstrap.core.ready();
-                                        $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
-                                        {
-                                            $.fn.blockstrap.core.loading();
-                                            $(window).resize(function(e)
-                                            {
-                                                $.fn.blockstrap.core.resize();
-                                            })
-                                        });
-                                    }, blockstrap_functions.slug(window.location.hash));
-                                }
-                                else
-                                {
-                                    $.fn.blockstrap.core.ready();
-                                    $.fn.blockstrap.styles.set();
-                                    $.fn.blockstrap.core.modals();
-                                    $.fn.blockstrap.core.buttons();
-                                    $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
-                                    {
-                                        $.fn.blockstrap.core.loading();
-                                        $(window).resize(function(e)
-                                        {
-                                            $.fn.blockstrap.core.resize();
-                                        })
-                                    });
-                                }
-                                var run_tests = false;
-                                var tests = blockstrap_functions.vars('tests');
-                                if(tests) run_tests = true;
-                                $.fn.blockstrap.core.tests(run_tests);
-                            });
-                        }, true, true);
-                    }
-                }
-            },
-            page: function()
-            {
-                if(window.location.hash)
+                    $(this).addClass('loading');
+                    $.fn.blockstrap.buttons.contact(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '.bs-toggle', function(e)
                 {
-                    var slug_array = window.location.hash.split('#');
-                    $.fn.blockstrap.settings.page = slug_array[1];
-                }
-                else
+                    $.fn.blockstrap.buttons.toggle(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '.btn-remove', function(e)
                 {
-                    $.fn.blockstrap.settings.page = 'index';
-                }
-                return $.fn.blockstrap.settings.page;
-            },
-            nav: function(slug)
-            {
-                var nav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id);
-                var mnav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.mobile_nav_id);
-                $(nav).find('.active').removeClass('active');
-                $(mnav).find('.active').removeClass('active');
-                if(slug.charAt(0) != '#') slug = '#' + slug;
-                $(nav).find(slug).addClass('active');
-                $(mnav).find(slug).addClass('active');
-            },
-            refresh: function(callback, slug)
-            {
-                //$.fn.blockstrap.core.loader('open');
-                var page = $.fn.blockstrap.core.page();
-                if(slug) page = slug;
-                $.fn.blockstrap.templates.render('index', function()
+                    $.fn.blockstrap.buttons.remove(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '.btn-logout', function(e)
                 {
-                    if(page != 'index')
-                    {
-                        $.fn.blockstrap.templates.render(page, function()
-                        {
-                            $.fn.blockstrap.core.nav(page);
-                            $.fn.blockstrap.core.ready();
-                            //$.fn.blockstrap.core.loader('close');
-                            if(callback) callback();
-                        }, true);
-                    }
-                    else
-                    {
-                        $.fn.blockstrap.templates.render($.fn.blockstrap.settings.slug_base, function()
-                        {
-                            $.fn.blockstrap.core.ready();
-                            //$.fn.blockstrap.core.loader('close');
-                            if(callback) callback();
-                        }, true);
-                    }
-                }, true, true);
-            },
-            image: function(input, callback)
-            {
-                if(input.files && input.files[0]) 
+                    $.fn.blockstrap.buttons.logout(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '.btn-login', function(e)
                 {
-                    var reader = new FileReader();
-                    reader.onload = function(e) 
-                    {
-                        var image = e.target.result;
-                        callback(image);
-
-                    };       
-                    reader.readAsDataURL(input.files[0]);
-                }
-            },
-            modal: function(title, content, id)
-            {
-                var selector = $('#default-modal');
-                if(id) selector = $('#'+id);
-                $(selector).find('.modal-title').html(title);
-                $(selector).find('.modal-body').html(content);
-                $(selector).modal('show');
-            },
-            modals: function(action)
-            {
-                if(action)
+                    $.fn.blockstrap.buttons.login(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '#create-login-credentials', function(e)
                 {
-                    if(action === 'close_all')
-                    {
-                        $($.fn.blockstrap.element).find('.modal').each(function(i)
-                        {
-                            $(this).modal('hide');
-                        });
-                    }
-                }
-                else
+                    $.fn.blockstrap.buttons.credentials(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '#set-credentials', function(e)
                 {
-                    $($.fn.blockstrap.element).on('show.bs.modal', '.modal', function(i)
-                    {
-                        var this_id = $(this).attr('id');
-                        var this_form = $(this).find('form');
-                        $($.fn.blockstrap.element).find('.modal').each(function(i)
-                        {
-                            if($(this).attr('id') != this_id)
-                            {
-                                $(this).modal('hide');
-                            }
-                        });
-                        $(this_form).find('label.hidden-label').each(function(i)
-                        {
-                            var wrapper = $(this).parent();
-                            $(wrapper).hide(0);
-                        })
-                    });
-                    $($.fn.blockstrap.element).on('shown.bs.modal', '.modal', function(i)
-                    {
-                        var this_form = $(this).find('form');
-                        if($(this_form).find('input').length > 0)
-                        {
-                            var input = $(this_form).find('input[type!=hidden]:first');
-                            $(input).focus();
-                        }
-                        $(this).find('.qr-holder').each(function()
-                        {
-                            $(this).qrcode({
-                                render: 'image',
-                                text: $(this).attr('data-content')
-                            });
-                        })
-                    });
-                    $($.fn.blockstrap.element).on('show.bs.modal', '#new-account-modal', function(i)
-                    {
-                        if($(this).find('#more-security').html() == 'Less Security')
-                        {
-                            $(this).find('#more-security').trigger('click');
-                        }
-                    });
-                }
+                    $(this).addClass('loading');
+                    $.fn.blockstrap.buttons.set(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '#more-security', function(e)
+                {
+                    $.fn.blockstrap.buttons.more(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '.btn-access', function(e)
+                {
+                    $.fn.blockstrap.buttons.access(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '#submit-verification', function(e)
+                {
+                    $.fn.blockstrap.buttons.verify(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '.btn-print', function(e)
+                {
+                    $.fn.blockstrap.buttons.print(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '#send-money', function(e)
+                {
+                    $.fn.blockstrap.buttons.prepare(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '#submit-payment', function(e)
+                {
+                    $.fn.blockstrap.buttons.send(this, e);
+                });
+                $($.fn.blockstrap.element).on('click', '.btn-refresh', function(e)
+                {
+                    $.fn.blockstrap.buttons.refresh(this, e);
+                });
             },
             confirm: function(title, content, callback)
             {
@@ -676,6 +503,37 @@ var blockstrap_core = function()
                 {
                     callback(true);
                 });
+            },
+            css: function(callback)
+            {
+                var core_css = $.fn.blockstrap.settings.core_base + 'css/';
+                $.isArray($.fn.blockstrap.settings.css)
+                {
+                    var files = Object.keys($.fn.blockstrap.settings.css).length;
+                    $.each($.fn.blockstrap.settings.css, function(k, v)
+                    {
+                        $('head').append('<link rel="stylesheet" type="text/css" href="'+core_css+v+'.css">');
+                        if((k+1) >= files)
+                        {
+                            callback();
+                        }
+                    })
+                }
+            },
+            filter: function(data)
+            {
+                $.each(data, function(k, v)
+                { 
+                    if($.isPlainObject(v) && v.func && $.isFunction($.fn.blockstrap.filters[v.func]))
+                    {
+                        data[k] = $.fn.blockstrap.filters[v.func]($.fn.blockstrap, v);
+                    }
+                    else if($.isPlainObject(v) || $.isArray(v))
+                    {
+                        data[k] = $.fn.blockstrap.core.filter(v);
+                    }
+                });
+                return data;
             },
             forms: function()
             {
@@ -811,20 +669,101 @@ var blockstrap_core = function()
                     $.fn.blockstrap.core.modal('Warning', 'Search functionality will be available in the next major update');
                 });
             },
-            css: function(callback)
+            image: function(input, callback)
             {
-                var core_css = $.fn.blockstrap.settings.core_base + 'css/';
-                $.isArray($.fn.blockstrap.settings.css)
+                if(input.files && input.files[0]) 
                 {
-                    var files = Object.keys($.fn.blockstrap.settings.css).length;
-                    $.each($.fn.blockstrap.settings.css, function(k, v)
+                    var reader = new FileReader();
+                    reader.onload = function(e) 
                     {
-                        $('head').append('<link rel="stylesheet" type="text/css" href="'+core_css+v+'.css">');
-                        if((k+1) >= files)
+                        var image = e.target.result;
+                        callback(image);
+
+                    };       
+                    reader.readAsDataURL(input.files[0]);
+                }
+            },
+            init: function()
+            {
+                // RESET IF REQUIRED
+                if(blockstrap_functions.vars('reset') === true)
+                {
+                    $.fn.blockstrap.buttons.reset(false, false);
+                }
+                else if(!init_bs)
+                {
+                    init_bs = true;
+                    // Check for login credentials...?
+                    if(!$.fn.blockstrap.security.logged_in())
+                    {
+                        $.fn.blockstrap.templates.render('../../../blockstrap/html/bootstrap/login', function()
                         {
-                            callback();
-                        }
-                    })
+                            $.fn.blockstrap.styles.set();
+                            $.fn.blockstrap.core.modals();
+                            $.fn.blockstrap.core.buttons();
+                            $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
+                            {
+                                $.fn.blockstrap.core.loading();
+                                $.fn.blockstrap.core.ready();
+                                $(window).resize(function(e)
+                                {
+                                    $.fn.blockstrap.core.resize();
+                                })
+                            });
+                        });
+                    }
+                    else
+                    {
+                        $.fn.blockstrap.accounts.updates(0, function()
+                        {
+                            
+                            setInterval(function()
+                            {
+                                $.fn.blockstrap.accounts.poll();
+                            }, $.fn.blockstrap.settings.cache.accounts);
+                            $.fn.blockstrap.templates.render('index', function()
+                            {
+                                if(window.location.hash)
+                                {
+                                    $.fn.blockstrap.core.refresh(function()
+                                    {
+                                        $.fn.blockstrap.styles.set();
+                                        $.fn.blockstrap.core.modals();
+                                        $.fn.blockstrap.core.buttons();
+                                        $.fn.blockstrap.core.nav(window.location.hash);
+                                        $.fn.blockstrap.core.ready();
+                                        $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
+                                        {
+                                            $.fn.blockstrap.core.loading();
+                                            $(window).resize(function(e)
+                                            {
+                                                $.fn.blockstrap.core.resize();
+                                            })
+                                        });
+                                    }, blockstrap_functions.slug(window.location.hash));
+                                }
+                                else
+                                {
+                                    $.fn.blockstrap.core.ready();
+                                    $.fn.blockstrap.styles.set();
+                                    $.fn.blockstrap.core.modals();
+                                    $.fn.blockstrap.core.buttons();
+                                    $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
+                                    {
+                                        $.fn.blockstrap.core.loading();
+                                        $(window).resize(function(e)
+                                        {
+                                            $.fn.blockstrap.core.resize();
+                                        })
+                                    });
+                                }
+                                var run_tests = false;
+                                var tests = blockstrap_functions.vars('tests');
+                                if(tests) run_tests = true;
+                                $.fn.blockstrap.core.tests(run_tests);
+                            });
+                        }, true, true);
+                    }
                 }
             },
             less: function(callback)
@@ -866,16 +805,6 @@ var blockstrap_core = function()
                     $('head').append('<style id="nw-css">'+less+'</style>');
                     if(callback) callback();
                 }
-            },
-            loading: function()
-            {
-                var loaders = $($.fn.blockstrap.element).find('.loading-elements');
-                $(loaders).animate({'opacity':1}).delay(0).animate({'opacity':0}, 600, function(e)
-                {
-                    if($(this).hasClass('loading')) $(this).removeClass('loading');
-                    $($.fn.blockstrap.element).removeClass('loading');
-                    $(loaders).css({'opacity':1});
-                })
             },
             loader: function(force_state, element)
             {
@@ -920,6 +849,103 @@ var blockstrap_core = function()
                     });
                 }
             },
+            loading: function()
+            {
+                var loaders = $($.fn.blockstrap.element).find('.loading-elements');
+                $(loaders).animate({'opacity':1}).delay(0).animate({'opacity':0}, 600, function(e)
+                {
+                    if($(this).hasClass('loading')) $(this).removeClass('loading');
+                    $($.fn.blockstrap.element).removeClass('loading');
+                    $(loaders).css({'opacity':1});
+                })
+            },
+            modal: function(title, content, id)
+            {
+                var selector = $('#default-modal');
+                if(id) selector = $('#'+id);
+                $(selector).find('.modal-title').html(title);
+                $(selector).find('.modal-body').html(content);
+                $(selector).modal('show');
+            },
+            modals: function(action)
+            {
+                if(action)
+                {
+                    if(action === 'close_all')
+                    {
+                        $($.fn.blockstrap.element).find('.modal').each(function(i)
+                        {
+                            $(this).modal('hide');
+                        });
+                    }
+                }
+                else
+                {
+                    $($.fn.blockstrap.element).on('show.bs.modal', '.modal', function(i)
+                    {
+                        var this_id = $(this).attr('id');
+                        var this_form = $(this).find('form');
+                        $($.fn.blockstrap.element).find('.modal').each(function(i)
+                        {
+                            if($(this).attr('id') != this_id)
+                            {
+                                $(this).modal('hide');
+                            }
+                        });
+                        $(this_form).find('label.hidden-label').each(function(i)
+                        {
+                            var wrapper = $(this).parent();
+                            $(wrapper).hide(0);
+                        })
+                    });
+                    $($.fn.blockstrap.element).on('shown.bs.modal', '.modal', function(i)
+                    {
+                        var this_form = $(this).find('form');
+                        if($(this_form).find('input').length > 0)
+                        {
+                            var input = $(this_form).find('input[type!=hidden]:first');
+                            $(input).focus();
+                        }
+                        $(this).find('.qr-holder').each(function()
+                        {
+                            $(this).qrcode({
+                                render: 'image',
+                                text: $(this).attr('data-content')
+                            });
+                        })
+                    });
+                    $($.fn.blockstrap.element).on('show.bs.modal', '#new-account-modal', function(i)
+                    {
+                        if($(this).find('#more-security').html() == 'Less Security')
+                        {
+                            $(this).find('#more-security').trigger('click');
+                        }
+                    });
+                }
+            },
+            nav: function(slug)
+            {
+                var nav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id);
+                var mnav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.mobile_nav_id);
+                $(nav).find('.active').removeClass('active');
+                $(mnav).find('.active').removeClass('active');
+                if(slug.charAt(0) != '#') slug = '#' + slug;
+                $(nav).find(slug).addClass('active');
+                $(mnav).find(slug).addClass('active');
+            },
+            page: function()
+            {
+                if(window.location.hash)
+                {
+                    var slug_array = window.location.hash.split('#');
+                    $.fn.blockstrap.settings.page = slug_array[1];
+                }
+                else
+                {
+                    $.fn.blockstrap.settings.page = 'index';
+                }
+                return $.fn.blockstrap.settings.page;
+            },
             print: function(contents)
             {
                 var mywindow = window.open('', 'my div', 'height=500,width=400');
@@ -932,156 +958,50 @@ var blockstrap_core = function()
                 mywindow.close();
                 return true;
             },
-            table: function()
+            ready: function()
             {
-                $($.fn.blockstrap.element).find('table.data-table').each(function(i)
+                /* 
+
+                THESE FUNCTIONS NEED TO RUN EVERY TIME
+                NEW HTML IS LOADED INTO THE DOM
+
+                */
+                $.fn.blockstrap.core.table();
+                $.fn.blockstrap.core.forms();
+                $.fn.blockstrap.core.page();
+
+                // TODO: 
+                // Handle inactive modules?
+                $.fn.blockstrap.theme.new();
+                $.fn.blockstrap.buttons.new();
+            },
+            refresh: function(callback, slug)
+            {
+                //$.fn.blockstrap.core.loader('open');
+                var page = $.fn.blockstrap.core.page();
+                if(slug) page = slug;
+                $.fn.blockstrap.templates.render('index', function()
                 {
-                    if($(this).hasClass('dataTable'))
+                    if(page != 'index')
                     {
-                        // May need to redraw...?
+                        $.fn.blockstrap.templates.render(page, function()
+                        {
+                            $.fn.blockstrap.core.nav(page);
+                            $.fn.blockstrap.core.ready();
+                            //$.fn.blockstrap.core.loader('close');
+                            if(callback) callback();
+                        }, true);
                     }
                     else
                     {
-                        var dom = 'tlip';
-                        var order_by = 1;
-                        var order = 'asc';
-                        var search = false;
-                        var header_cells = $(this).find('thead tr th');
-                        var body_cells = $(this).find('tbody tr td');
-                        if($(this).attr('data-search')) search = true;
-                        if($(this).attr('data-dom')) dom = $(this).attr('data-dom');
-                        if($(this).attr('data-order')) order = $(this).attr('data-order');
-                        if($(this).attr('data-order-by')) order_by = parseInt($(this).attr('data-order-by'));
-                        $.fn.blockstrap.core.table[$(this).attr('id')] = $(this).DataTable({
-                            searching: search,
-                            dom: dom,
-                            order: [ order_by, order ],
-                            fnDrawCallback: function(oSettings)
-                            {
-                                $(header_cells).each(function(i)
-                                {
-                                    $(this).attr('data-width', $(this).width());
-                                })
-                            }
-                        });
+                        $.fn.blockstrap.templates.render($.fn.blockstrap.settings.slug_base, function()
+                        {
+                            $.fn.blockstrap.core.ready();
+                            //$.fn.blockstrap.core.loader('close');
+                            if(callback) callback();
+                        }, true);
                     }
-                });
-            },
-            filter: function(data)
-            {
-                $.each(data, function(k, v)
-                { 
-                    if($.isPlainObject(v) && v.func && $.isFunction($.fn.blockstrap.filters[v.func]))
-                    {
-                        data[k] = $.fn.blockstrap.filters[v.func]($.fn.blockstrap, v);
-                    }
-                    else if($.isPlainObject(v) || $.isArray(v))
-                    {
-                        data[k] = $.fn.blockstrap.core.filter(v);
-                    }
-                });
-                return data;
-            },
-            ago: function(time)
-            {
-                var date = new Date();;
-                if(time) date = new Date(time * 1000);
-                return jQuery.timeago(date)
-            },
-            buttons: function()
-            {
-                $($.fn.blockstrap.element).on('click', '.btn-page', function(e)
-                {
-                    $.fn.blockstrap.buttons.page(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '.btn-reset-device', function(e)
-                {
-                    $.fn.blockstrap.buttons.reset(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '.bs-setup', function(e)
-                {
-                    $(this).addClass('loading');
-                    $.fn.blockstrap.buttons.setup(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '#create-account', function(e)
-                {
-                    $(this).addClass('loading');
-                    $.fn.blockstrap.buttons.account(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '#create-contact', function(e)
-                {
-                    $(this).addClass('loading');
-                    $.fn.blockstrap.buttons.contact(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '.bs-toggle', function(e)
-                {
-                    $.fn.blockstrap.buttons.toggle(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '.btn-remove', function(e)
-                {
-                    $.fn.blockstrap.buttons.remove(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '.btn-logout', function(e)
-                {
-                    $.fn.blockstrap.buttons.logout(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '.btn-login', function(e)
-                {
-                    $.fn.blockstrap.buttons.login(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '#create-login-credentials', function(e)
-                {
-                    $.fn.blockstrap.buttons.credentials(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '#set-credentials', function(e)
-                {
-                    $(this).addClass('loading');
-                    $.fn.blockstrap.buttons.set(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '#more-security', function(e)
-                {
-                    $.fn.blockstrap.buttons.more(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '.btn-access', function(e)
-                {
-                    $.fn.blockstrap.buttons.access(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '#submit-verification', function(e)
-                {
-                    $.fn.blockstrap.buttons.verify(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '.btn-print', function(e)
-                {
-                    $.fn.blockstrap.buttons.print(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '#send-money', function(e)
-                {
-                    $.fn.blockstrap.buttons.prepare(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '#submit-payment', function(e)
-                {
-                    $.fn.blockstrap.buttons.send(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '.btn-refresh', function(e)
-                {
-                    $.fn.blockstrap.buttons.refresh(this, e);
-                });
-            },
-            stringed: function(styles)
-            {
-                if($.isArray(styles))
-                {
-                    var style = {};
-                    $.each(styles, function(k, v)
-                    {
-                        var css = v.split(', ');
-                        var valued = new String(css).replace('[', '');
-                        var value = valued.replace(']', '');
-                        var values = value.split(': ');
-                        style[values[0]] = values[1];
-                    });
-                    return style;
-                }
+                }, true, true);
             },
             reset: function(reload)
             {
@@ -1128,6 +1048,86 @@ var blockstrap_core = function()
                     }
                 }
             },
+            resize: function(delay)
+            {
+                if(!delay) delay = 200;
+                resize_time = new Date();
+                if(resize_timeout === false) 
+                {
+                    resize_timeout = true;
+                    setTimeout($.fn.blockstrap.core.resized, delay);
+                }
+            },
+            resized: function(delay)
+            {
+                if(!delay) delay = 200;
+                if(new Date() - resize_time < delay) 
+                {
+                    setTimeout($.fn.blockstrap.core.resized, delay);
+                } 
+                else 
+                {
+                    resize_timeout = false;
+                    /* 
+
+                    THESE FUNCTIONS NEED TO RUN EVERY TIME
+                    THE WINDOW IS RESIZED - TODO: NEEDS TIMER
+
+                    */
+                    $.fn.blockstrap.core.table();
+                }   
+            },
+            stringed: function(styles)
+            {
+                if($.isArray(styles))
+                {
+                    var style = {};
+                    $.each(styles, function(k, v)
+                    {
+                        var css = v.split(', ');
+                        var valued = new String(css).replace('[', '');
+                        var value = valued.replace(']', '');
+                        var values = value.split(': ');
+                        style[values[0]] = values[1];
+                    });
+                    return style;
+                }
+            },
+            table: function()
+            {
+                $($.fn.blockstrap.element).find('table.data-table').each(function(i)
+                {
+                    if($(this).hasClass('dataTable'))
+                    {
+                        // May need to redraw...?
+                    }
+                    else
+                    {
+                        var dom = 'tlip';
+                        var order_by = 1;
+                        var order = 'asc';
+                        var search = false;
+                        var header_cells = $(this).find('thead tr th');
+                        var body_cells = $(this).find('tbody tr td');
+                        if($(this).attr('data-search')) search = true;
+                        if($(this).attr('data-dom')) dom = $(this).attr('data-dom');
+                        if($(this).attr('data-order')) order = $(this).attr('data-order');
+                        if($(this).attr('data-order-by')) order_by = parseInt($(this).attr('data-order-by'));
+                        $.fn.blockstrap.core.table[$(this).attr('id')] = $(this).DataTable({
+                            searching: search,
+                            dom: dom,
+                            order: [ order_by, order ],
+                            fnDrawCallback: function(oSettings)
+                            {
+                                $(header_cells).each(function(i)
+                                {
+                                    $(this).attr('data-width', $(this).width());
+                                })
+                            }
+                        });
+                    }
+                });
+            },
             tests: function(run)
             {
                 if(!run) run = false;
@@ -1173,83 +1173,22 @@ var blockstrap_core = function()
 /*
  
 CORE FUNCTIONS 
+
+THESE ARE ALSO REQUIRED BEFORE RELEVANT MODULES HAVE BEEN LOADED
+
+NONETHELESS - THIS SHOULD BE AS SHORT AS POSSIBLE
+
+PERHAPS ONE DAY EVEN NON-EXISTENT :-)
  
 */
 var blockstrap_js_files = {};
 var blockstrap_outputted = false;
 var blockstrap_functions = {
-    json: function(string)
+    array_length: function(obj)
     {
-        try
-        {
-            var json = $.parseJSON(string);
-            if(json) return true;
-            else return false;
-        }
-        catch(error)
-        {
-            return false;
-        }
-    },
-    vars: function(variable)
-    {
-        if(!variable) variable = false;
-        if(variable)
-        {
-            
-            return $.fn.blockstrap.settings.vars[variable];
-        }
-        else
-        {
-            var query = window.location.search.substring(1);
-            var vars = query.split("&");
-            var original_vars = vars;
-            vars = {};
-            for(var i=0;i<original_vars.length;i++) 
-            {
-                var pair = original_vars[i].split("=");
-                var value = pair[1];
-                if(value === 'false') value = false;
-                if(value === 'true') value = true;
-                vars[pair[0]] = value;
-            }
-            return vars;
-        }
-    },
-    js: function(id, src, callback)
-    {
-        var t = document.getElementsByTagName('head')[0];
-        var s = document.createElement('script');
-        s.setAttribute('type', 'text/javascript');
-        s.setAttribute('src', src);
-        s.setAttribute('id', id);
-        s.onload = function()
-        {
-            callback();
-        }
-        t.appendChild(s);
-    },
-    initialize: function()
-    {
-        if(!blockstrap_outputted) 
-        {
-            blockstrap_outputted = true;
-            if(typeof(jQuery) === 'undefined') 
-            {
-                blockstrap_functions.js(
-                    'js-blockstrap-jquery', 
-                    'blockstrap/js/dependencies/jquery.min.js', 
-                    function()
-                    {
-                        blockstrap_core();
-                    }
-                );
-            } 
-            else 
-            {
-                blockstrap_core();
-            }
-        }
+        length = 0;
+        if(obj) length = Object.keys(obj).length;
+        return length;
     },
     exists: function(url)
     {
@@ -1257,26 +1196,6 @@ var blockstrap_functions = {
         http.open('HEAD', url, false);
         http.send();
         return http.status!=404;
-    },
-    slug: function(slug)
-    {
-        var name = slug.replace(/ /g, '_');
-        name = name.replace(/-/g, '_');
-        name = name.replace(/'/g, '');
-        name = name.replace(/"/g, '');
-        name = name.replace(/#/g, '');
-        return name.toLowerCase();
-    },
-    unslug: function(slug)
-    {
-        var name = slug.replace(/_/g, ' ');
-        return name.charAt(0).toUpperCase() + name.slice(1);
-    },
-    array_length: function(obj)
-    {
-        length = 0;
-        if(obj) length = Object.keys(obj).length;
-        return length;
     },
     include: function(blockstrap, start, files, callback, dependency)
     {
@@ -1355,6 +1274,68 @@ var blockstrap_functions = {
             }
         }
     },
+    initialize: function()
+    {
+        if(!blockstrap_outputted) 
+        {
+            blockstrap_outputted = true;
+            if(typeof(jQuery) === 'undefined') 
+            {
+                blockstrap_functions.js(
+                    'js-blockstrap-jquery', 
+                    'blockstrap/js/dependencies/jquery.min.js', 
+                    function()
+                    {
+                        blockstrap_core();
+                    }
+                );
+            } 
+            else 
+            {
+                blockstrap_core();
+            }
+        }
+    },
+    js: function(id, src, callback)
+    {
+        var t = document.getElementsByTagName('head')[0];
+        var s = document.createElement('script');
+        s.setAttribute('type', 'text/javascript');
+        s.setAttribute('src', src);
+        s.setAttribute('id', id);
+        s.onload = function()
+        {
+            callback();
+        }
+        t.appendChild(s);
+    },
+    json: function(string)
+    {
+        try
+        {
+            var json = $.parseJSON(string);
+            if(json) return true;
+            else return false;
+        }
+        catch(error)
+        {
+            return false;
+        }
+    },
+    slug: function(slug)
+    {
+        var name = slug.replace(/ /g, '_');
+        name = name.replace(/-/g, '_');
+        name = name.replace(/'/g, '');
+        name = name.replace(/"/g, '');
+        name = name.replace(/#/g, '');
+        return name.toLowerCase();
+    },
+    unslug: function(slug)
+    {
+        var name = slug.replace(/_/g, ' ');
+        return name.charAt(0).toUpperCase() + name.slice(1);
+    },
     update: function(version, callback)
     {
         var current_version_array = version.split('.');
@@ -1382,6 +1363,31 @@ var blockstrap_functions = {
             $.fn.blockstrap.settings.vars.refresh = true;
             localStorage.setItem('nw_blockstrap_v', JSON.stringify(version));
             callback();
+        }
+    },
+    vars: function(variable)
+    {
+        if(!variable) variable = false;
+        if(variable)
+        {
+            
+            return $.fn.blockstrap.settings.vars[variable];
+        }
+        else
+        {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            var original_vars = vars;
+            vars = {};
+            for(var i=0;i<original_vars.length;i++) 
+            {
+                var pair = original_vars[i].split("=");
+                var value = pair[1];
+                if(value === 'false') value = false;
+                if(value === 'true') value = true;
+                vars[pair[0]] = value;
+            }
+            return vars;
         }
     }
 };
