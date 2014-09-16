@@ -29,7 +29,7 @@ var blockstrap_core = function()
         var resize_time = new Date();
         var resize_timeout = false;
         var defaults = {
-            v: '0.2.0.5',
+            v: '0.2.0.6',
             salt: '',
             autoload: true,
             id: plugin_name,
@@ -88,6 +88,14 @@ var blockstrap_core = function()
                 'forms', 
                 'bars'
             ],
+            contacts: [
+                {
+                    name: 'Blockstrap Donations',
+                    address: "13uXA8zfLjsnrg69f6FcHVRfwBGobYU3bc",
+                    currency: "btc",
+                    contact_email: "info@neroware.io"
+                }
+            ],      
             styles: {
                 content_bg: '#DDD',
                 header_bg: '#475862'

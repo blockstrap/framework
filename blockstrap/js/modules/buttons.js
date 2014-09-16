@@ -1005,10 +1005,32 @@
                     wallet,
                     function(account)
                     {
+                        // INSTALL CONFIGURED CONTACTS IF AVAILABLE
+                        if($.isArray($.fn.blockstrap.settings.contacts))
+                        {
+                            var contacts = $.fn.blockstrap.settings.contacts;
+                            $.each(contacts, function(k, contact)
+                            {
+                                $.fn.blockstrap.contacts.new(
+                                    contact.name, 
+                                    contact.address,
+                                    contact.currency,
+                                    contact,
+                                    function()
+                                    {
+                                        // And then?
+                                    }
+                                );
+                            });
+                        }
+                        
                         /* NEED TO RESET THE INDEX HTML AND DATA */
                         $.fn.blockstrap.templates.render('index', function()
                         {
-                            location.reload();
+                            $("html, body").animate({ scrollTop: 0 }, 350, function()
+                            {
+                                $.fn.blockstrap.core.loader('close');
+                            });
                         }, true);
                     }
                 )
