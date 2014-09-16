@@ -731,40 +731,21 @@ var blockstrap_core = function()
                     }
                     else
                     {
-                        $.fn.blockstrap.accounts.updates(0, function()
+                        setInterval(function()
                         {
-                            
-                            setInterval(function()
+                            $.fn.blockstrap.accounts.poll();
+                        }, $.fn.blockstrap.settings.cache.accounts);
+                        $.fn.blockstrap.templates.render('index', function()
+                        {
+                            if(window.location.hash)
                             {
-                                $.fn.blockstrap.accounts.poll();
-                            }, $.fn.blockstrap.settings.cache.accounts);
-                            $.fn.blockstrap.templates.render('index', function()
-                            {
-                                if(window.location.hash)
+                                $.fn.blockstrap.core.refresh(function()
                                 {
-                                    $.fn.blockstrap.core.refresh(function()
-                                    {
-                                        $.fn.blockstrap.styles.set();
-                                        $.fn.blockstrap.core.modals();
-                                        $.fn.blockstrap.core.buttons();
-                                        $.fn.blockstrap.core.nav(window.location.hash);
-                                        $.fn.blockstrap.core.ready();
-                                        $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
-                                        {
-                                            $.fn.blockstrap.core.loading();
-                                            $(window).resize(function(e)
-                                            {
-                                                $.fn.blockstrap.core.resize();
-                                            })
-                                        });
-                                    }, blockstrap_functions.slug(window.location.hash));
-                                }
-                                else
-                                {
-                                    $.fn.blockstrap.core.ready();
                                     $.fn.blockstrap.styles.set();
                                     $.fn.blockstrap.core.modals();
                                     $.fn.blockstrap.core.buttons();
+                                    $.fn.blockstrap.core.nav(window.location.hash);
+                                    $.fn.blockstrap.core.ready();
                                     $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
                                     {
                                         $.fn.blockstrap.core.loading();
@@ -773,13 +754,28 @@ var blockstrap_core = function()
                                             $.fn.blockstrap.core.resize();
                                         })
                                     });
-                                }
-                                var run_tests = false;
-                                var tests = blockstrap_functions.vars('tests');
-                                if(tests) run_tests = true;
-                                $.fn.blockstrap.core.tests(run_tests);
-                            });
-                        }, true, true);
+                                }, blockstrap_functions.slug(window.location.hash));
+                            }
+                            else
+                            {
+                                $.fn.blockstrap.core.ready();
+                                $.fn.blockstrap.styles.set();
+                                $.fn.blockstrap.core.modals();
+                                $.fn.blockstrap.core.buttons();
+                                $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
+                                {
+                                    $.fn.blockstrap.core.loading();
+                                    $(window).resize(function(e)
+                                    {
+                                        $.fn.blockstrap.core.resize();
+                                    })
+                                });
+                            }
+                            var run_tests = false;
+                            var tests = blockstrap_functions.vars('tests');
+                            if(tests) run_tests = true;
+                            $.fn.blockstrap.core.tests(run_tests);
+                        });
                     }
                 }
             },
