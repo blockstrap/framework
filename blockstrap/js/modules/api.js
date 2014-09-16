@@ -11,9 +11,15 @@
 (function($) 
 {
     var api = {};
+    var api_timeout = 15000;
     var active_requests = {};
     var apis = $.fn.blockstrap.settings.maps.apis;
     var currencies = $.fn.blockstrap.settings.currencies;
+    
+    if($.fn.blockstrap.settings.cache.api.timeout)
+    {
+        api_timeout = $.fn.blockstrap.settings.cache.api.timeout;
+    }
     
     api.address = function(hash, currency, callback)
     {
@@ -113,7 +119,7 @@
             {
                 if(callback) callback(false)
             },
-            timeout: 15000 // 15 Seconds
+            timeout: api_timeout // 15 Seconds
         })
     }
     
@@ -224,13 +230,14 @@
         })
     }
     
-    api.unspents = function(address, currency, callback)
+    api.unspents = function(address, currency, callback, confirms)
     {
         api.request(api.url('unspents', address, currency), function(results)
         {
             var data = false;
             var map = apis[currency].functions;
             var base = $.fn.blockstrap.settings.base_url;
+            if(!confirms) confirms = 1;
             if(results.data && results.data[map.from.unspents.key]) data = results.data[map.from.unspents.key];
             var unspents = [];
             $.each(data, function(k, v)
@@ -241,11 +248,13 @@
                     value: 0,
                     script: 'N/A'
                 }
+                var confirmations = 0;
                 if(data[k][map.from.unspents.txid]) unspent.txid = data[k][map.from.unspents.txid];
                 if(data[k][map.from.unspents.index]) unspent.index = data[k][map.from.unspents.index];
                 if(data[k][map.from.unspents.value]) unspent.value = data[k][map.from.unspents.value];
                 if(data[k][map.from.unspents.script]) unspent.script = data[k][map.from.unspents.script];
-                unspents.push(unspent);
+                if(data[k][map.from.unspents.confirmations]) confirmations = data[k][map.from.unspents.confirmations];
+                if(confirmations >= confirms) unspents.push(unspent);
             })
             if(callback) callback(unspents);
             else return unspents;

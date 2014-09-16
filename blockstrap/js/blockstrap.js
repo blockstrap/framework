@@ -124,7 +124,8 @@ var blockstrap_core = function()
             },
             cache: {
                 api: {
-                    address: 60000 // 1 Minute
+                    address: 60000, // 1 Minute
+                    timeout: 30000 // 30 Seconds
                 },
                 pages: 60000,
                 accounts: 60000 // 2 Minutes = 120000
@@ -214,6 +215,7 @@ var blockstrap_core = function()
                                 },
                                 unspents: {
                                     key: 'unspents',
+                                    confirmations: 'confirmations',
                                     txid: 'txHash',
                                     index: 'index',
                                     value: 'value',

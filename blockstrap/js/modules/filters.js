@@ -106,13 +106,14 @@
     {
         var html = '';
         var type = 'tx';
+        var alternative = false;
         if(data.html) html = data.html;
         if(data.type) type = data.type;
+        if(data.alternative) alternative = data.alternative;
         if(type == 'tx')
         {
             var latest = 0;
             var accounts = $.fn.blockstrap.accounts.get();
-            
             if($.isArray(accounts))
             {
                 $.each(accounts, function(k, account)
@@ -125,13 +126,20 @@
                         });
                     };
                 });
-            }   
-            var ago = $.fn.blockstrap.core.ago(latest);
-            var placeholders = ['ago'];
-            var replacements = [ago];
-            html = $.fn.blockstrap.templates.filter(html, placeholders, replacements);
+                var ago = $.fn.blockstrap.core.ago(latest);
+                var placeholders = ['ago'];
+                var replacements = [ago];
+                return $.fn.blockstrap.templates.filter(html, placeholders, replacements);
+            }
+            else if(alternative)
+            {
+                return alternative;
+            }
         }
-        return html;
+        else
+        {
+            return data;
+        }
     }
     
     filters.setup = function(blockstrap, data)

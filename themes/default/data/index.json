@@ -17,7 +17,8 @@
         "last": {
             "func": "last",
             "html": "last transaction {{ago}}",
-            "type": "tx"
+            "type": "tx",
+            "alternative": "no transactions yet"
         },
         "urls": {
             "profile": "#profile"

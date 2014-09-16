@@ -198,7 +198,7 @@
                 if(value)
                 {
                     
-                    // REPLACE WITH NEW FORMS FUNCTIONS
+                    // TODO: REPLACE WITH FORMS FUNCTIONS
                     
                     var component = '';
                     $(button).find('option:nth-child('+(i+1)+')').remove();
