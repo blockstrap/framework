@@ -49,7 +49,6 @@
                 else
                 {
                     var data = {};
-                    console.log('fields', fields);
                     if($.isPlainObject(fields))
                     {
                         $.each(fields, function(k, v)
