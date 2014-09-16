@@ -1,4 +1,4 @@
-# Blockstrap Wallet
+# Blockstrap Framework
 
 This shows the default theme in action as a full-screen application.
 
