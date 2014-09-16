@@ -239,6 +239,11 @@
                         {
                             contact[$(this).find('select').attr('id')] = value;
                         }
+                        else if(!value && $(this).find('input.optional').val())
+                        {
+                            value = $(this).find('input.optional').val();
+                            contact[$(this).find('input.optional').attr('id')] = value;
+                        }
                     }
                     else if(!value && !$(this).find('select').hasClass('extra-fields'))
                     {
@@ -299,7 +304,9 @@
         if(blockstrap_functions.json(obj)) obj = $.parseJSON(obj);
         if($.isPlainObject(obj))
         {
+            var email = 'N / A';
             var title = 'Edit Contact Details';
+            if(obj.data.contact_email) email = obj.data.contact_email;
             var contact_fields = [
                 {
                     inputs: {
@@ -310,6 +317,20 @@
                         },
                         type: "text",
                         value: obj.name,
+                        wrapper: {
+                            css: "col-xs-9"
+                        }
+                    }
+                },
+                {
+                    inputs: {
+                        id: "email",
+                        label: {
+                            text: "Email",
+                            css: "col-xs-3"
+                        },
+                        type: "text",
+                        value: email,
                         wrapper: {
                             css: "col-xs-9"
                         }
@@ -695,7 +716,11 @@
             var input = $(this).find('input');
             var value = $(input).val();
             var id = $(input).attr('id');
-            if(id.indexOf('.') > -1)
+            if(id.indexOf('email') > -1)
+            {
+                obj.data.contact_email = value;
+            }
+            else if(id.indexOf('.') > -1)
             {
                 var ids = id.split('.');
                 var address = value;
