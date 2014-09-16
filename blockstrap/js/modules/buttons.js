@@ -828,7 +828,15 @@
                                             });
                                         });
                                     }
+                                    else
+                                    {
+                                        $.fn.blockstrap.core.loader('close');
+                                    }
                                 });
+                            }
+                            else
+                            {
+                                $.fn.blockstrap.core.loader('close');
                             }
                         });
                     }
