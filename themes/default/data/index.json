@@ -321,7 +321,7 @@
                                 },
                                 "icon": [
                                     {
-                                        "css": "bs-toggle",
+                                        "css": "btn-toggle",
                                         "href": "#",
                                         "glyph": "user",
                                         "attributes": [

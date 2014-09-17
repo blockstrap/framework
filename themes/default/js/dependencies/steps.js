@@ -47,7 +47,7 @@ var blockstrap_setup_steps = [
         "actions": [
             {
                 "id": "next-step",
-                "css": "btn btn-primary pull-right bs-setup",
+                "css": "btn btn-primary pull-right btn-setup",
                 "href": "#",
                 "text": "Next Step",
                 "attributes": [
@@ -430,7 +430,7 @@ var blockstrap_setup_steps = [
         "actions": [
             {
                 "id": "next-step",
-                "css": "btn btn-primary pull-right bs-setup",
+                "css": "btn btn-primary pull-right btn-setup",
                 "href": "#",
                 "text": "Next Step",
                 "attributes": [
@@ -728,7 +728,7 @@ var blockstrap_setup_steps = [
         "actions": [
             {
                 "id": "next-step",
-                "css": "btn btn-primary pull-right bs-setup",
+                "css": "btn btn-primary pull-right btn-setup",
                 "href": "#",
                 "text": "Next Step",
                 "attributes": [

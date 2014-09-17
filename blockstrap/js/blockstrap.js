@@ -453,7 +453,7 @@ var blockstrap_core = function()
                 {
                     $.fn.blockstrap.buttons.reset(this, e);
                 });
-                $($.fn.blockstrap.element).on('click', '.bs-setup', function(e)
+                $($.fn.blockstrap.element).on('click', '.btn-setup', function(e)
                 {
                     $(this).addClass('loading');
                     $.fn.blockstrap.buttons.setup(this, e);
@@ -468,7 +468,7 @@ var blockstrap_core = function()
                     $(this).addClass('loading');
                     $.fn.blockstrap.buttons.contact(this, e);
                 });
-                $($.fn.blockstrap.element).on('click', '.bs-toggle', function(e)
+                $($.fn.blockstrap.element).on('click', '.btn-toggle', function(e)
                 {
                     $.fn.blockstrap.buttons.toggle(this, e);
                 });
