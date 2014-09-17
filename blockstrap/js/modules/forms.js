@@ -12,19 +12,20 @@
 {
     var forms = {};
     
-    forms.get = function()
+    forms.get = function(callback)
     {
         if(localStorage && localStorage.getItem('nw_boot_forms'))
         {
             var raw_forms = localStorage.getItem('nw_boot_forms');
             if(blockstrap_functions.json(raw_forms))
             {
-                return $.parseJSON(raw_forms);
+                raw_forms = $.parseJSON(raw_forms);
             }
-            else
-            {
-                return raw_forms;
-            }
+            return raw_forms;
+        }
+        else if($.fn.blockstrap.snippets.forms)
+        {
+            return $.fn.blockstrap.snippets.forms;
         }
         else
         {

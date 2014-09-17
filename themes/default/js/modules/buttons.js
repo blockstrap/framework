@@ -12,6 +12,109 @@
 {
     var buttons = {};
     
+    buttons.auth_salt = function(button)
+    {
+        var input_value = $(button).find('input.switch').val();
+        var toggle_groups = $('#blockstrap-setup-step1-left').find('.salt-passwords').parent().parent();
+        if(input_value === true || input_value === 'true')
+        {
+            var password = $.fn.blockstrap.forms.input({
+                id: 'salt_pw',
+                type: 'password',
+                label: {
+                    text: 'Salt Password',
+                    css: 'col-sm-3',
+                },
+                placeholder: 'Strictly used for salt generation - not device or wallet',
+                css: 'salt-passwords',
+                wrapper: {
+                    css: 'col-sm-9'
+                },
+                attributes: [
+                    {
+                        key: 'data-setup-type',
+                        value: 'module'
+                    }
+                ]
+            });
+            var password_repeat = $.fn.blockstrap.forms.input({
+                id: 'salt_pw_repeat',
+                type: 'password',
+                label: {
+                    text: 'Password Repeat',
+                    css: 'col-sm-3',
+                },
+                css: 'ignore salt-passwords',
+                placeholder: 'Better safe than sorry',
+                wrapper: {
+                    css: 'col-sm-9'
+                },
+                attributes: [
+                    {
+                        key: 'data-repeat-id',
+                        value: 'salt_pw'
+                    }
+                ]
+            });
+            if($('#blockstrap-setup-step1-left').find('.salt-passwords').length < 1)
+            {
+                $('#blockstrap-setup-step1-left').append(password + password_repeat);
+                toggle_groups = $('#blockstrap-setup-step1-left').find('.salt-passwords').parent().parent();
+                $(toggle_groups).hide(0).show(350);
+            }
+            $(toggle_groups).show(350, function()
+            {
+              
+            });
+        }
+        else
+        {
+            $(toggle_groups).hide(350, function()
+            {
+              $(this).remove();
+            });
+        }
+    }
+    
+    buttons.extra_fields = function(button)
+    {
+        var value = $(button).val();
+        var form = $('#'+$(button).attr('data-form'));
+        var setup_type = 'module';
+        if($(button).attr('data-setup-type')) setup_type = $(button).attr('data-setup-type');
+        $(button).find('option').each(function(i)
+        {
+            if($(this).attr('value') === value)
+            {
+                var text = $(this).html();
+                if(value)
+                {
+                    
+                    // TODO: REPLACE WITH FORMS FUNCTIONS
+                    
+                    var component = '';
+                    $(button).find('option:nth-child('+(i+1)+')').remove();
+                    component+= '<div class="form-group" id="extra-'+value+'">';
+                        component+= '<label class="control-label col-sm-3" for="'+value+'">'+text+'</label>';
+                        component+= '<div class="col-sm-9">';
+                            component+= '<input type="text" data-setup-type="'+setup_type+'" class="form-control" id="'+value+'">';
+                        component+= '</div>';
+                    component+= '</div>';
+                    if($(button).attr('data-before'))
+                    {
+                        $(form).find('#'+$(button).attr('data-before')).parent().parent().before(component);
+                    }
+                    else
+                    {
+                        $(form).prepend(component);
+                    }
+                    $(form).find('#extra-'+value).hide(0);
+                    $(form).find('#extra-'+value).show(350);
+                }
+            }
+        });
+    }
+    
     buttons.menu = function(button)
     {
         var header = $('header');
@@ -118,109 +221,6 @@
                 $('body').removeClass('blockstrap-open-menu');
             }});
         }
-    }
-    
-    buttons.auth_salt = function(button)
-    {
-        var input_value = $(button).find('input.switch').val();
-        var toggle_groups = $('#blockstrap-setup-step1-left').find('.salt-passwords').parent().parent();
-        if(input_value === true || input_value === 'true')
-        {
-            var password = $.fn.blockstrap.forms.input({
-                id: 'salt_pw',
-                type: 'password',
-                label: {
-                    text: 'Salt Password',
-                    css: 'col-sm-3',
-                },
-                placeholder: 'Strictly used for salt generation - not device or wallet',
-                css: 'salt-passwords',
-                wrapper: {
-                    css: 'col-sm-9'
-                },
-                attributes: [
-                    {
-                        key: 'data-setup-type',
-                        value: 'module'
-                    }
-                ]
-            });
-            var password_repeat = $.fn.blockstrap.forms.input({
-                id: 'salt_pw_repeat',
-                type: 'password',
-                label: {
-                    text: 'Password Repeat',
-                    css: 'col-sm-3',
-                },
-                css: 'ignore salt-passwords',
-                placeholder: 'Better safe than sorry',
-                wrapper: {
-                    css: 'col-sm-9'
-                },
-                attributes: [
-                    {
-                        key: 'data-repeat-id',
-                        value: 'salt_pw'
-                    }
-                ]
-            });
-            if($('#blockstrap-setup-step1-left').find('.salt-passwords').length < 1)
-            {
-                $('#blockstrap-setup-step1-left').append(password + password_repeat);
-                toggle_groups = $('#blockstrap-setup-step1-left').find('.salt-passwords').parent().parent();
-                $(toggle_groups).hide(0).show(350);
-            }
-            $(toggle_groups).show(350, function()
-            {
-              
-            });
-        }
-        else
-        {
-            $(toggle_groups).hide(350, function()
-            {
-              $(this).remove();
-            });
-        }
-    }
-    
-    buttons.extra_fields = function(button)
-    {
-        var value = $(button).val();
-        var form = $('#'+$(button).attr('data-form'));
-        var setup_type = 'module';
-        if($(button).attr('data-setup-type')) setup_type = $(button).attr('data-setup-type');
-        $(button).find('option').each(function(i)
-        {
-            if($(this).attr('value') === value)
-            {
-                var text = $(this).html();
-                if(value)
-                {
-                    
-                    // TODO: REPLACE WITH FORMS FUNCTIONS
-                    
-                    var component = '';
-                    $(button).find('option:nth-child('+(i+1)+')').remove();
-                    component+= '<div class="form-group" id="extra-'+value+'">';
-                        component+= '<label class="control-label col-sm-3" for="'+value+'">'+text+'</label>';
-                        component+= '<div class="col-sm-9">';
-                            component+= '<input type="text" data-setup-type="'+setup_type+'" class="form-control" id="'+value+'">';
-                        component+= '</div>';
-                    component+= '</div>';
-                    if($(button).attr('data-before'))
-                    {
-                        $(form).find('#'+$(button).attr('data-before')).parent().parent().before(component);
-                    }
-                    else
-                    {
-                        $(form).prepend(component);
-                    }
-                    $(form).find('#extra-'+value).hide(0);
-                    $(form).find('#extra-'+value).show(350);
-                }
-            }
-        });
     }
     
     buttons.photo_salt = function(button)

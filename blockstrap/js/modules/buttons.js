@@ -1071,7 +1071,7 @@
                                 else
                                 {
                                     $.fn.blockstrap.data.find('data', 'index', function(results)
-                                    {
+                                    { 
                                         results.setup = {};
                                         results.setup.func = 'setup';
                                         results.setup.step = next_step;

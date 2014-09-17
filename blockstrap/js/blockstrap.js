@@ -29,7 +29,7 @@ var blockstrap_core = function()
         var resize_time = new Date();
         var resize_timeout = false;
         var defaults = {
-            v: '0.2.0.7',
+            v: '0.2.0.8',
             salt: '',
             autoload: true,
             id: plugin_name,
@@ -47,7 +47,7 @@ var blockstrap_core = function()
             content_id: 'main-content',
             navigation_id: 'navigation',
             mobile_nav_id: 'mobile-footer',
-            css: ['font-awesome'],
+            css: ['less', 'font-awesome'],
             store: ['app_url', 'your_name'],
             modules: [
                 'forms',
@@ -132,7 +132,9 @@ var blockstrap_core = function()
             },
             storage: {
                 dependencies: false,
-                modules: false
+                modules: false,
+                less: false,
+                bootstrap: false
             },
             exchange: {
                 btc: 500,
@@ -346,26 +348,29 @@ var blockstrap_core = function()
                                 {
                                     blockstrap_functions.include($.fn.blockstrap, 0, $.fn.blockstrap.settings.modules, function()
                                     {
-
-                                            // ADD TEMPLATES
-                                            $.fn.blockstrap.snippets = {};                            
-                                            var snippet_count = 0;
-                                            var snippet_limit = 0;
-                                            if($.isArray($.fn.blockstrap.settings.bootstrap))
+                                        $.fn.blockstrap.snippets = {};       
+                                        var store = true;
+                                        var storage = $.fn.blockstrap.settings.storage;
+                                        if(storage.bootstrap === false) store = false;
+                                        var snippet_count = 0;
+                                        var snippet_limit = 0;
+                                        if($.isArray($.fn.blockstrap.settings.bootstrap))
+                                        {
+                                            snippet_limit = $.fn.blockstrap.settings.bootstrap.length;
+                                        }
+                                        if($.isArray($.fn.blockstrap.settings.bootstrap))
+                                        {
+                                            $.each($.fn.blockstrap.settings.bootstrap, function(k, v)
                                             {
-                                                snippet_limit = $.fn.blockstrap.settings.bootstrap.length;
-                                            }
-                                            if($.isArray($.fn.blockstrap.settings.bootstrap))
-                                            {
-                                                $.each($.fn.blockstrap.settings.bootstrap, function(k, v)
+                                                $.fn.blockstrap.data.find('boot', v, function(results)
                                                 {
-                                                    $.fn.blockstrap.data.find('boot', v, function(results)
+                                                    var refresh = blockstrap_functions.vars('refresh');
+                                                    if(refresh === true || !results || !store)
                                                     {
-                                                        var refresh = blockstrap_functions.vars('refresh');
-                                                        if(refresh === true || !results)
+                                                        $.fn.blockstrap.templates.get($.fn.blockstrap.settings.core_base+'html/bootstrap/'+v, 'html', function(html)
                                                         {
-                                                            $.fn.blockstrap.templates.get($.fn.blockstrap.settings.core_base+'html/bootstrap/'+v, 'html', function(html)
-                                                            {                                        
+                                                            if(store === true)
+                                                            {
                                                                 $.fn.blockstrap.data.save('boot', v, html, function(results)
                                                                 {
                                                                     $.fn.blockstrap.snippets[v] = html;
@@ -376,29 +381,37 @@ var blockstrap_core = function()
                                                                         $.fn.blockstrap.core.init();
                                                                     }
                                                                 })
-
-                                                            });
-                                                        }
-                                                        else
-                                                        {
-                                                            $.fn.blockstrap.snippets[v] = results;
-                                                            snippet_count++;
-                                                            if(snippet_count >= snippet_limit)
-                                                            {
-                                                                // INITIATE CORE
-                                                                $.fn.blockstrap.core.init();
                                                             }
+                                                            else
+                                                            {
+                                                                $.fn.blockstrap.snippets[v] = html;
+                                                                snippet_count++;
+                                                                if(snippet_count >= snippet_limit)
+                                                                {
+                                                                    // INITIATE CORE
+                                                                    $.fn.blockstrap.core.init();
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                    else
+                                                    {
+                                                        $.fn.blockstrap.snippets[v] = results;
+                                                        snippet_count++;
+                                                        if(snippet_count >= snippet_limit)
+                                                        {
+                                                            // INITIATE CORE
+                                                            $.fn.blockstrap.core.init();
                                                         }
-                                                    });
+                                                    }
                                                 });
-                                            }
-                                            else
-                                            {
-                                                // INITIATE CORE
-                                                $.fn.blockstrap.core.init();
-                                            }
-
-
+                                            });
+                                        }
+                                        else
+                                        {
+                                            // INITIATE CORE
+                                            $.fn.blockstrap.core.init();
+                                        }
                                     });
                                 })
                             };
@@ -787,41 +800,56 @@ var blockstrap_core = function()
             },
             less: function(callback)
             {
-                var less = localStorage.getItem('nw_inc_less');
-                if(blockstrap_functions.json(less)) less = $.parseJSON(less);
-                var refresh = blockstrap_functions.vars('refresh');
-                if(!less || refresh === true) 
+                var use_less = true;
+                if($.fn.blockstrap.settings.less === false) use_less = false;
+                if(use_less)
                 {
-                    $('head').append('<link rel="stylesheet/less" type="text/css" href="'+$.fn.blockstrap.settings.core_base+'less/blockstrap.less">');
-                    blockstrap_functions.js('js-blockstrap-less', $.fn.blockstrap.settings.core_base+'js/less.js', function()
+                    var less = localStorage.getItem('nw_inc_less');
+                    if(blockstrap_functions.json(less)) less = $.parseJSON(less);
+                    var refresh = blockstrap_functions.vars('refresh');
+                    var storage = $.fn.blockstrap.settings.storage;
+                    var store = true;
+                    if(storage.less === false) store = false;
+                    if(!less || refresh === true ||!store) 
                     {
-                        var less_styles = false;
-                        $('style').each(function()
+                        $('head').append('<link rel="stylesheet/less" type="text/css" href="'+$.fn.blockstrap.settings.core_base+'less/blockstrap.less">');
+                        blockstrap_functions.js('js-blockstrap-less', $.fn.blockstrap.settings.core_base+'js/less.js', function()
                         {
-                            // less-blockstrap
-                            var id = $(this).attr('id');
-                            var string_to_count = 'less-blockstrap';
-                            var string_length = string_to_count.length;
-                            if(id)
+                            var less_styles = false;
+                            $('style').each(function()
                             {
-                                var check = id.substring(0, 5);
-                                var double_check = id.substring((id.length - string_length), id.length);
-                                if(check === 'less:' && double_check === 'less-blockstrap')
+                                // less-blockstrap
+                                var id = $(this).attr('id');
+                                var string_to_count = 'less-blockstrap';
+                                var string_length = string_to_count.length;
+                                if(id)
                                 {
-                                    less_styles = $(this).html();
+                                    var check = id.substring(0, 5);
+                                    var double_check = id.substring((id.length - string_length), id.length);
+                                    if(check === 'less:' && double_check === 'less-blockstrap')
+                                    {
+                                        less_styles = $(this).html();
+                                    }
+                                    if(less_styles)
+                                    {
+                                        if(store)
+                                        {
+                                            localStorage.setItem('nw_inc_less', JSON.stringify(less_styles));
+                                        }
+                                        if(callback) callback();
+                                    }
                                 }
-                                if(less_styles)
-                                {
-                                    localStorage.setItem('nw_inc_less', JSON.stringify(less_styles));
-                                    if(callback) callback();
-                                }
-                            }
-                        })
-                    });
+                            })
+                        });
+                    }
+                    else
+                    {
+                        $('head').append('<style id="nw-css">'+less+'</style>');
+                        if(callback) callback();
+                    }
                 }
                 else
                 {
-                    $('head').append('<style id="nw-css">'+less+'</style>');
                     if(callback) callback();
                 }
             },

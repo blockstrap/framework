@@ -15,6 +15,10 @@
     templates.bootstrap = function(type)
     {
         var snippet = localStorage.getItem('nw_boot_'+type);
+        if($.fn.blockstrap.settings.storage.bootstrap === false)
+        {
+            snippet = $.fn.blockstrap.snippets[type];
+        }
         if(snippet)
         {
             if(blockstrap_functions.json(snippet)) snippet = $.parseJSON(snippet);

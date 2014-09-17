@@ -11,6 +11,7 @@
 (function($) 
 {
     var data = {};
+    
     if(localStorage)
     {
         $.fn.blockstrap.settings.info.storage = {

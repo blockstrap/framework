@@ -461,7 +461,7 @@ var blockstrap_setup_steps = [
                         {
                             "title": "Extend Your Security Settings",
                             "intro": "Configure your account to include extra security modules (Reccomended)",
-                            "html": "Here your device can be configured to include extra security modules. Like before this information is not stored anywhere and must be recreated to access your account. You can also use your account photo as an additional layer of entropy to your salt - as with all other information in this set up process, if you lose your image, you will also lose access to your account.<b>REMEMBER: If you cannot recreate this process, you will not be able to access the accounts in your wallet. You cannot change this information later.</b>",
+                            "html": "Here your device can be configured to include extra security modules. Like before this information is not stored anywhere and must be recreated to access your account. You can also use your account photo as an additional layer of entropy to your salt - as with all other information in this set up process, if you lose your image, you will also lose access to your account. <b>REMEMBER: If you cannot recreate this process, you will not be able to access the accounts in your wallet. You cannot change this information later.</b>",
                             "buttons": [
                                 {
                                     "href": "#",
