@@ -79,11 +79,55 @@
         });
     }
     
-    buttons.account = function(button, e)
+    buttons.cancel = function(button, mobile, menu, elements)
+    {
+        if(mobile && !menu) $(elements).css({'opacity':1});
+        if(menu)
+        {
+            if($('#menu-toggle').hasClass('open')) $('#menu-toggle').trigger('click');
+            if($('#sidebar-toggle').hasClass('open')) $('#sidebar-toggle').trigger('click');
+        }
+        $(button).removeClass('loading');
+        $($.fn.blockstrap.element).find('.activated').removeClass('activated').addClass('active');
+    }
+    
+    buttons.check = function()
+    {
+        var hash = false;
+        if(window.location.href.split('#').length === 2) 
+        {
+            hash = window.location.href.split('#')[1];
+        }
+        if(hash)
+        {
+            $($.fn.blockstrap.element).find('.btn-page').each(function()
+            {
+                if($(this).attr('href') === '#'+hash)
+                {
+                    if($('#mobile-footer').css('display') === 'block')
+                    {
+                        if($(this).parent().attr('id') === 'mobile-footer')
+                        {
+                            $(this).trigger('click');
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        $(this).trigger('click');
+                        return false;
+                    }
+                }
+            })
+        }
+    }
+    
+    buttons.create_account = function(button, e)
     {
         e.preventDefault();
         var wallet = {};
         var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form'));
+        $(button).addClass('loading');
         $.fn.blockstrap.core.loader('open');
         $.fn.blockstrap.core.modals('close_all');
         if($(form).length > 0)
@@ -171,54 +215,12 @@
         }
     }
     
-    buttons.cancel = function(button, mobile, menu, elements)
-    {
-        if(mobile && !menu) $(elements).css({'opacity':1});
-        if(menu)
-        {
-            if($('#menu-toggle').hasClass('open')) $('#menu-toggle').trigger('click');
-            if($('#sidebar-toggle').hasClass('open')) $('#sidebar-toggle').trigger('click');
-        }
-        $(button).removeClass('loading');
-        $($.fn.blockstrap.element).find('.activated').removeClass('activated').addClass('active');
-    }
-    
-    buttons.check = function()
-    {
-        var hash = false;
-        if(window.location.href.split('#').length === 2) 
-        {
-            hash = window.location.href.split('#')[1];
-        }
-        if(hash)
-        {
-            $($.fn.blockstrap.element).find('.btn-page').each(function()
-            {
-                if($(this).attr('href') === '#'+hash)
-                {
-                    if($('#mobile-footer').css('display') === 'block')
-                    {
-                        if($(this).parent().attr('id') === 'mobile-footer')
-                        {
-                            $(this).trigger('click');
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        $(this).trigger('click');
-                        return false;
-                    }
-                }
-            })
-        }
-    }
-    
-    buttons.contact = function(button, e)
+    buttons.create_contact = function(button, e)
     {
         e.preventDefault();
         var contact = {};
         var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form'));
+        $(button).addClass('loading');
         $.fn.blockstrap.core.loader('open');
         $.fn.blockstrap.core.modals('close_all');
         if($(form).length > 0)
@@ -288,7 +290,7 @@
         }
     }
     
-    buttons.credentials = function(button, e)
+    buttons.create_credentials = function(button, e)
     {
         e.preventDefault();
         $('#login-credentials-modal').modal('show');
@@ -411,6 +413,55 @@
         }
     }
     
+    buttons.edit_object = function(button, e)
+    {
+        e.preventDefault();
+        var key = $(button).attr('data-key');
+        var element = $(button).attr('data-element');
+        var collection = $(button).attr('data-collection');
+        var form_id = $(button).attr('data-form-id');
+        var form = $($.fn.blockstrap.element).find('form#' + form_id);
+        var obj = localStorage.getItem('nw_' + collection + '_' + key);
+        if(blockstrap_functions.json(obj)) obj = $.parseJSON(obj);
+        $(form).find('.form-group').each(function(i)
+        {
+            var input = $(this).find('input');
+            var value = $(input).val();
+            var id = $(input).attr('id');
+            if(id.indexOf('email') > -1)
+            {
+                obj.data.contact_email = value;
+            }
+            else if(id.indexOf('.') > -1)
+            {
+                var ids = id.split('.');
+                var address = value;
+                if($.fn.blockstrap.btc.validate(address))
+                {
+                    obj[ids[0]][ids[1]][ids[2]][ids[3]].key = address;
+                    if(i >= $(form).find('.form-group').length - 1)
+                    {
+                        $.fn.blockstrap.data.save(collection, key, obj, function()
+                        {
+                            $.fn.blockstrap.core.refresh(function()
+                            {
+                                $.fn.blockstrap.core.modal('Success', 'Edit Saved');
+                            });
+                        });
+                    }
+                }
+                else
+                {
+                    $.fn.blockstrap.core.modal('Warning', 'Not a valid address');
+                }
+            }
+            else
+            {
+                obj[id] = value;
+            }
+        });
+    }
+    
     buttons.login = function(button, e)
     {
         e.preventDefault();
@@ -440,7 +491,7 @@
         }
     }
     
-    buttons.more = function(button, e)
+    buttons.more_security = function(button, e)
     {
         e.preventDefault();
         var form_id = $(button).attr('data-form-id');
@@ -570,22 +621,6 @@
         }
     }
     
-    buttons.prepare = function(button, e)
-    {
-        e.preventDefault();
-        var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form-id'));
-        var to = $(form).find('#to').val();
-        var from = $(form).find('#from').val();
-        var amount = parseFloat($(form).find('#amount').val()) * 100000000;
-        if(!to) $.fn.blockstrap.core.modal('Warning', 'Missing address to send payment to');
-        else if(!from) $.fn.blockstrap.core.modal('Warning', 'Missing account to use to send from');
-        else if(!amount) $.fn.blockstrap.core.modal('Warning', 'You have not provided the amount you want to send');
-        else
-        {
-            $.fn.blockstrap.accounts.prepare(to, from, amount);
-        }
-    }
-    
     buttons.print = function(button, e)
     {
         e.preventDefault();
@@ -701,151 +736,23 @@
         }
     }
     
-    buttons.save = function(button, e)
+    buttons.send_money = function(button, e)
     {
         e.preventDefault();
-        var key = $(button).attr('data-key');
-        var element = $(button).attr('data-element');
-        var collection = $(button).attr('data-collection');
-        var form_id = $(button).attr('data-form-id');
-        var form = $($.fn.blockstrap.element).find('form#' + form_id);
-        var obj = localStorage.getItem('nw_' + collection + '_' + key);
-        if(blockstrap_functions.json(obj)) obj = $.parseJSON(obj);
-        $(form).find('.form-group').each(function(i)
-        {
-            var input = $(this).find('input');
-            var value = $(input).val();
-            var id = $(input).attr('id');
-            if(id.indexOf('email') > -1)
-            {
-                obj.data.contact_email = value;
-            }
-            else if(id.indexOf('.') > -1)
-            {
-                var ids = id.split('.');
-                var address = value;
-                if($.fn.blockstrap.btc.validate(address))
-                {
-                    obj[ids[0]][ids[1]][ids[2]][ids[3]].key = address;
-                    if(i >= $(form).find('.form-group').length - 1)
-                    {
-                        $.fn.blockstrap.data.save(collection, key, obj, function()
-                        {
-                            $.fn.blockstrap.core.refresh(function()
-                            {
-                                $.fn.blockstrap.core.modal('Success', 'Edit Saved');
-                            });
-                        });
-                    }
-                }
-                else
-                {
-                    $.fn.blockstrap.core.modal('Warning', 'Not a valid address');
-                }
-            }
-            else
-            {
-                obj[id] = value;
-            }
-        });
-    }
-    
-    buttons.send = function(button, e)
-    {
-        e.preventDefault();
-        var fields = [];
-        var form_id = $(button).attr('data-form-id');
-        var account_id = $(button).attr('data-account-id');
-        var to_address = $(button).attr('data-to-address');
-        var to_amount = parseInt($(button).attr('data-to-amount'));
-        var form = $('form#'+form_id);
-        var account = $.fn.blockstrap.accounts.get(account_id);
-        var balance = account.balance;
-        var fee = $.fn.blockstrap.settings.currencies.btc.fee * 100000000;
-        var from_address = account.address;
-        var change = balance - (to_amount + fee);
-        var current_tx_count = account.tx_count;
-        if(balance < to_amount + fee)
-        {
-            $.fn.blockstrap.core.modal('Warning', 'You do not have sufficient funds');
-        }
+        var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form-id'));
+        var to = $(form).find('#to').val();
+        var from = $(form).find('#from').val();
+        var amount = parseFloat($(form).find('#amount').val()) * 100000000;
+        if(!to) $.fn.blockstrap.core.modal('Warning', 'Missing address to send payment to');
+        else if(!from) $.fn.blockstrap.core.modal('Warning', 'Missing account to use to send from');
+        else if(!amount) $.fn.blockstrap.core.modal('Warning', 'You have not provided the amount you want to send');
         else
         {
-            $.fn.blockstrap.core.modals('close_all');
-            $.fn.blockstrap.core.loader('open');
-            $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
-            {
-                $(form).find('.form-group').each(function(i)
-                {
-                    var input = $(this).find('input');
-                    var value = $(input).val();
-                    var id = $(input).attr('id');
-                    fields.push({
-                        id: id,
-                        value: value
-                    });
-                });
-                $.fn.blockstrap.accounts.verify(account, fields, function(verified, keys)
-                {
-                    if(verified === true)
-                    {
-                        var private_key = keys.privkey.toString();
-                        $.fn.blockstrap.api.unspents(keys.pubkey.toString(), 'btc', function(unspents)
-                        {
-                            if($.isArray(unspents))
-                            {
-                                var inputs = [];
-                                var outputs = [{
-                                    'address': to_address,
-                                    'value': to_amount
-                                }];
-                                $.each(unspents, function(k, unspent)
-                                {
-                                    inputs.push({
-                                        txid: unspent.txid,
-                                        n: unspent.index,
-                                        script: unspent.script,
-                                        value: unspent.value,
-                                    });
-                                });
-                                var raw_transaction = $.fn.blockstrap.btc.raw(from_address, private_key, inputs, outputs, fee, to_amount);
-                                $.fn.blockstrap.api.relay(raw_transaction, 'btc', function(tx)
-                                {
-                                    if(tx && tx.txid)
-                                    {
-                                        account.ts = new Date().getTime();
-                                        account.balance = change;
-                                        account.tx_count++;
-                                        $.fn.blockstrap.data.save('accounts', account_id, account, function(obj)
-                                        {
-                                            $.fn.blockstrap.core.refresh(function()
-                                            {
-                                                var title = 'Sent ' + parseInt(to_amount) / 100000000 + ' Bitcoin to ' + to_address;
-                                                var base = $.fn.blockstrap.settings.base_url;
-                                                var content = '<p>Transaction ID: ' + tx.txid + '</p><p>You can <a href="' + base + '?txid=' + tx.txid + '#transaction">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchain.info/tx/' + tx.txid + '">this</a>.</p><p>Please note that upon refreshing or switching pages, balances may return to their previous totals when transactions are successful but unconfirmed, where they can take anywhere upto 10 minutes to be confirmed. We will provide dual balances for each currency in the next release.</p>';
-                                                $.fn.blockstrap.core.modal(title, content);
-                                                $.fn.blockstrap.core.loader('close');
-                                            });
-                                        });
-                                    }
-                                    else
-                                    {
-                                        $.fn.blockstrap.core.loader('close');
-                                    }
-                                });
-                            }
-                            else
-                            {
-                                $.fn.blockstrap.core.loader('close');
-                            }
-                        });
-                    }
-                });
-            });
+            $.fn.blockstrap.accounts.prepare(to, from, amount);
         }
-    } 
+    }
     
-    buttons.set = function(button, e)
+    buttons.set_credentials = function(button, e)
     {
         e.preventDefault();
         var form_id = $(button).attr('data-form');
@@ -858,6 +765,7 @@
         var repeat = $(form).find('#'+repeat_id).val();
         if(username && password && password == repeat)
         {
+            $(button).addClass('loading');
             $.fn.blockstrap.security.credentials(username, password, function()
             {
                 location.reload();
@@ -885,6 +793,8 @@
         var next_step = current_step + 1;
         var form_string = $(button).attr('data-forms');
         var forms = form_string.split(', ');
+        
+        $(button).addClass('loading');
         
         if($.isArray(forms))
         {
@@ -1100,6 +1010,144 @@
         }
     }
     
+    buttons.submit_payment = function(button, e)
+    {
+        e.preventDefault();
+        var fields = [];
+        var form_id = $(button).attr('data-form-id');
+        var account_id = $(button).attr('data-account-id');
+        var to_address = $(button).attr('data-to-address');
+        var to_amount = parseInt($(button).attr('data-to-amount'));
+        var form = $('form#'+form_id);
+        var account = $.fn.blockstrap.accounts.get(account_id);
+        var balance = account.balance;
+        var fee = $.fn.blockstrap.settings.currencies.btc.fee * 100000000;
+        var from_address = account.address;
+        var change = balance - (to_amount + fee);
+        var current_tx_count = account.tx_count;
+        if(balance < to_amount + fee)
+        {
+            $.fn.blockstrap.core.modal('Warning', 'You do not have sufficient funds');
+        }
+        else
+        {
+            $.fn.blockstrap.core.modals('close_all');
+            $.fn.blockstrap.core.loader('open');
+            $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
+            {
+                $(form).find('.form-group').each(function(i)
+                {
+                    var input = $(this).find('input');
+                    var value = $(input).val();
+                    var id = $(input).attr('id');
+                    fields.push({
+                        id: id,
+                        value: value
+                    });
+                });
+                $.fn.blockstrap.accounts.verify(account, fields, function(verified, keys)
+                {
+                    if(verified === true)
+                    {
+                        var private_key = keys.privkey.toString();
+                        $.fn.blockstrap.api.unspents(keys.pubkey.toString(), 'btc', function(unspents)
+                        {
+                            if($.isArray(unspents))
+                            {
+                                var inputs = [];
+                                var outputs = [{
+                                    'address': to_address,
+                                    'value': to_amount
+                                }];
+                                $.each(unspents, function(k, unspent)
+                                {
+                                    inputs.push({
+                                        txid: unspent.txid,
+                                        n: unspent.index,
+                                        script: unspent.script,
+                                        value: unspent.value,
+                                    });
+                                });
+                                var raw_transaction = $.fn.blockstrap.btc.raw(from_address, private_key, inputs, outputs, fee, to_amount);
+                                $.fn.blockstrap.api.relay(raw_transaction, 'btc', function(tx)
+                                {
+                                    if(tx && tx.txid)
+                                    {
+                                        account.ts = new Date().getTime();
+                                        account.balance = change;
+                                        account.tx_count++;
+                                        $.fn.blockstrap.data.save('accounts', account_id, account, function(obj)
+                                        {
+                                            $.fn.blockstrap.core.refresh(function()
+                                            {
+                                                var title = 'Sent ' + parseInt(to_amount) / 100000000 + ' Bitcoin to ' + to_address;
+                                                var base = $.fn.blockstrap.settings.base_url;
+                                                var content = '<p>Transaction ID: ' + tx.txid + '</p><p>You can <a href="' + base + '?txid=' + tx.txid + '#transaction">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchain.info/tx/' + tx.txid + '">this</a>.</p><p>Please note that upon refreshing or switching pages, balances may return to their previous totals when transactions are successful but unconfirmed, where they can take anywhere upto 10 minutes to be confirmed. We will provide dual balances for each currency in the next release.</p>';
+                                                $.fn.blockstrap.core.modal(title, content);
+                                                $.fn.blockstrap.core.loader('close');
+                                            });
+                                        });
+                                    }
+                                    else
+                                    {
+                                        $.fn.blockstrap.core.loader('close');
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                $.fn.blockstrap.core.loader('close');
+                            }
+                        });
+                    }
+                });
+            });
+        }
+    } 
+    
+    buttons.submit_verification = function(button, e)
+    {
+        e.preventDefault();
+        var fields = [];
+        var form_id = $(button).attr('data-form-id');
+        var account_id = $(button).attr('data-account-id');
+        var form = $('form#'+form_id);
+        var account = $.fn.blockstrap.accounts.get(account_id);
+        $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
+        {
+            $(form).find('.form-group').each(function(i)
+            {
+                var input = $(this).find('input');
+                var value = $(input).val();
+                var id = $(input).attr('id');
+                fields.push({
+                    id: id,
+                    value: value
+                });
+            });
+            $.fn.blockstrap.accounts.verify(account, fields, function(verified, keys)
+            {
+                if(verified === true)
+                {
+                    var private_key = keys.privkey.toString();
+                    var address = keys.pubkey.toString();
+                    var title = 'Private Key for '+address;
+                    var intro = '<p style="word-wrap: break-word;">'+private_key+'</p>';
+                    var qr_code = '<p class="qr-holder" data-content="'+private_key+'"></p>';
+                    var print = '<p style="text-align: center"><a href="#" class="btn btn-danger btn-print" data-print-id="default-modal" data-print-class="modal-body" data-print-title="Private Key for '+address+'">PRINT THIS KEY</a></p>';
+                    $.fn.blockstrap.core.modal(title, intro + qr_code + print);
+                    $('#default-modal').find('.qr-holder').each(function()
+                    {
+                        $(this).qrcode({
+                            render: 'image',
+                            text: $(this).attr('data-content')
+                        });
+                    });
+                }
+            });
+        });
+    }
+    
     buttons.toggle = function(button, e)
     {
         e.preventDefault();
@@ -1178,49 +1226,6 @@
                 $.fn.blockstrap.core.modal('Reminder', 'You do not yet have any contacts');
             }
         }
-    }
-    
-    buttons.verify = function(button, e)
-    {
-        e.preventDefault();
-        var fields = [];
-        var form_id = $(button).attr('data-form-id');
-        var account_id = $(button).attr('data-account-id');
-        var form = $('form#'+form_id);
-        var account = $.fn.blockstrap.accounts.get(account_id);
-        $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
-        {
-            $(form).find('.form-group').each(function(i)
-            {
-                var input = $(this).find('input');
-                var value = $(input).val();
-                var id = $(input).attr('id');
-                fields.push({
-                    id: id,
-                    value: value
-                });
-            });
-            $.fn.blockstrap.accounts.verify(account, fields, function(verified, keys)
-            {
-                if(verified === true)
-                {
-                    var private_key = keys.privkey.toString();
-                    var address = keys.pubkey.toString();
-                    var title = 'Private Key for '+address;
-                    var intro = '<p style="word-wrap: break-word;">'+private_key+'</p>';
-                    var qr_code = '<p class="qr-holder" data-content="'+private_key+'"></p>';
-                    var print = '<p style="text-align: center"><a href="#" class="btn btn-danger btn-print" data-print-id="default-modal" data-print-class="modal-body" data-print-title="Private Key for '+address+'">PRINT THIS KEY</a></p>';
-                    $.fn.blockstrap.core.modal(title, intro + qr_code + print);
-                    $('#default-modal').find('.qr-holder').each(function()
-                    {
-                        $(this).qrcode({
-                            render: 'image',
-                            text: $(this).attr('data-content')
-                        });
-                    });
-                }
-            });
-        });
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE

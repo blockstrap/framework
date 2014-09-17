@@ -88,6 +88,32 @@ var blockstrap_core = function()
                 'forms', 
                 'bars'
             ],
+            buttons: {
+                classes: [
+                    'access', 
+                    'edit', 
+                    'login', 
+                    'logout', 
+                    'page',
+                    'print',
+                    'refresh',
+                    'remove',
+                    'reset',
+                    'setup',
+                    'toggle'
+                ],
+                ids: [
+                    'create-account',
+                    'create-contact',
+                    'create-credentials',
+                    'edit-object',
+                    'more-security',
+                    'send-money',
+                    'set-credentials',
+                    'submit-payment',
+                    'submit-verification'
+                ]
+            },
             contacts: [
                 {
                     name: 'Blockstrap Donations',
@@ -445,90 +471,34 @@ var blockstrap_core = function()
             },
             buttons: function()
             {
-                $($.fn.blockstrap.element).on('click', '.btn-page', function(e)
+                var button_ids = $.fn.blockstrap.settings.buttons.ids;
+                var button_classes = $.fn.blockstrap.settings.buttons.classes;
+                if($.isArray(button_ids))
                 {
-                    $.fn.blockstrap.buttons.page(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '.btn-reset-device', function(e)
+                    $.each(button_ids, function(k, id_name)
+                    {
+                        var key = id_name;
+                        id_name = '#' + key;
+                        key = key.replace(/-/g, '_');
+                        $($.fn.blockstrap.element).on('click', id_name, function(e)
+                        {
+                            $.fn.blockstrap.buttons[key](this, e);
+                        });
+                    });
+                }
+                if($.isArray(button_classes))
                 {
-                    $.fn.blockstrap.buttons.reset(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '.btn-setup', function(e)
-                {
-                    $(this).addClass('loading');
-                    $.fn.blockstrap.buttons.setup(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '#create-account', function(e)
-                {
-                    $(this).addClass('loading');
-                    $.fn.blockstrap.buttons.account(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '#create-contact', function(e)
-                {
-                    $(this).addClass('loading');
-                    $.fn.blockstrap.buttons.contact(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '.btn-toggle', function(e)
-                {
-                    $.fn.blockstrap.buttons.toggle(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '.btn-remove', function(e)
-                {
-                    $.fn.blockstrap.buttons.remove(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '.btn-edit', function(e)
-                {
-                    $.fn.blockstrap.buttons.edit(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '.btn-logout', function(e)
-                {
-                    $.fn.blockstrap.buttons.logout(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '.btn-login', function(e)
-                {
-                    $.fn.blockstrap.buttons.login(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '#create-login-credentials', function(e)
-                {
-                    $.fn.blockstrap.buttons.credentials(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '#set-credentials', function(e)
-                {
-                    $(this).addClass('loading');
-                    $.fn.blockstrap.buttons.set(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '#more-security', function(e)
-                {
-                    $.fn.blockstrap.buttons.more(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '.btn-access', function(e)
-                {
-                    $.fn.blockstrap.buttons.access(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '#submit-verification', function(e)
-                {
-                    $.fn.blockstrap.buttons.verify(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '.btn-print', function(e)
-                {
-                    $.fn.blockstrap.buttons.print(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '#send-money', function(e)
-                {
-                    $.fn.blockstrap.buttons.prepare(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '#submit-payment', function(e)
-                {
-                    $.fn.blockstrap.buttons.send(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '.btn-refresh', function(e)
-                {
-                    $.fn.blockstrap.buttons.refresh(this, e);
-                });
-                $($.fn.blockstrap.element).on('click', '#edit-object', function(e)
-                {
-                    $.fn.blockstrap.buttons.save(this, e);
-                });
+                    $.each(button_classes, function(k, class_name)
+                    {
+                        var key = class_name;
+                        class_name = '.btn-' + key;
+                        key = key.replace(/-/g, '_');
+                        $($.fn.blockstrap.element).on('click', class_name, function(e)
+                        {
+                            $.fn.blockstrap.buttons[key](this, e);
+                        });
+                    });
+                }
             },
             confirm: function(title, content, callback)
             {

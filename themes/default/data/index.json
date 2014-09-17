@@ -92,7 +92,7 @@
                             "buttons": [
                                 {
                                     "href": "#",
-                                    "css": "btn-danger btn-reset-device",
+                                    "css": "btn-danger btn-reset",
                                     "text": "Reset Device"
                                 },
                                 {
