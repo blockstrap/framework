@@ -29,7 +29,7 @@ var blockstrap_core = function()
         var resize_time = new Date();
         var resize_timeout = false;
         var defaults = {
-            v: '0.2.0.6',
+            v: '0.2.0.7',
             salt: '',
             autoload: true,
             id: plugin_name,
@@ -129,6 +129,10 @@ var blockstrap_core = function()
                 },
                 pages: 60000,
                 accounts: 60000 // 2 Minutes = 120000
+            },
+            storage: {
+                dependencies: false,
+                modules: false
             },
             exchange: {
                 btc: 500,
@@ -1216,6 +1220,7 @@ var blockstrap_functions = {
     {
         var head = document.getElementsByTagName('head')[0];
         var refresh = blockstrap_functions.vars('refresh');
+        var storage = blockstrap.settings.storage;
         var limit = files.length;
         
         if(!dependency) dependency = false;
@@ -1226,8 +1231,18 @@ var blockstrap_functions = {
             var js = '';
             var file_name = files[start];
             var js_file = localStorage.getItem('nw_js_'+file_name);
+            var store = true;
+            
+            if(!dependency)
+            {
+                if(storage.modules === false) store = false;
+            }
+            else
+            {
+                if(storage.dependencies === false) store = false;
+            }
 
-            if(!js_file || refresh)
+            if(!js_file || refresh || !store)
             {
                 // INCLUDE CORE
                 var filename = blockstrap.settings.core_base + blockstrap.settings.dependency_base + file_name + '.js';
@@ -1255,7 +1270,11 @@ var blockstrap_functions = {
                             js+= "\n" + theme_js;
                         }
 
-                        localStorage.setItem('nw_js_'+file_name, js);
+                        if(store === true)
+                        {
+                            localStorage.setItem('nw_js_'+file_name, js);
+                        }
+                        
                         start++;
                         blockstrap_functions.include(blockstrap, start, files, callback, dependency);
                     });
