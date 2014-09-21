@@ -56,10 +56,10 @@
         return issues;
     }
     
+    // COPIED FROM CORE TO REMOVE NEED FOR CORE FILTERS
     theme.filters.bootstrap = function(blockstrap, data)
     {
         var snippet = blockstrap.snippets[data.type];
-        console.log(blockstrap.snippets);
         var html = Mustache.render(snippet, data);
         return html;
     }
