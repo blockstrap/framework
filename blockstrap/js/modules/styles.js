@@ -21,7 +21,7 @@
     
     styles.map = function(type)
     {
-        return $.fn.blockstrap.settings.maps.styles[type];
+        return $.fn.blockstrap.settings.styles[type];
     }
     
     styles.rule = function(key, value)

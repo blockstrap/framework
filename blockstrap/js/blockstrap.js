@@ -6,11 +6,14 @@
  *  Designed, Developed and Maintained by Neuroware.io Inc
  *  All Work Released Under MIT License
  *  
- *  -- Please note that Blockstrap is required by all Neuroware Products
  *  -- Including this file in the HTML header is the only requirement
  *  -- Everything else, including the loading of dependencies is handled here
  *  
  */
+
+// HARD-CODED / REMOVE LATER
+var bs_theme_config = 'config.default';
+var bs_theme_config = 'config';
 
 var blockstrap_loader;
 var blockstrap_core = function()
@@ -22,445 +25,66 @@ var blockstrap_core = function()
     */
     ;(function($, window, document, undefined)
     {
-        // SET DEFAULTS
+        // GLOBAL VARS
         var $this = this;
         var init_bs = false;
-        var plugin_name = 'blockstrap';
         var resize_time = new Date();
         var resize_timeout = false;
-        var defaults = {
-            v: '0.2.0.8',
-            salt: '',
-            autoload: true,
-            id: plugin_name,
-            theme: 'default',
-            less: false,
-            default_data: 'data/index.json',
-            default_html: 'html/index.html',
-            html_base: 'html/',
-            data_base: 'data/',
-            core_base: 'blockstrap/',
-            dependency_base: 'js/dependencies/',
-            module_base: 'js/modules/',
-            slug_base: 'dashboard',
-            base_url: '',
-            content_id: 'main-content',
-            navigation_id: 'navigation',
-            mobile_nav_id: 'mobile-footer',
-            css: ['less', 'font-awesome'],
-            store: ['app_url', 'your_name'],
-            modules: [
-                'forms',
-                'accounts',
-                'contacts',
-                'data', 
-                'api', 
-                'security', 
-                'theme',
-                'buttons', 
-                'styles', 
-                'templates',
-                'filters',
-                'btc'
-            ],
-            dependencies: [
-                'sonic', 
-                'crypto',
-                'effects', 
-                'steps',
-                'bootstrap.min', 
-                'bootstrap-switch.min',
-                'mustache', 
-                'tables',
-                'qrcode',
-                'bootstrap-filestyle.min',
-                'bitcoinjs',
-                'tx',
-                'sha3',
-                'ago'
-            ],
-            bootstrap: [
-                'lists', 
-                'jumbotrons', 
-                'panels', 
-                'tables', 
-                'modals', 
-                'forms', 
-                'bars'
-            ],
-            buttons: {
-                classes: [
-                    'access', 
-                    'edit', 
-                    'login', 
-                    'logout', 
-                    'page',
-                    'print',
-                    'refresh',
-                    'remove',
-                    'reset',
-                    'setup',
-                    'toggle'
-                ],
-                ids: [
-                    'create-account',
-                    'create-contact',
-                    'create-credentials',
-                    'edit-object',
-                    'more-security',
-                    'send-money',
-                    'set-credentials',
-                    'submit-payment',
-                    'submit-verification'
-                ]
-            },
-            contacts: [
-                {
-                    name: 'Blockstrap Donations',
-                    address: "13uXA8zfLjsnrg69f6FcHVRfwBGobYU3bc",
-                    currency: "btc",
-                    contact_email: "info@neroware.io"
-                }
-            ],      
-            styles: {
-                content_bg: '#DDD',
-                header_bg: '#475862'
-            },
-            tests: {
-                api: {
-                    address: '1Nz5RqevRodefPyGVB8EpdwSEGS4Ax2f1k',
-                    transaction: '06032a172f88ba823785f87341eab26ee7a2eb2de9d2f105220d6580e3affc16',
-                    transactions: '1Nz5RqevRodefPyGVB8EpdwSEGS4Ax2f1k',
-                    addresses: '1121cQLqCsDsLPAkJW5ddTCREZ7Bp4ufrk&addresses=12higDjoCCNXSA95xZMWUdPvXNmkAduhWv',
-                    block: '15968',
-                    relay: '0100000001ec71e2ceac8476bea21fbc4a97062c000f07def6c8ef8d9171fb1a5e113418e0010000008c493046022100e6f39b4393794ef03b0f9dc71395e0835a211015b42ab4329cb6a6c1c8b3c6ea022100f1ccae451f35e5c5ad25a8f7e7b5e778bafc4dc69dd560fab1cbadbb88767916014104e1934263e84e202ebffca95246b63c18c07cd369c4f02de76dbd1db89e6255dacb3ab1895af0422e24e1d1099e80f01b899cfcdf9b947575352dbc1af57466b5ffffffff0210270000000000001976a914652c453e3f8768d6d6e1f2985cb8939db91a4e0588ace065f81f000000001976a914cf0dfe6e0fa6ea5dda32c58ff699071b672e1faf88ac00000000',
-                    unspents: '1Nz5RqevRodefPyGVB8EpdwSEGS4Ax2f1k'
-                }
-            },
-            currencies: {
-                btc: {
-                    currency: "Bitcoin",
-                    api: "https://mainnet.helloblock.io/v1/",
-                    fee: 0.0001
-                },
-                ltc: {
-                    currency: "Litecoin",
-                    api: "https://mainnet.helloblock.io/v1/"
-                }
-            },
-            cache: {
-                api: {
-                    address: 60000, // 1 Minute
-                    timeout: 30000 // 30 Seconds
-                },
-                pages: 60000,
-                accounts: 60000 // 2 Minutes = 120000
-            },
-            storage: {
-                dependencies: false,
-                modules: false,
-                less: false,
-                bootstrap: false
-            },
-            exchange: {
-                btc: 500,
-                ltc: 5
-            }, // WHY USE MAPS TERMINOLOGY ALL OF A SUDDEN ...?
-            maps: {
-                styles: {
-                    elements: {
-                        content_bg: '#main-content',
-                        header_bg: 'header'
-                    },
-                    rules: {
-                        content_bg: 'background',
-                        header_bg: 'background'
-                    }
-                },
-                apis: {
-                    btc: {
-                        functions: {
-                            to: {
-                                address: 'addresses/',
-                                addresses: 'addresses?addresses=',
-                                transaction: 'transactions/',
-                                transactions: 'addresses/$call/transactions?limit=100',
-                                block: 'blocks/',
-                                relay: 'transactions/',
-                                relay_param: 'rawTxHex',
-                                unspents: 'addresses/$call/unspents?limit=100'
-                            },
-                            from: {
-                                address: {
-                                    key: 'address',
-                                    address: 'address',
-                                    hash: 'hash160',
-                                    tx_count: 'txsCount',
-                                    received: 'confirmedReceivedValue',
-                                    balance: 'balance'
-                                },
-                                addresses: {
-                                    key: 'addresses',
-                                    address: 'address',
-                                    hash: 'hash160',
-                                    tx_count: 'txsCount',
-                                    received: 'confirmedReceivedValue',
-                                    balance: 'balance'
-                                },
-                                transaction: {
-                                    key: 'transaction',
-                                    txid: 'txHash',
-                                    size: 'size',
-                                    block: 'blockHeight',
-                                    time: 'blockTime',
-                                    input: 'totalInputsValue',
-                                    inputs: 'inputs',
-                                    output: 'totalOutputsValue',
-                                    outputs: 'outputs',
-                                    value: 'estimatedTxValue',
-                                    fees: 'fees'
-                                },
-                                transactions: {
-                                    key: 'transactions',
-                                    txid: 'txHash',
-                                    size: 'size',
-                                    block: 'blockHeight',
-                                    time: 'blockTime',
-                                    input: 'totalInputsValue',
-                                    inputs: 'inputs',
-                                    output: 'totalOutputsValue',
-                                    outputs: 'outputs',
-                                    value: 'estimatedTxValue',
-                                    fees: 'fees'
-                                },
-                                block: {
-                                    key: 'block',
-                                    height: 'blockHeight',
-                                    hash: 'blockHash',
-                                    prev: 'prevBlockHash',
-                                    tx_count: 'txsCount',
-                                    time: 'blockTime'
-                                },
-                                relay: {
-                                    txid: 'txHash',
-                                    inner: 'transaction'
-                                },
-                                unspents: {
-                                    key: 'unspents',
-                                    confirmations: 'confirmations',
-                                    txid: 'txHash',
-                                    index: 'index',
-                                    value: 'value',
-                                    script: 'scriptPubKey'
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        };
-
-        // PLUGIN CONSTRUCTOR
-        function Plugin(element, options)
-        {
-            // MERGE DEFAULT AND PLUGIN OPTIONS
-            $.fn.blockstrap.settings = $.extend({}, defaults, options);
-            if($.fn.blockstrap.settings.salt && localStorage)
-            {
-                localStorage.setItem('nw_blockstrap_salt', $.fn.blockstrap.settings.salt);
-            }
-            $.fn.blockstrap.settings.vars = blockstrap_functions.vars();
-            if(blockstrap_functions.vars('less')) $.fn.blockstrap.settings.less = true;
-            if(!$.fn.blockstrap.settings.base_url)
-            {
-                $.fn.blockstrap.settings.base_url = window.location.href.split('#')[0];
-                $.fn.blockstrap.settings.base_url = $.fn.blockstrap.settings.base_url.split('?')[0];
-            }
-            $.fn.blockstrap.settings.info = {};
-
-            // ESTABLISH DEFAULT ELEMENT
-            if($(element).attr('src') || !element)
-            {
-                element = $('#blockstrap');
-            }
-            $.fn.blockstrap.element = element;
-            $($.fn.blockstrap.element).addClass('blockstrap-wrapper loading');
-
-            // DATA ATTRIBUTES
-            var attributes = $($.fn.blockstrap.element).data();
-            if(attributes['id'])
-            {
-                $.fn.blockstrap.settings['id'] = attributes['id'];
-            }
-            if(attributes['defaultData'])
-            {
-                $.fn.blockstrap.settings['default_data'] = attributes['defaultData'];
-            }
-            if(attributes['defaultHtml'])
-            {
-                $.fn.blockstrap.settings['default_html'] = attributes['defaultHtml'];
-            }
-            if(attributes['dataBase'])
-            {
-                $.fn.blockstrap.settings['data_base'] = attributes['dataBase'];
-            }
-            if(attributes['htmlBase'])
-            {
-                $.fn.blockstrap.settings['html_base'] = attributes['htmlBase'];
-            }
-            if(attributes['slugBase'])
-            {
-                $.fn.blockstrap.settings['slug_base'] = attributes['slugBase'];
-            }
-            if(attributes['contentId'])
-            {
-                $.fn.blockstrap.settings['content_id'] = attributes['contentId'];
-            }
-            if(attributes['filters'])
-            {
-                $.fn.blockstrap.settings['filters'] = attributes['filters'].split(', ');
-            }
-            if(attributes['dependencies'])
-            {
-                $.fn.blockstrap.settings['dependencies'] = attributes['dependencies'].split(', ');
-            }
-            if(attributes['modules'])
-            {
-                $.fn.blockstrap.settings['modules'] = attributes['modules'].split(', ');
-            }
-            if(attributes['bootstrap'])
-            {
-                $.fn.blockstrap.settings['bootstrap'] = attributes['bootstrap'].split(', ');
-            }
-            if(attributes['styles'])
-            {
-                $.fn.blockstrap.settings['styles'] = $.extend({}, $.fn.blockstrap.settings.styles, $.fn.blockstrap.core.stringed(attributes['styles'].split(', ')));
-            }
-            
-            // LOAD DEPENDENCIES FIRST
-            $.ajax({
-                url: $.fn.blockstrap.settings.core_base + 'html/' + 'loading.html',
-                dataType: 'HTML',
-                type: 'GET',
-                complete: function(results)
-                {
-                    if($($.fn.blockstrap.element).find('#'+$.fn.blockstrap.settings.content_id).length < 1)
-                    {
-                        if(results && results.responseText && results.responseText === '404')
-                        {
-
-                        }
-                        else
-                        {
-                            var loading = results.responseText;
-                            $($.fn.blockstrap.element).append(loading);
-                        }
-                    }
-                }
-            });
-            
-            blockstrap_functions.update($.fn.blockstrap.settings.v, function()
-            {
-                $.fn.blockstrap.core.less(function()
-                {
-                    if($.isArray($.fn.blockstrap.settings.dependencies))
-                    {
-                        blockstrap_functions.include($.fn.blockstrap, 0, $.fn.blockstrap.settings.dependencies, function()
-                        {
-                            // THEN LOAD MODULES
-                            if($.isArray($.fn.blockstrap.settings.modules))
-                            {
-                                $.fn.blockstrap.core.css(function()
-                                {
-                                    blockstrap_functions.include($.fn.blockstrap, 0, $.fn.blockstrap.settings.modules, function()
-                                    {
-                                        $.fn.blockstrap.snippets = {};       
-                                        var store = true;
-                                        var storage = $.fn.blockstrap.settings.storage;
-                                        if(storage.bootstrap === false) store = false;
-                                        var snippet_count = 0;
-                                        var snippet_limit = 0;
-                                        if($.isArray($.fn.blockstrap.settings.bootstrap))
-                                        {
-                                            snippet_limit = $.fn.blockstrap.settings.bootstrap.length;
-                                        }
-                                        if($.isArray($.fn.blockstrap.settings.bootstrap))
-                                        {
-                                            $.each($.fn.blockstrap.settings.bootstrap, function(k, v)
-                                            {
-                                                $.fn.blockstrap.data.find('boot', v, function(results)
-                                                {
-                                                    var refresh = blockstrap_functions.vars('refresh');
-                                                    if(refresh === true || !results || !store)
-                                                    {
-                                                        $.fn.blockstrap.templates.get($.fn.blockstrap.settings.core_base+'html/bootstrap/'+v, 'html', function(html)
-                                                        {
-                                                            if(store === true)
-                                                            {
-                                                                $.fn.blockstrap.data.save('boot', v, html, function(results)
-                                                                {
-                                                                    $.fn.blockstrap.snippets[v] = html;
-                                                                    snippet_count++;
-                                                                    if(snippet_count >= snippet_limit)
-                                                                    {
-                                                                        // INITIATE CORE
-                                                                        $.fn.blockstrap.core.init();
-                                                                    }
-                                                                })
-                                                            }
-                                                            else
-                                                            {
-                                                                $.fn.blockstrap.snippets[v] = html;
-                                                                snippet_count++;
-                                                                if(snippet_count >= snippet_limit)
-                                                                {
-                                                                    // INITIATE CORE
-                                                                    $.fn.blockstrap.core.init();
-                                                                }
-                                                            }
-                                                        });
-                                                    }
-                                                    else
-                                                    {
-                                                        $.fn.blockstrap.snippets[v] = results;
-                                                        snippet_count++;
-                                                        if(snippet_count >= snippet_limit)
-                                                        {
-                                                            // INITIATE CORE
-                                                            $.fn.blockstrap.core.init();
-                                                        }
-                                                    }
-                                                });
-                                            });
-                                        }
-                                        else
-                                        {
-                                            // INITIATE CORE
-                                            $.fn.blockstrap.core.init();
-                                        }
-                                    });
-                                })
-                            };
-                        }, true);
-                    }
-                });
-            });
-        }
-                                         
         
         // PREVENT DUPLICATES
-        $.fn[plugin_name] = function(options)
+        $.fn.blockstrap = function(options)
         {
             this.each(function()
             {
-                if(!$.data(this, "plugin_"+plugin_name))
+                if(!$.data(this, "plugin_blockstrap"))
                 {
-                    $.data(this, "plugin_"+plugin_name, new plugin(this, options));
+                    $.data(this, "plugin_blockstrap", new plugin(this, options));
                 }
             });
             return this;
         };
-
+        
+        // IN-ESCAPABLE INCLUDES
+        $.fn.blockstrap.defaults = function()
+        {
+            var defaults = {
+                dependencies: [
+                    'crypto',
+                    'mustache'
+                ],
+                modules: [
+                    'templates',
+                    'theme'
+                ]
+            }
+            var modules = $.fn.blockstrap.settings.modules;
+            var dependencies = $.fn.blockstrap.settings.dependencies;
+            var d_length = blockstrap_functions.array_length(dependencies);
+            var m_length = blockstrap_functions.array_length(modules);
+            if(!$.isArray($.fn.blockstrap.settings.dependencies))
+            {
+                $.fn.blockstrap.settings.dependencies = [];
+            }
+            if(!$.isArray($.fn.blockstrap.settings.modules))
+            {
+                $.fn.blockstrap.settings.modules = [];
+            }
+            $.each(defaults.dependencies, function(k, dependency)
+            {
+                if($.inArray(dependency, dependencies) < 0 || d_length < 1)
+                {
+                    $.fn.blockstrap.settings.dependencies.push(dependency);
+                }   
+            });
+            $.each(defaults.modules, function(k, module)
+            {
+                if($.inArray(module, modules) < 0 || m_length < 1)
+                {
+                    $.fn.blockstrap.settings.modules.push(module);
+                }
+            });
+        }
+        
         // CORE FUNCTIONS
         $.fn.blockstrap.core = {
             ago: function(time)
@@ -525,20 +149,64 @@ var blockstrap_core = function()
                     })
                 }
             },
+            defaults: function()
+            {
+                if(!$.isPlainObject($.fn.blockstrap.data))
+                {
+                    var data_functions = {
+                        find: function(col, key, callback)
+                        {
+                            if(callback) callback(false);
+                        },
+                        save: function(col, key, value, callback)
+                        {
+                            if(callback) callback(false);
+                        }
+                    }
+                    $.fn.blockstrap.data = data_functions;
+                }
+                if(!$.isPlainObject($.fn.blockstrap.security))
+                {
+                    var security_functions = {
+                        logged_in: function()
+                        {
+                            return true;
+                        }
+                    }
+                    $.fn.blockstrap.security = security_functions;
+                }
+            },
             filter: function(data)
             {
-                $.each(data, function(k, v)
-                { 
-                    if($.isPlainObject(v) && v.func && $.isFunction($.fn.blockstrap.filters[v.func]))
-                    {
-                        data[k] = $.fn.blockstrap.filters[v.func]($.fn.blockstrap, v);
-                    }
-                    else if($.isPlainObject(v) || $.isArray(v))
-                    {
-                        data[k] = $.fn.blockstrap.core.filter(v);
-                    }
-                });
-                return data;
+                var filters = false;
+                var bs = $.fn.blockstrap;
+                if($.isPlainObject(bs.filters))
+                {
+                    filters = $.fn.blockstrap.filters;
+                }
+                if($.isPlainObject(bs.theme) && $.isPlainObject(bs.theme.filters))
+                {
+                    filters = $.extend({}, filters, bs.theme.filters);
+                }
+                if(filters)
+                {
+                    $.each(data, function(k, v)
+                    { 
+                        if($.isPlainObject(v) && v.func && $.isFunction(filters[v.func]))
+                        {
+                            data[k] = filters[v.func]($.fn.blockstrap, v);
+                        }
+                        else if($.isPlainObject(v) || $.isArray(v))
+                        {
+                            data[k] = $.fn.blockstrap.core.filter(v);
+                        }
+                    });
+                    return data;
+                }
+                else
+                {
+                    return data;
+                }
             },
             forms: function()
             {
@@ -675,6 +343,21 @@ var blockstrap_core = function()
                     $.fn.blockstrap.core.modal('Warning', 'Search functionality will be available in the next major update');
                 });
             },
+            get: function(file, extension, callback)
+            {
+                $.ajax({
+                    url: file + '.' + extension,
+                    dataType: extension,
+                    success: function(results)
+                    {
+                        if(callback) callback(results, file, extension);
+                    },
+                    error: function(results)
+                    {
+                        if(callback) callback(results, file, extension);
+                    }
+                });
+            },
             image: function(input, callback)
             {
                 if(input.files && input.files[0]) 
@@ -691,79 +374,80 @@ var blockstrap_core = function()
             },
             init: function()
             {
-                // RESET IF REQUIRED
-                if(blockstrap_functions.vars('reset') === true)
+                var bs = $.fn.blockstrap;
+                var $bs = blockstrap_functions;
+                
+                // CALLBACK UPON COMPLETION
+                var init_callback = function(nav)
                 {
-                    $.fn.blockstrap.buttons.reset(false, false);
+                    bs.core.modals();
+                    bs.core.buttons();
+                    bs.core.ready();
+                    
+                    if($.isPlainObject(bs.styles))
+                    {
+                        bs.styles.set();
+                    }
+                    
+                    if(nav)
+                    {
+                        bs.core.nav(nav);
+                    }
+                    
+                    // SMOOTHER FADE-IN
+                    $(bs.element).animate({'opacity':1}, 600, function()
+                    {
+                        bs.core.loading();
+                        $(window).resize(function(e)
+                        {
+                            bs.core.resize();
+                        })
+                    });
+                }
+                
+                // RESET IF REQUIRED
+                if($bs.vars('reset') === true)
+                {
+                    bs.buttons.reset(false, false);
                 }
                 else if(!init_bs)
                 {
                     init_bs = true;
-                    // Check for login credentials...?
-                    if(!$.fn.blockstrap.security.logged_in())
+                    // CHECK FOR LOGIN STATUS
+                    if(!bs.security.logged_in())
                     {
-                        $.fn.blockstrap.templates.render('../../../blockstrap/html/bootstrap/login', function()
+                        var url = '../../../blockstrap/html/bootstrap/login';
+                        bs.templates.render(url, function()
                         {
-                            $.fn.blockstrap.styles.set();
-                            $.fn.blockstrap.core.modals();
-                            $.fn.blockstrap.core.buttons();
-                            $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
-                            {
-                                $.fn.blockstrap.core.loading();
-                                $.fn.blockstrap.core.ready();
-                                $(window).resize(function(e)
-                                {
-                                    $.fn.blockstrap.core.resize();
-                                })
-                            });
+                            init_callback();
                         });
                     }
                     else
                     {
-                        setInterval(function()
+                        if($.isPlainObject(bs.accounts))
                         {
-                            $.fn.blockstrap.accounts.poll();
-                        }, $.fn.blockstrap.settings.cache.accounts);
-                        $.fn.blockstrap.templates.render('index', function()
+                            setInterval(function()
+                            {
+                                bs.accounts.poll();
+                            }, bs.settings.cache.accounts);
+                        }
+                        bs.templates.render('index', function()
                         {
                             if(window.location.hash)
                             {
-                                $.fn.blockstrap.core.refresh(function()
+                                bs.core.refresh(function()
                                 {
-                                    $.fn.blockstrap.styles.set();
-                                    $.fn.blockstrap.core.modals();
-                                    $.fn.blockstrap.core.buttons();
-                                    $.fn.blockstrap.core.nav(window.location.hash);
-                                    $.fn.blockstrap.core.ready();
-                                    $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
-                                    {
-                                        $.fn.blockstrap.core.loading();
-                                        $(window).resize(function(e)
-                                        {
-                                            $.fn.blockstrap.core.resize();
-                                        })
-                                    });
-                                }, blockstrap_functions.slug(window.location.hash));
+                                    init_callback(window.location.hash);
+                                }, $bs.slug(window.location.hash));
                             }
                             else
                             {
-                                $.fn.blockstrap.core.ready();
-                                $.fn.blockstrap.styles.set();
-                                $.fn.blockstrap.core.modals();
-                                $.fn.blockstrap.core.buttons();
-                                $($.fn.blockstrap.element).animate({'opacity':1}, 600, function()
-                                {
-                                    $.fn.blockstrap.core.loading();
-                                    $(window).resize(function(e)
-                                    {
-                                        $.fn.blockstrap.core.resize();
-                                    })
-                                });
+                                init_callback();
                             }
                             var run_tests = false;
-                            var tests = blockstrap_functions.vars('tests');
+                            var tests = $bs.vars('tests');
                             if(tests) run_tests = true;
-                            $.fn.blockstrap.core.tests(run_tests);
+                            bs.core.tests(run_tests);
                         });
                     }
                 }
@@ -823,6 +507,72 @@ var blockstrap_core = function()
                     if(callback) callback();
                 }
             },
+            loaded: function()
+            {
+                $.fn.blockstrap.snippets = {};
+                $.fn.blockstrap.core.defaults();
+                
+                var bs = $.fn.blockstrap;
+                var store = true;
+                var storage = bs.settings.storage;
+                if(storage.bootstrap === false) store = false;
+                var snippet_count = 0;
+                var snippet_limit = 0;
+                
+                var initialize = function(v, html, snippet_count, snippet_limit)
+                {
+                    if(v && html)
+                    {
+                        $.fn.blockstrap.snippets[v] = html;
+                    }
+                    if(snippet_count >= snippet_limit)
+                    {
+                        bs.core.init();
+                    }
+                }
+                
+                if($.isArray(bs.settings.bootstrap))
+                {
+                    snippet_limit = bs.settings.bootstrap.length;
+                }
+                if($.isArray(bs.settings.bootstrap))
+                {
+                    $.each(bs.settings.bootstrap, function(k, v)
+                    {
+                        bs.data.find('boot', v, function(results)
+                        {
+                            snippet_count++;
+                            var refresh = blockstrap_functions.vars('refresh');
+                            if(refresh === true || !results || !store)
+                            {
+                                var url = bs.settings.core_base + 'html/bootstrap/' + v;
+                                bs.core.get(url, 'html', function(html)
+                                {
+                                    if(store === true)
+                                    {
+                                        bs.data.save('boot', v, html, function(results)
+                                        {
+                                            initialize(v, html, snippet_count, snippet_limit);
+                                        })
+                                    }
+                                    else
+                                    {
+                                        initialize(v, html, snippet_count, snippet_limit);
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                initialize(v, html, snippet_count, snippet_limit);
+                            }
+                        });
+                    });
+                }
+                else
+                {
+                    initialize(false, false, snippet_count, snippet_limit);
+                }
+            },
             loader: function(force_state, element)
             {
                 var original_element = element;
@@ -846,8 +596,13 @@ var blockstrap_core = function()
                     $($.fn.blockstrap.element).prepend(loader);
                     if(original_element) element = original_element;
                     else element = $($.fn.blockstrap.element).find('#loading-blockstrap');
-                    $(element).find('#loader-canvas').html(blockstrap_loader.canvas);
-                    blockstrap_loader.play();
+                    
+                    // IS SONIC LOADER AVAILABLE ...?
+                    if($.isPlainObject(blockstrap_loader))
+                    {
+                        $(element).find('#loader-canvas').html(blockstrap_loader.canvas);
+                        blockstrap_loader.play();
+                    }
                 }
                 if(!$($.fn.blockstrap.element).hasClass('loading'))
                 {
@@ -989,8 +744,20 @@ var blockstrap_core = function()
 
                 // TODO: 
                 // Handle inactive modules?
-                $.fn.blockstrap.theme.new();
-                $.fn.blockstrap.buttons.new();
+                if($.isPlainObject($.fn.blockstrap.theme))
+                {
+                    if($.isFunction($.fn.blockstrap.theme.new))
+                    {
+                        $.fn.blockstrap.theme.new();
+                    }
+                }
+                if($.isPlainObject($.fn.blockstrap.buttons))
+                {
+                    if($.isFunction($.fn.blockstrap.buttons.new))
+                    {
+                        $.fn.blockstrap.buttons.new();
+                    }
+                }
             },
             refresh: function(callback, slug)
             {
@@ -1094,6 +861,79 @@ var blockstrap_core = function()
                     $.fn.blockstrap.core.table();
                 }   
             },
+            settings: function(element)
+            {
+                $.fn.blockstrap.settings.vars = blockstrap_functions.vars();
+                if(blockstrap_functions.vars('less'))
+                {
+                    $.fn.blockstrap.settings.less = true;
+                }
+                if(!$.fn.blockstrap.settings.base_url)
+                {
+                    var base_url = window.location.href.split('#')[0];
+                    $.fn.blockstrap.settings.base_url = base_url.split('?')[0];
+                }
+                $.fn.blockstrap.settings.info = {};
+
+                // ESTABLISH DEFAULT ELEMENT
+                if($(element).attr('src') || !element)
+                {
+                    element = $('#blockstrap');
+                }
+                $.fn.blockstrap.element = element;
+                $($.fn.blockstrap.element).addClass('blockstrap-wrapper loading');
+
+                // DATA ATTRIBUTES
+                var attributes = $($.fn.blockstrap.element).data();
+                if(attributes['id'])
+                {
+                    $.fn.blockstrap.settings['id'] = attributes['id'];
+                }
+                if(attributes['defaultData'])
+                {
+                    $.fn.blockstrap.settings['default_data'] = attributes['defaultData'];
+                }
+                if(attributes['defaultHtml'])
+                {
+                    $.fn.blockstrap.settings['default_html'] = attributes['defaultHtml'];
+                }
+                if(attributes['dataBase'])
+                {
+                    $.fn.blockstrap.settings['data_base'] = attributes['dataBase'];
+                }
+                if(attributes['htmlBase'])
+                {
+                    $.fn.blockstrap.settings['html_base'] = attributes['htmlBase'];
+                }
+                if(attributes['slugBase'])
+                {
+                    $.fn.blockstrap.settings['slug_base'] = attributes['slugBase'];
+                }
+                if(attributes['contentId'])
+                {
+                    $.fn.blockstrap.settings['content_id'] = attributes['contentId'];
+                }
+                if(attributes['filters'])
+                {
+                    $.fn.blockstrap.settings['filters'] = attributes['filters'].split(', ');
+                }
+                if(attributes['dependencies'])
+                {
+                    $.fn.blockstrap.settings['dependencies'] = attributes['dependencies'].split(', ');
+                }
+                if(attributes['modules'])
+                {
+                    $.fn.blockstrap.settings['modules'] = attributes['modules'].split(', ');
+                }
+                if(attributes['bootstrap'])
+                {
+                    $.fn.blockstrap.settings['bootstrap'] = attributes['bootstrap'].split(', ');
+                }
+                if(attributes['styles'])
+                {
+                    $.fn.blockstrap.settings['styles'] = $.extend({}, $.fn.blockstrap.settings.styles, $.fn.blockstrap.core.stringed(attributes['styles'].split(', ')));
+                }
+            },
             stringed: function(styles)
             {
                 if($.isArray(styles))
@@ -1182,7 +1022,104 @@ var blockstrap_core = function()
             }
         };        
 
-        Plugin();
+        // PLUGIN CONSTRUCTOR
+        function plugin(element, options, defaults)
+        {
+            // MERGE DEFAULT AND PLUGIN OPTIONS
+            var settings = $.extend({}, defaults, options);
+            
+            // THEN GET CONFIG FILE
+            $.fn.blockstrap.core.get(bs_theme_config, 'json', function(results)
+            {
+                if($.isPlainObject(results))
+                {
+                    $.fn.blockstrap.settings = $.extend({}, settings, results);
+                    $.fn.blockstrap.core.settings(element);
+                    $.fn.blockstrap.defaults();
+                    
+                    var bs = $.fn.blockstrap;
+                    var $bs = blockstrap_functions;
+                    var dependencies = $.fn.blockstrap.settings.dependencies;
+                    var modules = $.fn.blockstrap.settings.modules;
+                    
+                    // LOADING SCREEN
+                    // TODO: REMOVE FROM CORE...?
+                    // BETTER PLACED IN THEMES...?
+                    $.ajax({
+                        url: $.fn.blockstrap.settings.core_base + 'html/' + 'loading.html',
+                        dataType: 'HTML',
+                        type: 'GET',
+                        complete: function(results)
+                        {
+                            var element = $.fn.blockstrap.element;
+                            var id = $.fn.blockstrap.settings.content_id;
+                            if($(element).find('#' + id).length < 1)
+                            {
+                                if(results)
+                                {
+                                    if(results.responseText && results.responseText === '404')
+                                    {
+                                        // Do nothing!
+                                    }
+                                    else
+                                    {
+                                        var loading = results.responseText;
+                                        $($.fn.blockstrap.element).append(loading);
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+                    // UPDATE CORE IF REQUIRED
+                    $bs.update(bs.settings.v, function()
+                    {
+                        // USE LESS.css ...?
+                        bs.core.less(function()
+                        {
+                            // INSERT CSS
+                            bs.core.css(function()
+                            {
+                                if($.isArray(dependencies))
+                                {
+                                    // INCLUDE JS DEPENDENCIES
+                                    $bs.include(bs, 0, dependencies, function()
+                                    {
+                                        if($.isArray(modules))
+                                        {
+                                            // INCLUDE JS MODULES
+                                            $bs.include(bs, 0, modules, function()
+                                            {
+                                                bs.core.loaded();
+                                            });
+                                        }
+                                        else
+                                        {
+                                            bs.core.loaded();
+                                        }
+                                    }, true);
+                                }
+                                else
+                                {
+                                    bs.core.loaded();
+                                }
+                            });
+                        });
+                    });
+                }
+            });
+        }                     
+
+        $.ajax({
+            url: 'defaults.json',
+            dataType: 'json',
+            success: function(defaults)
+            {
+                // CONSTRUCT PLUGIN AFTER
+                // FIRST COLLECTING DEFAULTS
+                plugin(false, false, defaults);
+            }
+        });
     })
     (jQuery, window, document);
 };

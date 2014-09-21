@@ -1,0 +1,43 @@
+{
+    "issues": {
+        "func": "issues"
+    },
+    "filters": [
+        {
+            "href": "",
+            "text": "Addresses"
+        },
+        {
+            "href": "#",
+            "text": "Issue Title"
+        },
+        {
+            "href": "#",
+            "text": "Issued Date"
+        },
+        {
+            "href": "#",
+            "css": "pull-right active",
+            "text": "Points"
+        },
+        {
+            "href": "#",
+            "css": "pull-right",
+            "text": "Contributions"
+        },
+        {
+            "href": "#",
+            "css": "pull-right",
+            "text": "Votes"
+        }
+    ],
+    "copy": {
+        "contribute_to": "Contribute to",
+        "details": "Details",
+        "posted_by": "Posted by",
+        "share": "Share",
+        "total_contributions": "Total Contributions To-Date are"
+    },
+    "credits": "Priority is a <a href='http://blockstrap.com'>Blockstrap</a> Theme",
+    "total": "0 Bitcoin"
+}

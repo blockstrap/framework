@@ -564,7 +564,7 @@
                         pages_cached[slug] = now;
                     }
                     if(refresh === true || !data)
-                    {                              $.fn.blockstrap.templates.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.data_base+slug, 'json', function(data)
+                    {                              $.fn.blockstrap.core.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.data_base+slug, 'json', function(data)
                         {
                             if(data.status)
                             {
@@ -580,7 +580,7 @@
                                         var html = results;
                                         if(refresh === true || !html)
                                         {
-                                            $.fn.blockstrap.templates.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.html_base+slug, 'html', function(content)
+                                            $.fn.blockstrap.core.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.html_base+slug, 'html', function(content)
                                             {
                                                 if(content.status && content.status === 404)
                                                 {

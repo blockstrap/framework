@@ -1,0 +1,14 @@
+{
+    "theme": "priority",
+    "modules": false,
+    "dependencies": [
+        "qrcode"
+    ],
+    "bootstrap": false,
+    "css": ["reset", "priority"],
+    "styles": false,
+    "storage": {
+        "dependencies": true,
+        "modules": true
+    }
+}

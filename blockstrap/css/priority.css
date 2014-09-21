@@ -1,0 +1,149 @@
+html, body {
+    background: #E9E9E9;
+    font-family: sans-serif;
+    font-size: 14px;
+}
+body {
+    padding: 30px 0;
+}
+a {
+    text-decoration: none;
+    color: #0085B2;
+    outline: 0;
+}
+a.active, a:hover {
+    color: #757575;
+}
+.pull-right {
+    float: right;
+}
+#filters {
+    display: block;
+    position: relative;
+    height: 10px;
+}
+#filters a {
+    font-size: 12px;
+    float: left;
+    margin: 0 10px;
+}
+#filters a.pull-right {
+    float: right;
+}
+#footer {
+    display: block;
+    position: relative;
+    height: 10px;
+    font-size: 12px;
+    color: #757575;
+}
+#credits, #total {
+    display: inline-block;
+    float: left;
+    width: 49%;
+    padding: 0 10px;
+}
+#total {
+    text-align: right;
+    float: right;
+}
+#loading-blockstrap {
+    display: none;
+}
+#content {
+    display: block;
+    position: relative;
+    margin: 0 auto;
+    width: 960px;
+}
+#issues {
+    display: block;
+    position: relative;
+    background: #FFF;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 10px 0;
+}
+.issue {
+    display: block;
+    position: relative;
+    margin: 30px 0 0;
+}
+#issues .issue:first-child {
+    margin: 0;
+}
+#issues .qr-code {
+    display: inline-block;
+    position: relative;
+    height: 80px;
+    width: 80px;
+}
+#issues .qr-code img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+.meta {
+    display: inline-block;
+    position: relative;
+    float: right;
+    width: 220px;
+}
+.info {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 90px;
+    right: 230px;
+}
+.info h4, .meta .values {
+    display: block;
+    position: relative;
+    background: #EEE;
+    border-bottom: 1px solid #CCC;
+    color: #004C66;
+    font-size: 18px;
+    font-weight: normal;
+    padding: 14px 10px 10px;
+    margin: -2px 0 10px;
+}
+.meta .values {
+    margin: -2px 0 10px;
+    font-size: 16px;
+}
+.values span {
+    padding: 5px 5px 3px;
+    background: #FFFDF8;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+    line-height: 18px;
+    margin: -6px 0 -3px 1px;
+    display: inline-block;
+    width: 31%;
+    text-align: center;
+}
+.info span {
+    display: block;
+    position: relative;
+    font-size: 12px;
+    line-height: 16px;
+    color: #757575;
+    padding: 0 0 0 5px;
+}
+.actions a.btn {
+    display: inline-block;
+    position: relative;
+    width: 48%;
+    background: #FFEDB8;
+    border: 1px solid #AAA;
+    border-radius: 8px;
+    color: #757575;
+    text-transform: uppercase;
+    padding: 7px 5px 5px;
+    line-height: 18px;
+    text-align: center;
+}
+.actions a.btn:hover {
+    background: #EBB400;
+}

@@ -13,7 +13,7 @@
     var api = {};
     var api_timeout = 15000;
     var active_requests = {};
-    var apis = $.fn.blockstrap.settings.maps.apis;
+    var apis = $.fn.blockstrap.settings.apis;
     var currencies = $.fn.blockstrap.settings.currencies;
     
     if($.fn.blockstrap.settings.cache.api.timeout)

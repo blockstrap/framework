@@ -32,7 +32,8 @@
     
     templates.filter = function(html, placeholders, replacements)
     {
-        if(!placeholders || !replacements)
+        // TODO: FIX HACK PART ONE
+        if((!placeholders || !replacements) && $.isPlainObject($.fn.blockstrap.accounts))
         {
             var raw_name = localStorage.getItem('nw_keys_your_name');
             var name = raw_name;
@@ -105,38 +106,30 @@
                 parseInt(account.balance) / 100000000 + ' ' + add_currency
             ];
         }
-        for(var i = 0; i < placeholders.length; i++) 
+        // TODO: FIX HACK PART TWO
+        if(placeholders && replacements)
         {
-            if(!html)
+            for(var i = 0; i < placeholders.length; i++) 
             {
-                html = $($.fn.blockstrap.element).html();
-                html = html.split('{{' + placeholders[i] + '}}').join(replacements[i]);
-                $($.fn.blockstrap.element).html(html);
-                $.fn.blockstrap.core.loader('close');
-            }
-            else
-            {
-                html = html.split('{{' + placeholders[i] + '}}').join(replacements[i]);
-                if(i >= (placeholders.length - 1)) return html;
+                if(!html)
+                {
+                    html = $($.fn.blockstrap.element).html();
+                    html = html.split('{{' + placeholders[i] + '}}').join(replacements[i]);
+                    $($.fn.blockstrap.element).html(html);
+                    $.fn.blockstrap.core.loader('close');
+                }
+                else
+                {
+                    html = html.split('{{' + placeholders[i] + '}}').join(replacements[i]);
+                    if(i >= (placeholders.length - 1)) return html;
+                }
             }
         }
+        else
+        {
+            return html;
+        }
     }
-    
-    templates.get = function(file, extension, callback)
-    {
-        $.ajax({
-            url: file + '.' + extension,
-            dataType: extension,
-            success: function(results)
-            {
-                if(callback) callback(results, file, extension);
-            },
-            error: function(results)
-            {
-                if(callback) callback(results, file, extension);
-            }
-        });
-    };
     
     templates.process = function(data, html)
     {
@@ -161,7 +154,7 @@
             if(force_refresh) refresh = true;
             if(refresh === true || !data)
             {
-                templates.get('themes/' + $.fn.blockstrap.settings.theme + '/' + $.fn.blockstrap.settings.data_base + slug, 'json', function(data)
+                $.fn.blockstrap.core.get('themes/' + $.fn.blockstrap.settings.theme + '/' + $.fn.blockstrap.settings.data_base + slug, 'json', function(data)
                 {
                     var filtered_data = $.fn.blockstrap.core.filter(data);
                     $.fn.blockstrap.data.save('data', slug, data, function()
@@ -171,7 +164,7 @@
                             var html = results;
                             if(!html || refresh)
                             {
-                                templates.get('themes/' + $.fn.blockstrap.settings.theme + '/' + $.fn.blockstrap.settings.html_base + slug, 'html', function(content)
+                                $.fn.blockstrap.core.get('themes/' + $.fn.blockstrap.settings.theme + '/' + $.fn.blockstrap.settings.html_base + slug, 'html', function(content)
                                 {
                                     var rendered_html = Mustache.render(content, filtered_data);
                                     var paged_html = templates.filter(rendered_html);
@@ -229,7 +222,7 @@
                     var html = results;
                     if(!html)
                     {
-                        templates.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.html_base+slug, 'html', function(content)
+                        $.fn.blockstrap.core.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.html_base+slug, 'html', function(content)
                         {
                             var paged_html = templates.filter(Mustache.render(content, filtered_data));
                             if(skip !== true)

@@ -1,0 +1,44 @@
+<div id="content">
+    <div id="filters">
+        {{#filters}}
+            <a 
+                id="{{id}}"
+                href="{{href}}" 
+                class="{{css}}"
+                {{#attributes}}
+                    {{key}}="{{value}}"
+                {{/attributes}}
+            >{{text}}</a>
+        {{/filters}}
+    </div>
+    <div id="issues">
+        {{#issues}}
+            <div class="issue">
+                <div class="qr-code" data-qr="{{address}}"></div>
+                <div class="info">
+                    <h4>{{title}}</h4>
+                    <span>{{copy.posted_by}} {{{author}}}</span>
+                    <span>
+                        {{copy.contribute_to}} 
+                        <a href="#">{{address}}</a>
+                    </span>
+                </div>
+                <div class="meta">
+                    <div class="values">
+                        <span>{{votes}}</span>
+                        <span>{{contributions}}</span>
+                        <span>{{points}}</span>
+                    </div>
+                    <div class="actions">
+                        <a href="#" class="btn btn-details">{{copy.details}}</a>
+                        <a href="#" class="btn btn-primary btn-share">{{copy.share}}</a>
+                    </div>
+                </div>
+            </div>
+        {{/issues}}
+    </div>
+    <div id="footer">
+        <div id="credits">{{{credits}}}</div>
+        <div id="total">{{copy.total_contributions}} {{total}}</div>
+    </div>
+</div>
