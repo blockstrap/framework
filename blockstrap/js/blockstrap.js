@@ -95,18 +95,19 @@ var blockstrap_core = function()
             },
             buttons: function()
             {
-                var button_ids = $.fn.blockstrap.settings.buttons.ids;
-                var button_classes = $.fn.blockstrap.settings.buttons.classes;
+                var bs = $.fn.blockstrap;
+                var button_ids = bs.settings.buttons.ids;
+                var button_classes = bs.settings.buttons.classes;
                 if($.isArray(button_ids))
                 {
                     $.each(button_ids, function(k, id_name)
                     {
                         var key = id_name;
-                        id_name = '#' + key;
+                        var id_name = '#' + key;
                         key = key.replace(/-/g, '_');
-                        $($.fn.blockstrap.element).on('click', id_name, function(e)
+                        $(bs.element).on('click', id_name, function(e)
                         {
-                            $.fn.blockstrap.buttons[key](this, e);
+                            bs.buttons[key](this, e);
                         });
                     });
                 }
@@ -117,9 +118,22 @@ var blockstrap_core = function()
                         var key = class_name;
                         class_name = '.btn-' + key;
                         key = key.replace(/-/g, '_');
-                        $($.fn.blockstrap.element).on('click', class_name, function(e)
+                        $(bs.element).on('click', class_name, function(e)
                         {
-                            $.fn.blockstrap.buttons[key](this, e);
+                            if($.isPlainObject(bs.buttons))
+                            {
+                                if($.isFunction(bs.buttons[key]))
+                                {
+                                    bs.buttons[key](this, e);
+                                }
+                            }
+                            else if($.isPlainObject(bs.theme))
+                            {
+                                if($.isFunction(bs.theme.buttons[key]))
+                                {
+                                    bs.theme.buttons[key](this, e);
+                                }
+                            }
                         });
                     });
                 }

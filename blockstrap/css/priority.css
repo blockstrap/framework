@@ -21,11 +21,15 @@ a.active, a:hover {
     display: block;
     position: relative;
     height: 10px;
+    padding-right: 35px;
 }
 #filters a {
     font-size: 12px;
     float: left;
     margin: 0 10px;
+}
+#filters a:first-child {
+    margin: 0 20px 0 30px;
 }
 #filters a.pull-right {
     float: right;
@@ -41,7 +45,7 @@ a.active, a:hover {
     display: inline-block;
     float: left;
     width: 49%;
-    padding: 0 10px;
+    padding: 0 23px;
 }
 #total {
     text-align: right;
@@ -108,6 +112,12 @@ a.active, a:hover {
     padding: 14px 10px 10px;
     margin: -2px 0 10px;
 }
+.info h4 a {
+    color: #004C66;
+}
+.info h4 a:hover {
+    color: #0085B2;
+}
 .meta .values {
     margin: -2px 0 10px;
     font-size: 16px;
@@ -131,19 +141,55 @@ a.active, a:hover {
     color: #757575;
     padding: 0 0 0 5px;
 }
-.actions a.btn {
+a.btn {
     display: inline-block;
     position: relative;
     width: 48%;
     background: #FFEDB8;
+    font-size: 13px;
     border: 1px solid #AAA;
     border-radius: 8px;
     color: #757575;
     text-transform: uppercase;
     padding: 7px 5px 5px;
-    line-height: 18px;
+    line-height: 16px;
     text-align: center;
+    background: #ffffff; /* Old browsers */
+    background: -moz-linear-gradient(top,  #ffffff 0%, #ffedb8 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#ffedb8)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #ffffff 0%,#ffedb8 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #ffffff 0%,#ffedb8 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #ffffff 0%,#ffedb8 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #ffffff 0%,#ffedb8 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffedb8',GradientType=0 ); /* IE6-9 */
 }
-.actions a.btn:hover {
-    background: #EBB400;
+a.btn:hover {
+    background: #ffedb8; /* Old browsers */
+    background: -moz-linear-gradient(top,  #ffedb8 0%, #ffffff 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffedb8), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #ffedb8 0%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #ffedb8 0%,#ffffff 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #ffedb8 0%,#ffffff 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #ffedb8 0%,#ffffff 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffedb8', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+}
+a.btn-primary {
+    background: #ffedb8; /* Old browsers */
+    background: -moz-linear-gradient(top,  #ffedb8 0%, #ebb400 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffedb8), color-stop(100%,#ebb400)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #ffedb8 0%,#ebb400 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #ffedb8 0%,#ebb400 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #ffedb8 0%,#ebb400 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #ffedb8 0%,#ebb400 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffedb8', endColorstr='#ebb400',GradientType=0 ); /* IE6-9 */
+}
+a.btn-primary:hover {
+    background: #ebb400; /* Old browsers */
+    background: -moz-linear-gradient(top,  #ebb400 0%, #ffedb8 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ebb400), color-stop(100%,#ffedb8)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #ebb400 0%,#ffedb8 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #ebb400 0%,#ffedb8 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #ebb400 0%,#ffedb8 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #ebb400 0%,#ffedb8 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebb400', endColorstr='#ffedb8',GradientType=0 ); /* IE6-9 */
 }

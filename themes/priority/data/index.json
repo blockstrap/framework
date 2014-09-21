@@ -39,5 +39,15 @@
         "total_contributions": "Total Contributions To-Date are"
     },
     "credits": "Priority is a <a href='http://blockstrap.com'>Blockstrap</a> Theme",
-    "total": "0 Bitcoin"
+    "total": "0 Bitcoin",
+    "modal": {
+        "func": "bootstrap",
+        "type": "modals",
+        "objects": [
+            {
+                "id": "default",
+                "css": "in"
+            }
+        ]
+    }           
 }

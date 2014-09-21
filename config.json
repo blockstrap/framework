@@ -2,13 +2,24 @@
     "theme": "priority",
     "modules": false,
     "dependencies": [
+        "bootstrap.min",
         "qrcode"
     ],
-    "bootstrap": false,
-    "css": ["reset", "priority"],
+    "bootstrap": [
+        "modals"
+    ],
+    "css": [
+        "bootstrap", 
+        "priority"
+    ],
     "styles": false,
     "storage": {
         "dependencies": true,
         "modules": true
+    },
+    "buttons": {
+        "classes": [
+            "qr"
+        ]
     }
 }
