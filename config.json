@@ -3,7 +3,9 @@
     "modules": false,
     "dependencies": [
         "bootstrap.min",
-        "qrcode"
+        "isotope",
+        "qrcode",
+        "issues"
     ],
     "bootstrap": [
         "modals"
@@ -19,6 +21,8 @@
     },
     "buttons": {
         "classes": [
+            "details",
+            "share",
             "qr"
         ]
     }

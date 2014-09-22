@@ -649,8 +649,8 @@ var blockstrap_core = function()
             {
                 var selector = $('#default-modal');
                 if(id) selector = $('#'+id);
-                $(selector).find('.modal-title').html(title);
-                $(selector).find('.modal-body').html(content);
+                if(title) $(selector).find('.modal-title').html(title);
+                if(content) $(selector).find('.modal-body').html(content);
                 $(selector).modal('show');
             },
             modals: function(action)
@@ -683,6 +683,13 @@ var blockstrap_core = function()
                             var wrapper = $(this).parent();
                             $(wrapper).hide(0);
                         })
+                        $(this).find('.qr-holder').each(function()
+                        {
+                            $(this).qrcode({
+                                render: 'image',
+                                text: $(this).attr('data-content')
+                            });
+                        })
                     });
                     $($.fn.blockstrap.element).on('shown.bs.modal', '.modal', function(i)
                     {
@@ -692,13 +699,7 @@ var blockstrap_core = function()
                             var input = $(this_form).find('input[type!=hidden]:first');
                             $(input).focus();
                         }
-                        $(this).find('.qr-holder').each(function()
-                        {
-                            $(this).qrcode({
-                                render: 'image',
-                                text: $(this).attr('data-content')
-                            });
-                        })
+                        
                     });
                     $($.fn.blockstrap.element).on('show.bs.modal', '#new-account-modal', function(i)
                     {

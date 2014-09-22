@@ -23,6 +23,11 @@ a.active, a:hover {
     height: 10px;
     padding-right: 35px;
 }
+#filters #filter {
+    display: none;
+    width: 94%;
+    margin: 0 3%;
+}
 #filters a {
     font-size: 12px;
     float: left;
@@ -66,16 +71,16 @@ a.active, a:hover {
     background: #FFF;
     border: 1px solid #CCC;
     border-radius: 4px;
-    padding: 20px;
+    padding: 10px 20px;
     margin: 10px 0;
 }
 .issue {
     display: block;
     position: relative;
-    margin: 30px 0 0;
-}
-#issues .issue:first-child {
-    margin: 0;
+    margin: 10px 0;
+    min-height: 100px;
+    width: 100%;
+    padding-right: 40px;
 }
 #issues .qr-code {
     display: inline-block;
@@ -123,15 +128,25 @@ a.active, a:hover {
     font-size: 16px;
     padding: 13px 10px 8px;
 }
+.meta .values div span i {
+    display: none;
+    font-size: 12px;
+    padding: 10px 0 5px;
+    text-align: center;
+    font-style: normal;
+    color: #757575;
+}
+.values div {
+    padding: 0 3px;
+}
 .values span {
-    padding: 5px 5px 3px;
+    padding: 7px 5px 5px;
     background: #FFFDF8;
     border: 1px solid #CCC;
     border-radius: 4px;
     line-height: 18px;
-    margin: -6px 0 -3px 1px;
-    display: inline-block;
-    width: 31%;
+    margin: -7px 0 -2px 1px;
+    display: block;
     text-align: center;
 }
 .info span {
@@ -142,7 +157,10 @@ a.active, a:hover {
     color: #757575;
     padding: 0 0 0 5px;
 }
-a.btn {
+.actions .details {
+    display: none;
+}
+.actions a.btn {
     display: inline-block;
     position: relative;
     width: 48%;
@@ -164,7 +182,7 @@ a.btn {
     background: linear-gradient(to bottom,  #ffffff 0%,#ffedb8 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffedb8',GradientType=0 ); /* IE6-9 */
 }
-a.btn:hover {
+.actions a.btn:hover {
     background: #ffedb8; /* Old browsers */
     background: -moz-linear-gradient(top,  #ffedb8 0%, #ffffff 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffedb8), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
@@ -174,7 +192,7 @@ a.btn:hover {
     background: linear-gradient(to bottom,  #ffedb8 0%,#ffffff 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffedb8', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
 }
-a.btn-primary {
+.actions a.btn-primary {
     background: #ffedb8; /* Old browsers */
     background: -moz-linear-gradient(top,  #ffedb8 0%, #ebb400 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffedb8), color-stop(100%,#ebb400)); /* Chrome,Safari4+ */
@@ -184,7 +202,7 @@ a.btn-primary {
     background: linear-gradient(to bottom,  #ffedb8 0%,#ebb400 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffedb8', endColorstr='#ebb400',GradientType=0 ); /* IE6-9 */
 }
-a.btn-primary:hover {
+.actions a.btn-primary:hover {
     background: #ebb400; /* Old browsers */
     background: -moz-linear-gradient(top,  #ebb400 0%, #ffedb8 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ebb400), color-stop(100%,#ffedb8)); /* Chrome,Safari4+ */
@@ -193,4 +211,165 @@ a.btn-primary:hover {
     background: -ms-linear-gradient(top,  #ebb400 0%,#ffedb8 100%); /* IE10+ */
     background: linear-gradient(to bottom,  #ebb400 0%,#ffedb8 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebb400', endColorstr='#ffedb8',GradientType=0 ); /* IE6-9 */
+}
+.actions a.btn:last-child {
+    float: right;
+}
+.modal {
+    border-radius: 6px;
+}
+.modal .modal-header {
+    font-size: 14px;
+    background: #EEE;
+    border-bottom: 1px solid #CCC;
+    border-radius: 6px 6px 0 0;
+}
+.modal .qr-holder {
+    display: block;
+    position: relative;
+    background: #FFFFEE;
+    border: 1px solid #CCC;
+    padding: 20px;
+}
+.modal .qr-holder img {
+    display: block;
+    background: #FFF;
+    border: 1px solid #CCC;
+    padding: 10px;
+    margin: 0 auto;
+}
+p.center {
+    text-align: center;
+}
+.share {
+    display: block;
+    position: relative;
+    padding: 20px;
+    text-align: center;
+}
+.share a {
+    display: inline-block;
+    position: relative;
+    width: 50px;
+    height: 50px;
+    text-indent: -999em;
+    background: url(../img/shares.png) no-repeat;
+}
+.share a.angellist {
+    background-position: 0 -100px;
+}
+.share a.twitter {
+    background-position: -50px -100px;
+}
+.share a.facebook {
+    background-position: -100px -100px;
+}
+.share a.github {
+    background-position: -150px -100px;
+}
+.share a.google {
+    background-position: -200px -100px;
+}
+.share a.linked {
+    background-position: -250px -100px;
+}
+.share a.angellist:hover {
+    background-position: 0 -150px;
+}
+.share a.twitter:hover {
+    background-position: -50px -150px;
+}
+.share a.facebook:hover {
+    background-position: -100px -150px;
+}
+.share a.github:hover {
+    background-position: -150px -150px;
+}
+.share a.google:hover {
+    background-position: -200px -150px;
+}
+.share a.linked:hover {
+    background-position: -250px -150px;
+}
+
+
+
+
+/*
+
+RESPONSIVENESS
+
+*/
+
+@media(max-width:992px){
+    #content {
+        width: 96%;
+    }
+}
+@media(max-width:710px){
+    body {
+        padding: 0 0 30px;
+    }
+    #content {
+        padding-top: 40px;
+    }
+    #issues .issue .qr-code {
+        display: none;
+    }
+    .issue .info, .issue .meta {
+        left: 0;
+        position: relative;
+        display: block;
+        float: none;
+        right: 0;
+        width: 100%;
+    }
+    .issue .info h4 {
+        border: 1px solid #CCC;
+        text-align: center;
+    }
+    .issue .info span {
+        display: none;
+    }
+    .issue .meta .values {
+        padding: 3px 0 0;
+        background: transparent;
+        border: none;
+    }
+    .issue .meta .values div span {
+        padding-top: 17px;
+    }
+    .issue .meta .values div:first-child {
+        padding-left: 0;
+    }
+    .issue .meta .values div:last-child {
+        padding-right: 0;
+    }
+    .issue .meta div span i {
+        display: block;
+    }
+    #footer div {
+        display: block;
+        position: relative;
+        width: 100%;
+        text-align: center;
+        padding: 5px;
+    }
+    #filters {
+        background: #333;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        padding: 10px 2%;
+        height: 40px;
+        z-index: 99;
+    }
+    #filters a {
+        display: none;
+    }
+    #filters #filter {
+        display: block;
+    }
 }

@@ -10,10 +10,22 @@
                 {{/attributes}}
             >{{text}}</a>
         {{/filters}}
+        <select id="filter">
+            {{#filters}}
+                <option value="{{id}}">{{text}}</option>
+            {{/filters}}
+        </select>
     </div>
     <div id="issues">
         {{#issues}}
-            <div class="issue">
+            <div 
+                class="issue" 
+                data-addresses="{{address}}"
+                data-titles="{{title}}"
+                data-votes="{{votes}}" 
+                data-contributions="{{contributions}}"
+                data-points="{{points}}"
+            >
                 <a href="#" class="qr-code btn-qr" data-content="{{address}}"></a>
                 <div class="info">
                     <h4><a href="{{href}}">{{title}}</a></h4>
@@ -24,12 +36,19 @@
                     </span>
                 </div>
                 <div class="meta">
-                    <div class="values">
-                        <span>{{votes}}</span>
-                        <span>{{contributions}}</span>
-                        <span>{{points}}</span>
+                    <div class="values row">
+                        <div class="col-xs-4">
+                            <span>{{votes}} <i>{{copy.votes}}</i></span>
+                        </div>
+                        <div class="col-xs-4">
+                            <span>{{contributions}} <i>{{copy.contributions}}</i></span>
+                        </div>
+                        <div class="col-xs-4">
+                            <span>{{points}} <i>{{copy.points}}</i></span>
+                        </div>
                     </div>
                     <div class="actions">
+                        <div class="details">{{{details}}}</div>
                         <a href="#" class="btn btn-details">{{copy.details}}</a>
                         <a href="#" class="btn btn-primary btn-share">{{copy.share}}</a>
                     </div>
@@ -43,4 +62,4 @@
     </div>
 </div>
 
-{{{modal}}}
+{{{modals}}}
