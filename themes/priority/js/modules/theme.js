@@ -21,12 +21,15 @@
         // QR CODES
         $('#issues .qr-code').each(function(i)
         {
-            $(this).qrcode({
-                render: 'image',
-                width: 80,
-                height: 80,
-                text: $(this).attr('data-content')
-            });
+            if($(this).find('img').length < 1)
+            {
+                $(this).qrcode({
+                    render: 'image',
+                    width: 80,
+                    height: 80,
+                    text: $(this).attr('data-content')
+                });
+            }
         });
         // ISOTOPE FILTERING
         var $container = $('#issues').isotope({
@@ -67,12 +70,22 @@
             $.each(priority_issues, function(k, issue)
             {
                 var $bs = blockstrap_functions;
-                var slug = $bs.slug(issue.title)
-                issue.href = '#'+slug;
-                issues.push(issue);
+                var id = $bs.slug(issue.title);
+                var url = $.fn.blockstrap.settings.base_url;
+                issue.home = url;
+                issue.href = url + '?id=' + id + '#issue';
+                if(data.id && data.id == id) issues.push(issue);
+                else if(!data.id) issues.push(issue);
             });
         }
         return issues;
+    }
+    theme.filters.issue = function(blockstrap, data)
+    {
+        var issue = false;
+        var id = blockstrap_functions.vars('id');
+        data.id = id;
+        return theme.filters.issues(false, data);
     }
     
     // COPIED FROM CORE TO REMOVE NEED FOR CORE FILTERS

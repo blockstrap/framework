@@ -70,7 +70,8 @@
         "total_contributions": "Total Contributions To-Date are",
         "votes": "Votes",
         "contributions": "Contributions",
-        "points": "Points"
+        "points": "Points",
+        "home": "Homepage"
     },
     "credits": "Priority is a <a href='http://blockstrap.com'>Blockstrap</a> Theme",
     "total": "0 Bitcoin",

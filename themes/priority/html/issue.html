@@ -1,0 +1,40 @@
+{{#issue}}
+    <div 
+        class="issue" 
+        data-addresses="{{address}}"
+        data-titles="{{title}}"
+        data-votes="{{votes}}" 
+        data-contributions="{{contributions}}"
+        data-points="{{points}}"
+    >
+        <a href="#" class="qr-code btn-qr" data-content="{{address}}"></a>
+        <div class="info">
+            <h4>{{title}}</h4>
+            <span>{{copy.posted_by}} {{{author}}}</span>
+            <span>
+                {{copy.contribute_to}} 
+                <a href="#">{{address}}</a>
+            </span>
+        </div>
+        <div class="meta">
+            <div class="values row">
+                <div class="col-xs-4">
+                    <span>{{votes}} <i>{{copy.votes}}</i></span>
+                </div>
+                <div class="col-xs-4">
+                    <span>{{contributions}} <i>{{copy.contributions}}</i></span>
+                </div>
+                <div class="col-xs-4">
+                    <span>{{points}} <i>{{copy.points}}</i></span>
+                </div>
+            </div>
+            <div class="actions">
+                <a href="{{home}}" class="btn">{{copy.home}}</a>
+                <a href="#" class="btn btn-primary btn-share">{{copy.share}}</a>
+            </div>
+        </div>
+    </div>
+    <div class="full-details">
+        {{{details}}}
+    </div>
+{{/issue}}

@@ -1,5 +1,6 @@
 {
     "theme": "priority",
+    "content_id": "issues",
     "modules": false,
     "dependencies": [
         "bootstrap.min",
@@ -17,7 +18,7 @@
     "styles": false,
     "storage": {
         "dependencies": true,
-        "modules": true
+        "modules": false
     },
     "buttons": {
         "classes": [

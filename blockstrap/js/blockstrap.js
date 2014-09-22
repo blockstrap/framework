@@ -397,17 +397,17 @@ var blockstrap_core = function()
                     bs.core.modals();
                     bs.core.buttons();
                     bs.core.ready();
-                    
+
                     if($.isPlainObject(bs.styles))
                     {
                         bs.styles.set();
                     }
-                    
+
                     if(nav)
                     {
                         bs.core.nav(nav);
                     }
-                    
+
                     // SMOOTHER FADE-IN
                     $(bs.element).animate({'opacity':1}, 600, function()
                     {
@@ -445,24 +445,24 @@ var blockstrap_core = function()
                                 bs.accounts.poll();
                             }, bs.settings.cache.accounts);
                         }
-                        bs.templates.render('index', function()
+                        if(window.location.hash)
                         {
-                            if(window.location.hash)
+                            bs.core.refresh(function()
                             {
-                                bs.core.refresh(function()
-                                {
-                                    init_callback(window.location.hash);
-                                }, $bs.slug(window.location.hash));
-                            }
-                            else
+                                init_callback(window.location.hash);
+                            }, $bs.slug(window.location.hash), false);
+                        }
+                        else
+                        {
+                            bs.templates.render('index', function()
                             {
                                 init_callback();
-                            }
-                            var run_tests = false;
-                            var tests = $bs.vars('tests');
-                            if(tests) run_tests = true;
-                            bs.core.tests(run_tests);
-                        });
+                            });
+                        }
+                        var run_tests = false;
+                        var tests = $bs.vars('tests');
+                        if(tests) run_tests = true;
+                        bs.core.tests(run_tests);
                     }
                 }
             },
@@ -751,6 +751,8 @@ var blockstrap_core = function()
 
                 THESE FUNCTIONS NEED TO RUN EVERY TIME
                 NEW HTML IS LOADED INTO THE DOM
+                
+                TODO: Make tables and forms optional...?
 
                 */
                 $.fn.blockstrap.core.table();
@@ -774,9 +776,9 @@ var blockstrap_core = function()
                     }
                 }
             },
-            refresh: function(callback, slug)
+            refresh: function(callback, slug, skip_rendering)
             {
-                //$.fn.blockstrap.core.loader('open');
+                if(typeof skip_rendering === 'undefined') skip_rendering = true;
                 var page = $.fn.blockstrap.core.page();
                 if(slug) page = slug;
                 $.fn.blockstrap.templates.render('index', function()
@@ -789,7 +791,7 @@ var blockstrap_core = function()
                             $.fn.blockstrap.core.ready();
                             //$.fn.blockstrap.core.loader('close');
                             if(callback) callback();
-                        }, true);
+                        }, true, skip_rendering);
                     }
                     else
                     {
@@ -800,7 +802,7 @@ var blockstrap_core = function()
                             if(callback) callback();
                         }, true);
                     }
-                }, true, true);
+                }, true, skip_rendering);
             },
             reset: function(reload)
             {
@@ -1343,8 +1345,14 @@ var blockstrap_functions = {
         if(!variable) variable = false;
         if(variable)
         {
-            
-            return $.fn.blockstrap.settings.vars[variable];
+            if($.fn.blockstrap.settings.vars[variable])
+            {
+                return $.fn.blockstrap.settings.vars[variable];
+            }
+            else
+            {
+                return false;
+            }
         }
         else
         {

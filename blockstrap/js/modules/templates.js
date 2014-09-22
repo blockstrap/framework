@@ -11,6 +11,7 @@
 (function($) 
 {
     var templates = {};
+    var template_data = {};
     
     templates.bootstrap = function(type)
     {
@@ -32,8 +33,7 @@
     
     templates.filter = function(html, placeholders, replacements)
     {
-        // TODO: FIX HACK PART ONE
-        if((!placeholders || !replacements) && $.isPlainObject($.fn.blockstrap.accounts))
+        if(!placeholders && !replacements)
         {
             var raw_name = localStorage.getItem('nw_keys_your_name');
             var name = raw_name;
@@ -42,7 +42,11 @@
             // ADDRESS INFO
             var add_currency = 'Bitcoin';
             var key = blockstrap_functions.vars('key');
-            var account = $.fn.blockstrap.accounts.address(key);
+            var account = false;
+            if($.isPlainObject($.fn.blockstrap.accounts))
+            {
+                var account = $.fn.blockstrap.accounts.address(key);
+            }
             if(!account)
             {
                 account = {};
@@ -57,9 +61,14 @@
             }
             
             // TX INFO
+            var tx = false;
             var tx_currency = 'Bitcoin';
             var txid = blockstrap_functions.vars('txid');
-            var tx = $.fn.blockstrap.accounts.tx(txid);
+            
+            if($.isPlainObject($.fn.blockstrap.accounts))
+            {
+                tx = $.fn.blockstrap.accounts.tx(txid);
+            }
             if(tx.currency && $.fn.blockstrap.settings.currencies[tx.currency])
             {
                 tx_currency = $.fn.blockstrap.settings.currencies[tx.currency].currency;
@@ -156,7 +165,8 @@
             {
                 $.fn.blockstrap.core.get('themes/' + $.fn.blockstrap.settings.theme + '/' + $.fn.blockstrap.settings.data_base + slug, 'json', function(data)
                 {
-                    var filtered_data = $.fn.blockstrap.core.filter(data);
+                    template_data = $.extend({}, template_data, data);
+                    var filtered_data = $.fn.blockstrap.core.filter(template_data);
                     $.fn.blockstrap.data.save('data', slug, data, function()
                     {
                         $.fn.blockstrap.data.find('html', slug, function(results)
