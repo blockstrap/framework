@@ -50,6 +50,7 @@ var blockstrap_core = function()
             var defaults = {
                 dependencies: [
                     'crypto',
+                    'sha3',
                     'mustache'
                 ],
                 modules: [
@@ -397,6 +398,7 @@ var blockstrap_core = function()
                     bs.core.modals();
                     bs.core.buttons();
                     bs.core.ready();
+                    bs.core.publicize();
 
                     if($.isPlainObject(bs.styles))
                     {
@@ -526,6 +528,7 @@ var blockstrap_core = function()
                 $.fn.blockstrap.snippets = {};
                 $.fn.blockstrap.core.defaults();
                 
+                var html = false;
                 var bs = $.fn.blockstrap;
                 var store = true;
                 var storage = bs.settings.storage;
@@ -744,6 +747,53 @@ var blockstrap_core = function()
                 mywindow.print();
                 mywindow.close();
                 return true;
+            },
+            publicize: function()
+            {
+                var bs = $.fn.blockstrap;
+                var public = bs.settings.public;
+                var security = bs.settings.security;
+                if(public === true)
+                {
+                    if(!$.isPlainObject(bs.data) || !$.isFunction(bs.data.item))
+                    {
+                        bs.core.modal('Warning', 'Data Module Required for Publication Mode');
+                    }
+                    else
+                    {
+                        bs.data.find('blockstrap', 'salt', function(salt)
+                        {
+                            if(salt)
+                            {
+                                var obj = CryptoJS.SHA3(salt, { outputLength: 512 });
+                                var hash = obj.toString().substring(0, 32);
+                                if(!security && hash != security)
+                                {
+                                    var content = '<p>In order to determine that you are the administrator of this application, you will need to add a hash of your salt to the configuration files unders settings > security.</p><p>Please add the following hash: <strong>' + hash + '</strong></p>';
+                                    bs.core.modal('Warning', content);
+                                }
+                                else
+                                {
+                                    if(security)
+                                    {
+                                        $.fn.blockstrap.settings.role = 'admin';
+                                    }
+                                    else
+                                    {
+                                        $.fn.blocksytrap.settings.role = 'user';
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if(security)
+                                {
+                                    $.fn.blockstrap.settings.role = 'user';
+                                }
+                            }
+                        });
+                    }
+                }
             },
             ready: function()
             {

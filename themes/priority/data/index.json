@@ -74,7 +74,7 @@
         "home": "Homepage",
         "address": "Address"
     },
-    "credits": "Priority is a <a href='http://blockstrap.com'>Blockstrap</a> Theme",
+    "credits": "Powered by <a href='http://blockstrap.com'>Blockstrap</a>",
     "total": "0 Bitcoin",
     "modals": {
         "func": "bootstrap",

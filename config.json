@@ -1,7 +1,11 @@
 {
     "theme": "priority",
+    "public": true,
+    "security": "9cd922a3249415349e636f76cff3ad75",
     "content_id": "issues",
-    "modules": false,
+    "modules": [
+        "data"
+    ],
     "dependencies": [
         "bootstrap.min",
         "isotope",

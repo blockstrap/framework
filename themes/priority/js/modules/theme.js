@@ -15,6 +15,12 @@
     theme.filters = {};
     theme.buttons = {};
     
+    // CALCULATE POINTS
+    theme.formulas = {
+        tx: 1,
+        coin: 10
+    };
+    
     // NEW DOM CONTENT
     theme.new = function()
     {
@@ -41,9 +47,9 @@
             getSortData: {
                 addresses: '[data-addresses]',
                 titles: '[data-titles]',
-                votes: '[data-votes] parseInt',
+                votes: '[data-votes] parseFloat',
                 contributions: '[data-contributions] parseFloat',
-                points: '[data-points] parseInt'
+                points: '[data-points] parseFloat'
             },
             sortBy: 'points',
             sortAscending: false
@@ -62,6 +68,7 @@
         {
             $('#filters a#' + $(this).val()).trigger('click');
         });
+        //
     }
     
     // THEME FILTERS
@@ -75,8 +82,12 @@
                 var $bs = blockstrap_functions;
                 var id = $bs.slug(issue.title);
                 var url = $.fn.blockstrap.settings.base_url;
+                var votes = issue.votes * theme.formulas.tx;
+                var contributions = issue.contributions * theme.formulas.coin;
+                var points = votes + contributions;
                 issue.home = url;
                 issue.href = url + '?id=' + id + '#issue';
+                issue.points = points;
                 if(data.id && data.id == id) issues.push(issue);
                 else if(!data.id) issues.push(issue);
             });
