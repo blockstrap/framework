@@ -35,6 +35,9 @@
         var $container = $('#issues').isotope({
             itemSelector: '.issue',
             layoutMode: 'vertical',
+            vertical: {
+                gutterWidth: 0
+            },
             getSortData: {
                 addresses: '[data-addresses]',
                 titles: '[data-titles]',

@@ -71,7 +71,8 @@
         "votes": "Votes",
         "contributions": "Contributions",
         "points": "Points",
-        "home": "Homepage"
+        "home": "Homepage",
+        "address": "Address"
     },
     "credits": "Priority is a <a href='http://blockstrap.com'>Blockstrap</a> Theme",
     "total": "0 Bitcoin",

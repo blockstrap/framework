@@ -1,3 +1,18 @@
+<style>
+#filters {
+    display: none;
+}
+#content {
+    padding-top: 5px;
+}
+</style>
+
+<!--
+
+TODO: REMOVE THE NEED FOR THE DIRTY LITTLE SECRET ABOVE
+
+-->
+
 {{#issue}}
     <div 
         class="issue" 
@@ -30,11 +45,14 @@
             </div>
             <div class="actions">
                 <a href="{{home}}" class="btn">{{copy.home}}</a>
+                <a href="#" class="btn btn-qr" data-content="{{address}}">
+                    {{copy.address}}
+                </a>
                 <a href="#" class="btn btn-primary btn-share">{{copy.share}}</a>
             </div>
         </div>
-    </div>
-    <div class="full-details">
-        {{{details}}}
+        <div class="full-details">
+            {{{details}}}
+        </div>
     </div>
 {{/issue}}

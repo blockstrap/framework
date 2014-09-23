@@ -174,7 +174,7 @@ var blockstrap_core = function()
                         },
                         save: function(col, key, value, callback)
                         {
-                            if(callback) callback(false);
+                            if(callback) callback(value);
                         }
                     }
                     $.fn.blockstrap.data = data_functions;
@@ -1184,6 +1184,12 @@ var blockstrap_functions = {
             var file_name = files[start];
             var js_file = localStorage.getItem('nw_js_'+file_name);
             var store = true;
+            
+            // TODO: Is this the best / correct solution...?
+            if(!$.isPlainObject(blockstrap.data) || !$.isFunction(blockstrap.data.item))
+            {
+                store = false;
+            }
             
             if(!dependency)
             {
