@@ -76,7 +76,9 @@
         "close": "Close"
     },
     "credits": "Powered by <a href='http://blockstrap.com'>Blockstrap</a>",
-    "total": "0 Bitcoin",
+    "total": {
+        "func": "balance"
+    },
     "modals": {
         "func": "bootstrap",
         "type": "modals",

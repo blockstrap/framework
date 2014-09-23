@@ -15,6 +15,7 @@
     theme.filters = {};
     theme.buttons = {};
     theme.missing = [];
+    theme.issues = [];
     
     // CALCULATE POINTS
     theme.formulas = {
@@ -96,7 +97,7 @@
                         {
                             var content = 'The funds have been transferred to ' + to;
                             $.fn.blockstrap.core.modal('Success', content);
-                        });
+                        };
                     });
                 }
             }
@@ -115,12 +116,42 @@
                 $.fn.blockstrap.core.modal('Warning', content);
             }
         }
+        // UPDATE BALANCES
+        if(blockstrap_functions.array_length(theme.issues) > 0)
+        {
+            setInterval(function()
+            {
+                var balance = 0;
+                var addresses = [];
+                var bs = $.fn.blockstrap;
+                $.each(theme.issues, function(k, issue)
+                {
+                    addresses.push(issue.address);
+                });
+                bs.api.addresses(addresses, 'btc', function(results)
+                {
+                    if($.isArray(results))
+                    {
+                        $.each(results, function(k, obj)
+                        {
+                            balance = balance + obj.balance;
+                            bs.data.save('issue', obj.address, obj, function()
+                            {
+                                bs.data.save('issue', 'balance', balance, function()
+                                {   
+                                    
+                                });
+                            });
+                        });
+                    }
+                });
+            }, $.fn.blockstrap.settings.cache.accounts);
+        }
     }
     
     // THEME FILTERS
     theme.filters.issues = function(blockstrap, data)
     {
-        var issues = [];
         var $bs = blockstrap_functions;
         var salt = localStorage.getItem('nw_blockstrap_salt');
         if($bs.json(salt)) salt = $.parseJSON(salt);
@@ -133,7 +164,16 @@
                 {
                     if(!issue.votes) issue.votes = 0;
                     if(!issue.contributions) issue.contributions = 0;
-                    
+                    var saved_issue = localStorage.getItem('nw_issue_' + issue.address);
+                    if($bs.json(saved_issue)) saved_issue = $.parseJSON(saved_issue);
+                    if($.isPlainObject(saved_issue))
+                    {
+                        if(saved_issue.balance && saved_issue.tx_count)
+                        {
+                            issue.votes = saved_issue.tx_count;
+                            issue.contributions = saved_issue.balance / 100000000;
+                        }
+                    }
                     var url = $.fn.blockstrap.settings.base_url;
                     var votes = issue.votes * theme.formulas.tx;
                     var contributions = issue.contributions * theme.formulas.coin;
@@ -142,8 +182,12 @@
                     issue.home = url;
                     issue.href = url + '?id=' + id + '#issue';
                     issue.points = points;
-                    if(data.id && data.id == id) issues.push(issue);
-                    else if(!data.id) issues.push(issue);
+                    if(data.id && data.id == id)
+                    {
+                        theme.issues = [];
+                        theme.issues.push(issue);
+                    }
+                    else if(!data.id) theme.issues.push(issue);
                 }
                 else if($.fn.blockstrap.settings.role == 'admin')
                 {
@@ -156,7 +200,7 @@
                 }
             });
         }
-        return issues;
+        return theme.issues;
     }
     theme.filters.issue = function(blockstrap, data)
     {
@@ -165,6 +209,14 @@
         data.id = id;
         return theme.filters.issues(false, data);
     }
+    theme.filters.balance = function(blockstrap, data)
+    {
+        var balance = localStorage.getItem('nw_issue_balance');
+        if(blockstrap_functions.json(balance)) balance = $.parseJSON(balance);
+        if(!balance) balance = 0;
+        return '' + balance / 100000000 + ' Bitcoin';
+    }
+            
     
     // COPIED FROM CORE TO REMOVE NEED FOR CORE FILTERS
     theme.filters.bootstrap = function(blockstrap, data)

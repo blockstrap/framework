@@ -49,7 +49,16 @@
     
     api.addresses = function(hashes, currency, callback)
     {
-        api.request(api.url('addresses', hashes, currency), function(results)
+        var hashed_url = '';
+        if($.isArray(hashes))
+        {
+            $.each(hashes, function(k, hash)
+            {
+                if(k === 0) hashed_url+= hash;
+                else hashed_url+= '&addresses=' + hash;
+            });
+        }
+        api.request(api.url('addresses', hashed_url, currency), function(results)
         {
             
             var data = false;
