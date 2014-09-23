@@ -5,6 +5,7 @@
     "content_id": "issues",
     "modules": [
         "data",
+        "api",
         "btc"
     ],
     "dependencies": [
@@ -12,7 +13,8 @@
         "bitcoinjs",
         "isotope",
         "qrcode",
-        "issues"
+        "issues",
+        "tx"
     ],
     "bootstrap": [
         "modals"
@@ -30,6 +32,7 @@
         "classes": [
             "details",
             "share",
+            "close",
             "qr"
         ]
     }

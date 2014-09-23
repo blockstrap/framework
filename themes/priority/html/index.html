@@ -28,8 +28,17 @@
             >
                 <a href="#" class="qr-code btn-qr" data-content="{{address}}"></a>
                 <div class="info">
-                    <h4><a href="{{href}}">{{title}}</a></h4>
-                    <span>{{copy.posted_by}} {{{author}}}</span>
+                    <h4>
+                        <a 
+                           href="#" 
+                           class="btn btn-xs btn-danger btn-close"
+                           data-id="{{id}}"
+                        >{{copy.close}}</a>
+                        <a href="{{href}}">{{title}}</a>
+                    </h4>
+                    <span>
+                        {{copy.posted_by}} {{{author}}} 
+                    </span>
                     <span>
                         {{copy.contribute_to}} 
                         <a href="#">{{address}}</a>

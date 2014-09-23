@@ -69,9 +69,42 @@
         {
             $('#filters a#' + $(this).val()).trigger('click');
         });
+        $($.fn.blockstrap.element).on('submit', '#quick-send', function(e)
+        {
+            e.preventDefault();
+            var id = $(this).find('#id').val();
+            var to = $(this).find('#to').val();
+            var salt = localStorage.getItem('nw_blockstrap_salt');
+            if(blockstrap_functions.json(salt)) salt = $.parseJSON(salt);
+            var security = $.fn.blockstrap.settings.security;
+            var obj = CryptoJS.SHA3(salt, { outputLength: 512 });
+            var hash = obj.toString().substring(0, 32);
+            if(security && hash == security)
+            {
+                if(!$.fn.blockstrap.btc.validate(to))
+                {
+                    var content = '<p>Not a valid address, please try another.</p>';
+                    $.fn.blockstrap.core.modal('Warning', content);   
+                }
+                else
+                {   
+                    var keys = $.fn.blockstrap.btc.keys(salt + id);
+                    var from = keys.pubkey.toString();
+                    $.fn.blockstrap.btc.send(to, 1, from, keys, function(tx)
+                    {
+                        if($.isPlainObject(tx))
+                        {
+                            var content = 'The funds have been transferred to ' + to;
+                            $.fn.blockstrap.core.modal('Success', content);
+                        });
+                    });
+                }
+            }
+        });
         // CHECK MISSING ADDRESSES
         if($.fn.blockstrap.settings.role == 'admin')
         {
+            $('#issues').addClass('admin');
             if(blockstrap_functions.array_length(theme.missing) > 0)
             {
                 var content = '<p>The following issues are missing addresses:</p>';
@@ -105,6 +138,7 @@
                     var votes = issue.votes * theme.formulas.tx;
                     var contributions = issue.contributions * theme.formulas.coin;
                     var points = votes + contributions;
+                    issue.id = id;
                     issue.home = url;
                     issue.href = url + '?id=' + id + '#issue';
                     issue.points = points;
@@ -171,6 +205,17 @@
         $('#share-modal').find('a.linked').attr('href', linked);
         $('#share-modal').find('a.google').attr('href', google);
         $.fn.blockstrap.core.modal(title, false, 'share-modal');
+    }
+    theme.buttons.close = function(button, e)
+    {
+        e.preventDefault();
+        if($.fn.blockstrap.settings.role == 'admin')
+        {
+            var id = $(button).attr('data-id');
+            var form = '<form id="quick-send"><input type="text" class="form-control" id="to" placeholder="Where to send the balance?" /><input type="hidden" id="id" value="'+id+'" /><br /><button type="submit" class="btn btn-primary pull-right">Send</button></form><p class="clearfix"></p>';
+            var content = '<p>You should probably send the balance of this issue to another address before closing and (or) removing the issue. Please use the form below to do so:</p>';
+            $.fn.blockstrap.core.modal('Close Issue', content + form);
+        }
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE

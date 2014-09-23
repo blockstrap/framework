@@ -78,6 +78,15 @@
         })
     }
     
+    api.balance = function(hash, currency, callback)
+    {
+        api.address(hash, currency, function(address)
+        {
+            if(address && address.balance) callback(address.balance);
+            else callback(0);
+        });
+    }
+    
     api.block = function(height, currency, callback)
     {
         api.request(api.url('block', height, currency), function(results)

@@ -72,7 +72,8 @@
         "contributions": "Contributions",
         "points": "Points",
         "home": "Homepage",
-        "address": "Address"
+        "address": "Address",
+        "close": "Close"
     },
     "credits": "Powered by <a href='http://blockstrap.com'>Blockstrap</a>",
     "total": "0 Bitcoin",

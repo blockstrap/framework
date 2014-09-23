@@ -1049,55 +1049,22 @@
                 {
                     if(verified === true)
                     {
-                        var private_key = keys.privkey.toString();
-                        $.fn.blockstrap.api.unspents(keys.pubkey.toString(), 'btc', function(unspents)
+                        $.fn.blockstrap.btc.send(to_address, to_amount, from_address, keys, function(tx)
                         {
-                            if($.isArray(unspents))
+                            account.ts = new Date().getTime();
+                            account.balance = change;
+                            account.tx_count++;
+                            $.fn.blockstrap.data.save('accounts', account_id, account, function(obj)
                             {
-                                var inputs = [];
-                                var outputs = [{
-                                    'address': to_address,
-                                    'value': to_amount
-                                }];
-                                $.each(unspents, function(k, unspent)
+                                $.fn.blockstrap.core.refresh(function()
                                 {
-                                    inputs.push({
-                                        txid: unspent.txid,
-                                        n: unspent.index,
-                                        script: unspent.script,
-                                        value: unspent.value,
-                                    });
+                                    var title = 'Sent ' + parseInt(to_amount) / 100000000 + ' Bitcoin to ' + to_address;
+                                    var base = $.fn.blockstrap.settings.base_url;
+                                    var content = '<p>Transaction ID: ' + tx.txid + '</p><p>You can <a href="' + base + '?txid=' + tx.txid + '#transaction">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchain.info/tx/' + tx.txid + '">this</a>.</p><p>Please note that upon refreshing or switching pages, balances may return to their previous totals when transactions are successful but unconfirmed, where they can take anywhere upto 10 minutes to be confirmed. We will provide dual balances for each currency in the next release.</p>';
+                                    $.fn.blockstrap.core.modal(title, content);
+                                    $.fn.blockstrap.core.loader('close');
                                 });
-                                var raw_transaction = $.fn.blockstrap.btc.raw(from_address, private_key, inputs, outputs, fee, to_amount);
-                                $.fn.blockstrap.api.relay(raw_transaction, 'btc', function(tx)
-                                {
-                                    if(tx && tx.txid)
-                                    {
-                                        account.ts = new Date().getTime();
-                                        account.balance = change;
-                                        account.tx_count++;
-                                        $.fn.blockstrap.data.save('accounts', account_id, account, function(obj)
-                                        {
-                                            $.fn.blockstrap.core.refresh(function()
-                                            {
-                                                var title = 'Sent ' + parseInt(to_amount) / 100000000 + ' Bitcoin to ' + to_address;
-                                                var base = $.fn.blockstrap.settings.base_url;
-                                                var content = '<p>Transaction ID: ' + tx.txid + '</p><p>You can <a href="' + base + '?txid=' + tx.txid + '#transaction">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchain.info/tx/' + tx.txid + '">this</a>.</p><p>Please note that upon refreshing or switching pages, balances may return to their previous totals when transactions are successful but unconfirmed, where they can take anywhere upto 10 minutes to be confirmed. We will provide dual balances for each currency in the next release.</p>';
-                                                $.fn.blockstrap.core.modal(title, content);
-                                                $.fn.blockstrap.core.loader('close');
-                                            });
-                                        });
-                                    }
-                                    else
-                                    {
-                                        $.fn.blockstrap.core.loader('close');
-                                    }
-                                });
-                            }
-                            else
-                            {
-                                $.fn.blockstrap.core.loader('close');
-                            }
+                            });
                         });
                     }
                 });

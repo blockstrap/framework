@@ -393,84 +393,82 @@ var blockstrap_core = function()
                 var $bs = blockstrap_functions;
                 
                 $.fn.blockstrap.core.publicize(function()
-                                               {
-                
-                // CALLBACK UPON COMPLETION
-                var init_callback = function(nav)
                 {
-                    bs.core.modals();
-                    bs.core.buttons();
-                    bs.core.ready();
-
-                    if($.isPlainObject(bs.styles))
+                    // CALLBACK UPON COMPLETION
+                    var init_callback = function(nav)
                     {
-                        bs.styles.set();
-                    }
+                        bs.core.modals();
+                        bs.core.buttons();
+                        bs.core.ready();
 
-                    if(nav)
-                    {
-                        bs.core.nav(nav);
-                    }
-
-                    // SMOOTHER FADE-IN
-                    $(bs.element).animate({'opacity':1}, 600, function()
-                    {
-                        bs.core.loading();
-                        $(window).resize(function(e)
+                        if($.isPlainObject(bs.styles))
                         {
-                            bs.core.resize();
-                        })
-                    });
-                }
-                
-                // RESET IF REQUIRED
-                if($bs.vars('reset') === true)
-                {
-                    bs.buttons.reset(false, false);
-                }
-                else if(!init_bs)
-                {
-                    init_bs = true;
-                    // CHECK FOR LOGIN STATUS
-                    if(!bs.security.logged_in())
-                    {
-                        var url = '../../../blockstrap/html/bootstrap/login';
-                        bs.templates.render(url, function()
+                            bs.styles.set();
+                        }
+
+                        if(nav)
                         {
-                            init_callback();
+                            bs.core.nav(nav);
+                        }
+
+                        // SMOOTHER FADE-IN
+                        $(bs.element).animate({'opacity':1}, 600, function()
+                        {
+                            bs.core.loading();
+                            $(window).resize(function(e)
+                            {
+                                bs.core.resize();
+                            })
                         });
                     }
-                    else
+
+                    // RESET IF REQUIRED
+                    if($bs.vars('reset') === true)
                     {
-                        if($.isPlainObject(bs.accounts))
+                        bs.buttons.reset(false, false);
+                    }
+                    else if(!init_bs)
+                    {
+                        init_bs = true;
+                        // CHECK FOR LOGIN STATUS
+                        if(!bs.security.logged_in())
                         {
-                            setInterval(function()
-                            {
-                                bs.accounts.poll();
-                            }, bs.settings.cache.accounts);
-                        }
-                        if(window.location.hash)
-                        {
-                            bs.core.refresh(function()
-                            {
-                                init_callback(window.location.hash);
-                            }, $bs.slug(window.location.hash), false);
-                        }
-                        else
-                        {
-                            bs.templates.render('index', function()
+                            var url = '../../../blockstrap/html/bootstrap/login';
+                            bs.templates.render(url, function()
                             {
                                 init_callback();
                             });
                         }
-                        var run_tests = false;
-                        var tests = $bs.vars('tests');
-                        if(tests) run_tests = true;
-                        bs.core.tests(run_tests);
-                    }
-                }
-                                                   
-                                               });
+                        else
+                        {
+                            if($.isPlainObject(bs.accounts))
+                            {
+                                setInterval(function()
+                                {
+                                    bs.accounts.poll();
+                                }, bs.settings.cache.accounts);
+                            }
+                            if(window.location.hash)
+                            {
+                                bs.core.refresh(function()
+                                {
+                                    init_callback(window.location.hash);
+                                }, $bs.slug(window.location.hash), false);
+                            }
+                            else
+                            {
+                                bs.templates.render('index', function()
+                                {
+                                    init_callback();
+                                });
+                            }
+                            var run_tests = false;
+                            var tests = $bs.vars('tests');
+                            if(tests) run_tests = true;
+                            bs.core.tests(run_tests);
+                        }
+                    }                                    
+                });
             },
             less: function(callback)
             {

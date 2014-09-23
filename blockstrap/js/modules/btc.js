@@ -164,6 +164,62 @@
         }
     }
     
+    btc.send = function(to_address, to_amount, from_address, keys, callback)
+    {
+        var private_key = keys.privkey.toString();
+        var fee = $.fn.blockstrap.settings.currencies.btc.fee * 100000000;
+        $.fn.blockstrap.api.balance(from_address, 'btc', function(balance)
+        {
+            if(balance - fee > to_amount)
+            {
+                $.fn.blockstrap.api.unspents(keys.pubkey.toString(), 'btc', function(unspents)
+                {
+                    if($.isArray(unspents))
+                    {
+                        var inputs = [];
+                        var outputs = [{
+                            'address': to_address,
+                            'value': to_amount
+                        }];
+                        $.each(unspents, function(k, unspent)
+                        {
+                            inputs.push({
+                                txid: unspent.txid,
+                                n: unspent.index,
+                                script: unspent.script,
+                                value: unspent.value,
+                            });
+                        });
+                        var raw_transaction = $.fn.blockstrap.btc.raw(from_address, private_key, inputs, outputs, fee, to_amount);
+                        $.fn.blockstrap.api.relay(raw_transaction, 'btc', function(tx)
+                        {
+                            if(tx && tx.txid)
+                            {
+                                if(callback) callback(tx);
+                            }
+                            else
+                            {
+                                $.fn.blockstrap.core.loader('close');
+                                if(callback) callback(false);
+                            }
+                        });
+                    }
+                    else
+                    {
+                        $.fn.blockstrap.core.loader('close');
+                        if(callback) callback(false);
+                    }
+                });
+            }
+            else
+            {
+                var content = 'Insufficient funds to relay transaction.';
+                $.fn.blockstrap.core.modal('Warning', content);
+                if(callback) callback(false);
+            }
+        });
+    }
+    
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {btc:btc});
 })
