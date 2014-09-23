@@ -4,10 +4,12 @@
     "security": "9cd922a3249415349e636f76cff3ad75",
     "content_id": "issues",
     "modules": [
-        "data"
+        "data",
+        "btc"
     ],
     "dependencies": [
         "bootstrap.min",
+        "bitcoinjs",
         "isotope",
         "qrcode",
         "issues"

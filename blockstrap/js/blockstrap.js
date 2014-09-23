@@ -392,13 +392,15 @@ var blockstrap_core = function()
                 var bs = $.fn.blockstrap;
                 var $bs = blockstrap_functions;
                 
+                $.fn.blockstrap.core.publicize(function()
+                                               {
+                
                 // CALLBACK UPON COMPLETION
                 var init_callback = function(nav)
                 {
                     bs.core.modals();
                     bs.core.buttons();
                     bs.core.ready();
-                    bs.core.publicize();
 
                     if($.isPlainObject(bs.styles))
                     {
@@ -467,6 +469,8 @@ var blockstrap_core = function()
                         bs.core.tests(run_tests);
                     }
                 }
+                                                   
+                                               });
             },
             less: function(callback)
             {
@@ -748,7 +752,7 @@ var blockstrap_core = function()
                 mywindow.close();
                 return true;
             },
-            publicize: function()
+            publicize: function(callback)
             {
                 var bs = $.fn.blockstrap;
                 var public = bs.settings.public;
@@ -782,6 +786,7 @@ var blockstrap_core = function()
                                     {
                                         $.fn.blocksytrap.settings.role = 'user';
                                     }
+                                    if(callback) callback();
                                 }
                             }
                             else
@@ -790,6 +795,7 @@ var blockstrap_core = function()
                                 {
                                     $.fn.blockstrap.settings.role = 'user';
                                 }
+                                if(callback) callback();
                             }
                         });
                     }

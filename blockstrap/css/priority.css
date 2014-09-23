@@ -256,6 +256,9 @@ a.active, a:hover {
 .modal .modal-body {
     text-align: justify;
 }
+.modal .modal-body p.left {
+    text-align: left;
+}
 p.center {
     text-align: center;
 }

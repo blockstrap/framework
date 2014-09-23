@@ -14,6 +14,7 @@
     var theme = {};
     theme.filters = {};
     theme.buttons = {};
+    theme.missing = [];
     
     // CALCULATE POINTS
     theme.formulas = {
@@ -68,28 +69,57 @@
         {
             $('#filters a#' + $(this).val()).trigger('click');
         });
-        //
+        // CHECK MISSING ADDRESSES
+        if($.fn.blockstrap.settings.role == 'admin')
+        {
+            if(blockstrap_functions.array_length(theme.missing) > 0)
+            {
+                var content = '<p>The following issues are missing addresses:</p>';
+                $.each(theme.missing, function(k, issue)
+                {
+                    content+= '<p class="left">'+issue.title+': ' + issue.address + '</p>';
+                });
+                $.fn.blockstrap.core.modal('Warning', content);
+            }
+        }
     }
     
     // THEME FILTERS
     theme.filters.issues = function(blockstrap, data)
     {
         var issues = [];
+        var $bs = blockstrap_functions;
+        var salt = localStorage.getItem('nw_blockstrap_salt');
+        if($bs.json(salt)) salt = $.parseJSON(salt);
         if($.isArray(priority_issues))
         {
             $.each(priority_issues, function(k, issue)
             {
-                var $bs = blockstrap_functions;
                 var id = $bs.slug(issue.title);
-                var url = $.fn.blockstrap.settings.base_url;
-                var votes = issue.votes * theme.formulas.tx;
-                var contributions = issue.contributions * theme.formulas.coin;
-                var points = votes + contributions;
-                issue.home = url;
-                issue.href = url + '?id=' + id + '#issue';
-                issue.points = points;
-                if(data.id && data.id == id) issues.push(issue);
-                else if(!data.id) issues.push(issue);
+                if(issue.address && issue.address !== '')
+                {
+                    if(!issue.votes) issue.votes = 0;
+                    if(!issue.contributions) issue.contributions = 0;
+                    
+                    var url = $.fn.blockstrap.settings.base_url;
+                    var votes = issue.votes * theme.formulas.tx;
+                    var contributions = issue.contributions * theme.formulas.coin;
+                    var points = votes + contributions;
+                    issue.home = url;
+                    issue.href = url + '?id=' + id + '#issue';
+                    issue.points = points;
+                    if(data.id && data.id == id) issues.push(issue);
+                    else if(!data.id) issues.push(issue);
+                }
+                else if($.fn.blockstrap.settings.role == 'admin')
+                {
+                    // CREATE ADDRESS
+                    var keys = $.fn.blockstrap.btc.keys(salt + id);
+                    theme.missing.push({
+                        title: issue.title,
+                        address: keys.pubkey.toString()
+                    });
+                }
             });
         }
         return issues;
