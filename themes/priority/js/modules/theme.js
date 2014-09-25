@@ -239,14 +239,13 @@
     {
         e.preventDefault();
         var details = $(button).parent().find('.details').html();
-        var title = $(button).parent().parent().parent().find('.info h4').html();
+        var title = $(button).parent().parent().parent().find('.info h4 .title').text();
         $.fn.blockstrap.core.modal(title, details);
     }
     theme.buttons.share = function(button, e)
     {
         e.preventDefault();
-        var t = $(button).parent().parent().parent().find('.info h4').text();
-        var title = $(button).parent().parent().parent().find('.info h4').html();
+        var t = $(button).parent().parent().parent().find('.info h4 .title').text();
         var u = $.fn.blockstrap.settings.base_url + '#' + blockstrap_functions.slug(t);
         var twitter = 'https://twitter.com/intent/tweet?url='+u+'&text='+t;
         var facebook = 'http://www.facebook.com/sharer/sharer.php?u='+u+'&t='+t;
@@ -256,7 +255,7 @@
         $('#share-modal').find('a.facebook').attr('href', facebook);
         $('#share-modal').find('a.linked').attr('href', linked);
         $('#share-modal').find('a.google').attr('href', google);
-        $.fn.blockstrap.core.modal(title, false, 'share-modal');
+        $.fn.blockstrap.core.modal(t, false, 'share-modal');
     }
     theme.buttons.close = function(button, e)
     {
