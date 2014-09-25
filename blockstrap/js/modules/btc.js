@@ -142,7 +142,7 @@
         {
             TX.addOutput(outputs[i].address, parseInt(outputs[i].value) / 100000000);
         });
-        if(balance >= (total + fee))
+        if(balance > (total + fee))
         {
             var change = balance - (total + fee);
             TX.addOutput(return_address, parseInt(change) / 100000000);
@@ -151,26 +151,14 @@
         return Crypto.util.bytesToHex(sendTx.serialize());
     }
     
-    btc.validate = function(address)
-    {
-        try 
-        {
-            btc.check(address);
-            return true;
-        } 
-        catch(e) 
-        {
-            return false;
-        }
-    }
-    
     btc.send = function(to_address, to_amount, from_address, keys, callback)
     {
+        var available_balance = 0;
         var private_key = keys.privkey.toString();
         var fee = $.fn.blockstrap.settings.currencies.btc.fee * 100000000;
         $.fn.blockstrap.api.balance(from_address, 'btc', function(balance)
         {
-            if(balance - fee > to_amount)
+            if(balance - fee >= to_amount)
             {
                 $.fn.blockstrap.api.unspents(keys.pubkey.toString(), 'btc', function(unspents)
                 {
@@ -189,6 +177,7 @@
                                 script: unspent.script,
                                 value: unspent.value,
                             });
+                            available_balance = available_balance + unspent.value;
                         });
                         var raw_transaction = $.fn.blockstrap.btc.raw(from_address, private_key, inputs, outputs, fee, to_amount);
                         $.fn.blockstrap.api.relay(raw_transaction, 'btc', function(tx)
@@ -213,11 +202,26 @@
             }
             else
             {
+                console.log('balance - fee', balance - fee);
+                console.log('to_amount', to_amount);
                 var content = 'Insufficient funds to relay transaction.';
                 $.fn.blockstrap.core.modal('Warning', content);
                 if(callback) callback(false);
             }
         });
+    }
+    
+    btc.validate = function(address)
+    {
+        try 
+        {
+            btc.check(address);
+            return true;
+        } 
+        catch(e) 
+        {
+            return false;
+        }
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE

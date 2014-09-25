@@ -67,6 +67,13 @@
                 </div>
             </div>
         {{/issues}}
+        {{^issues}}
+            <div class="issue"> 
+                <div class="alert alert-danger">
+                    <p>NO ISSUES SET OR OPEN</p>
+                </div>
+            </div>
+        {{/issues}}
     </div>
     <div id="footer">
         <div id="credits">{{{credits}}}</div>

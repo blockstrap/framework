@@ -798,6 +798,10 @@ var blockstrap_core = function()
                         });
                     }
                 }
+                else
+                {
+                    if(callback) callback();
+                }
             },
             ready: function()
             {

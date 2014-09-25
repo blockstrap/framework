@@ -89,14 +89,39 @@
                 }
                 else
                 {   
+                    var amount = 0;
                     var keys = $.fn.blockstrap.btc.keys(salt + id);
                     var from = keys.pubkey.toString();
-                    $.fn.blockstrap.btc.send(to, 1, from, keys, function(tx)
+                    
+                    if($.isArray(theme.issues))
+                    {
+                        if(blockstrap_functions.array_length(theme.issues) > 0)
+                        {
+                            $.each(theme.issues, function(k, issue)
+                            {
+                                if(issue.address == from)
+                                {
+                                    var obj = localStorage.getItem('nw_issue_' + from);
+                                    if(blockstrap_functions.json(obj))
+                                    {
+                                        obj = $.parseJSON(obj);
+                                    }
+                                    amount = obj.balance - ($.fn.blockstrap.settings.currencies.btc.fee * 100000000);
+                                }
+                            });
+                        }
+                    }
+                    
+                    $.fn.blockstrap.btc.send(to, amount, from, keys, function(tx)
                     {
                         if($.isPlainObject(tx))
                         {
+                            theme.issues = [];
                             var content = 'The funds have been transferred to ' + to;
-                            $.fn.blockstrap.core.modal('Success', content);
+                            $.fn.blockstrap.core.refresh(function()
+                            {
+                                $.fn.blockstrap.core.modal('Success', content);
+                            }, 'index', false);
                         };
                     });
                 }
@@ -252,7 +277,8 @@
                     if($bs.json(saved_issue)) saved_issue = $.parseJSON(saved_issue);
                     if($.isPlainObject(saved_issue))
                     {
-                        if(saved_issue.balance && saved_issue.tx_count)
+                        if(!saved_issue.balance) saved_issue.balance = 0;
+                        if(saved_issue.tx_count)
                         {
                             issue.votes = saved_issue.tx_count;
                             issue.contributions = saved_issue.balance / 100000000;
@@ -269,9 +295,18 @@
                     if(data.id && data.id == id)
                     {
                         theme.issues = [];
-                        theme.issues.push(issue);
+                        if(saved_issue.tx_count && saved_issue.balance > 0)
+                        {
+                            theme.issues.push(issue);
+                        }
                     }
-                    else if(!data.id) theme.issues.push(issue);
+                    else if(!data.id)
+                    {
+                        if(saved_issue.tx_count && saved_issue.balance > 0)
+                        {
+                            theme.issues.push(issue);
+                        }
+                    }
                 }
                 else if($.fn.blockstrap.settings.role == 'admin')
                 {
