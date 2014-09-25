@@ -3,6 +3,7 @@
     "public": true,
     "security": "9cd922a3249415349e636f76cff3ad75",
     "content_id": "issues",
+    "slug_base": "index",
     "modules": [
         "data",
         "api",

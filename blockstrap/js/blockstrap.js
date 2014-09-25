@@ -832,29 +832,39 @@ var blockstrap_core = function()
             },
             refresh: function(callback, slug, skip_rendering)
             {
+                var bs = $.fn.blockstrap;
                 if(typeof skip_rendering === 'undefined') skip_rendering = true;
-                var page = $.fn.blockstrap.core.page();
+                var page = bs.core.page();
                 if(slug) page = slug;
-                $.fn.blockstrap.templates.render('index', function()
+                bs.templates.render('index', function()
                 {
                     if(page != 'index')
                     {
-                        $.fn.blockstrap.templates.render(page, function()
+                        bs.templates.render(page, function()
                         {
-                            $.fn.blockstrap.core.nav(page);
-                            $.fn.blockstrap.core.ready();
+                            bs.core.nav(page);
+                            bs.core.ready();
                             //$.fn.blockstrap.core.loader('close');
                             if(callback) callback();
                         }, true, skip_rendering);
                     }
                     else
                     {
-                        $.fn.blockstrap.templates.render($.fn.blockstrap.settings.slug_base, function()
+                        if(bs.settings.slug_base != 'index')
                         {
-                            $.fn.blockstrap.core.ready();
+                            bs.templates.render(bs.settings.slug_base, function()
+                            {
+                                bs.core.ready();
+                                //$.fn.blockstrap.core.loader('close');
+                                if(callback) callback();
+                            }, true);
+                        }
+                        else
+                        {
+                            bs.core.ready();
                             //$.fn.blockstrap.core.loader('close');
                             if(callback) callback();
-                        }, true);
+                        }
                     }
                 }, true, skip_rendering);
             },

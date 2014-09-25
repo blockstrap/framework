@@ -121,25 +121,109 @@
         {
             setInterval(function()
             {
+                var txs = [];
+                var count = 0;
                 var balance = 0;
                 var addresses = [];
                 var bs = $.fn.blockstrap;
+                var $bs = blockstrap_functions;
+                var content = '<p>The following contributions have been made:</p>';
+                var para = function(tx, address)
+                {
+                    var this_content = '';
+                    var value = tx.value;
+                    var val = '' + parseInt(tx.value) / 100000000;
+                    var currency = bs.settings.currencies[tx.currency].currency;
+                    var amount = '<strong>' + val + '</strong> ' + currency;
+                    
+                    if($bs.array_length(theme.issues) > 0)
+                    {
+                        $.each(theme.issues, function(k, issue)
+                        {
+                            if(issue.address == address)
+                            {
+                                address = issue.title;
+                            }
+                        });
+                    }
+                    
+                    var context = amount + ' <strong>recieved</strong>';
+                    if(address) context+= ' for ' + address;
+                    
+                    var base = bs.settings.base_url;
+                    var url = base + '?txid=' + tx.txid + '#transaction';
+                    if(value < 0)
+                    {
+                        context = '<strong>' + val.substring(1) + '</strong> ';
+                        context+= currency + ' <strong>sent</strong>';
+                    }
+                    this_content+= '<p>' + context + ':<br />TXID ';
+                    this_content+= '<a href="' + url + '">' + tx.txid + '</a></p>';
+                    return this_content;
+                }
                 $.each(theme.issues, function(k, issue)
                 {
                     addresses.push(issue.address);
                 });
+                var address_count = $bs.array_length(addresses);
+                var diffs = {};
                 bs.api.addresses(addresses, 'btc', function(results)
                 {
                     if($.isArray(results))
                     {
                         $.each(results, function(k, obj)
                         {
-                            balance = balance + obj.balance;
-                            bs.data.save('issue', obj.address, obj, function()
+                            count++;
+                            bs.data.find('issue', obj.address, function(saved_obj)
                             {
-                                bs.data.save('issue', 'balance', balance, function()
-                                {   
-                                    
+                                var tx_count = 0;
+                                if($bs.json(saved_obj)) saved_obj = $.parseJSON(saved_obj);
+                                if(saved_obj.tx_count) tx_count = saved_obj.tx_count;
+                                if(tx_count < obj.tx_count)
+                                {
+                                    txs.push(obj);
+                                    diffs['id_'+obj.address] = obj.tx_count - tx_count;
+                                }
+                                balance = balance + obj.balance;
+                                bs.data.save('issue', obj.address, obj, function()
+                                {
+                                    bs.data.save('issue', 'balance', balance, function()
+                                    {   
+                                        if(count >= address_count)
+                                        {
+                                            if($bs.array_length(txs) > 0)
+                                            {
+                                                var title = 'Attention';
+                                                $.each(txs, function(key, tx)
+                                                {
+                                                    bs.api.transactions(
+                                                        tx.address, 
+                                                        'btc',
+                                                        function(transactions)
+                                                    {
+                                                        if($.isArray(transactions))
+                                                        {
+                                                            var trans = transactions.slice(0, diffs['id_'+tx.address]);
+                                                            $.each(
+                                                                trans, 
+                                                                function(k, tran)
+                                                            {
+                                                                content+= para(tran, tx.address);
+                                                                if(k + 1 >= $bs.array_length(trans) && key + 1 >= $bs.array_length(txs))
+                                                                {
+                                                                    theme.issues = [];
+                                                                    bs.core.refresh(function()
+                                                                    {
+                                                                        bs.core.modal(title, content);
+                                                                    }, 'index', false);
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+                                                });
+                                            }
+                                        }
+                                    });
                                 });
                             });
                         });
