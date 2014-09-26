@@ -325,6 +325,38 @@ p.center {
     background-position: -250px -150px;
 }
 
+/*
+
+FORMS
+
+*/
+#setup-device .form-group {
+    height: 33px;
+}
+#setup-device label {
+    line-height: 32px;
+    background: #EEE;
+    border: 1px solid #CCC;
+    border-radius: 4px 0  0 4px;
+}
+#setup-device .col-sm-9 {
+    padding-left: 0;
+    padding-right: 0;
+    margin: 0 0 0 -1px;
+}
+#setup-device .col-sm-9 input {
+    background: #FFFFEE;
+    border-radius: 0 4px 4px 0;
+}
+#setup-device .col-sm-9 div.form-control {
+    background: #FFFFEE;
+}
+#setup-device .actions {
+    display: block;
+    position: relative;
+    padding: 0;
+}
+
 
 
 
@@ -337,6 +369,26 @@ RESPONSIVENESS
 @media(max-width:992px){
     #content {
         width: 96%;
+    }
+    #setup-device label {
+        border-radius: 4px 4px 0 0;
+        text-align: center;
+    }
+    #setup-device .col-sm-9,
+    #setup-device .col-sm-3 {
+        width: 100%;
+        padding: 0;
+    }
+    #setup-device .col-sm-9 {
+        margin: 0;
+    }
+    #setup-device .form-group {
+        height: 63px;
+    }
+    #setup-device .col-sm-9 input {
+        margin: -6px 0 0;
+        border-radius: 0 0 4px 4px;
+        text-align: center;
     }
 }
 @media(max-width:710px){

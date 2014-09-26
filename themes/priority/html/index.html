@@ -1,4 +1,6 @@
 <div id="content">
+    
+    {{^setup}}
     <div id="filters">
         {{#filters}}
             <a 
@@ -16,6 +18,8 @@
             {{/filters}}
         </select>
     </div>
+    {{/setup}}
+    
     <div id="issues">
         {{#setup}}
             <div class="issue">
@@ -84,7 +88,9 @@
     </div>
     <div id="footer">
         <div id="credits">{{{credits}}}</div>
+        {{^setup}}
         <div id="total">{{copy.total_contributions}} {{total}}</div>
+        {{/setup}}
     </div>
 </div>
 
