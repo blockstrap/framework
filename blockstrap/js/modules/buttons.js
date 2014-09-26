@@ -960,7 +960,7 @@
                 {
                     saved_salt = localStorage.getItem('nw_blockstrap_salt');
                 }
-                $.fn.blockstrap.security.salt(modules, function(salt, keys)
+                $.fn.blockstrap.core.salt(modules, function(salt, keys)
                 {
                     $.fn.blockstrap.data.find('blockstrap', 'keys', function(stored_keys)
                     {

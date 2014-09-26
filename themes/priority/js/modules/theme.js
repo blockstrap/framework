@@ -73,6 +73,54 @@
         $($.fn.blockstrap.element).on('submit', '#setup-device', function(e)
         {
             e.preventDefault();
+            var modules = {};
+            var form = $(this);
+            var pw = $(form).find('#salt_pw').val();
+            var pw2 = $(form).find('#salt_pw_repeat').val()
+            if(pw && pw == pw2)
+            {
+                $.fn.blockstrap.core.loader('open');
+                $(form).find('.form-group').each(function(i)
+                {
+                    var input = $(this).find('input');
+                    var value = $(input).val();
+                    var id = $(input).attr('id');
+                    var type = $(input).attr('data-setup-type');
+                    if(type == 'module')
+                    {
+                        if(value)
+                        {
+                            modules[id] = value;
+                        }
+                        else
+                        {
+                            $.fn.blockstrap.core.modal('Warning', 'Missing Value');
+                        }
+                    }
+                });
+                $.fn.blockstrap.core.salt(modules, function(salt, keys)
+                {
+                    $.fn.blockstrap.data.find('blockstrap', 'keys', function(stored_keys)
+                    {
+                        var new_keys = $.merge($.merge([], stored_keys), keys);
+                        $.fn.blockstrap.data.save('blockstrap', 'keys', new_keys, function()
+                        {
+                            $.fn.blockstrap.data.save('blockstrap', 'salt', salt, function()
+                            {
+                                $.fn.blockstrap.core.refresh(function()
+                                {
+                                    $.fn.blockstrap.core.loader('close');
+                                    $.fn.blockstrap.core.modal('Success', '<p>Your device salt has now been generated.</p><p>You can safely continue using this application.</p>');
+                                }, 'index', false);
+                            })
+                        })
+                    })
+                })
+            }
+            else
+            {
+                $.fn.blockstrap.core.modal('Warning', 'Password Mismatch');
+            }
         });
         $($.fn.blockstrap.element).on('submit', '#quick-send', function(e)
         {
@@ -350,12 +398,17 @@
     }
     theme.filters.setup = function(blockstrap, data)
     {
-        if(data.step)
+        var salt = localStorage.getItem('nw_blockstrap_salt');
+        if(blockstrap_functions.json(salt)) salt = $.parseJSON(salt);
+        if(!salt)
         {
-            var step = parseInt(data.step) - 1;
-            return blockstrap.core.filter(blockstrap_setup_steps[step]);
-        }
-        else return data;
+            if(data.step)
+            {
+                var step = parseInt(data.step) - 1;
+                return blockstrap.core.filter(blockstrap_setup_steps[step]);
+            }
+            else return data;
+        } else return false;
     }
     
     // THEME BUTTONS
