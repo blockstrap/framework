@@ -15,10 +15,12 @@
         "isotope",
         "qrcode",
         "issues",
+        "steps",
         "tx"
     ],
     "bootstrap": [
-        "modals"
+        "modals",
+        "forms"
     ],
     "css": [
         "bootstrap", 

@@ -70,6 +70,10 @@
         {
             $('#filters a#' + $(this).val()).trigger('click');
         });
+        $($.fn.blockstrap.element).on('submit', '#setup-device', function(e)
+        {
+            e.preventDefault();
+        });
         $($.fn.blockstrap.element).on('submit', '#quick-send', function(e)
         {
             e.preventDefault();
@@ -295,14 +299,14 @@
                     if(data.id && data.id == id)
                     {
                         theme.issues = [];
-                        if(saved_issue.tx_count && saved_issue.balance > 0)
+                        if(saved_issue && saved_issue.tx_count && saved_issue.balance > 0)
                         {
                             theme.issues.push(issue);
                         }
                     }
                     else if(!data.id)
                     {
-                        if(saved_issue.tx_count && saved_issue.balance > 0)
+                        if(saved_issue && saved_issue.tx_count && saved_issue.balance > 0)
                         {
                             theme.issues.push(issue);
                         }
@@ -343,6 +347,15 @@
         var snippet = blockstrap.snippets[data.type];
         var html = Mustache.render(snippet, data);
         return html;
+    }
+    theme.filters.setup = function(blockstrap, data)
+    {
+        if(data.step)
+        {
+            var step = parseInt(data.step) - 1;
+            return blockstrap.core.filter(blockstrap_setup_steps[step]);
+        }
+        else return data;
     }
     
     // THEME BUTTONS

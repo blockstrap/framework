@@ -79,6 +79,10 @@
     "total": {
         "func": "balance"
     },
+    "setup": {
+        "func": "setup",
+        "step": 1
+    },
     "modals": {
         "func": "bootstrap",
         "type": "modals",
