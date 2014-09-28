@@ -702,11 +702,44 @@
         var confirm = $(button).attr('data-confirm');
         if(confirm)
         {
-            var form = $.fn.blockstrap.forms.input({
-                label: 'Password',
-                type: 'password',
-                id: 'confirm-pw',
-                placeholder: 'Type your password to allow account removal'
+            var form = $.fn.blockstrap.forms.process({
+                objects: [
+                    {
+                        fields: [
+                            {
+                                inputs: {
+                                    label: 'Password',
+                                    type: 'password',
+                                    id: 'confirm-pw',
+                                    placeholder: 'Type your password to allow account removal'
+                                }
+                            }
+                        ]
+                    }
+                ],
+                buttons: {
+                    forms: [
+                        {
+                            id: 'cancel-verification',
+                            css: 'btn-danger pull-right btn-split',
+                            text: 'Cancel',
+                            type: 'button',
+                            attributes: [
+                                {
+                                    key: 'data-dismiss',
+                                    value: 'modal'
+                                }
+                            ]
+                        },
+                        {
+                            type: "submit",
+                            id: "submit-pw",
+                            css: 'btn-success pull-right btn-split',
+                            text: 'Confirm',
+                            type: 'submit'
+                        }
+                    ]
+                }
             });
             var text = '<p>Please confirm removal of this account. You will not be able to use any of the coins on the account unless you can accurately re-create them or first back-up the private key. We hope you understand the risks. Please type the account password below and then press confirm to remove account.</p><p>'+form+'</p>';
             $.fn.blockstrap.core.confirm('Confirmation Required', text, function()

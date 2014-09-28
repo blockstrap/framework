@@ -141,9 +141,9 @@ var blockstrap_core = function()
             },
             confirm: function(title, content, callback)
             {
-                $('#confirm-modal .modal-footer .btn-success').unbind();
+                $('#confirm-modal form').unbind();
                 $.fn.blockstrap.core.modal(title, content, 'confirm-modal');
-                $('#confirm-modal .modal-footer .btn-success').bind('click', function()
+                $('#confirm-modal form').bind('submit', function()
                 {
                     callback(true);
                 });
@@ -705,15 +705,20 @@ var blockstrap_core = function()
                                 text: $(this).attr('data-content')
                             });
                         });
-                        if($(this).find('input').length > 0)
+                        if($(this).find('.form-control').length > 0)
                         {
-                            var input = $(this).find('input[type!=hidden]:first');
+                            var input = $(this).find('.form-control[type!=hidden]:first');
                             $(input).focus();
                         }
                     });
                     $($.fn.blockstrap.element).on('shown.bs.modal', '.modal', function(i)
                     {
                         // .on('show.bs.modal') usually works best...
+                        if($(this).find('.form-control').length > 0)
+                        {
+                            var input = $(this).find('.form-control[type!=hidden]:first');
+                            $(input).focus();
+                        }
                     });
                     $($.fn.blockstrap.element).on('show.bs.modal', '#new-account-modal', function(i)
                     {

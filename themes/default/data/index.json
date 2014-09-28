@@ -183,13 +183,7 @@
                 "title": "Confirmation Required",
                 "body": "<p>Please re-confirm you want to do that?</p>",
                 "close": "Cancel",
-                "footer": true,
-                "actions": [
-                    {
-                        "text": "Confirm",
-                        "css": "btn-success"
-                    }
-                ]       
+                "footer": false    
             },
             {
                 "id": "login-credentials",
@@ -617,6 +611,7 @@
                                 "id": "more-security",
                                 "css": "btn-default pull-right btn-split",
                                 "text": "More Security",
+                                "type": "button",
                                 "attributes": [
                                     {
                                         "key": "data-form-id",
