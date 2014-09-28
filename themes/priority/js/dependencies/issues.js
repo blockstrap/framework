@@ -20,5 +20,11 @@ var priority_issues = [
         address: '16MVr93pHTeqa1dLLhyZ4gunt1CtCBMnX9',
         author: priority_authors.mark,
         details: 'This is the full description of Issue 03 at hand!'
+    },
+    {
+        title: 'Issue 04 - first with issue numbers',
+        address: '16ot9Kzmk7bfEy2tTf1gz4sZwH3AQkpVbA',
+        author: priority_authors.mark,
+        details: 'This is the full description of Issue 04 at hand!'
     }
 ]

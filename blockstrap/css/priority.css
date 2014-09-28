@@ -121,6 +121,9 @@ a.active, a:hover {
 .info h4 a {
     color: #004C66;
 }
+.info h4 .title {
+    display: inline-block;
+}
 .info h4 a.btn {
     color: #EEE;
     font-size: 11px;

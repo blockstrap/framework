@@ -29,6 +29,7 @@
     "styles": false,
     "storage": {
         "dependencies": true,
+        "bootstrap": true,
         "modules": true
     },
     "buttons": {

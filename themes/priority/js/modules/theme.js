@@ -107,11 +107,12 @@
                         {
                             $.fn.blockstrap.data.save('blockstrap', 'salt', salt, function()
                             {
+                                theme.issues = [];
                                 $.fn.blockstrap.core.refresh(function()
                                 {
                                     $.fn.blockstrap.core.loader('close');
                                     $.fn.blockstrap.core.modal('Success', '<p>Your device salt has now been generated.</p><p>You can safely continue using this application.</p>');
-                                }, 'index', false);
+                                }, false, false);
                             })
                         })
                     })
@@ -198,111 +199,117 @@
         {
             setInterval(function()
             {
-                var txs = [];
-                var count = 0;
-                var balance = 0;
-                var addresses = [];
-                var bs = $.fn.blockstrap;
-                var $bs = blockstrap_functions;
-                var content = '<p>The following contributions have been made:</p>';
-                var para = function(tx, address)
+                $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
                 {
-                    var this_content = '';
-                    var value = tx.value;
-                    var val = '' + parseInt(tx.value) / 100000000;
-                    var currency = bs.settings.currencies[tx.currency].currency;
-                    var amount = '<strong>' + val + '</strong> ' + currency;
-                    
-                    if($bs.array_length(theme.issues) > 0)
+                    if(salt)
                     {
+                        var txs = [];
+                        var count = 0;
+                        var balance = 0;
+                        var addresses = [];
+                        var bs = $.fn.blockstrap;
+                        var $bs = blockstrap_functions;
+                        var content = '<p>The following contributions have been made:</p>';
+                        var para = function(tx, address)
+                        {
+                            var this_content = '';
+                            var value = tx.value;
+                            var val = '' + parseInt(tx.value) / 100000000;
+                            var currency = bs.settings.currencies[tx.currency].currency;
+                            var amount = '<strong>' + val + '</strong> ' + currency;
+
+                            if($bs.array_length(theme.issues) > 0)
+                            {
+                                $.each(theme.issues, function(k, issue)
+                                {
+                                    if(issue.address == address)
+                                    {
+                                        address = issue.title;
+                                    }
+                                });
+                            }
+
+                            var context = amount + ' <strong>recieved</strong>';
+                            if(address) context+= ' for ' + address;
+
+                            var base = bs.settings.base_url;
+                            var url = base + '?txid=' + tx.txid + '#transaction';
+                            if(value < 0)
+                            {
+                                context = '<strong>' + val.substring(1) + '</strong> ';
+                                context+= currency + ' <strong>sent</strong>';
+                            }
+                            this_content+= '<p>' + context + ':<br />TXID ';
+                            this_content+= '<a href="' + url + '">' + tx.txid + '</a></p>';
+                            return this_content;
+                        }
                         $.each(theme.issues, function(k, issue)
                         {
-                            if(issue.address == address)
-                            {
-                                address = issue.title;
-                            }
+                            addresses.push(issue.address);
                         });
-                    }
-                    
-                    var context = amount + ' <strong>recieved</strong>';
-                    if(address) context+= ' for ' + address;
-                    
-                    var base = bs.settings.base_url;
-                    var url = base + '?txid=' + tx.txid + '#transaction';
-                    if(value < 0)
-                    {
-                        context = '<strong>' + val.substring(1) + '</strong> ';
-                        context+= currency + ' <strong>sent</strong>';
-                    }
-                    this_content+= '<p>' + context + ':<br />TXID ';
-                    this_content+= '<a href="' + url + '">' + tx.txid + '</a></p>';
-                    return this_content;
-                }
-                $.each(theme.issues, function(k, issue)
-                {
-                    addresses.push(issue.address);
-                });
-                var address_count = $bs.array_length(addresses);
-                var diffs = {};
-                bs.api.addresses(addresses, 'btc', function(results)
-                {
-                    if($.isArray(results))
-                    {
-                        $.each(results, function(k, obj)
+                        var address_count = $bs.array_length(addresses);
+                        var diffs = {};
+                        bs.api.addresses(addresses, 'btc', function(results)
                         {
-                            count++;
-                            bs.data.find('issue', obj.address, function(saved_obj)
+                            if($.isArray(results))
                             {
-                                var tx_count = 0;
-                                if($bs.json(saved_obj)) saved_obj = $.parseJSON(saved_obj);
-                                if(saved_obj.tx_count) tx_count = saved_obj.tx_count;
-                                if(tx_count < obj.tx_count)
+                                $.each(results, function(k, obj)
                                 {
-                                    txs.push(obj);
-                                    diffs['id_'+obj.address] = obj.tx_count - tx_count;
-                                }
-                                balance = balance + obj.balance;
-                                bs.data.save('issue', obj.address, obj, function()
-                                {
-                                    bs.data.save('issue', 'balance', balance, function()
-                                    {   
-                                        if(count >= address_count)
+                                    count++;
+                                    bs.data.find('issue', obj.address, function(saved_obj)
+                                    {
+                                        var tx_count = 0;
+                                        if($bs.json(saved_obj)) saved_obj = $.parseJSON(saved_obj);
+                                        if(saved_obj.tx_count) tx_count = saved_obj.tx_count;
+                                        if(tx_count < obj.tx_count)
                                         {
-                                            if($bs.array_length(txs) > 0)
-                                            {
-                                                var title = 'Attention';
-                                                $.each(txs, function(key, tx)
+                                            txs.push(obj);
+                                            diffs['id_'+obj.address] = obj.tx_count - tx_count;
+                                        }
+                                        balance = balance + obj.balance;
+                                        bs.data.save('issue', obj.address, obj, function()
+                                        {
+                                            bs.data.save('issue', 'balance', balance, function()
+                                            {   
+                                                if(count >= address_count)
                                                 {
-                                                    bs.api.transactions(
-                                                        tx.address, 
-                                                        'btc',
-                                                        function(transactions)
+                                                    if($bs.array_length(txs) > 0)
                                                     {
-                                                        if($.isArray(transactions))
+                                                        var title = 'Attention';
+                                                        $.each(txs, function(key, tx)
                                                         {
-                                                            var trans = transactions.slice(0, diffs['id_'+tx.address]);
-                                                            $.each(
-                                                                trans, 
-                                                                function(k, tran)
+                                                            bs.api.transactions(
+                                                                tx.address, 
+                                                                'btc',
+                                                                function(transactions)
                                                             {
-                                                                content+= para(tran, tx.address);
-                                                                if(k + 1 >= $bs.array_length(trans) && key + 1 >= $bs.array_length(txs))
+                                                                if($.isArray(transactions))
                                                                 {
-                                                                    theme.issues = [];
-                                                                    bs.core.refresh(function()
+                                                                    var trans = transactions.slice(0, diffs['id_'+tx.address]);
+                                                                    $.each(
+                                                                        trans, 
+                                                                        function(k, tran)
                                                                     {
-                                                                        bs.core.modal(title, content);
-                                                                    }, 'index', false);
+                                                                        content+= para(tran, tx.address);
+                                                                        if(k + 1 >= $bs.array_length(trans) && key + 1 >= $bs.array_length(txs))
+                                                                        {
+                                                                            theme.issues = [];
+                                                                            bs.core.refresh(function()
+                                                                            {
+                                                                                bs.core.modal(title, content);
+                                                                            }, 'index', false);
+                                                                        }
+                                                                    });
                                                                 }
                                                             });
-                                                        }
-                                                    });
-                                                });
-                                            }
-                                        }
+                                                        });
+                                                    }
+                                                }
+                                            });
+                                        });
                                     });
                                 });
-                            });
+                            }
                         });
                     }
                 });
@@ -351,10 +358,26 @@
                         {
                             theme.issues.push(issue);
                         }
+                        else if(!saved_issue)
+                        {
+                            theme.issues.push(issue);
+                        }
+                        else if(saved_issue && !saved_issue.tx_count)
+                        {
+                            theme.issues.push(issue);
+                        }
                     }
                     else if(!data.id)
                     {
                         if(saved_issue && saved_issue.tx_count && saved_issue.balance > 0)
+                        {
+                            theme.issues.push(issue);
+                        }
+                        else if(!saved_issue)
+                        {
+                            theme.issues.push(issue);
+                        }
+                        else if(saved_issue && !saved_issue.tx_count)
                         {
                             theme.issues.push(issue);
                         }

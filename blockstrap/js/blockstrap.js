@@ -13,7 +13,7 @@
 
 // HARD-CODED / REMOVE LATER
 var bs_theme_config = 'config.default';
-//var bs_theme_config = 'config';
+var bs_theme_config = 'config';
 
 var blockstrap_loader;
 var blockstrap_core = function()
@@ -431,7 +431,7 @@ var blockstrap_core = function()
                     // RESET IF REQUIRED
                     if($bs.vars('reset') === true)
                     {
-                        bs.buttons.reset(false, false);
+                        bs.core.reset(true);
                     }
                     else if(!init_bs)
                     {
@@ -853,18 +853,27 @@ var blockstrap_core = function()
                 var bs = $.fn.blockstrap;
                 if(typeof skip_rendering === 'undefined') skip_rendering = true;
                 var page = bs.core.page();
+                var skipped = false;
                 if(slug) page = slug;
-                bs.templates.render('index', function()
+                $.fn.blockstrap.core.loader('open');
+                if(page != 'index' && !skip_rendering)
                 {
+                    skipped = true;
+                    skip_rendering = true;
+                }
+                bs.templates.render('index', function(paged_html)
+                {
+                    $.fn.blockstrap.core.loader('open');
                     if(page != 'index')
                     {
+                        if(skipped) skip_rendering = false;
                         bs.templates.render(page, function()
                         {
                             bs.core.nav(page);
                             bs.core.ready();
                             //$.fn.blockstrap.core.loader('close');
                             if(callback) callback();
-                        }, true, skip_rendering);
+                        }, true, skip_rendering, paged_html);
                     }
                     else
                     {

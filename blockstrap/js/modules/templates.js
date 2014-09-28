@@ -152,18 +152,20 @@
         return results;
     }       
     
-    templates.render = function(slug, callback, force_refresh, skip_rendering)
+    templates.render = function(slug, callback, force_refresh, skip_rendering, looped_html)
     {
         var skip = false;
+        var bs = $.fn.blockstrap;
+        var $bs = blockstrap_functions;
         if(skip_rendering) skip = true;
-        $.fn.blockstrap.data.find('data', slug, function(results)
+        bs.data.find('data', slug, function(results)
         {
             var data = results;
             var refresh = blockstrap_functions.vars('refresh');
             if(force_refresh) refresh = true;
             if(refresh === true || !data)
             {
-                $.fn.blockstrap.core.get('themes/' + $.fn.blockstrap.settings.theme + '/' + $.fn.blockstrap.settings.data_base + slug, 'json', function(data)
+                bs.core.get('themes/' + bs.settings.theme + '/' + bs.settings.data_base + slug, 'json', function(data)
                 {
                     template_data = $.extend({}, template_data, data);
                     var filtered_data = $.fn.blockstrap.core.filter(template_data);
@@ -188,23 +190,40 @@
                                         }
                                         else if(force_refresh)
                                         {
-                                            $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.content_id).html(paged_html);
+                                            if($(bs.element).find('#' + bs.settings.content_id).length > 0)
+                                            {
+                                                $(bs.element).find('#' + bs.settings.content_id).html(paged_html);
+                                            }
+                                            else
+                                            {
+                                                $($.fn.blockstrap.element).html(looped_html);
+                                                if($($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.content_id).length > 0)
+                                                {
+                                                    $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.content_id).html(paged_html);
+                                                }
+                                                else
+                                                {
+                                                    $($.fn.blockstrap.element).append(paged_html);
+                                                }
+                                            }
                                         }
                                         else if(slug === 'index')
                                         {
                                             $($.fn.blockstrap.element).html('');
                                             $($.fn.blockstrap.element).append(paged_html);
-                                            $.fn.blockstrap.core.loader('open');
                                         }
                                         else
                                         {
                                             $($.fn.blockstrap.element).append(paged_html);
                                         }
-                                        $.fn.blockstrap.data.save('html', slug, content, callback);
+                                        $.fn.blockstrap.data.save('html', slug, content, function()
+                                        {
+                                          if(callback) callback(paged_html);
+                                        });
                                     }
                                     else
                                     {
-                                        if(callback) callback();
+                                        if(callback) callback(paged_html);
                                     }
                                 });
                             }
@@ -215,7 +234,7 @@
                                 {
                                     $($.fn.blockstrap.element).append(paged_html);
                                 }
-                                if(callback) callback();
+                                if(callback) callback(paged_html);
                             }
                         });
                     });
