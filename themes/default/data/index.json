@@ -183,7 +183,13 @@
                 "title": "Confirmation Required",
                 "body": "<p>Please re-confirm you want to do that?</p>",
                 "close": "Cancel",
-                "footer": false    
+                "footer": true,
+                "actions": [
+                    {
+                        "text": "Confirm",
+                        "css": "btn-success"
+                    }
+                ] 
             },
             {
                 "id": "login-credentials",

@@ -13,7 +13,7 @@
 
 // HARD-CODED / REMOVE LATER
 var bs_theme_config = 'config.default';
-var bs_theme_config = 'config';
+//var bs_theme_config = 'config';
 
 var blockstrap_loader;
 var blockstrap_core = function()
@@ -49,7 +49,7 @@ var blockstrap_core = function()
         {
             var defaults = {
                 dependencies: [
-                    'crypto',
+                    'crypt',
                     'sha3',
                     'mustache'
                 ],
@@ -141,9 +141,13 @@ var blockstrap_core = function()
             },
             confirm: function(title, content, callback)
             {
-                $('#confirm-modal form').unbind();
+                $('#confirm-modal form, #confirm-modal .btn-success').unbind();
                 $.fn.blockstrap.core.modal(title, content, 'confirm-modal');
                 $('#confirm-modal form').bind('submit', function()
+                {
+                    callback(true);
+                });
+                $('#confirm-modal .btn-success').bind('click', function()
                 {
                     callback(true);
                 });
@@ -871,7 +875,7 @@ var blockstrap_core = function()
                         {
                             bs.core.nav(page);
                             bs.core.ready();
-                            //$.fn.blockstrap.core.loader('close');
+                            $.fn.blockstrap.core.loader('close');
                             if(callback) callback();
                         }, true, skip_rendering, paged_html);
                     }
@@ -882,14 +886,14 @@ var blockstrap_core = function()
                             bs.templates.render(bs.settings.slug_base, function()
                             {
                                 bs.core.ready();
-                                //$.fn.blockstrap.core.loader('close');
+                                $.fn.blockstrap.core.loader('close');
                                 if(callback) callback();
                             }, true);
                         }
                         else
                         {
                             bs.core.ready();
-                            //$.fn.blockstrap.core.loader('close');
+                            $.fn.blockstrap.core.loader('close');
                             if(callback) callback();
                         }
                     }

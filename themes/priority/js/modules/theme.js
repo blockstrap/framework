@@ -110,7 +110,6 @@
                                 theme.issues = [];
                                 $.fn.blockstrap.core.refresh(function()
                                 {
-                                    $.fn.blockstrap.core.loader('close');
                                     $.fn.blockstrap.core.modal('Success', '<p>Your device salt has now been generated.</p><p>You can safely continue using this application.</p>');
                                 }, false, false);
                             })

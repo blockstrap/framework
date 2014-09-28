@@ -742,8 +742,10 @@
                 }
             });
             var text = '<p>Please confirm removal of this account. You will not be able to use any of the coins on the account unless you can accurately re-create them or first back-up the private key. We hope you understand the risks. Please type the account password below and then press confirm to remove account.</p><p>'+form+'</p>';
+            $($.fn.blockstrap.element).find('#confirm-modal .modal-footer').hide();
             $.fn.blockstrap.core.confirm('Confirmation Required', text, function()
             {
+                $($.fn.blockstrap.element).find('#confirm-modal .modal-footer').show();
                 $.fn.blockstrap.accounts.remove(collection, key, element, confirm);
             });
         }
@@ -758,6 +760,7 @@
         if(e)
         {
             e.preventDefault();
+            $($.fn.blockstrap.element).find('#confirm-modal .modal-footer').show();
             $.fn.blockstrap.core.confirm('Confirm Device Reset', 'Please confirm that you want to completely remove all of the information from this device? If you have any coins stored, please ensure you first back-up the private keys or make a back-up of the wallet first.', function(confirmed)
             {
                 if(confirmed) $.fn.blockstrap.core.reset();
@@ -820,6 +823,8 @@
     buttons.setup = function(button, e)
     {
         e.preventDefault();
+        var bs = $.fn.blockstrap;
+        var $bs = blockstrap_functions;
         var href = $(button).attr('href');
         var steps = parseInt($(button).attr('data-steps'));
         var current_step = parseInt($(button).attr('data-step'));
@@ -836,7 +841,7 @@
             var options = {};
             var continue_salting = true;
             
-            $.fn.blockstrap.core.loader();
+            bs.core.loader();
             
             $.each(forms, function(form_index, form_id)
             {
@@ -857,8 +862,8 @@
                             {
                                 var label = false;
                                 if($(this).find('label').html()) label = $(this).find('label').html();
-                                if(label) $.fn.blockstrap.core.modal('Error', 'Value for "'+label+'" Required');
-                                else $.fn.blockstrap.core.modal('Error', 'Value Required');
+                                if(label) bs.core.modal('Error', 'Value for "'+label+'" Required');
+                                else bs.core.modal('Error', 'Value Required');
                                 continue_salting = false;
                             }
                         }
@@ -894,7 +899,7 @@
                                 var repeat_val = $('#'+repeat_id).val();
                                 if(repeat_val && repeat_val != value)
                                 {
-                                    $.fn.blockstrap.core.modal('Warning', 'Repeating Mismatch');
+                                    bs.core.modal('Warning', 'Repeating Mismatch');
                                     continue_salting = false;
                                     wallet.cancel = true;
                                 }
@@ -924,7 +929,7 @@
                             {
                                 if($(this).find('select').length < 1)
                                 {
-                                    $.fn.blockstrap.core.modal('Error', 'Setup Type Missing');
+                                    bs.core.modal('Error', 'Setup Type Missing');
                                 }
                             }
                         }
@@ -932,10 +937,10 @@
                 }
             });
             
-            $.fn.blockstrap.data.find('blockstrap', 'options', function(current_options)
+            bs.data.find('blockstrap', 'options', function(current_options)
             {
                 var merged_options = $.extend({}, current_options, options);
-                $.fn.blockstrap.data.save('blockstrap', 'options', merged_options, function()
+                bs.data.save('blockstrap', 'options', merged_options, function()
                 {
 
                 });
@@ -949,7 +954,7 @@
                 && !wallet.cancel
             )
             {
-                $.fn.blockstrap.accounts.new(
+                bs.accounts.new(
                     wallet.wallet_currency, 
                     wallet.wallet_name,
                     wallet.wallet_password,
@@ -957,12 +962,12 @@
                     function(account)
                     {
                         // INSTALL CONFIGURED CONTACTS IF AVAILABLE
-                        if($.isArray($.fn.blockstrap.settings.contacts))
+                        if($.isArray(bs.settings.contacts))
                         {
-                            var contacts = $.fn.blockstrap.settings.contacts;
+                            var contacts = bs.settings.contacts;
                             $.each(contacts, function(k, contact)
                             {
-                                $.fn.blockstrap.contacts.new(
+                                bs.contacts.new(
                                     contact.name, 
                                     contact.address,
                                     contact.currency,
@@ -976,11 +981,11 @@
                         }
                         
                         /* NEED TO RESET THE INDEX HTML AND DATA */
-                        $.fn.blockstrap.templates.render('index', function()
+                        bs.templates.render('index', function()
                         {
                             $("html, body").animate({ scrollTop: 0 }, 350, function()
                             {
-                                $.fn.blockstrap.core.loader('close');
+                                bs.core.loader('close');
                             });
                         }, true);
                     }
@@ -988,46 +993,47 @@
             }
             else if(continue_salting)
             {
-                var saved_salt = $.fn.blockstrap.settings.id;
+                var saved_salt = bs.settings.id;
                 if(localStorage.getItem('nw_blockstrap_salt'))
                 {
                     saved_salt = localStorage.getItem('nw_blockstrap_salt');
+                    if($bs.json(saved_salt)) saved_salt = $.parseJSON(saved_salt);
                 }
-                $.fn.blockstrap.core.salt(modules, function(salt, keys)
+                bs.core.salt(modules, function(salt, keys)
                 {
-                    $.fn.blockstrap.data.find('blockstrap', 'keys', function(stored_keys)
+                    bs.data.find('blockstrap', 'keys', function(stored_keys)
                     {
                         var new_keys = $.merge($.merge([], stored_keys), keys);
-                        $.fn.blockstrap.data.save('blockstrap', 'keys', new_keys, function()
+                        bs.data.save('blockstrap', 'keys', new_keys, function()
                         {
-                            $.fn.blockstrap.data.save('blockstrap', 'salt', salt, function()
+                            bs.data.save('blockstrap', 'salt', salt, function()
                             {
                                 $("html, body").animate({ scrollTop: 0 }, 350);
                                 if(current_step >= steps)
                                 {
                                     /* NEED TO RESET THE INDEX HTML AND DATA */
-                                    $.fn.blockstrap.templates.render('index', function()
+                                    bs.templates.render('index', function()
                                     {
                                         location.reload();
                                     }, true);
                                 }
                                 else
                                 {
-                                    $.fn.blockstrap.data.find('data', 'index', function(results)
+                                    bs.data.find('data', 'index', function(results)
                                     { 
                                         results.setup = {};
                                         results.setup.func = 'setup';
                                         results.setup.step = next_step;
-                                        var data = $.fn.blockstrap.core.filter(results);
-                                        $.fn.blockstrap.data.find('html', 'index', function(html)
+                                        var data = bs.core.filter(results);
+                                        bs.data.find('html', 'index', function(html)
                                         {
                                             var page = Mustache.render(html, data);
-                                            $($.fn.blockstrap.element).html('');
-                                            $($.fn.blockstrap.element).append(page);
-                                            $($.fn.blockstrap.element).addClass('loading');
-                                            $($.fn.blockstrap.element).find('#blockstrap-loader').css({'opacity': 1, 'z-index': 9999999});
-                                            $.fn.blockstrap.core.ready();
-                                            $.fn.blockstrap.core.loader();
+                                            $(bs.element).html('');
+                                            $(bs.element).append(page);
+                                            $(bs.element).addClass('loading');
+                                            $(bs.element).find('#blockstrap-loader').css({'opacity': 1, 'z-index': 9999999});
+                                            bs.core.ready();
+                                            bs.core.loader();
                                         });
                                     });
                                 }
@@ -1038,7 +1044,7 @@
             }
             else
             {
-                $.fn.blockstrap.core.loader('close');
+                bs.core.loader('close');
             }
         }
     }
