@@ -1105,6 +1105,10 @@
                     $.fn.blockstrap.core.modal(title, intro + qr_code + print);
                     $('#default-modal').find('.qr-holder').each(function()
                     {
+                        if($(this).find('img').length > 0)
+                        {
+                            $(this).find('img').remove();   
+                        }
                         $(this).qrcode({
                             render: 'image',
                             text: $(this).attr('data-content')

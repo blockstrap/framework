@@ -350,7 +350,13 @@ var blockstrap_core = function()
                 $($.fn.blockstrap.element).on('submit', '#blockstrap-login', function(e)
                 {
                     e.preventDefault();
-                    $(this).find('input[type="submit"]').trigger('click');
+                    $(this).find('button[type="submit"]').trigger('click');
+                });
+                $($.fn.blockstrap.element).on('submit', '#verify-ownership', function(e)
+                {
+                    console.log('verify?');
+                    e.preventDefault();
+                    $(this).find('button[type="submit"]').trigger('click');
                 });
                 $($.fn.blockstrap.element).on('submit', '#search-form', function(e)
                 {
@@ -690,21 +696,24 @@ var blockstrap_core = function()
                         })
                         $(this).find('.qr-holder').each(function()
                         {
+                            if($(this).find('img').length > 0)
+                            {
+                                $(this).find('img').remove();
+                            }
                             $(this).qrcode({
                                 render: 'image',
                                 text: $(this).attr('data-content')
                             });
-                        })
+                        });
+                        if($(this).find('input').length > 0)
+                        {
+                            var input = $(this).find('input[type!=hidden]:first');
+                            $(input).focus();
+                        }
                     });
                     $($.fn.blockstrap.element).on('shown.bs.modal', '.modal', function(i)
                     {
-                        var this_form = $(this).find('form');
-                        if($(this_form).find('input').length > 0)
-                        {
-                            var input = $(this_form).find('input[type!=hidden]:first');
-                            $(input).focus();
-                        }
-                        
+                        // .on('show.bs.modal') usually works best...
                     });
                     $($.fn.blockstrap.element).on('show.bs.modal', '#new-account-modal', function(i)
                     {
@@ -1240,7 +1249,7 @@ var blockstrap_core = function()
                 }
             });
         }                     
-
+        
         $.ajax({
             url: 'defaults.json',
             dataType: 'json',

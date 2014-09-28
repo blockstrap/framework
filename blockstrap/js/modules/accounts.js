@@ -65,15 +65,17 @@
             css: 'form-horizontal',
             objects: [
                 {
-                    id: 'verify-account',
+                    id: 'verify-ownership',
                     fields: fields
                 }
             ],
             buttons: {
                 forms: [
                     {
+                        id: 'cancel-verification',
                         css: 'btn-danger pull-right btn-split',
                         text: 'Cancel',
+                        type: 'button',
                         attributes: [
                             {
                                 key: 'data-dismiss',
@@ -93,7 +95,7 @@
                             },
                             {
                                 key: 'data-form-id',
-                                value: 'verify-account'
+                                value: 'verify-ownership'
                             }
                         ]
                     }
