@@ -588,7 +588,7 @@ var blockstrap_core = function()
                             }
                             else
                             {
-                                initialize(v, html, snippet_count, snippet_limit);
+                                initialize(v, results, snippet_count, snippet_limit);
                             }
                         });
                     });
