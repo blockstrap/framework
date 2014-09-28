@@ -335,14 +335,14 @@
                             var base = $.fn.blockstrap.settings.base_url;
                             var url = base + '?txid=' + tx.txid + '#transaction';
                             if(value < 0) context = '<strong>' + val.substring(1) + '</strong> ' + currency + ' <strong>sent</strong>';
-                            content+= '<p>' + context + ':<br /><a href="' + url + '">' + tx.txid + '</a></p>';
+                            content+= '<p class="break-word">' + context + ':<br /><a href="' + url + '">' + tx.txid + '</a></p>';
                         });
                     }
-                    $.fn.blockstrap.core.modal(title, content);
                     $.fn.blockstrap.core.refresh(function()
                     {
+                        $.fn.blockstrap.core.modal(title, content);
                         if(callback) callback();
-                    });
+                    }, $.fn.blockstrap.core.page(), false, true);
                 }
                 else
                 {
@@ -422,8 +422,9 @@
                 grand_total = grand_total + total;
             });
         }
-        if(prefix) return prefix + ' ' + parseInt(grand_total) / 100000000;
-        else return parseInt(grand_total) / 100000000;
+        var new_total = (parseInt(grand_total) / 100000000).toFixed(2);
+        if(prefix) return prefix + ' ' + new_total;
+        else return new_total;
     }
     
     accounts.tx = function(txid, account_id)
@@ -517,8 +518,8 @@
                                 }
                                 $.fn.blockstrap.data.save('accounts', obj.id, obj, function(updated_account)
                                 {
-                                    if(callback) callback(updated_account);
-                                    else return updated_account;
+                                    if(callback) callback(obj);
+                                    else return obj;
                                 });
                             });
                         }

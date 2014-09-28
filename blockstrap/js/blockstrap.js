@@ -13,7 +13,7 @@
 
 // HARD-CODED / REMOVE LATER
 var bs_theme_config = 'config.default';
-//var bs_theme_config = 'config';
+var bs_theme_config = 'config';
 
 var blockstrap_loader;
 var blockstrap_core = function()
@@ -852,7 +852,7 @@ var blockstrap_core = function()
                     }
                 }
             },
-            refresh: function(callback, slug, skip_rendering)
+            refresh: function(callback, slug, skip_rendering, force_both_to_render)
             {
                 var bs = $.fn.blockstrap;
                 if(typeof skip_rendering === 'undefined') skip_rendering = true;
@@ -864,6 +864,7 @@ var blockstrap_core = function()
                 {
                     skipped = true;
                     skip_rendering = true;
+                    if(force_both_to_render) skip_rendering = false;
                 }
                 bs.templates.render('index', function(paged_html)
                 {
