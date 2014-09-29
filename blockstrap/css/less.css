@@ -46,7 +46,7 @@ a:hover {
 abbr[title] {
   border-bottom: 1px dotted;
 }
-b,
+b,glyph
 strong {
   font-weight: bold;
 }
@@ -2367,8 +2367,8 @@ input[type="button"].btn-block {
 }
 @font-face {
   font-family: 'Glyphicons Halflings';
-  src: url('blockstrap/bootstrap/fonts/glyphicons-halflings-regular.eot');
-  src: url('blockstrap/bootstrap/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('blockstrap/bootstrap/fonts/glyphicons-halflings-regular.woff') format('woff'), url('blockstrap/bootstrap/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('blockstrap/bootstrap/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+  src: url('../bootstrap/fonts/glyphicons-halflings-regular.eot');
+  src: url('../bootstrap/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../bootstrap/fonts/glyphicons-halflings-regular.woff') format('woff'), url('../bootstrap/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../bootstrap/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 .glyphicon {
   position: relative;

@@ -13,7 +13,7 @@
 
 // HARD-CODED / REMOVE LATER
 var bs_theme_config = 'config.default';
-var bs_theme_config = 'config';
+//var bs_theme_config = 'config';
 
 var blockstrap_loader;
 var blockstrap_core = function()

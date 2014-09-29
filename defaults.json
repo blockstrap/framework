@@ -3,7 +3,6 @@
     "public": false,
     "security": false,
     "role": "admin",
-    "autoload": true,
     "id": "blockstrap",
     "theme": "default",
     "less": false,
