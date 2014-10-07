@@ -1,5 +1,5 @@
 {
-    "v": "0.2.1.0",
+    "v": "0.2.1.1",
     "public": false,
     "security": false,
     "role": "admin",
@@ -32,7 +32,7 @@
         "styles", 
         "templates",
         "filters",
-        "btc"
+        "currencies"
     ],
     "dependencies": [
         "sonic", 
@@ -45,7 +45,7 @@
         "tables",
         "qrcode",
         "bootstrap-filestyle.min",
-        "bitcoinjs",
+        "bitcoinjs-lib",
         "tx",
         "sha3",
         "ago"

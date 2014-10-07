@@ -5,7 +5,36 @@
  *
  *  Designed, Developed and Maintained by Neuroware.io Inc
  *  All Work Released Under MIT License
- *  
+ *
+ 
+ case 'Bitcoin':	
+  window.networkVersion = 0x00;
+  window.privateKeyPrefix = 0x80;
+  window.WIFPrefix = '5';
+  window.compressedWIFPrefix = '[LK]';
+  break;
+case 'Litecoin':
+    window.networkVersion = 0x30;
+    window.privateKeyPrefix = 0xb0;
+    window.WIFPrefix = '6';
+    window.compressedWIFPrefix = 'T';
+    document.title = 'Litecoin paper wallet generator';
+    break;
+case 'Dogecoin':
+    window.networkVersion = 0x1e;
+    window.privateKeyPrefix = 0x9e;
+    window.WIFPrefix = '6';
+    window.compressedWIFPrefix = 'Q';	
+    document.title = 'Dogecoin paper wallet generator. Wow! Many coin. Such shiny.';
+    break;
+case 'Testnet':
+    window.networkVersion = 0x6F;
+    window.privateKeyPrefix = 0xEF;
+    window.WIFPrefix = '9';
+    window.compressedWIFPrefix = 'c';
+    document.title = 'Bitcoin TESTNET paper wallet generator';
+    break;
+ 
  */
 
 (function($) 

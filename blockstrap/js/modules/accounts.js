@@ -247,8 +247,8 @@
                                     key = key_obj.toString();
                                 });
                             };
-                            var address_keys = $.fn.blockstrap.btc.keys(key);
-                            var address = address_keys.pubkey.toString();
+                            var address_keys = $.fn.blockstrap.currencies.keys(key, currency);
+                            var address = address_keys.pub;
                             var pw_obj = CryptoJS.SHA3(salt+password, { outputLength: 512 });
                             var pw = pw_obj.toString();
                             var currency_name =  $.fn.blockstrap.settings.currencies[currency].currency;

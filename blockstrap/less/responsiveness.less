@@ -100,7 +100,8 @@ FUNKY SIDEBARS ON MOBILE
 BOOTSTRAP BREAKPOINTS
 
 */
-.blockstrap-wrapper {
+html .blockstrap-wrapper,
+body .blockstrap-wrapper {
     @media(max-width:767px){
         
     }
@@ -381,6 +382,21 @@ BOOTSTRAP BREAKPOINTS
         }
         #navigation {
             left: 0;
+        }
+        .modal {
+            .modal-dialog {
+                .modal-header {
+                    h4 {
+                        font-size: 14px;
+                        word-wrap: break-word;
+                    }
+                }
+                .modal-body {
+                    .qr-holder {
+                        padding: 5px;
+                    }
+                }
+            }
         }
     }
     @media(min-width:661px){

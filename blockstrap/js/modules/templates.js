@@ -169,7 +169,7 @@
                 {
                     template_data = $.extend({}, template_data, data);
                     var filtered_data = $.fn.blockstrap.core.filter(template_data);
-                    $.fn.blockstrap.data.save('data', slug, data, function()
+                    $.fn.blockstrap.data.save('data', slug, data, function(datab)
                     {
                         $.fn.blockstrap.data.find('html', slug, function(results)
                         {
@@ -242,7 +242,8 @@
             }
             else
             {
-                var filtered_data = $.fn.blockstrap.core.filter(data);
+                template_data = $.extend({}, template_data, data);
+                var filtered_data = $.fn.blockstrap.core.filter(template_data);
                 
                 if(slug === 'index') $($.fn.blockstrap.element).html('');
                 
@@ -253,7 +254,9 @@
                     {
                         $.fn.blockstrap.core.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.html_base+slug, 'html', function(content)
                         {
-                            var paged_html = templates.filter(Mustache.render(content, filtered_data));
+                            var rendered_html = Mustache.render(content, filtered_data);
+                            var paged_html = templates.filter(rendered_html);
+                            
                             if(skip !== true)
                             {
                                 $($.fn.blockstrap.element).append(paged_html);

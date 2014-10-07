@@ -94,6 +94,57 @@ var blockstrap_core = function()
                 if(time) date = new Date(time * 1000);
                 return jQuery.timeago(date)
             },
+            bootstrap: function(index, bootstrap, callback)
+            {
+                var html = false;
+                var bs = $.fn.blockstrap;
+                var $bs = blockstrap_functions;
+                var store = true;
+                var storage = bs.settings.storage;
+                if(storage.bootstrap === false) store = false;
+                var snippet_limit = $bs.array_length(bootstrap);
+                var snippet_key = bootstrap[index];
+                var refresh = blockstrap_functions.vars('refresh');
+                bs.data.find('boot', snippet_key, function(results)
+                {
+                    if(refresh === true || !results || store === false)
+                    {
+                        var url = bs.settings.core_base + 'html/bootstrap/' + snippet_key;
+                        bs.core.get(url, 'html', function(html)
+                        {
+                            if(store === true)
+                            {
+                                bs.data.save('boot', snippet_key, html, function(results)
+                                {
+                                    if(snippet_key && html)
+                                    {
+                                        $.fn.blockstrap.snippets[snippet_key] = html;
+                                    }
+                                    if(snippet_count >= snippet_limit)
+                                    {
+                                        bs.core.init();
+                                    }
+                                })
+                            }
+                            else
+                            {
+                                if(snippet_key && html)
+                                {
+                                    $.fn.blockstrap.snippets[snippet_key] = html;
+                                }
+                                if(index >= snippet_limit - 1)
+                                {
+                                    if(callback) callback();
+                                }
+                                else
+                                {
+                                    bs.core.bootstrap(index + 1, bootstrap, callback);
+                                }
+                            }
+                        });
+                    }
+                })
+            },
             buttons: function()
             {
                 var bs = $.fn.blockstrap;
@@ -358,7 +409,6 @@ var blockstrap_core = function()
                 });
                 $($.fn.blockstrap.element).on('submit', '#verify-ownership', function(e)
                 {
-                    console.log('verify?');
                     e.preventDefault();
                     $(this).find('button[type="submit"]').trigger('click');
                 });
@@ -492,7 +542,7 @@ var blockstrap_core = function()
                     var storage = $.fn.blockstrap.settings.storage;
                     var store = true;
                     if(storage.less === false) store = false;
-                    if(!less || refresh === true ||!store) 
+                    if(!less || refresh === true || store === false) 
                     {
                         $('head').append('<link rel="stylesheet/less" type="text/css" href="'+$.fn.blockstrap.settings.core_base+'less/blockstrap.less">');
                         blockstrap_functions.js('js-blockstrap-less', $.fn.blockstrap.settings.core_base+'js/less.js', function()
@@ -537,70 +587,8 @@ var blockstrap_core = function()
             },
             loaded: function()
             {
-                $.fn.blockstrap.snippets = {};
                 $.fn.blockstrap.core.defaults();
-                
-                var html = false;
-                var bs = $.fn.blockstrap;
-                var store = true;
-                var storage = bs.settings.storage;
-                if(storage.bootstrap === false) store = false;
-                var snippet_count = 0;
-                var snippet_limit = 0;
-                
-                var initialize = function(v, html, snippet_count, snippet_limit)
-                {
-                    if(v && html)
-                    {
-                        $.fn.blockstrap.snippets[v] = html;
-                    }
-                    if(snippet_count >= snippet_limit)
-                    {
-                        bs.core.init();
-                    }
-                }
-                
-                if($.isArray(bs.settings.bootstrap))
-                {
-                    snippet_limit = bs.settings.bootstrap.length;
-                }
-                if($.isArray(bs.settings.bootstrap))
-                {
-                    $.each(bs.settings.bootstrap, function(k, v)
-                    {
-                        bs.data.find('boot', v, function(results)
-                        {
-                            snippet_count++;
-                            var refresh = blockstrap_functions.vars('refresh');
-                            if(refresh === true || !results || !store)
-                            {
-                                var url = bs.settings.core_base + 'html/bootstrap/' + v;
-                                bs.core.get(url, 'html', function(html)
-                                {
-                                    if(store === true)
-                                    {
-                                        bs.data.save('boot', v, html, function(results)
-                                        {
-                                            initialize(v, html, snippet_count, snippet_limit);
-                                        })
-                                    }
-                                    else
-                                    {
-                                        initialize(v, html, snippet_count, snippet_limit);
-                                    }
-                                });
-                            }
-                            else
-                            {
-                                initialize(v, results, snippet_count, snippet_limit);
-                            }
-                        });
-                    });
-                }
-                else
-                {
-                    initialize(false, false, snippet_count, snippet_limit);
-                }
+                $.fn.blockstrap.core.init();
             },
             loader: function(force_state, element)
             {
@@ -1149,6 +1137,16 @@ var blockstrap_core = function()
                 if(!run) run = false;
                 if(run)
                 {
+                    var secret = '123';
+                    var hash_str = bitcoin.crypto.sha256(secret);
+                    var master_key = bitcoin.HDNode.fromSeedBuffer(hash_str, bitcoin.networks.bitcoin);
+                    
+                    var currency = 'litecoin';
+                    
+                    alert('address for '+currency+': '+ master_key.pubKey.getAddress(bitcoin.networks[currency]).toString());
+                    alert('private key for '+currency+': '+ master_key.privKey.toWIF(bitcoin.networks[currency]));
+                    
+                    /*
                     $.fn.blockstrap.api.address($.fn.blockstrap.settings.tests.api.address, 'btc', function(results)
                     {
                         console.log('address', results);
@@ -1177,6 +1175,7 @@ var blockstrap_core = function()
                     {
                         console.log('unspents', results);
                     });
+                    */
                 }
             }
         };        
@@ -1200,6 +1199,7 @@ var blockstrap_core = function()
                     var $bs = blockstrap_functions;
                     var dependencies = $.fn.blockstrap.settings.dependencies;
                     var modules = $.fn.blockstrap.settings.modules;
+                    var bootstrap = $.fn.blockstrap.settings.bootstrap;
                     
                     // LOADING SCREEN
                     // TODO: REMOVE FROM CORE...?
@@ -1249,7 +1249,19 @@ var blockstrap_core = function()
                                             // INCLUDE JS MODULES
                                             $bs.include(bs, 0, modules, function()
                                             {
-                                                bs.core.loaded();
+                                                $.fn.blockstrap.snippets = {};
+                                                if($.isArray(bootstrap))
+                                                {
+                                                    // INCLUDE BOOTSTRAP COMPONENTS
+                                                    bs.core.bootstrap(0, bootstrap, function()
+                                                    {
+                                                        bs.core.loaded();
+                                                    })
+                                                }
+                                                else
+                                                {
+                                                    bs.core.loaded();
+                                                }
                                             });
                                         }
                                         else
@@ -1260,7 +1272,30 @@ var blockstrap_core = function()
                                 }
                                 else
                                 {
-                                    bs.core.loaded();
+                                    if($.isArray(modules))
+                                    {
+                                        // INCLUDE JS MODULES
+                                        $bs.include(bs, 0, modules, function()
+                                        {
+                                            $.fn.blockstrap.snippets = {};
+                                            if($.isArray(bootstrap))
+                                            {
+                                                // INCLUDE BOOTSTRAP COMPONENTS
+                                                bs.core.bootstrap(0, bootstrap, function()
+                                                {
+                                                    bs.core.loaded();
+                                                })
+                                            }
+                                            else
+                                            {
+                                                bs.core.loaded();
+                                            }
+                                        });
+                                    }
+                                    else
+                                    {
+                                        bs.core.loaded();
+                                    }
                                 }
                             });
                         });
@@ -1342,7 +1377,7 @@ var blockstrap_functions = {
                 if(storage.dependencies === false) store = false;
             }
 
-            if(!js_file || refresh || !store)
+            if(!js_file || refresh || store === false)
             {
                 // INCLUDE CORE
                 var filename = blockstrap.settings.core_base + blockstrap.settings.dependency_base + file_name + '.js';
