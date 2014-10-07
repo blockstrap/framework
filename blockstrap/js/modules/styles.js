@@ -45,23 +45,31 @@
 
         document.head.appendChild(style);
         var tag = document.getElementById(id);
+        console.log('tag', tag);
         var sheet = tag.sheet ? tag.sheet : tag.styleSheet;
-        var id_prefix = '#'+$.fn.blockstrap.settings.id;
-
-        var styles = $.fn.blockstrap.settings.styles;    
+        var styles = $.fn.blockstrap.settings.styles.vars;
+        console.log('styles', style.sheet);
         if($.isPlainObject(styles))
         {
             $.each(styles, function(k, v)
             {
                 var rule = $.fn.blockstrap.styles.rule(k, v);
                 var element = $.fn.blockstrap.styles.element(k);
+                console.log('rule', rule);
+                console.log('element', element);
+                console.log('sheet', sheet);
+                console.log('index', index);
                 if(sheet.insertRule) 
                 {
-                    sheet.insertRule(element + ' { ' + rule + ' }', index);
+                    console.log('a1');
+                    sheet.insertRule(element + ' { ' + rule + ' !important }', index);
+                    index++
                 }
                 else 
                 {
+                    console.log('b1');
                     sheet.addRule(element, rule, index);
+                    index++
                 }                        
             });
         }
@@ -71,5 +79,3 @@
     $.extend(true, $.fn.blockstrap, {styles:styles});
 })
 (jQuery);
-
-

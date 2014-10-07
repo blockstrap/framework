@@ -93,10 +93,6 @@
             "contact_email": "info@neroware.io"
         }
     ],      
-    "styles": {
-        "content_bg": "#DDD",
-        "header_bg": "#475862"
-    },
     "tests": {
         "api": {
             "address": "1Nz5RqevRodefPyGVB8EpdwSEGS4Ax2f1k",
@@ -138,6 +134,10 @@
         "ltc": 5
     },
     "styles": {
+        "vars": {
+            "content_bg": "#DDD",
+            "header_bg": "#475862"
+        },
         "elements": {
             "content_bg": "#main-content",
             "header_bg": "header"
