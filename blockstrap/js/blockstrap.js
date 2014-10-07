@@ -94,6 +94,22 @@ var blockstrap_core = function()
                 if(time) date = new Date(time * 1000);
                 return jQuery.timeago(date)
             },
+            boot: function(bootstrap, key, html, index, callback)
+            {
+                var snippet_limit = blockstrap_functions.array_length(bootstrap);
+                if(key && html)
+                {
+                    $.fn.blockstrap.snippets[key] = html;
+                }
+                if(index >= snippet_limit - 1)
+                {
+                    if(callback) callback();
+                }
+                else
+                {
+                    $.fn.blockstrap.core.bootstrap(index + 1, bootstrap, callback);
+                }
+            },
             bootstrap: function(index, bootstrap, callback)
             {
                 var html = false;
@@ -102,46 +118,31 @@ var blockstrap_core = function()
                 var store = true;
                 var storage = bs.settings.storage;
                 if(storage.bootstrap === false) store = false;
-                var snippet_limit = $bs.array_length(bootstrap);
-                var snippet_key = bootstrap[index];
+                var key = bootstrap[index];
                 var refresh = blockstrap_functions.vars('refresh');
-                bs.data.find('boot', snippet_key, function(results)
+                bs.data.find('boot', key, function(results)
                 {
                     if(refresh === true || !results || store === false)
                     {
-                        var url = bs.settings.core_base + 'html/bootstrap/' + snippet_key;
+                        var url = bs.settings.core_base + 'html/bootstrap/' + key;
                         bs.core.get(url, 'html', function(html)
                         {
                             if(store === true)
                             {
-                                bs.data.save('boot', snippet_key, html, function(results)
+                                bs.data.save('boot', key, html, function(results)
                                 {
-                                    if(snippet_key && html)
-                                    {
-                                        $.fn.blockstrap.snippets[snippet_key] = html;
-                                    }
-                                    if(snippet_count >= snippet_limit)
-                                    {
-                                        bs.core.init();
-                                    }
+                                    bs.core.boot(bootstrap, key, html, index, callback);
                                 })
                             }
                             else
                             {
-                                if(snippet_key && html)
-                                {
-                                    $.fn.blockstrap.snippets[snippet_key] = html;
-                                }
-                                if(index >= snippet_limit - 1)
-                                {
-                                    if(callback) callback();
-                                }
-                                else
-                                {
-                                    bs.core.bootstrap(index + 1, bootstrap, callback);
-                                }
+                                bs.core.boot(bootstrap, key, html, index, callback);
                             }
                         });
+                    }
+                    else
+                    {
+                        bs.core.boot(bootstrap, key, html, index, callback);
                     }
                 })
             },
@@ -587,8 +588,22 @@ var blockstrap_core = function()
             },
             loaded: function()
             {
-                $.fn.blockstrap.core.defaults();
-                $.fn.blockstrap.core.init();
+                var theme = localStorage.getItem('nw_blockstrap_theme');
+                if(blockstrap_functions.json(theme)) theme = $.parseJSON(theme);
+                if(theme != $.fn.blockstrap.settings.theme)
+                {
+                    localStorage.setItem(
+                        'nw_blockstrap_theme',
+                        JSON.stringify($.fn.blockstrap.settings.theme)
+                    );
+                    var refresh = blockstrap_functions.vars('refresh');
+                    if(!refresh) window.location.search = '?refresh=true';
+                }
+                else
+                {
+                    $.fn.blockstrap.core.defaults();
+                    $.fn.blockstrap.core.init();
+                }
             },
             loader: function(force_state, element)
             {
@@ -1187,118 +1202,128 @@ var blockstrap_core = function()
             var settings = $.extend({}, defaults, options);
             
             // THEN GET CONFIG FILE
-            $.fn.blockstrap.core.get(bs_theme_config, 'json', function(results)
+            $.fn.blockstrap.core.get('themes/config', 'json', function(results)
             {
                 if($.isPlainObject(results))
                 {
                     $.fn.blockstrap.settings = $.extend({}, settings, results);
-                    $.fn.blockstrap.core.settings(element);
-                    $.fn.blockstrap.defaults();
+                    // NOW NEED TO GET THEME SPECIFIC OPTIONS AND MERGE WITH THESE
                     
-                    var bs = $.fn.blockstrap;
-                    var $bs = blockstrap_functions;
-                    var dependencies = $.fn.blockstrap.settings.dependencies;
-                    var modules = $.fn.blockstrap.settings.modules;
-                    var bootstrap = $.fn.blockstrap.settings.bootstrap;
-                    
-                    // LOADING SCREEN
-                    // TODO: REMOVE FROM CORE...?
-                    // BETTER PLACED IN THEMES...?
-                    $.ajax({
-                        url: $.fn.blockstrap.settings.core_base + 'html/' + 'loading.html',
-                        dataType: 'HTML',
-                        type: 'GET',
-                        complete: function(results)
+                    var current_theme = $.fn.blockstrap.settings.theme;
+                    $.fn.blockstrap.core.get('themes/'+current_theme+'/config', 'json', function(results)
+                    {
+                        if($.isPlainObject(results))
                         {
-                            var element = $.fn.blockstrap.element;
-                            var id = $.fn.blockstrap.settings.content_id;
-                            if($(element).find('#' + id).length < 1)
-                            {
-                                if(results)
+                            $.fn.blockstrap.settings = $.extend({}, $.fn.blockstrap.settings, results);
+                            $.fn.blockstrap.core.settings(element);
+                            $.fn.blockstrap.defaults();
+
+                            var bs = $.fn.blockstrap;
+                            var $bs = blockstrap_functions;
+                            var dependencies = $.fn.blockstrap.settings.dependencies;
+                            var modules = $.fn.blockstrap.settings.modules;
+                            var bootstrap = $.fn.blockstrap.settings.bootstrap;
+
+                            // LOADING SCREEN
+                            // TODO: REMOVE FROM CORE...?
+                            // BETTER PLACED IN THEMES...?
+                            $.ajax({
+                                url: $.fn.blockstrap.settings.core_base + 'html/' + 'loading.html',
+                                dataType: 'HTML',
+                                type: 'GET',
+                                complete: function(results)
                                 {
-                                    if(results.responseText && results.responseText === '404')
+                                    var element = $.fn.blockstrap.element;
+                                    var id = $.fn.blockstrap.settings.content_id;
+                                    if($(element).find('#' + id).length < 1)
                                     {
-                                        // Do nothing!
-                                    }
-                                    else
-                                    {
-                                        var loading = results.responseText;
-                                        $($.fn.blockstrap.element).append(loading);
+                                        if(results)
+                                        {
+                                            if(results.responseText && results.responseText === '404')
+                                            {
+                                                // Do nothing!
+                                            }
+                                            else
+                                            {
+                                                var loading = results.responseText;
+                                                $($.fn.blockstrap.element).append(loading);
+                                            }
+                                        }
                                     }
                                 }
-                            }
-                        }
-                    });
+                            });
 
-                    // UPDATE CORE IF REQUIRED
-                    $bs.update(bs.settings.v, function()
-                    {
-                        // USE LESS.css ...?
-                        bs.core.less(function()
-                        {
-                            // INSERT CSS
-                            bs.core.css(function()
+                            // UPDATE CORE IF REQUIRED
+                            $bs.update(bs.settings.v, function()
                             {
-                                if($.isArray(dependencies))
+                                // USE LESS.css ...?
+                                bs.core.less(function()
                                 {
-                                    // INCLUDE JS DEPENDENCIES
-                                    $bs.include(bs, 0, dependencies, function()
+                                    // INSERT CSS
+                                    bs.core.css(function()
                                     {
-                                        if($.isArray(modules))
+                                        if($.isArray(dependencies))
                                         {
-                                            // INCLUDE JS MODULES
-                                            $bs.include(bs, 0, modules, function()
+                                            // INCLUDE JS DEPENDENCIES
+                                            $bs.include(bs, 0, dependencies, function()
                                             {
-                                                $.fn.blockstrap.snippets = {};
-                                                if($.isArray(bootstrap))
+                                                if($.isArray(modules))
                                                 {
-                                                    // INCLUDE BOOTSTRAP COMPONENTS
-                                                    bs.core.bootstrap(0, bootstrap, function()
+                                                    // INCLUDE JS MODULES
+                                                    $bs.include(bs, 0, modules, function()
                                                     {
-                                                        bs.core.loaded();
-                                                    })
+                                                        $.fn.blockstrap.snippets = {};
+                                                        if($.isArray(bootstrap))
+                                                        {
+                                                            // INCLUDE BOOTSTRAP COMPONENTS
+                                                            bs.core.bootstrap(0, bootstrap, function()
+                                                            {
+                                                                bs.core.loaded();
+                                                            })
+                                                        }
+                                                        else
+                                                        {
+                                                            bs.core.loaded();
+                                                        }
+                                                    });
                                                 }
                                                 else
                                                 {
                                                     bs.core.loaded();
                                                 }
-                                            });
+                                            }, true);
                                         }
                                         else
                                         {
-                                            bs.core.loaded();
-                                        }
-                                    }, true);
-                                }
-                                else
-                                {
-                                    if($.isArray(modules))
-                                    {
-                                        // INCLUDE JS MODULES
-                                        $bs.include(bs, 0, modules, function()
-                                        {
-                                            $.fn.blockstrap.snippets = {};
-                                            if($.isArray(bootstrap))
+                                            if($.isArray(modules))
                                             {
-                                                // INCLUDE BOOTSTRAP COMPONENTS
-                                                bs.core.bootstrap(0, bootstrap, function()
+                                                // INCLUDE JS MODULES
+                                                $bs.include(bs, 0, modules, function()
                                                 {
-                                                    bs.core.loaded();
-                                                })
+                                                    $.fn.blockstrap.snippets = {};
+                                                    if($.isArray(bootstrap))
+                                                    {
+                                                        // INCLUDE BOOTSTRAP COMPONENTS
+                                                        bs.core.bootstrap(0, bootstrap, function()
+                                                        {
+                                                            bs.core.loaded();
+                                                        })
+                                                    }
+                                                    else
+                                                    {
+                                                        bs.core.loaded();
+                                                    }
+                                                });
                                             }
                                             else
                                             {
                                                 bs.core.loaded();
                                             }
-                                        });
-                                    }
-                                    else
-                                    {
-                                        bs.core.loaded();
-                                    }
-                                }
+                                        }
+                                    });
+                                });
                             });
-                        });
+                        }
                     });
                 }
             });
