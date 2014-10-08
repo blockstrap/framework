@@ -152,137 +152,46 @@
         return results;
     }       
     
-    templates.render = function(slug, callback, force_refresh, skip_rendering, looped_html)
+    templates.render = function(slug, callback, refresh)
     {
-        var skip = false;
         var bs = $.fn.blockstrap;
         var $bs = blockstrap_functions;
-        if(skip_rendering) skip = true;
-        bs.data.find('data', slug, function(results)
+        var data_url = 'themes/' + bs.settings.theme + '/' + bs.settings.data_base + slug;
+        var html_url = 'themes/' + bs.settings.theme + '/' + bs.settings.html_base + slug;
+        bs.core.get(data_url, 'json', function(data)
         {
-            var data = results;
-            var refresh = blockstrap_functions.vars('refresh');
-            if(force_refresh) refresh = true;
-            if(refresh === true || !data)
+            template_data = $.extend({}, template_data, data);
+            var filtered_data = $.fn.blockstrap.core.filter(template_data);
+            $.fn.blockstrap.core.get(html_url, 'html', function(content)
             {
-                bs.core.get('themes/' + bs.settings.theme + '/' + bs.settings.data_base + slug, 'json', function(data)
+                var rendered_html = Mustache.render(content, filtered_data);
+                var paged_html = templates.filter(rendered_html);
+                if(refresh || slug == 'index')
                 {
-                    template_data = $.extend({}, template_data, data);
-                    var filtered_data = $.fn.blockstrap.core.filter(template_data);
-                    $.fn.blockstrap.data.save('data', slug, data, function(datab)
-                    {
-                        $.fn.blockstrap.data.find('html', slug, function(results)
-                        {
-                            var html = results;
-                            if(!html || refresh)
-                            {
-                                $.fn.blockstrap.core.get('themes/' + $.fn.blockstrap.settings.theme + '/' + $.fn.blockstrap.settings.html_base + slug, 'html', function(content)
-                                {
-                                    var rendered_html = Mustache.render(content, filtered_data);
-                                    var paged_html = templates.filter(rendered_html);
-                                    if(skip !== true)
-                                    {
-                                        if(force_refresh && slug === 'index')
-                                        {
-                                            $($.fn.blockstrap.element).html('');
-                                            $($.fn.blockstrap.element).append(paged_html);
-                                            $.fn.blockstrap.core.loader('open');
-                                        }
-                                        else if(force_refresh)
-                                        {
-                                            if($(bs.element).find('#' + bs.settings.content_id).length > 0)
-                                            {
-                                                $(bs.element).find('#' + bs.settings.content_id).html(paged_html);
-                                            }
-                                            else
-                                            {
-                                                $($.fn.blockstrap.element).html(looped_html);
-                                                if($($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.content_id).length > 0)
-                                                {
-                                                    $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.content_id).html(paged_html);
-                                                }
-                                                else
-                                                {
-                                                    $($.fn.blockstrap.element).append(paged_html);
-                                                }
-                                            }
-                                        }
-                                        else if(slug === 'index')
-                                        {
-                                            $($.fn.blockstrap.element).html('');
-                                            $($.fn.blockstrap.element).append(paged_html);
-                                        }
-                                        else
-                                        {
-                                            $($.fn.blockstrap.element).append(paged_html);
-                                        }
-                                        $.fn.blockstrap.data.save('html', slug, content, function()
-                                        {
-                                          if(callback) callback(paged_html);
-                                        });
-                                    }
-                                    else
-                                    {
-                                        if(callback) callback(paged_html);
-                                    }
-                                });
-                            }
-                            else
-                            {
-                                var paged_html = templates.filter(Mustache.render(html, filtered_data));
-                                if(!skip)
-                                {
-                                    $($.fn.blockstrap.element).append(paged_html);
-                                }
-                                if(callback) callback(paged_html);
-                            }
-                        });
-                    });
-                });
-            }
-            else
-            {
-                template_data = $.extend({}, template_data, data);
-                var filtered_data = $.fn.blockstrap.core.filter(template_data);
-                
-                if(slug === 'index') $($.fn.blockstrap.element).html('');
-                
-                $.fn.blockstrap.data.find('html', slug, function(results)
+                    $(bs.element).html('');
+                    $(bs.element).append(paged_html);
+                    bs.core.loader('close');
+                    if(callback) callback(paged_html);
+                }
+                else
                 {
-                    var html = results;
-                    if(!html)
+                    if($(bs.element).find('#' + bs.settings.content_id).length > 0)
                     {
-                        $.fn.blockstrap.core.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.html_base+slug, 'html', function(content)
-                        {
-                            var rendered_html = Mustache.render(content, filtered_data);
-                            var paged_html = templates.filter(rendered_html);
-                            
-                            if(skip !== true)
-                            {
-                                $($.fn.blockstrap.element).append(paged_html);
-                                $.fn.blockstrap.core.loader('open');
-                                $.fn.blockstrap.data.save('html', slug, content, callback);
-                            }
-                            else
-                            {
-                                if(callback) callback();
-                            }
-                        });
+                        $(bs.element).find('#' + bs.settings.content_id).html(paged_html);
+                        bs.core.loader('close');
+                        if(callback) callback(paged_html);
                     }
                     else
                     {
-                        var paged_html = templates.filter(Mustache.render(html, filtered_data));
-                        if(skip !== true)
-                        {
-                            $($.fn.blockstrap.element).append(paged_html);
-                            $.fn.blockstrap.core.loader('open');
-                        }
-                        if(callback) callback();
+                        $(bs.element).html('');
+                        $(bs.element).append(paged_html);
+                        bs.core.loader('close');
+                        if(callback) callback(paged_html);
                     }
-                });
-            }
+                }
+            });
         });
-    };
+    }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {templates:templates});

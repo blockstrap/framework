@@ -276,7 +276,7 @@
                                     $.fn.blockstrap.core.refresh(function()
                                     {
                                         callback(account);
-                                    });
+                                    }, 'index', false, true);
                                 });
                             });
                         }

@@ -49,6 +49,9 @@
     {
         var keys = {};
         var hash = bitcoin.crypto.sha256(secret);
+        if(!currency || currency == "btc") currency = "bitcoin";
+        else if(currency == "ltc") currency = "litecoin";
+        else if(currency == "doge") currency = "dogecoin";
         try
         {
             var raw_keys = bitcoin.HDNode.fromSeedBuffer(hash, bitcoin.networks[currency]);
@@ -61,6 +64,102 @@
             keys.priv = false;
         }
         return keys;
+    }
+    
+    currencies.raw = function(return_to, privkey, inputs, outputs, this_fee, amount_to_send)
+    {
+        tx = new bitcoin.Transaction();
+        
+        var fee = 0;
+        var balance = 0;
+        var total = 0;
+        if(this_fee) fee = this_fee;
+        if(amount_to_send) total = amount_to_send;
+        
+        $.each(inputs, function(i, o)
+        {
+            balance+= o.value;
+            tx.addInput(o.txid, o.n);
+        });
+        $.each(outputs, function(i, o)
+        {
+            tx.addOutput(o.address, o.value)
+        });
+        if(balance > (total + fee))
+        {
+            var change = balance - (total + fee);
+            tx.addOutput(return_to, change);
+        }
+        
+        var key = bitcoin.ECKey.fromWIF(privkey);
+        tx.sign(0, key);
+        var raw = tx.toHex();
+        return raw;
+    }
+    
+    currencies.send = function(to_address, to_amount, from_address, keys, callback)
+    {
+        var available_balance = 0;
+        var private_key = keys.priv;
+        var fee = $.fn.blockstrap.settings.currencies.btc.fee * 100000000;
+        $.fn.blockstrap.api.balance(from_address, 'btc', function(balance)
+        {
+            if(balance - fee >= to_amount)
+            {
+                $.fn.blockstrap.api.unspents(keys.pub, 'btc', function(unspents)
+                {
+                    if($.isArray(unspents))
+                    {
+                        var inputs = [];
+                        var outputs = [{
+                            'address': to_address,
+                            'value': to_amount
+                        }];
+                        $.each(unspents, function(k, unspent)
+                        {
+                            inputs.push({
+                                txid: unspent.txid,
+                                n: unspent.index,
+                                script: unspent.script,
+                                value: unspent.value,
+                            });
+                            available_balance = available_balance + unspent.value;
+                        });
+                        var raw_transaction = currencies.raw(
+                            from_address, 
+                            private_key, 
+                            inputs, 
+                            outputs, 
+                            fee, 
+                            to_amount
+                        );
+                        $.fn.blockstrap.api.relay(raw_transaction, 'btc', function(tx)
+                        {
+                            if(tx && tx.txid)
+                            {
+                                if(callback) callback(tx);
+                            }
+                            else
+                            {
+                                $.fn.blockstrap.core.loader('close');
+                                if(callback) callback(false);
+                            }
+                        });
+                    }
+                    else
+                    {
+                        $.fn.blockstrap.core.loader('close');
+                        if(callback) callback(false);
+                    }
+                });
+            }
+            else
+            {
+                var content = 'Insufficient funds to relay transaction.';
+                $.fn.blockstrap.core.modal('Warning', content);
+                if(callback) callback(false);
+            }
+        });
     }
     
     currencies.validate = function(address)

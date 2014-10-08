@@ -521,7 +521,7 @@ var blockstrap_core = function()
                                 bs.templates.render('index', function()
                                 {
                                     init_callback();
-                                });
+                                }, true);
                             }
                             var run_tests = false;
                             var tests = $bs.vars('tests');
@@ -596,14 +596,9 @@ var blockstrap_core = function()
                         'nw_blockstrap_theme',
                         JSON.stringify($.fn.blockstrap.settings.theme)
                     );
-                    var refresh = blockstrap_functions.vars('refresh');
-                    if(!refresh) window.location.search = '?refresh=true';
                 }
-                else
-                {
                     $.fn.blockstrap.core.defaults();
                     $.fn.blockstrap.core.init();
-                }
             },
             loader: function(force_state, element)
             {
@@ -858,50 +853,21 @@ var blockstrap_core = function()
             refresh: function(callback, slug, skip_rendering, force_both_to_render)
             {
                 var bs = $.fn.blockstrap;
-                if(typeof skip_rendering === 'undefined') skip_rendering = true;
-                var page = bs.core.page();
-                var skipped = false;
-                if(slug) page = slug;
-                $.fn.blockstrap.core.loader('open');
-                if(page != 'index' && !skip_rendering)
+                if(!slug) slug = 'index';
+                bs.templates.render('index', function()
                 {
-                    skipped = true;
-                    skip_rendering = true;
-                    if(force_both_to_render) skip_rendering = false;
-                }
-                bs.templates.render('index', function(paged_html)
-                {
-                    $.fn.blockstrap.core.loader('open');
-                    if(page != 'index')
+                    if(slug != 'index')
                     {
-                        if(skipped) skip_rendering = false;
-                        bs.templates.render(page, function()
+                        bs.templates.render(slug, function()
                         {
-                            bs.core.nav(page);
-                            bs.core.ready();
-                            $.fn.blockstrap.core.loader('close');
                             if(callback) callback();
-                        }, true, skip_rendering, paged_html);
+                        }, false);
                     }
                     else
                     {
-                        if(bs.settings.slug_base != 'index')
-                        {
-                            bs.templates.render(bs.settings.slug_base, function()
-                            {
-                                bs.core.ready();
-                                $.fn.blockstrap.core.loader('close');
-                                if(callback) callback();
-                            }, true);
-                        }
-                        else
-                        {
-                            bs.core.ready();
-                            $.fn.blockstrap.core.loader('close');
-                            if(callback) callback();
-                        }
+                        if(callback) callback();
                     }
-                }, true, skip_rendering);
+                }, true);
             },
             reset: function(reload)
             {
@@ -928,7 +894,7 @@ var blockstrap_core = function()
                         {
                             $.fn.blockstrap.core.ready();
                             $.fn.blockstrap.core.loader('close');
-                        }, true, false);
+                        }, true);
                     }
                     else
                     {
@@ -1141,16 +1107,6 @@ var blockstrap_core = function()
                 if(!run) run = false;
                 if(run)
                 {
-                    var secret = '123';
-                    var hash_str = bitcoin.crypto.sha256(secret);
-                    var master_key = bitcoin.HDNode.fromSeedBuffer(hash_str, bitcoin.networks.bitcoin);
-                    
-                    var currency = 'litecoin';
-                    
-                    alert('address for '+currency+': '+ master_key.pubKey.getAddress(bitcoin.networks[currency]).toString());
-                    alert('private key for '+currency+': '+ master_key.privKey.toWIF(bitcoin.networks[currency]));
-                    
-                    /*
                     $.fn.blockstrap.api.address($.fn.blockstrap.settings.tests.api.address, 'btc', function(results)
                     {
                         console.log('address', results);
@@ -1179,7 +1135,6 @@ var blockstrap_core = function()
                     {
                         console.log('unspents', results);
                     });
-                    */
                 }
             }
         };        

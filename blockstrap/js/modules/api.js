@@ -189,8 +189,6 @@
                 time: parseInt(now / 1000),
                 input: 0,
                 output: 0,
-                inputs: false,
-                outputs: false,
                 value: 0,
                 fees: 0
             }
@@ -224,8 +222,6 @@
                     time: parseInt(now / 1000),
                     input: 0,
                     output: 0,
-                    inputs: false,
-                    outputs: false,
                     value: 0,
                     fees: 0
                 }
@@ -235,8 +231,6 @@
                 if(data[k][map.from.transaction.time]) transaction.time = data[k][map.from.transaction.time];
                 if(data[k][map.from.transaction.input]) transaction.input = data[k][map.from.transaction.input];
                 if(data[k][map.from.transaction.output]) transaction.output = data[k][map.from.transaction.output];
-                if(data[k][map.from.transaction.inputs]) transaction.inputs = data[k][map.from.transaction.inputs];
-                if(data[k][map.from.transaction.outputs]) transaction.outputs = data[k][map.from.transaction.outputs];
                 if(data[k][map.from.transaction.fees]) transaction.fees = data[k][map.from.transaction.fees];
                 if(data[k][map.from.transaction.value]) transaction.value = data[k][map.from.transaction.value];
                 transactions.push(transaction);

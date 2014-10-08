@@ -527,6 +527,7 @@
         var reverse_direction = 'right';
         var elements = '#sidebar, #navigation';
         var now = new Date().getTime();
+        var bs = $.fn.blockstrap;
         
         if($(button).attr('data-elements')) elements = $(button).attr('data-elements');
         if($(button).attr('data-effect')) effect = $(button).attr('data-effect');
@@ -545,6 +546,8 @@
         {
             slug = slugs[1];            
             $.fn.blockstrap.core.nav(slug);
+            var data_url = 'themes/'+bs.settings.theme+'/'+bs.settings.data_base+slug;
+            var html_url = 'themes/'+bs.settings.theme+'/'+bs.settings.html_base+slug;
             if(mobile && !menu) $(elements).css({'opacity':0});
             if(menu)
             {
@@ -553,63 +556,37 @@
             if($.fn.blockstrap.settings.data_base && $.fn.blockstrap.settings.html_base)
             {
                 e.preventDefault();
-                $.fn.blockstrap.data.find('data', slug, function(results)
+                bs.core.get(data_url, 'json', function(data)
                 {
-                    var data = results;
-                    var refresh = blockstrap_functions.vars('refresh');
-                    if(!pages_cached[slug]) pages_cached[slug] = now;
-                    if(pages_cached[slug] + page_cache_time < now)
+                    if(data.status)
                     {
-                        refresh = true;
-                        pages_cached[slug] = now;
+                        buttons.cancel(button, mobile, menu, elements);
                     }
-                    if(refresh === true || !data)
-                    {                              $.fn.blockstrap.core.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.data_base+slug, 'json', function(data)
+                    else
+                    {
+                        var filtered_data = $.fn.blockstrap.core.filter(data);
+                        
+                        bs.core.get(html_url, 'html', function(content)
                         {
-                            if(data.status)
+                            if(content.status && content.status === 404)
                             {
                                 buttons.cancel(button, mobile, menu, elements);
                             }
                             else
                             {
-                                var filtered_data = $.fn.blockstrap.core.filter(data);
-                                $.fn.blockstrap.data.save('data', slug, data, function(res)
-                                {
-                                    $.fn.blockstrap.data.find('html', slug, function(results)
-                                    {
-                                        var html = results;
-                                        if(refresh === true || !html)
-                                        {
-                                            $.fn.blockstrap.core.get('themes/'+$.fn.blockstrap.settings.theme+'/'+$.fn.blockstrap.settings.html_base+slug, 'html', function(content)
-                                            {
-                                                if(content.status && content.status === 404)
-                                                {
-                                                    buttons.cancel(button, mobile, menu, elements);
-                                                }
-                                                else
-                                                {
-                                                    $.fn.blockstrap.data.save('html', slug, content, function()
-                                                    {
-                                                        buttons.process(slug, content, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
-                                                    });
-                                                }
-                                            });
-                                        }
-                                        else
-                                        {                                            
-                                            buttons.process(slug, html, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
-                                        }
-                                    });
-                                });
+                                buttons.process(
+                                    slug, 
+                                    content, 
+                                    filtered_data, 
+                                    button, 
+                                    effect, 
+                                    direction, 
+                                    reverse_direction, 
+                                    mobile, 
+                                    menu, 
+                                    elements
+                                );
                             }
-                        });
-                    }
-                    else
-                    {
-                        var filtered_data = $.fn.blockstrap.core.filter(data);
-                        $.fn.blockstrap.data.find('html', slug, function(results)
-                        {
-                            buttons.process(slug, results, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements);
                         });
                     }
                 });
@@ -831,6 +808,8 @@
         var next_step = current_step + 1;
         var form_string = $(button).attr('data-forms');
         var forms = form_string.split(', ');
+        var data_url = 'themes/' + bs.settings.theme + '/' + bs.settings.data_base + 'index';
+        var html_url = 'themes/' + bs.settings.theme + '/' + bs.settings.html_base + 'index';
         
         $(button).addClass('loading');
         
@@ -1019,17 +998,19 @@
                                 }
                                 else
                                 {
-                                    bs.data.find('data', 'index', function(results)
+                                    bs.core.get(data_url, 'json', function(results)
                                     { 
-                                        results.setup = {};
-                                        results.setup.func = 'setup';
-                                        results.setup.step = next_step;
-                                        var data = bs.core.filter(results);
-                                        bs.data.find('html', 'index', function(html)
-                                        {
+                                        res = {};
+                                        res.setup = {};
+                                        res.setup.func = 'setup';
+                                        res.setup.step = next_step;
+                                        var data = bs.core.filter(res);
+                                        bs.core.get(html_url, 'html', function(html)
+                                        { 
                                             var page = Mustache.render(html, data);
+                                            var paged = bs.templates.filter(page);
                                             $(bs.element).html('');
-                                            $(bs.element).append(page);
+                                            $(bs.element).append(paged);
                                             $(bs.element).addClass('loading');
                                             $(bs.element).find('#blockstrap-loader').css({'opacity': 1, 'z-index': 9999999});
                                             bs.core.ready();

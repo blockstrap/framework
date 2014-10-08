@@ -203,15 +203,23 @@
                     value = Math.abs(value);
                     css = 'to';
                 }
+
                 var base = $.fn.blockstrap.settings.base_url;
                 var intro = value + ' ' + $.fn.blockstrap.settings.currencies[txc].currency;
                 var html = '<a href="' + base + '?txid=' + tx.txid +'#transaction">' + intro + '</a>';
+                // TODO: RETURN VALUES TO THESE - DISABLED DUE TO REDUCING TXS IN ACCOUNTS
+                /*
                 $.each(tx.outputs, function(k, out)
                 {
                     if(out.address !== tx.acc) address = out.address;
                 });
-                address = '<a href="' +base+ '?key=' + address + '#address">' + address + '</a>';
-                html+= ' ' + css + ' ' + address;
+                */
+                
+                // HACK PUTTING IN TO ADDRESS RATHER THAN FROM ADDRESS
+                address = '<a href="' +base+ '?key='+tx.acc+'#address">' + tx.acc + '</a>';
+                html+= ' to ' + address;
+                // END OF HACK
+                
                 items.push({
                     css: css,
                     html: html,
