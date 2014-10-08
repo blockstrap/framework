@@ -436,7 +436,7 @@
             {
                 var ids = id.split('.');
                 var address = value;
-                if($.fn.blockstrap.btc.validate(address))
+                if($.fn.blockstrap.currencies.validate(address))
                 {
                     obj[ids[0]][ids[1]][ids[2]][ids[3]].key = address;
                     if(i >= $(form).find('.form-group').length - 1)
@@ -763,12 +763,12 @@
             $($.fn.blockstrap.element).find('#confirm-modal .modal-footer').show();
             $.fn.blockstrap.core.confirm('Confirm Device Reset', 'Please confirm that you want to completely remove all of the information from this device? If you have any coins stored, please ensure you first back-up the private keys or make a back-up of the wallet first.', function(confirmed)
             {
-                if(confirmed) $.fn.blockstrap.core.reset();
+                if(confirmed) $.fn.blockstrap.core.reset(true);
             });
         }
         else
         {
-            $.fn.blockstrap.core.reset();
+            $.fn.blockstrap.core.reset(true);
         }
     }
     
@@ -1088,7 +1088,7 @@
                 {
                     if(verified === true)
                     {
-                        $.fn.blockstrap.btc.send(to_address, to_amount, from_address, keys, function(tx)
+                        $.fn.blockstrap.currencies.send(to_address, to_amount, from_address, keys, function(tx)
                         {
                             account.ts = new Date().getTime();
                             account.balance = change;
@@ -1135,8 +1135,8 @@
             {
                 if(verified === true)
                 {
-                    var private_key = keys.privkey.toString();
-                    var address = keys.pubkey.toString();
+                    var private_key = keys.priv;
+                    var address = keys.pub;
                     var title = 'Private Key for '+address;
                     var intro = '<p style="word-wrap: break-word;">'+private_key+'</p>';
                     var qr_code = '<p class="qr-holder" data-content="'+private_key+'"></p>';

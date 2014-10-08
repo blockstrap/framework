@@ -184,9 +184,7 @@
                         "block": "blockHeight",
                         "time": "blockTime",
                         "input": "totalInputsValue",
-                        "inputs": "inputs",
                         "output": "totalOutputsValue",
-                        "outputs": "outputs",
                         "value": "estimatedTxValue",
                         "fees": "fees"
                     },

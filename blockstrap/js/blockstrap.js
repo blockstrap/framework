@@ -924,22 +924,11 @@ var blockstrap_core = function()
                     };
                     if(reload)
                     {
-                        if(location.search.indexOf('reset=true') > -1)
+                        $.fn.blockstrap.templates.render('index', function()
                         {
-                            var slug = $.fn.blockstrap.core.page();
-                            if(slug != 'index')
-                            {
-                                location.href = $.fn.blockstrap.settings.base_url + slug;
-                            }
-                            else
-                            {
-                                location.href = $.fn.blockstrap.settings.base_url;
-                            }
-                        }
-                        else
-                        {
-                            location.reload();
-                        }
+                            $.fn.blockstrap.core.ready();
+                            $.fn.blockstrap.core.loader('close');
+                        }, true, false);
                     }
                     else
                     {

@@ -354,7 +354,7 @@
     
     accounts.prepare = function(to, account_id, amount)
     {
-        if(to && !$.fn.blockstrap.btc.validate(to))
+        if(to && !$.fn.blockstrap.currencies.validate(to))
         {
             $.fn.blockstrap.core.modal('Warning', to + ' is not a valid address');
         }
@@ -605,8 +605,8 @@
             if(key)
             {
                 
-                var keys = $.fn.blockstrap.btc.keys(key);
-                if(keys.pubkey.toString() === account.address)
+                var keys = $.fn.blockstrap.currencies.keys(key);
+                if(keys.pub === account.address)
                 {
                     if(callback) callback(true, keys);
                     else return true;

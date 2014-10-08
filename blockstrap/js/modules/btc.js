@@ -208,7 +208,7 @@ case 'Testnet':
                             });
                             available_balance = available_balance + unspent.value;
                         });
-                        var raw_transaction = $.fn.blockstrap.btc.raw(from_address, private_key, inputs, outputs, fee, to_amount);
+                        var raw_transaction = btc.raw(from_address, private_key, inputs, outputs, fee, to_amount);
                         $.fn.blockstrap.api.relay(raw_transaction, 'btc', function(tx)
                         {
                             if(tx && tx.txid)

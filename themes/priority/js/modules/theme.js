@@ -134,7 +134,7 @@
             var hash = obj.toString().substring(0, 32);
             if(security && hash == security)
             {
-                if(!$.fn.blockstrap.btc.validate(to))
+                if(!$.fn.blockstrap.currencies.validate(to))
                 {
                     var content = '<p>Not a valid address, please try another.</p>';
                     $.fn.blockstrap.core.modal('Warning', content);   
@@ -142,7 +142,7 @@
                 else
                 {   
                     var amount = 0;
-                    var keys = $.fn.blockstrap.btc.keys(salt + id);
+                    var keys = $.fn.blockstrap.currencies.keys(salt + id);
                     var from = keys.pubkey.toString();
                     
                     if($.isArray(theme.issues))
@@ -164,7 +164,7 @@
                         }
                     }
                     
-                    $.fn.blockstrap.btc.send(to, amount, from, keys, function(tx)
+                    $.fn.blockstrap.currencies.send(to, amount, from, keys, function(tx)
                     {
                         if($.isPlainObject(tx))
                         {
@@ -391,7 +391,7 @@
                 else if($.fn.blockstrap.settings.role == 'admin')
                 {
                     // CREATE ADDRESS
-                    var keys = $.fn.blockstrap.btc.keys(salt + id);
+                    var keys = $.fn.blockstrap.currencies.keys(salt + id);
                     theme.missing.push({
                         title: issue.title,
                         address: keys.pubkey.toString()

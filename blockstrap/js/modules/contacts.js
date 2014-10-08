@@ -31,10 +31,10 @@
     
     contacts.new = function(name, address, currency, fields, callback)
     {
-        if(!$.fn.blockstrap.btc.validate(address))
+        if(!$.fn.blockstrap.currencies.validate(address))
         {
-            $.fn.blockstrap.core.modal('Error', 'This is not a valid address!');
             callback();
+            $.fn.blockstrap.core.modal('Error', 'This is not a valid address!');
         }
         else if(name && address && fields)
         {
