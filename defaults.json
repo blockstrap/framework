@@ -50,6 +50,9 @@
         "sha3",
         "ago"
     ],
+    "plugins": [
+        "markets"
+    ],
     "bootstrap": [
         "lists", 
         "jumbotrons", 

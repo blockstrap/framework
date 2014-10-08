@@ -754,6 +754,29 @@ var blockstrap_core = function()
                 }
                 return $.fn.blockstrap.settings.page;
             },
+            plugins: function(index, plugins, callback)
+            {
+                var bs = $.fn.blockstrap;
+                var $bs = blockstrap_functions;
+                $.fn.blockstrap.plugins = {};
+                if(!index) index = 0;
+                if($.isArray(plugins))
+                {
+                    var plugin = plugins[index];
+                    var plugin_url = 'plugins/' + plugin + '/' + plugin + '.js';
+                    $.getScript(plugin_url, function(plugin_js)
+                    {
+                        if(index >= $bs.array_length(plugins) - 1)
+                        {
+                            if(callback) callback();
+                        }
+                        else
+                        {
+                            bs.core.plugins(index + 1, plugins, callback);
+                        }
+                    });
+                }
+            },
             print: function(contents)
             {
                 var mywindow = window.open('', 'my div', 'height=500,width=400');
@@ -1167,6 +1190,7 @@ var blockstrap_core = function()
                             var dependencies = $.fn.blockstrap.settings.dependencies;
                             var modules = $.fn.blockstrap.settings.modules;
                             var bootstrap = $.fn.blockstrap.settings.bootstrap;
+                            var plugins = $.fn.blockstrap.settings.plugins;
 
                             // LOADING SCREEN
                             // TODO: REMOVE FROM CORE...?
@@ -1222,18 +1246,51 @@ var blockstrap_core = function()
                                                             // INCLUDE BOOTSTRAP COMPONENTS
                                                             bs.core.bootstrap(0, bootstrap, function()
                                                             {
-                                                                bs.core.loaded();
+                                                                if($.isArray(plugins))
+                                                                {
+                                                                    // FINISH WITH PLUGINS
+                                                                    bs.core.plugins(0, plugins, function()
+                                                                    {
+                                                                        bs.core.loaded(); 
+                                                                    });
+                                                                }
+                                                                else
+                                                                {
+                                                                    bs.core.loaded(); 
+                                                                }
                                                             })
                                                         }
                                                         else
                                                         {
-                                                            bs.core.loaded();
+                                                            if($.isArray(plugins))
+                                                            {
+                                                                // FINISH WITH PLUGINS
+                                                                bs.core.plugins(0, plugins, function()
+                                                                {
+                                                                    bs.core.loaded(); 
+                                                                });
+                                                            }
+                                                            else
+                                                            {
+                                                                bs.core.loaded();
+                                                            }
                                                         }
                                                     });
                                                 }
                                                 else
                                                 {
-                                                    bs.core.loaded();
+                                                    if($.isArray(plugins))
+                                                    {
+                                                        // FINISH WITH PLUGINS
+                                                        bs.core.plugins(0, plugins, function()
+                                                        {
+                                                            bs.core.loaded(); 
+                                                        });
+                                                    }
+                                                    else
+                                                    {
+                                                        bs.core.loaded();
+                                                    }
                                                 }
                                             }, true);
                                         }
@@ -1250,18 +1307,51 @@ var blockstrap_core = function()
                                                         // INCLUDE BOOTSTRAP COMPONENTS
                                                         bs.core.bootstrap(0, bootstrap, function()
                                                         {
-                                                            bs.core.loaded();
+                                                            if($.isArray(plugins))
+                                                            {
+                                                                // FINISH WITH PLUGINS
+                                                                bs.core.plugins(0, plugins, function()
+                                                                {
+                                                                    bs.core.loaded(); 
+                                                                });
+                                                            }
+                                                            else
+                                                            {
+                                                                bs.core.loaded();
+                                                            }
                                                         })
                                                     }
                                                     else
                                                     {
-                                                        bs.core.loaded();
+                                                        if($.isArray(plugins))
+                                                        {
+                                                            // FINISH WITH PLUGINS
+                                                            bs.core.plugins(0, plugins, function()
+                                                            {
+                                                                bs.core.loaded(); 
+                                                            });
+                                                        }
+                                                        else
+                                                        {
+                                                            bs.core.loaded();
+                                                        }
                                                     }
                                                 });
                                             }
                                             else
                                             {
-                                                bs.core.loaded();
+                                                if($.isArray(plugins))
+                                                {
+                                                    // FINISH WITH PLUGINS
+                                                    bs.core.plugins(0, plugins, function()
+                                                    {
+                                                        bs.core.loaded(); 
+                                                    });
+                                                }
+                                                else
+                                                {
+                                                    bs.core.loaded();
+                                                }
                                             }
                                         }
                                     });
