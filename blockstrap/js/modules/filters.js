@@ -142,6 +142,19 @@
         }
     }
     
+    filters.plugin = function(bs, data)
+    {
+        if(data.name && data.call && data.data)
+        {
+            if(bs.plugins[data.name] && $.isFunction(bs.plugins[data.name][data.call]))
+            {
+                return bs.plugins[data.name][data.call](data.data);
+            }
+            else return data;
+        }
+        else return data;
+    }   
+    
     filters.setup = function(blockstrap, data)
     {
         if(data.step)

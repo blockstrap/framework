@@ -6405,8 +6405,18 @@ CONTENT / PANELS
 .blockstrap-wrapper #main-content .panel .panel-body .panel .panel-description {
   display: block;
 }
+.blockstrap-wrapper #main-content .panel .panel-body .panel.list-group-item {
+  width: 50%;
+}
+.blockstrap-wrapper #main-content .panel .panel-body .panel.list-group-item .list-item-content {
+  padding: 21px 0;
+}
 .blockstrap-wrapper #main-content .panel .panel-body.padless {
   padding: 0;
+}
+.blockstrap-wrapper #main-content .panel .panel-body.padless ul.list-group {
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 .blockstrap-wrapper #main-content .actions.col-md-12 {
   padding: 0 20px calc(40px);
