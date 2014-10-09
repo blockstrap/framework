@@ -1,11 +1,12 @@
 {
-    "v": "0.3.1.0",
+    "v": "0.3.1.1",
     "public": false,
     "security": false,
     "role": "admin",
     "id": "blockstrap",
     "theme": "default",
     "less": false,
+    "test": false,
     "default_data": "data/index.json",
     "default_html": "html/index.html",
     "html_base": "html/",
@@ -129,6 +130,7 @@
     "storage": {
         "dependencies": true,
         "modules": false,
+        "less": false,
         "bootstrap": true
     },
     "exchange": {

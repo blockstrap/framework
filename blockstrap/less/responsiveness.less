@@ -11,6 +11,9 @@ REMEMBER TO REMOVE FROM MAIN CSS IF RESET HERE FIRST
         display: inline-block;
     }
     #main-content {
+        .panel-wrapper {
+            width: 100%;
+        }
         .panel-wrapper.col-md-6.odd {
             padding-right: @panel-padding;
         }
@@ -103,7 +106,7 @@ BOOTSTRAP BREAKPOINTS
 html .blockstrap-wrapper,
 body .blockstrap-wrapper {
     @media(max-width:767px){
-        
+
     }
     @media(min-width:768px){
         #search-form {
@@ -409,6 +412,13 @@ body .blockstrap-wrapper {
             left: calc(@sidebar-width + 50);
             right: @panel-padding;
         }
+        #sidebar {
+            .sidebar-wrapper {
+                position: absolute;
+                left: 20px;
+                right: 20px;
+            }
+        }
     }       
     
     /* POINT OF SEARCH HITTING NAV */
@@ -432,6 +442,11 @@ body .blockstrap-wrapper {
             #menu-toggle,
             #sidebar-toggle {
                 display: none;
+            }
+        }
+        #main-content {
+            .panel-wrapper.col-md-6 {
+                width: 50%;
             }
         }
         #navigation {

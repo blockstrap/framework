@@ -6281,6 +6281,11 @@ SIDEBAR
   width: 250px;
   position: fixed;
 }
+.blockstrap-wrapper #sidebar .sidebar-wrapper {
+  position: fixed;
+  left: 80px;
+  right: 20px;
+}
 .blockstrap-wrapper #sidebar .avatar {
   padding: 5px;
   background: #475862;
@@ -6356,7 +6361,9 @@ CONTENT / PANELS
   right: 0;
   top: 60px;
   padding-top: 20px;
+  display: block;
   position: absolute;
+  min-height: 100%;
   z-index: 2;
 }
 .blockstrap-wrapper #main-content a {
@@ -6366,8 +6373,11 @@ CONTENT / PANELS
   color: #757575;
 }
 .blockstrap-wrapper #main-content .panel-wrapper {
+  display: inline-block;
+  position: relative;
   padding-left: 20px;
   padding-right: 20px;
+  margin-bottom: 20px;
 }
 .blockstrap-wrapper #main-content .panel {
   padding: 0;
@@ -7220,6 +7230,9 @@ REMEMBER TO REMOVE FROM MAIN CSS IF RESET HERE FIRST
 .blockstrap-wrapper #sidebar-toggle {
   display: inline-block;
 }
+.blockstrap-wrapper #main-content .panel-wrapper {
+  width: 100%;
+}
 .blockstrap-wrapper #main-content .panel-wrapper.col-md-6.odd {
   padding-right: 20px;
 }
@@ -7704,6 +7717,12 @@ body .blockstrap-wrapper {
     left: calc(300px);
     right: 20px;
   }
+  html .blockstrap-wrapper #sidebar .sidebar-wrapper,
+  body .blockstrap-wrapper #sidebar .sidebar-wrapper {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+  }
 }
 @media (max-width: 991px) {
   html .blockstrap-wrapper table tbody tr td:first-child .hidden,
@@ -7722,6 +7741,10 @@ body .blockstrap-wrapper {
   html .blockstrap-wrapper header #sidebar-toggle,
   body .blockstrap-wrapper header #sidebar-toggle {
     display: none;
+  }
+  html .blockstrap-wrapper #main-content .panel-wrapper.col-md-6,
+  body .blockstrap-wrapper #main-content .panel-wrapper.col-md-6 {
+    width: 50%;
   }
   html .blockstrap-wrapper #navigation,
   body .blockstrap-wrapper #navigation {

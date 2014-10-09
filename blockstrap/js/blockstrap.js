@@ -501,7 +501,7 @@ var blockstrap_core = function()
                             }
                             var run_tests = false;
                             var tests = $bs.vars('tests');
-                            if(tests) run_tests = true;
+                            if(tests || bs.settings.test === true) run_tests = true;
                             bs.core.tests(run_tests);
                         }
                     }                                    
@@ -734,7 +734,6 @@ var blockstrap_core = function()
             {
                 var bs = $.fn.blockstrap;
                 var $bs = blockstrap_functions;
-                $.fn.blockstrap.plugins = {};
                 if(!index) index = 0;
                 if($.isArray(plugins))
                 {
@@ -1001,54 +1000,28 @@ var blockstrap_core = function()
 
                 // DATA ATTRIBUTES
                 var attributes = $($.fn.blockstrap.element).data();
-                if(attributes['id'])
+                
+                $.each(attributes, function(key, value)
                 {
-                    $.fn.blockstrap.settings['id'] = attributes['id'];
-                }
-                if(attributes['defaultData'])
-                {
-                    $.fn.blockstrap.settings['default_data'] = attributes['defaultData'];
-                }
-                if(attributes['defaultHtml'])
-                {
-                    $.fn.blockstrap.settings['default_html'] = attributes['defaultHtml'];
-                }
-                if(attributes['dataBase'])
-                {
-                    $.fn.blockstrap.settings['data_base'] = attributes['dataBase'];
-                }
-                if(attributes['htmlBase'])
-                {
-                    $.fn.blockstrap.settings['html_base'] = attributes['htmlBase'];
-                }
-                if(attributes['slugBase'])
-                {
-                    $.fn.blockstrap.settings['slug_base'] = attributes['slugBase'];
-                }
-                if(attributes['contentId'])
-                {
-                    $.fn.blockstrap.settings['content_id'] = attributes['contentId'];
-                }
-                if(attributes['filters'])
-                {
-                    $.fn.blockstrap.settings['filters'] = attributes['filters'].split(', ');
-                }
-                if(attributes['dependencies'])
-                {
-                    $.fn.blockstrap.settings['dependencies'] = attributes['dependencies'].split(', ');
-                }
-                if(attributes['modules'])
-                {
-                    $.fn.blockstrap.settings['modules'] = attributes['modules'].split(', ');
-                }
-                if(attributes['bootstrap'])
-                {
-                    $.fn.blockstrap.settings['bootstrap'] = attributes['bootstrap'].split(', ');
-                }
-                if(attributes['styles'])
-                {
-                    $.fn.blockstrap.settings['styles'] = $.extend({}, $.fn.blockstrap.settings.styles, $.fn.blockstrap.core.stringed(attributes['styles'].split(', ')));
-                }
+                    if(typeof value == 'string')
+                    {
+                        var first_char = value.charAt(0);
+                        var last_char = value.charAt(value.length - 1);
+                        if(first_char == '[' && last_char == ']')
+                        {
+                            var keys = value.substr(1, value.length - 2);
+                            $.fn.blockstrap.settings[key] = keys.split(', ');
+                        }
+                        else
+                        {
+                            $.fn.blockstrap.settings[key] = value;
+                        }
+                    }
+                    else
+                    {
+                        $.fn.blockstrap.settings[key] = value;
+                    }
+                });
             },
             stringed: function(styles)
             {
@@ -1143,6 +1116,7 @@ var blockstrap_core = function()
         {
             // MERGE DEFAULT AND PLUGIN OPTIONS
             var settings = $.extend({}, defaults, options);
+            $.fn.blockstrap.plugins = {};
             
             // THEN GET CONFIG FILE
             $.fn.blockstrap.core.get('themes/config', 'json', function(results)
@@ -1157,7 +1131,12 @@ var blockstrap_core = function()
                     {
                         if($.isPlainObject(results))
                         {
-                            $.fn.blockstrap.settings = $.extend({}, $.fn.blockstrap.settings, results);
+                            $.fn.blockstrap.settings = $.extend(
+                                {}, 
+                                $.fn.blockstrap.settings, 
+                                results
+                            );
+                            
                             $.fn.blockstrap.core.settings(element);
                             $.fn.blockstrap.defaults();
 

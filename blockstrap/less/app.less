@@ -270,6 +270,11 @@ SIDEBAR
     padding: @panel-padding;
     .fixed-sidebar(@sidebar-width, @header-height);
     position: fixed;
+    .sidebar-wrapper {
+        position: fixed;
+        left: 80px;
+        right: 20px;
+    }
     .avatar {
         padding: 5px;
         background: @header-bg;
@@ -343,7 +348,9 @@ CONTENT / PANELS
     right: 0;
     top: @header-height;
     padding-top: @panel-padding;
+    display: block;
     position: absolute;
+    min-height: 100%;
     z-index: 2;
     a {
         color: @content-link;
@@ -352,8 +359,11 @@ CONTENT / PANELS
         color: @content-link-hover;
     }
     .panel-wrapper {
+        display: inline-block;
+        position: relative;
         padding-left: @panel-padding;
         padding-right: @panel-padding;
+        margin-bottom: @panel-padding;
     }
     .panel {
         padding: 0;

@@ -28,33 +28,35 @@
 <div id="sidebar">
     {{#user.setup}}
     
-        <a href="{{user.urls.profile}}" class="btn-page">{{{user.avatar}}}</a>
-        <a href="{{user.urls.profile}}" class="btn-page"><h3 id="user-name">{{user.name}}</h3></a>
-        <h4 id="last">{{user.last}}</h4>
-        <div class="actions">
-            {{#sidebar.actions}}
-                <a 
-                    id="{{id}}" 
-                    class="{{css}}" 
-                    href="{{href}}"
-                    {{#data}}
-                        data-{{key}}="{{value}}"
-                    {{/data}}
-                >
-                    {{text}}
-                </a>
-            {{/sidebar.actions}}
-        </div>
-        <div id="sidebar-panel">
-            <h4 class="panel-title">{{copy.sidebar.balances}}</h4>
-            <ul id="sidebar-list">
-                
-                {{#sidebar.accounts}}
-                    <li>{{currency}} (<span>{{count}}</span>) <span class="values">{{balance}}</span></li>
-                {{/sidebar.accounts}}
-                
-                <li class="total">{{copy.sidebar.total}} <span>{{sidebar.total}}</span></li>
-            </ul>
+        <div class="sidebar-wrapper">
+            <a href="{{user.urls.profile}}" class="btn-page">{{{user.avatar}}}</a>
+            <a href="{{user.urls.profile}}" class="btn-page"><h3 id="user-name">{{user.name}}</h3></a>
+            <h4 id="last">{{user.last}}</h4>
+            <div class="actions">
+                {{#sidebar.actions}}
+                    <a 
+                        id="{{id}}" 
+                        class="{{css}}" 
+                        href="{{href}}"
+                        {{#data}}
+                            data-{{key}}="{{value}}"
+                        {{/data}}
+                    >
+                        {{text}}
+                    </a>
+                {{/sidebar.actions}}
+            </div>
+            <div id="sidebar-panel">
+                <h4 class="panel-title">{{copy.sidebar.balances}}</h4>
+                <ul id="sidebar-list">
+
+                    {{#sidebar.accounts}}
+                        <li>{{currency}} (<span>{{count}}</span>) <span class="values">{{balance}}</span></li>
+                    {{/sidebar.accounts}}
+
+                    <li class="total">{{copy.sidebar.total}} <span>{{sidebar.total}}</span></li>
+                </ul>
+            </div>
         </div>
         
     {{/user.setup}}
