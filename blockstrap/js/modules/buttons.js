@@ -195,12 +195,11 @@
                 wallet,
                 function(account)
                 {
-                    /* NEED TO RESET THE INDEX HTML AND DATA */
-                    $.fn.blockstrap.templates.render('accounts', function()
+                    $.fn.blockstrap.core.refresh(function()
                     {
                         $.fn.blockstrap.core.ready();
                         $.fn.blockstrap.core.loader('close');
-                    }, true);
+                    }, $.fn.blockstrap.core.page());
                 }
             )
         }

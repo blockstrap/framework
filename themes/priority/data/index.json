@@ -26,10 +26,21 @@
             ]
         },
         {
+            "id": "authors",
+            "href": "#",
+            "text": "Author",
+            "attributes": [
+                {
+                    "key": "data-sort",
+                    "value": "authors"
+                }
+            ]
+        },
+        {
             "id": "points",
             "href": "#",
             "css": "pull-right active",
-            "text": "Points",
+            "text": "Score",
             "attributes": [
                 {
                     "key": "data-sort",
@@ -41,7 +52,7 @@
             "id": "contributions",
             "href": "#",
             "css": "pull-right",
-            "text": "Contributions",
+            "text": "Amount",
             "attributes": [
                 {
                     "key": "data-sort",
@@ -53,7 +64,7 @@
             "id": "votes",
             "href": "#",
             "css": "pull-right",
-            "text": "Votes",
+            "text": "Contributions",
             "attributes": [
                 {
                     "key": "data-sort",

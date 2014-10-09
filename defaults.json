@@ -1,5 +1,5 @@
 {
-    "v": "0.2.1.2",
+    "v": "0.3.1.0",
     "public": false,
     "security": false,
     "role": "admin",
@@ -127,10 +127,9 @@
         "accounts": 60000
     },
     "storage": {
-        "dependencies": false,
+        "dependencies": true,
         "modules": false,
-        "less": false,
-        "bootstrap": false
+        "bootstrap": true
     },
     "exchange": {
         "btc": 500,

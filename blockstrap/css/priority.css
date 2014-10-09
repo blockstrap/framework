@@ -19,9 +19,17 @@ a.active, a:hover {
 }
 #filters {
     display: block;
-    position: relative;
     height: 10px;
-    padding-right: 35px;
+    left: 0;
+    top: 0;
+    padding: 20px 42px 20px 0;
+    position: fixed;
+    right: 0;
+    background: #E9E9E9;
+    z-index: 999;
+}
+#filters .container {
+    width: 960px;
 }
 #filters #filter {
     display: none;
@@ -392,6 +400,9 @@ RESPONSIVENESS
         margin: -6px 0 0;
         border-radius: 0 0 4px 4px;
         text-align: center;
+    }
+    #filters .container {
+        width: 100%;
     }
 }
 @media(max-width:710px){

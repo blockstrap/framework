@@ -51,20 +51,27 @@
                 titles: '[data-titles]',
                 votes: '[data-votes] parseFloat',
                 contributions: '[data-contributions] parseFloat',
-                points: '[data-points] parseFloat'
+                points: '[data-points] parseFloat',
+                authors: '[data-authors]'
             },
-            sortBy: 'points',
-            sortAscending: false
+            sortBy: ['points', 'titles'],
+            sortAscending: {
+                addresses: false,
+                titles: true,
+                votes: false,
+                contributions: false,
+                points: false,
+                authors: true
+            }
         });
         $('#filters').on('click', 'a', function(e)
         {
             e.preventDefault();
+            $("html, body").animate({ scrollTop: 0 }, 350);
             $('#filters a').removeClass('active');
             $(this).addClass('active');
             var sort = $(this).attr('data-sort');
-            var order = false;
-            if(sort == 'titles' || sort == 'addresses') order = true;
-            $container.isotope({ sortBy: sort, sortAscending: order});
+            $container.isotope({ sortBy: sort });
         });
         $('select#filter').on('change', function()
         {
@@ -110,8 +117,9 @@
                                 theme.issues = [];
                                 $.fn.blockstrap.core.refresh(function()
                                 {
-                                    $.fn.blockstrap.core.modal('Success', '<p>Your device salt has now been generated.</p><p>You can safely continue using this application.</p>');
-                                }, false, false);
+                                    theme.new();
+                                    $.fn.blockstrap.core.modal('Success', '<p>Your device salt has now been generated.</p><p>You can safely continue using this application, but please remember that if you loose or change or device salt from this or any other application on this device at this domain, you will not be able to access the funds linked to these issues.</p>');
+                                }, 'index');
                             })
                         })
                     })
@@ -143,7 +151,7 @@
                 {   
                     var amount = 0;
                     var keys = $.fn.blockstrap.currencies.keys(salt + id);
-                    var from = keys.pubkey.toString();
+                    var from = keys.pub;
                     
                     if($.isArray(theme.issues))
                     {
@@ -178,36 +186,52 @@
                     });
                 }
             }
+            else if(security && hash)
+            {
+                $.fn.blockstrap.core.modal('Warning', 'Your current salt does not match the one used to generate this address so unless you can switch salts, you will not be able to close or transfer funds from this issue. In otherwords, they may be lost forever.');
+            }
         });
         // CHECK MISSING ADDRESSES
-        if($.fn.blockstrap.settings.role == 'admin')
+        $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
         {
-            $('#issues').addClass('admin');
-            if(blockstrap_functions.array_length(theme.missing) > 0)
+          if(salt)
+          {
+            if($.fn.blockstrap.settings.role == 'admin')
             {
-                var content = '<p>The following issues are missing addresses:</p>';
-                $.each(theme.missing, function(k, issue)
+                $('#issues').addClass('admin');
+                if(blockstrap_functions.array_length(theme.missing) > 0)
                 {
-                    content+= '<p class="left">'+issue.title+': ' + issue.address + '</p>';
-                });
-                $.fn.blockstrap.core.modal('Warning', content);
-            }
-        }
-        // UPDATE BALANCES
-        if(blockstrap_functions.array_length(theme.issues) > 0)
-        {
-            theme.updates();
-            setInterval(function()
-            {
-                $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
-                {
-                    if(salt)
+                    var content = '<p>The following issues are missing addresses:</p>';
+                    $.each(theme.missing, function(k, issue)
                     {
-                        theme.updates();
-                    }
-                });
-            }, $.fn.blockstrap.settings.cache.accounts);
-        }
+                        content+= '<p class="left">';
+                            content+= issue.title;
+                            content+= ': <strong>';
+                            content+= issue.address;
+                            content+= '</strong><br />';
+                            content+= '<small>Please ensure that you add the following slug to the issue if you want to protect against renaming issues - "<strong>' + blockstrap_functions.slug(issue.title) + '</strong>" - saved locally to account for changes, but if the device is reset and you forget what they were originally called, well... You get the picture.</small><hr />';
+                        content+= '</p>';
+                    });
+                    $.fn.blockstrap.core.modal('Warning', content);
+                }
+            }
+            // UPDATE BALANCES
+            if(blockstrap_functions.array_length(theme.issues) > 0)
+            {
+                theme.updates();
+                setInterval(function()
+                {
+                    $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
+                    {
+                        if(salt)
+                        {
+                            theme.updates();
+                        }
+                    });
+                }, $.fn.blockstrap.settings.cache.accounts);
+            }
+          }
+        });
     }
     
     theme.updates = function()
@@ -258,65 +282,84 @@
         });
         var address_count = $bs.array_length(addresses);
         var diffs = {};
-        bs.api.addresses(addresses, 'btc', function(results)
+        bs.data.find('blockstrap', 'salt', function(salt)
         {
-            if($.isArray(results))
+            if(salt)
             {
-                $.each(results, function(k, obj)
+                bs.api.addresses(addresses, 'btc', function(results)
                 {
-                    count++;
-                    bs.data.find('issue', obj.address, function(saved_obj)
+                    if($.isArray(results))
                     {
-                        var tx_count = 0;
-                        if($bs.json(saved_obj)) saved_obj = $.parseJSON(saved_obj);
-                        if(saved_obj.tx_count) tx_count = saved_obj.tx_count;
-                        if(tx_count < obj.tx_count)
+                        $.each(results, function(k, obj)
                         {
-                            txs.push(obj);
-                            diffs['id_'+obj.address] = obj.tx_count - tx_count;
-                        }
-                        balance = balance + obj.balance;
-                        bs.data.save('issue', obj.address, obj, function()
-                        {
-                            bs.data.save('issue', 'balance', balance, function()
-                            {   
-                                if(count >= address_count)
+                            count++;
+                            var this_obj = {};
+                            bs.data.find('issue', obj.address, function(saved_obj)
+                            {
+                                var tx_count = 0;
+                                if($bs.json(saved_obj)) saved_obj = $.parseJSON(saved_obj);
+                                if(saved_obj.tx_count) tx_count = saved_obj.tx_count;
+                                this_obj.address = obj.address;
+                                this_obj.balance = obj.balance;
+                                this_obj.received = obj.received;
+                                this_obj.tx_count = obj.tx_count;
+                                $.each(theme.issues, function(k, issue)
                                 {
-                                    if($bs.array_length(txs) > 0)
+                                    if(issue.address == this_obj.address)
                                     {
-                                        var title = 'Attention';
-                                        $.each(txs, function(key, tx)
+                                        this_obj.slug = $bs.slug(issue.title);
+                                    }
+                                });
+                                obj = this_obj;
+                                if(tx_count < obj.tx_count)
+                                {
+                                    txs.push(obj);
+                                    diffs['id_'+obj.address] = obj.tx_count - tx_count;
+                                }
+                                balance = balance + obj.balance;
+                                bs.data.save('issue', obj.address, obj, function()
+                                {
+                                    bs.data.save('issue', 'balance', balance, function()
+                                    {   
+                                        if(count >= address_count)
                                         {
-                                            bs.api.transactions(
-                                                tx.address, 
-                                                'btc',
-                                                function(transactions)
+                                            if($bs.array_length(txs) > 0)
                                             {
-                                                if($.isArray(transactions))
+                                                var title = 'Attention';
+                                                $.each(txs, function(key, tx)
                                                 {
-                                                    var trans = transactions.slice(0, diffs['id_'+tx.address]);
-                                                    $.each(
-                                                        trans, 
-                                                        function(k, tran)
+                                                    bs.api.transactions(
+                                                        tx.address, 
+                                                        'btc',
+                                                        function(transactions)
                                                     {
-                                                        content+= para(tran, tx.address);
-                                                        if(k + 1 >= $bs.array_length(trans) && key + 1 >= $bs.array_length(txs))
+                                                        if($.isArray(transactions))
                                                         {
-                                                            theme.issues = [];
-                                                            bs.core.refresh(function()
+                                                            var trans = transactions.slice(0, diffs['id_'+tx.address]);
+                                                            $.each(
+                                                                trans, 
+                                                                function(k, tran)
                                                             {
-                                                                bs.core.modal(title, content);
-                                                            }, 'index', false);
+                                                                content+= para(tran, tx.address);
+                                                                if(k + 1 >= $bs.array_length(trans) && key + 1 >= $bs.array_length(txs))
+                                                                {
+                                                                    theme.issues = [];
+                                                                    bs.core.refresh(function()
+                                                                    {
+                                                                        bs.core.modal(title, content);
+                                                                    }, 'index', false);
+                                                                }
+                                                            });
                                                         }
                                                     });
-                                                }
-                                            });
-                                        });
-                                    }
-                                }
+                                                });
+                                            }
+                                        }
+                                    });
+                                });
                             });
                         });
-                    });
+                    }
                 });
             }
         });
@@ -394,7 +437,8 @@
                     var keys = $.fn.blockstrap.currencies.keys(salt + id);
                     theme.missing.push({
                         title: issue.title,
-                        address: keys.pubkey.toString()
+                        slug: $bs.slug(issue.title),
+                        address: keys.pub
                     });
                 }
             });
@@ -427,8 +471,9 @@
     theme.filters.setup = function(blockstrap, data)
     {
         var salt = localStorage.getItem('nw_blockstrap_salt');
+        var security = $.fn.blockstrap.settings.security;
         if(blockstrap_functions.json(salt)) salt = $.parseJSON(salt);
-        if(!salt)
+        if(!salt && !security)
         {
             if(data.step)
             {

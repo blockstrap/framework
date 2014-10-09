@@ -49,7 +49,7 @@ var blockstrap_core = function()
         {
             var defaults = {
                 dependencies: [
-                    'crypt',
+                    'crypto',
                     'sha3',
                     'mustache'
                 ],
@@ -115,36 +115,12 @@ var blockstrap_core = function()
                 var html = false;
                 var bs = $.fn.blockstrap;
                 var $bs = blockstrap_functions;
-                var store = true;
-                var storage = bs.settings.storage;
-                if(storage.bootstrap === false) store = false;
                 var key = bootstrap[index];
-                var refresh = blockstrap_functions.vars('refresh');
-                bs.data.find('boot', key, function(results)
+                var url = bs.settings.core_base + 'html/bootstrap/' + key;
+                bs.core.get(url, 'html', function(html)
                 {
-                    if(refresh === true || !results || store === false)
-                    {
-                        var url = bs.settings.core_base + 'html/bootstrap/' + key;
-                        bs.core.get(url, 'html', function(html)
-                        {
-                            if(store === true)
-                            {
-                                bs.data.save('boot', key, html, function(results)
-                                {
-                                    bs.core.boot(bootstrap, key, html, index, callback);
-                                })
-                            }
-                            else
-                            {
-                                bs.core.boot(bootstrap, key, html, index, callback);
-                            }
-                        });
-                    }
-                    else
-                    {
-                        bs.core.boot(bootstrap, key, html, index, callback);
-                    }
-                })
+                    bs.core.boot(bootstrap, key, html, index, callback);
+                });
             },
             buttons: function()
             {
@@ -873,7 +849,7 @@ var blockstrap_core = function()
                     }
                 }
             },
-            refresh: function(callback, slug, skip_rendering, force_both_to_render)
+            refresh: function(callback, slug)
             {
                 var bs = $.fn.blockstrap;
                 if(!slug) slug = 'index';
@@ -1421,11 +1397,7 @@ var blockstrap_functions = {
             var js_file = localStorage.getItem('nw_js_'+file_name);
             var store = true;
             
-            // TODO: Is this the best / correct solution...?
-            if(!$.isPlainObject(blockstrap.data) || !$.isFunction(blockstrap.data.item))
-            {
-                store = false;
-            }
+            if(blockstrap_functions.json(js_file)) js_file = $.parseJSON(js_file);
             
             if(!dependency)
             {

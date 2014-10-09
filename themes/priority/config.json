@@ -7,11 +7,11 @@
     "modules": [
         "data",
         "api",
-        "btc"
+        "currencies"
     ],
     "dependencies": [
         "bootstrap.min",
-        "bitcoinjs",
+        "bitcoinjs-lib",
         "isotope",
         "qrcode",
         "issues",
@@ -29,9 +29,10 @@
     "styles": false,
     "storage": {
         "dependencies": true,
-        "bootstrap": true,
-        "modules": true
+        "modules": true,
+        "bootstrap": true
     },
+    "plugins": false,
     "buttons": {
         "classes": [
             "details",

@@ -2,21 +2,23 @@
     
     {{^setup}}
     <div id="filters">
-        {{#filters}}
-            <a 
-                id="{{id}}"
-                href="{{href}}" 
-                class="{{css}}"
-                {{#attributes}}
-                    {{key}}="{{value}}"
-                {{/attributes}}
-            >{{text}}</a>
-        {{/filters}}
-        <select id="filter">
+        <div class="container">
             {{#filters}}
-                <option value="{{id}}">{{text}}</option>
+                <a 
+                    id="{{id}}"
+                    href="{{href}}" 
+                    class="{{css}}"
+                    {{#attributes}}
+                        {{key}}="{{value}}"
+                    {{/attributes}}
+                >{{text}}</a>
             {{/filters}}
-        </select>
+            <select id="filter">
+                {{#filters}}
+                    <option value="{{id}}">{{text}}</option>
+                {{/filters}}
+            </select>
+        </div>
     </div>
     {{/setup}}
     
@@ -35,6 +37,7 @@
                     data-votes="{{votes}}" 
                     data-contributions="{{contributions}}"
                     data-points="{{points}}"
+                    data-authors="{{author.name}}"
                 >
                     <a href="#" class="qr-code btn-qr" data-content="{{address}}"></a>
                     <div class="info">
@@ -47,7 +50,7 @@
                             <a href="{{href}}" class="title">{{title}}</a>
                         </h4>
                         <span>
-                            {{copy.posted_by}} {{{author}}} 
+                            {{copy.posted_by}} <a href="{{author.href}}">{{author.name}}</a> 
                         </span>
                         <span>
                             {{copy.contribute_to}} 

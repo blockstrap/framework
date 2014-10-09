@@ -273,10 +273,7 @@
                                 var this_account = $.fn.blockstrap.accounts.get(slug);
                                 $.fn.blockstrap.accounts.update(this_account, function(account)
                                 {
-                                    $.fn.blockstrap.core.refresh(function()
-                                    {
-                                        callback(account);
-                                    }, 'index', false, true);
+                                    callback(account);
                                 });
                             });
                         }
