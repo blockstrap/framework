@@ -461,6 +461,42 @@
         });
     }
     
+    buttons.import = function(button, e)
+    {
+        e.preventDefault();
+        var title = 'Import Device Data';
+        var form = $.fn.blockstrap.forms.process({
+            objects: [
+                {
+                    id: "import-device-data",
+                    fields_only: false,
+                    fields: [
+                        {
+                            areas: [
+                                {
+                                    id: "import-data",
+                                    placeholder: "Enter the JSON export data you would like to import"
+                                }
+                            ]
+                        }
+                    ],
+                    buttons: {
+                        forms: [
+                            {
+                                type: "submit",
+                                css: "btn-primary pull-right",
+                                id: "submit-import",
+                                text: "Import"
+                            }
+                        ]
+                    }
+                }
+            ]
+        });
+        var content = '<p>Import data specifically exported via the backup functionality of this wallet.</p>' + form;
+        $.fn.blockstrap.core.modal(title, content);
+    }
+    
     buttons.login = function(button, e)
     {
         e.preventDefault();
@@ -1026,6 +1062,75 @@
             {
                 bs.core.loader('close');
             }
+        }
+    }
+    
+    buttons.submit_import = function(button, e)
+    {
+        e.preventDefault();
+        var bs = $.fn.blockstrap;
+        var $bs = blockstrap_functions;
+        var value = $(bs.element).find('form#import-device-data #import-data').val();
+        var error_title = 'Error Importing';
+        var error_content = 'Unable to import the data.';
+        if($bs.json(value))
+        {
+            var accounts = false;
+            var bs_bits = false;
+            var contacts = false;
+            var keys = false;
+            value = $.parseJSON(value);
+            if($.isArray(value.nw_accounts)) accounts = value.nw_accounts;
+            if($.isPlainObject(value.nw_blockstrap)) bs_bits = value.nw_blockstrap;
+            if($.isArray(value.nw_contacts)) contacts = value.nw_contacts;
+            if($.isPlainObject(value.nw_keys)) keys = value.nw_keys;
+            var account_len = $bs.array_length(accounts);
+            var bs_bits_len = $bs.array_length(bs_bits);
+            var contacts_len = $bs.array_length(contacts);
+            var keys_len = $bs.array_length(keys);
+            var total_len = account_len + bs_bits_len + contacts_len + keys_len;
+            if(keys != false && bs_bits != false)
+            {
+                if($.isArray(accounts))
+                {
+                    $.each(accounts, function(k, v)
+                    {
+                        localStorage.setItem('nw_accounts_' + v.id, JSON.stringify(v));
+                    });
+                }
+                if($.isPlainObject(bs_bits))
+                {
+                    $.each(bs_bits, function(k, v)
+                    {
+                        localStorage.setItem('nw_blockstrap_' + k, JSON.stringify(v));
+                    });
+                }
+                if($.isArray(contacts))
+                {
+                    $.each(contacts, function(k, v)
+                    {
+                        localStorage.setItem('nw_contacts_' + k, JSON.stringify(v));
+                    });
+                }
+                if($.isPlainObject(keys))
+                {
+                    $.each(keys, function(k, v)
+                    {
+                        localStorage.setItem('nw_keys_' + k, JSON.stringify(v));
+                    });
+                }
+                location.reload();
+            }
+            else
+            {
+                error_content+= ' Missing vital Blockstrap attributes.';
+                $.fn.blockstrap.core.modal(error_title, error_content);
+            }
+        }
+        else
+        {
+            error_content+= ' This is not even valid JSON data.';
+            $.fn.blockstrap.core.modal(error_title, error_content);
         }
     }
     

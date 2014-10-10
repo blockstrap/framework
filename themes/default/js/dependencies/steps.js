@@ -84,6 +84,11 @@ var blockstrap_setup_steps = [
                                     "href": "#",
                                     "css": "btn-default btn-reset",
                                     "text": "Reset"
+                                },
+                                {
+                                    "href": "#",
+                                    "css": "btn-primary btn-import",
+                                    "text": "Import"
                                 }
                             ]
                         }

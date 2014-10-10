@@ -344,21 +344,31 @@ var blockstrap_core = function()
                             }
                             objs['nw_accounts'].push(obj);
                         }
-                        else if(key.substring(0, 14) == 'nw_blockstrap_')
+                        else if(key.substring(0, 14) == 'nw_contacts_')
                         {
                             if(!$.isArray(objs['nw_blockstrap']))
                             {
                                 objs['nw_blockstrap'] = [];
                             }
-                            objs['nw_blockstrap'].push(obj);
+                            objs['nw_contacts'].push(obj);
+                        }
+                        else if(key.substring(0, 14) == 'nw_blockstrap_')
+                        {
+                            var key_array = key.split('_blockstrap_');
+                            if(!$.isPlainObject(objs['nw_blockstrap']))
+                            {
+                                objs['nw_blockstrap'] = {};
+                            }
+                            objs['nw_blockstrap'][key_array[1]] = obj;
                         }
                         else if(key.substring(0, 8) == 'nw_keys_')
                         {
-                            if(!$.isArray(objs['nw_keys']))
+                            var key_array = key.split('_keys_');
+                            if(!$.isPlainObject(objs['nw_keys']))
                             {
-                                objs['nw_keys'] = [];
+                                objs['nw_keys'] = {};
                             }
-                            objs['nw_keys'].push(obj);
+                            objs['nw_keys'][key_array[1]] = obj;
                         }
                     });
                 }
@@ -936,6 +946,7 @@ var blockstrap_core = function()
             },
             reset: function(reload)
             {
+                var bs = $.fn.blockstrap;
                 if(reload !== false) reload = true;
                 if(localStorage)
                 {
@@ -947,7 +958,7 @@ var blockstrap_core = function()
                             localStorage.removeItem(k);
                         }
                     });
-                    $.fn.blockstrap.settings.info.storage = {
+                    bs.settings.info.storage = {
                         local: {
                             used: '' + ((JSON.stringify(localStorage).length * 2) / 1000000) + ' MB',
                             remaining: '' + ((2490000 - (JSON.stringify(localStorage).length * 2)) / 1000000) + ' MB'
@@ -955,16 +966,16 @@ var blockstrap_core = function()
                     };
                     if(reload)
                     {
-                        $.fn.blockstrap.templates.render(bs.settings.page_base, function()
+                        bs.templates.render(bs.settings.page_base, function()
                         {
-                            $.fn.blockstrap.core.ready();
-                            $.fn.blockstrap.core.loader('close');
+                            bs.core.ready();
+                            bs.core.loader('close');
                         }, true);
                     }
                     else
                     {
-                        var remaining = $.fn.blockstrap.settings.info.storage.local.remaining;
-                        $.fn.blockstrap.core.modal('Device Reset', remaining + ' Local Storage Remaining');
+                        var remaining = bs.settings.info.storage.local.remaining;
+                        bs.core.modal('Device Reset', remaining + ' Local Storage Remaining');
                     }
                 }
             },
