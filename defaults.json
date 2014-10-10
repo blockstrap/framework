@@ -12,6 +12,7 @@
     "html_base": "html/",
     "data_base": "data/",
     "core_base": "blockstrap/",
+    "theme_base": "themes/",
     "dependency_base": "js/dependencies/",
     "module_base": "js/modules/",
     "page_base": "index",

@@ -1,3 +1,14 @@
+/*
+
+REMEMBER TO DO THE FOLLOWING AFTER REPLACING / UPDATING THIS CSS
+
+1). UPDATE FONT URLS
+../../../blockstrap/bootstrap/fonts/glyphicons-halflings-regular
+
+2). TRY TO AUTOMATE THIS FLOW
+
+*/
+
 /*! normalize.css v3.0.0 | MIT License | git.io/normalize */
 html {
   font-family: sans-serif;
@@ -2367,8 +2378,8 @@ input[type="button"].btn-block {
 }
 @font-face {
   font-family: 'Glyphicons Halflings';
-  src: url('blockstrap/bootstrap/fonts/glyphicons-halflings-regular.eot');
-  src: url('blockstrap/bootstrap/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('blockstrap/bootstrap/fonts/glyphicons-halflings-regular.woff') format('woff'), url('blockstrap/bootstrap/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('blockstrap/bootstrap/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+  src: url('../../../blockstrap/bootstrap/fonts/glyphicons-halflings-regular.eot');
+  src: url('../../../blockstrap/bootstrap/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../../../blockstrap/bootstrap/fonts/glyphicons-halflings-regular.woff') format('woff'), url('../../../blockstrap/bootstrap/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../../../blockstrap/bootstrap/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 .glyphicon {
   position: relative;
@@ -6044,6 +6055,9 @@ html {
   background-repeat: no-repeat !important;
   background-position: center center !important;
 }
+.blockstrap-wrapper p.break-word {
+  word-wrap: break-word;
+}
 .blockstrap-wrapper.loading {
   background: black;
 }
@@ -6269,6 +6283,11 @@ SIDEBAR
   width: 250px;
   position: fixed;
 }
+.blockstrap-wrapper #sidebar .sidebar-wrapper {
+  position: fixed;
+  left: 80px;
+  right: 20px;
+}
 .blockstrap-wrapper #sidebar .avatar {
   padding: 5px;
   background: #475862;
@@ -6344,7 +6363,9 @@ CONTENT / PANELS
   right: 0;
   top: 60px;
   padding-top: 20px;
+  display: block;
   position: absolute;
+  min-height: 100%;
   z-index: 2;
 }
 .blockstrap-wrapper #main-content a {
@@ -6354,8 +6375,11 @@ CONTENT / PANELS
   color: #757575;
 }
 .blockstrap-wrapper #main-content .panel-wrapper {
+  display: inline-block;
+  position: relative;
   padding-left: 20px;
   padding-right: 20px;
+  margin-bottom: 20px;
 }
 .blockstrap-wrapper #main-content .panel {
   padding: 0;
@@ -6393,8 +6417,18 @@ CONTENT / PANELS
 .blockstrap-wrapper #main-content .panel .panel-body .panel .panel-description {
   display: block;
 }
+.blockstrap-wrapper #main-content .panel .panel-body .panel.list-group-item {
+  width: 50%;
+}
+.blockstrap-wrapper #main-content .panel .panel-body .panel.list-group-item .list-item-content {
+  padding: 21px 0;
+}
 .blockstrap-wrapper #main-content .panel .panel-body.padless {
   padding: 0;
+}
+.blockstrap-wrapper #main-content .panel .panel-body.padless ul.list-group {
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 .blockstrap-wrapper #main-content .actions.col-md-12 {
   padding: 0 20px calc(40px);
@@ -7198,6 +7232,9 @@ REMEMBER TO REMOVE FROM MAIN CSS IF RESET HERE FIRST
 .blockstrap-wrapper #sidebar-toggle {
   display: inline-block;
 }
+.blockstrap-wrapper #main-content .panel-wrapper {
+  width: 100%;
+}
 .blockstrap-wrapper #main-content .panel-wrapper.col-md-6.odd {
   padding-right: 20px;
 }
@@ -7276,7 +7313,8 @@ FUNKY SIDEBARS ON MOBILE
 BOOTSTRAP BREAKPOINTS
 
 */
-.blockstrap-wrapper {
+html .blockstrap-wrapper,
+body .blockstrap-wrapper {
   /*
     
     ONE OF MANY THINGS THAT NEEDS TO BE MOVED TO THEME FILES
@@ -7285,97 +7323,136 @@ BOOTSTRAP BREAKPOINTS
   /* POINT OF SEARCH HITTING NAV */
 }
 @media (min-width: 768px) {
-  .blockstrap-wrapper #search-form #search-term {
+  html .blockstrap-wrapper #search-form #search-term,
+  body .blockstrap-wrapper #search-form #search-term {
     padding: 8px 15px;
     font-size: 12px;
   }
-  .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(even),
-  .blockstrap-wrapper .panel .panel-body .panel:nth-child(even) {
+  html .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(even),
+  body .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(even),
+  html .blockstrap-wrapper .panel .panel-body .panel:nth-child(even),
+  body .blockstrap-wrapper .panel .panel-body .panel:nth-child(even) {
     background: #eeeeee;
   }
-  .blockstrap-wrapper #main-content .panel .panel-body .panel.col-sm-6,
-  .blockstrap-wrapper .panel .panel-body .panel.col-sm-6 {
+  html .blockstrap-wrapper #main-content .panel .panel-body .panel.col-sm-6,
+  body .blockstrap-wrapper #main-content .panel .panel-body .panel.col-sm-6,
+  html .blockstrap-wrapper .panel .panel-body .panel.col-sm-6,
+  body .blockstrap-wrapper .panel .panel-body .panel.col-sm-6 {
     min-width: 50%;
     border-top: none;
   }
-  .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(even),
-  .blockstrap-wrapper .panel .panel-body .panel:nth-child(even) {
+  html .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(even),
+  body .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(even),
+  html .blockstrap-wrapper .panel .panel-body .panel:nth-child(even),
+  body .blockstrap-wrapper .panel .panel-body .panel:nth-child(even) {
     border-left: 1px solid #cccccc;
   }
-  .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(2n+4),
-  .blockstrap-wrapper .panel .panel-body .panel:nth-child(2n+4),
-  .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(2n+3),
-  .blockstrap-wrapper .panel .panel-body .panel:nth-child(2n+3) {
+  html .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(2n+4),
+  body .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(2n+4),
+  html .blockstrap-wrapper .panel .panel-body .panel:nth-child(2n+4),
+  body .blockstrap-wrapper .panel .panel-body .panel:nth-child(2n+4),
+  html .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(2n+3),
+  body .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(2n+3),
+  html .blockstrap-wrapper .panel .panel-body .panel:nth-child(2n+3),
+  body .blockstrap-wrapper .panel .panel-body .panel:nth-child(2n+3) {
     border-top: 1px solid #cccccc;
   }
-  .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(4n+4),
-  .blockstrap-wrapper .panel .panel-body .panel:nth-child(4n+4),
-  .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(4n+3),
-  .blockstrap-wrapper .panel .panel-body .panel:nth-child(4n+3) {
+  html .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(4n+4),
+  body .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(4n+4),
+  html .blockstrap-wrapper .panel .panel-body .panel:nth-child(4n+4),
+  body .blockstrap-wrapper .panel .panel-body .panel:nth-child(4n+4),
+  html .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(4n+3),
+  body .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(4n+3),
+  html .blockstrap-wrapper .panel .panel-body .panel:nth-child(4n+3),
+  body .blockstrap-wrapper .panel .panel-body .panel:nth-child(4n+3) {
     background: #ffffff;
   }
-  .blockstrap-wrapper #main-content .panel-body .jumbotron .intro,
-  .blockstrap-wrapper .jumbotron .intro,
-  .blockstrap-wrapper #main-content .panel-body .jumbotron h1,
-  .blockstrap-wrapper .jumbotron h1 {
+  html .blockstrap-wrapper #main-content .panel-body .jumbotron .intro,
+  body .blockstrap-wrapper #main-content .panel-body .jumbotron .intro,
+  html .blockstrap-wrapper .jumbotron .intro,
+  body .blockstrap-wrapper .jumbotron .intro,
+  html .blockstrap-wrapper #main-content .panel-body .jumbotron h1,
+  body .blockstrap-wrapper #main-content .panel-body .jumbotron h1,
+  html .blockstrap-wrapper .jumbotron h1,
+  body .blockstrap-wrapper .jumbotron h1 {
     text-align: left;
     padding: 0 180px 0 0;
   }
-  .blockstrap-wrapper #main-content .panel-body .jumbotron .intro,
-  .blockstrap-wrapper .jumbotron .intro {
+  html .blockstrap-wrapper #main-content .panel-body .jumbotron .intro,
+  body .blockstrap-wrapper #main-content .panel-body .jumbotron .intro,
+  html .blockstrap-wrapper .jumbotron .intro,
+  body .blockstrap-wrapper .jumbotron .intro {
     padding-bottom: 0;
   }
-  .blockstrap-wrapper #main-content .panel-body .jumbotron .actions,
-  .blockstrap-wrapper .jumbotron .actions {
+  html .blockstrap-wrapper #main-content .panel-body .jumbotron .actions,
+  body .blockstrap-wrapper #main-content .panel-body .jumbotron .actions,
+  html .blockstrap-wrapper .jumbotron .actions,
+  body .blockstrap-wrapper .jumbotron .actions {
     float: right;
     display: inline-block;
     margin-top: -35px;
   }
-  .blockstrap-wrapper #main-content .panel-body .jumbotron .jumbotron-contents,
-  .blockstrap-wrapper .jumbotron .jumbotron-contents {
+  html .blockstrap-wrapper #main-content .panel-body .jumbotron .jumbotron-contents,
+  body .blockstrap-wrapper #main-content .panel-body .jumbotron .jumbotron-contents,
+  html .blockstrap-wrapper .jumbotron .jumbotron-contents,
+  body .blockstrap-wrapper .jumbotron .jumbotron-contents {
     text-align: left;
   }
 }
 @media (min-width: 992px) {
-  .blockstrap-wrapper #main-content .panel-wrapper.col-md-6.odd {
+  html .blockstrap-wrapper #main-content .panel-wrapper.col-md-6.odd,
+  body .blockstrap-wrapper #main-content .panel-wrapper.col-md-6.odd {
     padding-right: calc(10px);
   }
-  .blockstrap-wrapper #main-content .panel-wrapper.col-md-6.even {
+  html .blockstrap-wrapper #main-content .panel-wrapper.col-md-6.even,
+  body .blockstrap-wrapper #main-content .panel-wrapper.col-md-6.even {
     padding-left: calc(10px);
   }
-  .blockstrap-wrapper .jumbotron .actions .disabled {
+  html .blockstrap-wrapper .jumbotron .actions .disabled,
+  body .blockstrap-wrapper .jumbotron .actions .disabled {
     display: inline-block;
   }
 }
 @media (max-width: 660px) {
-  .blockstrap-wrapper {
+  html .blockstrap-wrapper,
+  body .blockstrap-wrapper {
     overflow-x: visible;
   }
-  .blockstrap-wrapper .modal-footer .btn,
-  .blockstrap-wrapper .actions .btn,
-  .blockstrap-wrapper .btn {
+  html .blockstrap-wrapper .modal-footer .btn,
+  body .blockstrap-wrapper .modal-footer .btn,
+  html .blockstrap-wrapper .actions .btn,
+  body .blockstrap-wrapper .actions .btn,
+  html .blockstrap-wrapper .btn,
+  body .blockstrap-wrapper .btn {
     width: 100%;
     margin: 0 0 5px;
     outline: 0;
   }
-  .blockstrap-wrapper form .actions .btn-split.pull-right,
-  .blockstrap-wrapper .btn-split.pull-right {
+  html .blockstrap-wrapper form .actions .btn-split.pull-right,
+  body .blockstrap-wrapper form .actions .btn-split.pull-right,
+  html .blockstrap-wrapper .btn-split.pull-right,
+  body .blockstrap-wrapper .btn-split.pull-right {
     width: 47%;
     margin-left: 0;
     float: left !important;
   }
-  .blockstrap-wrapper form .actions .btn-split.pull-right:last-child,
-  .blockstrap-wrapper .btn-split.pull-right:last-child {
+  html .blockstrap-wrapper form .actions .btn-split.pull-right:last-child,
+  body .blockstrap-wrapper form .actions .btn-split.pull-right:last-child,
+  html .blockstrap-wrapper .btn-split.pull-right:last-child,
+  body .blockstrap-wrapper .btn-split.pull-right:last-child {
     float: right !important;
     margin-left: calc(10px);
   }
-  .blockstrap-wrapper .list-group-item {
+  html .blockstrap-wrapper .list-group-item,
+  body .blockstrap-wrapper .list-group-item {
     text-align: center;
   }
-  .blockstrap-wrapper .list-group-item .list-item-content {
+  html .blockstrap-wrapper .list-group-item .list-item-content,
+  body .blockstrap-wrapper .list-group-item .list-item-content {
     padding-right: 0;
   }
-  .blockstrap-wrapper .list-group-item .btn-xs.pull-right {
+  html .blockstrap-wrapper .list-group-item .btn-xs.pull-right,
+  body .blockstrap-wrapper .list-group-item .btn-xs.pull-right {
     float: none !important;
     left: auto;
     margin: 0;
@@ -7385,86 +7462,126 @@ BOOTSTRAP BREAKPOINTS
     top: auto;
     width: auto;
   }
-  .blockstrap-wrapper .panel-body .jumbotron {
+  html .blockstrap-wrapper .panel-body .jumbotron,
+  body .blockstrap-wrapper .panel-body .jumbotron {
     border: none;
   }
-  .blockstrap-wrapper .modal form.form-horizontal label.control-label,
-  .blockstrap-wrapper .modal form label.control-label,
-  .blockstrap-wrapper .modal form.form-horizontal label,
-  .blockstrap-wrapper .modal form label {
+  html .blockstrap-wrapper .modal form.form-horizontal label.control-label,
+  body .blockstrap-wrapper .modal form.form-horizontal label.control-label,
+  html .blockstrap-wrapper .modal form label.control-label,
+  body .blockstrap-wrapper .modal form label.control-label,
+  html .blockstrap-wrapper .modal form.form-horizontal label,
+  body .blockstrap-wrapper .modal form.form-horizontal label,
+  html .blockstrap-wrapper .modal form label,
+  body .blockstrap-wrapper .modal form label {
     width: 100%;
     text-align: center;
     border-radius: 4px 4px 0 0;
   }
-  .blockstrap-wrapper .modal form.form-horizontal .col-xs-8,
-  .blockstrap-wrapper .modal form .col-xs-8,
-  .blockstrap-wrapper .modal form.form-horizontal .col-xs-9,
-  .blockstrap-wrapper .modal form .col-xs-9,
-  .blockstrap-wrapper .modal form.form-horizontal .col-xs-12,
-  .blockstrap-wrapper .modal form .col-xs-12 {
+  html .blockstrap-wrapper .modal form.form-horizontal .col-xs-8,
+  body .blockstrap-wrapper .modal form.form-horizontal .col-xs-8,
+  html .blockstrap-wrapper .modal form .col-xs-8,
+  body .blockstrap-wrapper .modal form .col-xs-8,
+  html .blockstrap-wrapper .modal form.form-horizontal .col-xs-9,
+  body .blockstrap-wrapper .modal form.form-horizontal .col-xs-9,
+  html .blockstrap-wrapper .modal form .col-xs-9,
+  body .blockstrap-wrapper .modal form .col-xs-9,
+  html .blockstrap-wrapper .modal form.form-horizontal .col-xs-12,
+  body .blockstrap-wrapper .modal form.form-horizontal .col-xs-12,
+  html .blockstrap-wrapper .modal form .col-xs-12,
+  body .blockstrap-wrapper .modal form .col-xs-12 {
     width: 100%;
   }
-  .blockstrap-wrapper .modal form.form-horizontal .col-xs-8 input,
-  .blockstrap-wrapper .modal form .col-xs-8 input,
-  .blockstrap-wrapper .modal form.form-horizontal .col-xs-9 input,
-  .blockstrap-wrapper .modal form .col-xs-9 input,
-  .blockstrap-wrapper .modal form.form-horizontal .col-xs-12 input,
-  .blockstrap-wrapper .modal form .col-xs-12 input,
-  .blockstrap-wrapper .modal form.form-horizontal .col-xs-8 select,
-  .blockstrap-wrapper .modal form .col-xs-8 select,
-  .blockstrap-wrapper .modal form.form-horizontal .col-xs-9 select,
-  .blockstrap-wrapper .modal form .col-xs-9 select,
-  .blockstrap-wrapper .modal form.form-horizontal .col-xs-12 select,
-  .blockstrap-wrapper .modal form .col-xs-12 select {
+  html .blockstrap-wrapper .modal form.form-horizontal .col-xs-8 input,
+  body .blockstrap-wrapper .modal form.form-horizontal .col-xs-8 input,
+  html .blockstrap-wrapper .modal form .col-xs-8 input,
+  body .blockstrap-wrapper .modal form .col-xs-8 input,
+  html .blockstrap-wrapper .modal form.form-horizontal .col-xs-9 input,
+  body .blockstrap-wrapper .modal form.form-horizontal .col-xs-9 input,
+  html .blockstrap-wrapper .modal form .col-xs-9 input,
+  body .blockstrap-wrapper .modal form .col-xs-9 input,
+  html .blockstrap-wrapper .modal form.form-horizontal .col-xs-12 input,
+  body .blockstrap-wrapper .modal form.form-horizontal .col-xs-12 input,
+  html .blockstrap-wrapper .modal form .col-xs-12 input,
+  body .blockstrap-wrapper .modal form .col-xs-12 input,
+  html .blockstrap-wrapper .modal form.form-horizontal .col-xs-8 select,
+  body .blockstrap-wrapper .modal form.form-horizontal .col-xs-8 select,
+  html .blockstrap-wrapper .modal form .col-xs-8 select,
+  body .blockstrap-wrapper .modal form .col-xs-8 select,
+  html .blockstrap-wrapper .modal form.form-horizontal .col-xs-9 select,
+  body .blockstrap-wrapper .modal form.form-horizontal .col-xs-9 select,
+  html .blockstrap-wrapper .modal form .col-xs-9 select,
+  body .blockstrap-wrapper .modal form .col-xs-9 select,
+  html .blockstrap-wrapper .modal form.form-horizontal .col-xs-12 select,
+  body .blockstrap-wrapper .modal form.form-horizontal .col-xs-12 select,
+  html .blockstrap-wrapper .modal form .col-xs-12 select,
+  body .blockstrap-wrapper .modal form .col-xs-12 select {
     text-align: center;
     border-radius: 0 0 4px 4px;
   }
-  .blockstrap-wrapper .panel-wrapper form .col-xs-3,
-  .blockstrap-wrapper .panel-wrapper form .col-xs-6,
-  .blockstrap-wrapper .panel-wrapper form .col-xs-9,
-  .blockstrap-wrapper .panel-wrapper form .col-sm-3,
-  .blockstrap-wrapper .panel-wrapper form .col-sm-6 {
+  html .blockstrap-wrapper .panel-wrapper form .col-xs-3,
+  body .blockstrap-wrapper .panel-wrapper form .col-xs-3,
+  html .blockstrap-wrapper .panel-wrapper form .col-xs-6,
+  body .blockstrap-wrapper .panel-wrapper form .col-xs-6,
+  html .blockstrap-wrapper .panel-wrapper form .col-xs-9,
+  body .blockstrap-wrapper .panel-wrapper form .col-xs-9,
+  html .blockstrap-wrapper .panel-wrapper form .col-sm-3,
+  body .blockstrap-wrapper .panel-wrapper form .col-sm-3,
+  html .blockstrap-wrapper .panel-wrapper form .col-sm-6,
+  body .blockstrap-wrapper .panel-wrapper form .col-sm-6 {
     width: 100%;
     text-align: center;
   }
-  .blockstrap-wrapper .panel-wrapper form .bootstrap-switch-wrapper {
+  html .blockstrap-wrapper .panel-wrapper form .bootstrap-switch-wrapper,
+  body .blockstrap-wrapper .panel-wrapper form .bootstrap-switch-wrapper {
     float: none;
   }
-  .blockstrap-wrapper .panel-wrapper form .col-sm-4.bs-dobs {
+  html .blockstrap-wrapper .panel-wrapper form .col-sm-4.bs-dobs,
+  body .blockstrap-wrapper .panel-wrapper form .col-sm-4.bs-dobs {
     width: 32%;
   }
-  .blockstrap-wrapper .panel-wrapper form .form-group {
+  html .blockstrap-wrapper .panel-wrapper form .form-group,
+  body .blockstrap-wrapper .panel-wrapper form .form-group {
     padding: 10px 0 30px;
   }
-  .blockstrap-wrapper .panel-wrapper form .actions {
+  html .blockstrap-wrapper .panel-wrapper form .actions,
+  body .blockstrap-wrapper .panel-wrapper form .actions {
     padding: 20px;
     height: 90px;
   }
-  .blockstrap-wrapper .panel-wrapper table tbody tr td:first-child,
-  .blockstrap-wrapper .panel-wrapper table tbody tr td:last-child {
+  html .blockstrap-wrapper .panel-wrapper table tbody tr td:first-child,
+  body .blockstrap-wrapper .panel-wrapper table tbody tr td:first-child,
+  html .blockstrap-wrapper .panel-wrapper table tbody tr td:last-child,
+  body .blockstrap-wrapper .panel-wrapper table tbody tr td:last-child {
     width: 100%;
     float: left;
   }
-  .blockstrap-wrapper .panel-wrapper table tbody tr td:first-child .cell,
-  .blockstrap-wrapper .panel-wrapper table tbody tr td:last-child .cell {
+  html .blockstrap-wrapper .panel-wrapper table tbody tr td:first-child .cell,
+  body .blockstrap-wrapper .panel-wrapper table tbody tr td:first-child .cell,
+  html .blockstrap-wrapper .panel-wrapper table tbody tr td:last-child .cell,
+  body .blockstrap-wrapper .panel-wrapper table tbody tr td:last-child .cell {
     width: 100%;
     text-align: center;
   }
-  .blockstrap-wrapper .panel-wrapper table tbody tr td:first-child .hidden {
+  html .blockstrap-wrapper .panel-wrapper table tbody tr td:first-child .hidden,
+  body .blockstrap-wrapper .panel-wrapper table tbody tr td:first-child .hidden {
     display: inline !important;
     visibility: visible !important;
   }
-  .blockstrap-wrapper #sidebar {
+  html .blockstrap-wrapper #sidebar,
+  body .blockstrap-wrapper #sidebar {
     top: calc(60px);
     left: 60px;
     right: 0;
     width: auto;
     z-index: 2;
   }
-  .blockstrap-wrapper #sidebar footer {
+  html .blockstrap-wrapper #sidebar footer,
+  body .blockstrap-wrapper #sidebar footer {
     display: none;
   }
-  .blockstrap-wrapper #sidebar:before {
+  html .blockstrap-wrapper #sidebar:before,
+  body .blockstrap-wrapper #sidebar:before {
     content: "";
     background: #475862;
     height: 60px;
@@ -7476,44 +7593,58 @@ BOOTSTRAP BREAKPOINTS
     left: 0;
     right: 0;
   }
-  .blockstrap-wrapper #main-content,
-  .blockstrap-wrapper #navigation:before,
-  .blockstrap-wrapper header {
+  html .blockstrap-wrapper #main-content,
+  body .blockstrap-wrapper #main-content,
+  html .blockstrap-wrapper #navigation:before,
+  body .blockstrap-wrapper #navigation:before,
+  html .blockstrap-wrapper header,
+  body .blockstrap-wrapper header {
     left: 0;
   }
-  .blockstrap-wrapper #navigation:before {
+  html .blockstrap-wrapper #navigation:before,
+  body .blockstrap-wrapper #navigation:before {
     padding-right: 30px;
   }
-  .blockstrap-wrapper #main-content {
+  html .blockstrap-wrapper #main-content,
+  body .blockstrap-wrapper #main-content {
     position: relative;
     overflow: visible;
     top: 0;
     padding-top: calc(65px);
     padding-bottom: calc(80px);
   }
-  .blockstrap-wrapper #main-content .panel .panel-heading {
+  html .blockstrap-wrapper #main-content .panel .panel-heading,
+  body .blockstrap-wrapper #main-content .panel .panel-heading {
     text-align: center;
   }
-  .blockstrap-wrapper #main-content .panel-wrapper,
-  .blockstrap-wrapper #main-content .panel-wrapper.col-md-6.odd,
-  .blockstrap-wrapper #main-content .panel-wrapper.col-md-6.even {
+  html .blockstrap-wrapper #main-content .panel-wrapper,
+  body .blockstrap-wrapper #main-content .panel-wrapper,
+  html .blockstrap-wrapper #main-content .panel-wrapper.col-md-6.odd,
+  body .blockstrap-wrapper #main-content .panel-wrapper.col-md-6.odd,
+  html .blockstrap-wrapper #main-content .panel-wrapper.col-md-6.even,
+  body .blockstrap-wrapper #main-content .panel-wrapper.col-md-6.even {
     padding-left: 5px;
     padding-right: 5px;
     margin-bottom: 10px;
   }
-  .blockstrap-wrapper #main-content .panel {
+  html .blockstrap-wrapper #main-content .panel,
+  body .blockstrap-wrapper #main-content .panel {
     margin-bottom: 5px;
   }
-  .blockstrap-wrapper #main-content .actions.col-md-12 {
+  html .blockstrap-wrapper #main-content .actions.col-md-12,
+  body .blockstrap-wrapper #main-content .actions.col-md-12 {
     padding-top: 20px;
   }
-  .blockstrap-wrapper .panel-body .jumbotron h1 {
+  html .blockstrap-wrapper .panel-body .jumbotron h1,
+  body .blockstrap-wrapper .panel-body .jumbotron h1 {
     font-size: 30px;
   }
-  .blockstrap-wrapper .panel-body .jumbotron .intro {
+  html .blockstrap-wrapper .panel-body .jumbotron .intro,
+  body .blockstrap-wrapper .panel-body .jumbotron .intro {
     font-size: 20px;
   }
-  .blockstrap-wrapper #mobile-footer {
+  html .blockstrap-wrapper #mobile-footer,
+  body .blockstrap-wrapper #mobile-footer {
     display: block;
     position: fixed;
     bottom: 0;
@@ -7523,7 +7654,8 @@ BOOTSTRAP BREAKPOINTS
     margin-top: -60px;
     background: #475862;
   }
-  .blockstrap-wrapper #mobile-footer a {
+  html .blockstrap-wrapper #mobile-footer a,
+  body .blockstrap-wrapper #mobile-footer a {
     display: inline-block;
     position: relative;
     width: 25%;
@@ -7535,55 +7667,89 @@ BOOTSTRAP BREAKPOINTS
     line-height: 60px;
     border-left: 1px dotted #111e27;
   }
-  .blockstrap-wrapper #mobile-footer a span.text {
+  html .blockstrap-wrapper #mobile-footer a span.text,
+  body .blockstrap-wrapper #mobile-footer a span.text {
     display: block;
     text-indent: -999em;
   }
-  .blockstrap-wrapper #mobile-footer a:first-child {
+  html .blockstrap-wrapper #mobile-footer a:first-child,
+  body .blockstrap-wrapper #mobile-footer a:first-child {
     border-left: none;
   }
-  .blockstrap-wrapper #mobile-footer a:hover,
-  .blockstrap-wrapper #mobile-footer a.active {
+  html .blockstrap-wrapper #mobile-footer a:hover,
+  body .blockstrap-wrapper #mobile-footer a:hover,
+  html .blockstrap-wrapper #mobile-footer a.active,
+  body .blockstrap-wrapper #mobile-footer a.active {
     color: #ffff99;
   }
-  .blockstrap-wrapper #mobile-footer a:hover {
+  html .blockstrap-wrapper #mobile-footer a:hover,
+  body .blockstrap-wrapper #mobile-footer a:hover {
     opacity: 1;
   }
-  .blockstrap-wrapper #mobile-footer .loading {
+  html .blockstrap-wrapper #mobile-footer .loading,
+  body .blockstrap-wrapper #mobile-footer .loading {
     background-position: center 25px !important;
   }
-  .blockstrap-wrapper #navigation {
+  html .blockstrap-wrapper #navigation,
+  body .blockstrap-wrapper #navigation {
     left: 0;
+  }
+  html .blockstrap-wrapper .modal .modal-dialog .modal-header h4,
+  body .blockstrap-wrapper .modal .modal-dialog .modal-header h4 {
+    font-size: 14px;
+    word-wrap: break-word;
+  }
+  html .blockstrap-wrapper .modal .modal-dialog .modal-body .qr-holder,
+  body .blockstrap-wrapper .modal .modal-dialog .modal-body .qr-holder {
+    padding: 5px;
   }
 }
 @media (min-width: 661px) {
-  .blockstrap-wrapper {
+  html .blockstrap-wrapper,
+  body .blockstrap-wrapper {
     overflow-x: hidden;
     overflow-y: hidden;
   }
-  .blockstrap-wrapper header #sidebar-toggle {
+  html .blockstrap-wrapper header #sidebar-toggle,
+  body .blockstrap-wrapper header #sidebar-toggle {
     display: none;
   }
-  .blockstrap-wrapper #search-form {
+  html .blockstrap-wrapper #search-form,
+  body .blockstrap-wrapper #search-form {
     left: calc(300px);
+    right: 20px;
+  }
+  html .blockstrap-wrapper #sidebar .sidebar-wrapper,
+  body .blockstrap-wrapper #sidebar .sidebar-wrapper {
+    position: absolute;
+    left: 20px;
     right: 20px;
   }
 }
 @media (max-width: 991px) {
-  .blockstrap-wrapper table tbody tr td:first-child .hidden {
+  html .blockstrap-wrapper table tbody tr td:first-child .hidden,
+  body .blockstrap-wrapper table tbody tr td:first-child .hidden {
     display: inline !important;
     visibility: visible !important;
   }
 }
 @media (min-width: 992px) {
-  .blockstrap-wrapper .collapsable {
+  html .blockstrap-wrapper .collapsable,
+  body .blockstrap-wrapper .collapsable {
     display: inline-block;
   }
-  .blockstrap-wrapper header #menu-toggle,
-  .blockstrap-wrapper header #sidebar-toggle {
+  html .blockstrap-wrapper header #menu-toggle,
+  body .blockstrap-wrapper header #menu-toggle,
+  html .blockstrap-wrapper header #sidebar-toggle,
+  body .blockstrap-wrapper header #sidebar-toggle {
     display: none;
   }
-  .blockstrap-wrapper #navigation {
+  html .blockstrap-wrapper #main-content .panel-wrapper.col-md-6,
+  body .blockstrap-wrapper #main-content .panel-wrapper.col-md-6 {
+    width: 50%;
+  }
+  html .blockstrap-wrapper #navigation,
+  body .blockstrap-wrapper #navigation {
     background: transparent;
     display: block;
     top: 0;
@@ -7593,7 +7759,8 @@ BOOTSTRAP BREAKPOINTS
     height: 60px;
     z-index: 99999;
   }
-  .blockstrap-wrapper #navigation a.nav-links {
+  html .blockstrap-wrapper #navigation a.nav-links,
+  body .blockstrap-wrapper #navigation a.nav-links {
     font-size: 11px;
     display: inline-block;
     position: relative;
@@ -7604,86 +7771,125 @@ BOOTSTRAP BREAKPOINTS
     background: transparent;
     border: 1px solid transparent;
   }
-  .blockstrap-wrapper #navigation a.nav-links:hover {
+  html .blockstrap-wrapper #navigation a.nav-links:hover,
+  body .blockstrap-wrapper #navigation a.nav-links:hover {
     color: #ffff99;
     background: #2f2f2f;
     border-color: #000000;
   }
-  .blockstrap-wrapper #navigation a.nav-links.active:hover,
-  .blockstrap-wrapper #navigation a.nav-links.active {
+  html .blockstrap-wrapper #navigation a.nav-links.active:hover,
+  body .blockstrap-wrapper #navigation a.nav-links.active:hover,
+  html .blockstrap-wrapper #navigation a.nav-links.active,
+  body .blockstrap-wrapper #navigation a.nav-links.active {
     color: #aaaaaa;
     background: #2b3f4b;
     border-color: #111e27;
   }
-  .blockstrap-wrapper #navigation a.nav-links.active:hover {
+  html .blockstrap-wrapper #navigation a.nav-links.active:hover,
+  body .blockstrap-wrapper #navigation a.nav-links.active:hover {
     color: #ffff99;
   }
-  .blockstrap-wrapper #search-form {
+  html .blockstrap-wrapper #search-form,
+  body .blockstrap-wrapper #search-form {
     left: auto;
     right: 0;
     padding-left: 0;
     padding-right: 20px;
     width: 300px;
   }
-  .blockstrap-wrapper #navigation:before {
+  html .blockstrap-wrapper #navigation:before,
+  body .blockstrap-wrapper #navigation:before {
     display: none;
   }
-  .blockstrap-wrapper .jumbotron-contents .btn-table-filter {
+  html .blockstrap-wrapper .jumbotron-contents .btn-table-filter,
+  body .blockstrap-wrapper .jumbotron-contents .btn-table-filter {
     display: inline-block;
   }
-  .blockstrap-wrapper #main-content table.table thead,
-  .blockstrap-wrapper table.table thead {
+  html .blockstrap-wrapper #main-content table.table thead,
+  body .blockstrap-wrapper #main-content table.table thead,
+  html .blockstrap-wrapper table.table thead,
+  body .blockstrap-wrapper table.table thead {
     visibility: visible;
   }
-  .blockstrap-wrapper #main-content table.table thead tr th,
-  .blockstrap-wrapper table.table thead tr th {
+  html .blockstrap-wrapper #main-content table.table thead tr th,
+  body .blockstrap-wrapper #main-content table.table thead tr th,
+  html .blockstrap-wrapper table.table thead tr th,
+  body .blockstrap-wrapper table.table thead tr th {
     display: table-cell;
   }
-  .blockstrap-wrapper #main-content table.table thead tr th,
-  .blockstrap-wrapper table.table thead tr th,
-  .blockstrap-wrapper #main-content table.table tbody tr td,
-  .blockstrap-wrapper table.table tbody tr td {
+  html .blockstrap-wrapper #main-content table.table thead tr th,
+  body .blockstrap-wrapper #main-content table.table thead tr th,
+  html .blockstrap-wrapper table.table thead tr th,
+  body .blockstrap-wrapper table.table thead tr th,
+  html .blockstrap-wrapper #main-content table.table tbody tr td,
+  body .blockstrap-wrapper #main-content table.table tbody tr td,
+  html .blockstrap-wrapper table.table tbody tr td,
+  body .blockstrap-wrapper table.table tbody tr td {
     display: table-cell;
   }
-  .blockstrap-wrapper #main-content table.table thead tr th .btn-xs,
-  .blockstrap-wrapper table.table thead tr th .btn-xs,
-  .blockstrap-wrapper #main-content table.table tbody tr td .btn-xs,
-  .blockstrap-wrapper table.table tbody tr td .btn-xs {
+  html .blockstrap-wrapper #main-content table.table thead tr th .btn-xs,
+  body .blockstrap-wrapper #main-content table.table thead tr th .btn-xs,
+  html .blockstrap-wrapper table.table thead tr th .btn-xs,
+  body .blockstrap-wrapper table.table thead tr th .btn-xs,
+  html .blockstrap-wrapper #main-content table.table tbody tr td .btn-xs,
+  body .blockstrap-wrapper #main-content table.table tbody tr td .btn-xs,
+  html .blockstrap-wrapper table.table tbody tr td .btn-xs,
+  body .blockstrap-wrapper table.table tbody tr td .btn-xs {
     float: none;
   }
-  .blockstrap-wrapper #main-content table.table thead tr th .mobile-view,
-  .blockstrap-wrapper table.table thead tr th .mobile-view,
-  .blockstrap-wrapper #main-content table.table tbody tr td .mobile-view,
-  .blockstrap-wrapper table.table tbody tr td .mobile-view {
+  html .blockstrap-wrapper #main-content table.table thead tr th .mobile-view,
+  body .blockstrap-wrapper #main-content table.table thead tr th .mobile-view,
+  html .blockstrap-wrapper table.table thead tr th .mobile-view,
+  body .blockstrap-wrapper table.table thead tr th .mobile-view,
+  html .blockstrap-wrapper #main-content table.table tbody tr td .mobile-view,
+  body .blockstrap-wrapper #main-content table.table tbody tr td .mobile-view,
+  html .blockstrap-wrapper table.table tbody tr td .mobile-view,
+  body .blockstrap-wrapper table.table tbody tr td .mobile-view {
     display: none;
   }
-  .blockstrap-wrapper #main-content table.table thead tr th .ribbon,
-  .blockstrap-wrapper table.table thead tr th .ribbon,
-  .blockstrap-wrapper #main-content table.table tbody tr td .ribbon,
-  .blockstrap-wrapper table.table tbody tr td .ribbon {
+  html .blockstrap-wrapper #main-content table.table thead tr th .ribbon,
+  body .blockstrap-wrapper #main-content table.table thead tr th .ribbon,
+  html .blockstrap-wrapper table.table thead tr th .ribbon,
+  body .blockstrap-wrapper table.table thead tr th .ribbon,
+  html .blockstrap-wrapper #main-content table.table tbody tr td .ribbon,
+  body .blockstrap-wrapper #main-content table.table tbody tr td .ribbon,
+  html .blockstrap-wrapper table.table tbody tr td .ribbon,
+  body .blockstrap-wrapper table.table tbody tr td .ribbon {
     display: table-cell;
   }
-  .blockstrap-wrapper #main-content table.table tbody tr td:last-child,
-  .blockstrap-wrapper table.table tbody tr td:last-child {
+  html .blockstrap-wrapper #main-content table.table tbody tr td:last-child,
+  body .blockstrap-wrapper #main-content table.table tbody tr td:last-child,
+  html .blockstrap-wrapper table.table tbody tr td:last-child,
+  body .blockstrap-wrapper table.table tbody tr td:last-child {
     display: table-cell;
     text-align: right;
   }
-  .blockstrap-wrapper .dataTables_wrapper .dataTables_length,
-  .blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_length,
-  .blockstrap-wrapper .dataTables_wrapper .dataTables_info,
-  .blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_info,
-  .blockstrap-wrapper .dataTables_wrapper .dataTables_paginate,
-  .blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_paginate {
+  html .blockstrap-wrapper .dataTables_wrapper .dataTables_length,
+  body .blockstrap-wrapper .dataTables_wrapper .dataTables_length,
+  html .blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_length,
+  body .blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_length,
+  html .blockstrap-wrapper .dataTables_wrapper .dataTables_info,
+  body .blockstrap-wrapper .dataTables_wrapper .dataTables_info,
+  html .blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_info,
+  body .blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_info,
+  html .blockstrap-wrapper .dataTables_wrapper .dataTables_paginate,
+  body .blockstrap-wrapper .dataTables_wrapper .dataTables_paginate,
+  html .blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_paginate,
+  body .blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_paginate {
     display: inline-block;
     text-align: left;
     width: 33%;
   }
-  .blockstrap-wrapper .dataTables_wrapper .dataTables_info,
-  .blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_info {
+  html .blockstrap-wrapper .dataTables_wrapper .dataTables_info,
+  body .blockstrap-wrapper .dataTables_wrapper .dataTables_info,
+  html .blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_info,
+  body .blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_info {
     text-align: center;
   }
-  .blockstrap-wrapper .dataTables_wrapper .dataTables_paginate,
-  .blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_paginate {
+  html .blockstrap-wrapper .dataTables_wrapper .dataTables_paginate,
+  body .blockstrap-wrapper .dataTables_wrapper .dataTables_paginate,
+  html .blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_paginate,
+  body .blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_paginate {
     text-align: right;
   }
 }

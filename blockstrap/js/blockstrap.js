@@ -182,17 +182,84 @@ var blockstrap_core = function()
             },
             css: function(callback)
             {
+                var theme = $.fn.blockstrap.settings.theme;
                 var core_css = $.fn.blockstrap.settings.core_base + 'css/';
+                var theme_css = $.fn.blockstrap.settings.theme_base + theme + '/css/';
                 $.isArray($.fn.blockstrap.settings.css)
                 {
                     var files = Object.keys($.fn.blockstrap.settings.css).length;
                     $.each($.fn.blockstrap.settings.css, function(k, v)
                     {
+                        $.ajax({
+                            url: theme_css+v+'.css',
+                            error: function()
+                            {
+                                $.ajax({
+                                    url: core_css+v+'.css',
+                                    error: function()
+                                    {
+                                        if((k+1) >= files)
+                                        {
+                                            callback();
+                                        }
+                                    },
+                                    success: function(res)
+                                    {
+                                        if(res != '404')
+                                        {
+                                            $('head').append('<link rel="stylesheet" type="text/css" href="'+core_css+v+'.css">');
+                                        }
+                                        if((k+1) >= files)
+                                        {
+                                            callback();
+                                        }
+                                    }
+                                });
+                            },
+                            success: function(res)
+                            {
+                                if(res == '404')
+                                {
+                                    $.ajax({
+                                        url: core_css+v+'.css',
+                                        error: function()
+                                        {
+                                            if((k+1) >= files)
+                                            {
+                                                callback();
+                                            }
+                                        },
+                                        success: function(res)
+                                        {
+                                            if(res != '404')
+                                            {
+                                                $('head').append('<link rel="stylesheet" type="text/css" href="'+core_css+v+'.css">');
+                                            }
+                                            if((k+1) >= files)
+                                            {
+                                                callback();
+                                            }
+                                        }
+                                    });
+                                }
+                                else
+                                {
+                                    $('head').append('<link rel="stylesheet" type="text/css" href="'+theme_css+v+'.css">');
+                                    if((k+1) >= files)
+                                    {
+                                        callback();
+                                    }
+                                }
+                            }
+                        });
+                        
+                        /*
                         $('head').append('<link rel="stylesheet" type="text/css" href="'+core_css+v+'.css">');
                         if((k+1) >= files)
                         {
                             callback();
                         }
+                        */
                     })
                 }
             },
