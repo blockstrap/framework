@@ -5,7 +5,7 @@
     "role": "admin",
     "id": "blockstrap",
     "theme": "default",
-    "less": false,
+    "less": true,
     "test": false,
     "refresh": false,
     "cascade": true,

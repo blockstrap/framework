@@ -588,7 +588,7 @@ var blockstrap_core = function()
                     if(storage.less === false) store = false;
                     if(!less || refresh === true || store === false) 
                     {
-                        $('head').append('<link rel="stylesheet/less" type="text/css" href="'+$.fn.blockstrap.settings.core_base+'less/blockstrap.less">');
+                        $('head').append('<link rel="stylesheet/less" type="text/css" href="' + $.fn.blockstrap.settings.theme_base + $.fn.blockstrap.settings.theme + '/less/blockstrap.less">');
                         blockstrap_functions.js('js-blockstrap-less', $.fn.blockstrap.settings.core_base+'js/less.js', function()
                         {
                             var less_styles = false;
