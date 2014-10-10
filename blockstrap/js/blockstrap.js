@@ -494,7 +494,7 @@ var blockstrap_core = function()
                             }
                             else
                             {
-                                bs.templates.render('index', function()
+                                bs.templates.render(bs.settings.page_base, function()
                                 {
                                     init_callback();
                                 }, true);
@@ -726,7 +726,7 @@ var blockstrap_core = function()
                 }
                 else
                 {
-                    $.fn.blockstrap.settings.page = 'index';
+                    $.fn.blockstrap.settings.page = $.fn.blockstrap.settings.page_base;
                 }
                 return $.fn.blockstrap.settings.page;
             },
@@ -851,10 +851,10 @@ var blockstrap_core = function()
             refresh: function(callback, slug)
             {
                 var bs = $.fn.blockstrap;
-                if(!slug) slug = 'index';
-                bs.templates.render('index', function()
+                if(!slug) slug = bs.settings.page_base;
+                bs.templates.render(bs.settings.page_base, function()
                 {
-                    if(slug != 'index')
+                    if(slug != bs.settings.page_base)
                     {
                         bs.templates.render(slug, function()
                         {
@@ -888,7 +888,7 @@ var blockstrap_core = function()
                     };
                     if(reload)
                     {
-                        $.fn.blockstrap.templates.render('index', function()
+                        $.fn.blockstrap.templates.render(bs.settings.page_base, function()
                         {
                             $.fn.blockstrap.core.ready();
                             $.fn.blockstrap.core.loader('close');
@@ -1077,33 +1077,35 @@ var blockstrap_core = function()
             tests: function(run)
             {
                 if(!run) run = false;
+                var bs = $.fn.blockstrap;
+                var set = bs.settings;
                 if(run)
                 {
-                    $.fn.blockstrap.api.address($.fn.blockstrap.settings.tests.api.address, 'btc', function(results)
+                    bs.api.address(set.tests.api.address, 'btc', function(results)
                     {
                         console.log('address', results);
                     });
-                    $.fn.blockstrap.api.transactions($.fn.blockstrap.settings.tests.api.transactions, 'btc', function(results)
+                    bs.api.transactions(set.tests.api.transactions, 'btc', function(results)
                     {
                         console.log('transactions', results);
                     });
-                    $.fn.blockstrap.api.addresses($.fn.blockstrap.settings.tests.api.addresses, 'btc', function(results)
+                    bs.api.addresses(set.tests.api.addresses, 'btc', function(results)
                     {
                         console.log('addresses', results);
                     });
-                    $.fn.blockstrap.api.transaction($.fn.blockstrap.settings.tests.api.transaction, 'btc', function(results)
+                    bs.api.transaction(set.tests.api.transaction, 'btc', function(results)
                     {
                         console.log('transaction', results);
                     });
-                    $.fn.blockstrap.api.block($.fn.blockstrap.settings.tests.api.block, 'btc', function(results)
+                    bs.api.block(set.tests.api.block, 'btc', function(results)
                     {
                         console.log('block', results);
                     });
-                    $.fn.blockstrap.api.relay($.fn.blockstrap.settings.tests.api.relay, 'btc', function(results)
+                    bs.api.relay(set.tests.api.relay, 'btc', function(results)
                     {
                         console.log('relay', results);
                     });
-                    $.fn.blockstrap.api.relay($.fn.blockstrap.settings.tests.api.unspents, 'btc', function(results)
+                    bs.api.unspents(set.tests.api.unspents, 'btc', function(results)
                     {
                         console.log('unspents', results);
                     });
@@ -1386,8 +1388,45 @@ var blockstrap_functions = {
             {
                 if(storage.dependencies === false) store = false;
             }
-
-            if(!js_file || refresh || store === false)
+            
+            if(blockstrap.settings.cascade === false)
+            {
+                if(!js_file || refresh === true)
+                {
+                    $.getScript(file_name + '.js', function(js)
+                    {
+                        if(store === true)
+                        {
+                            localStorage.setItem('nw_js_'+file_name, js);
+                        }
+                        start++;
+                        blockstrap_functions.include(
+                            blockstrap, 
+                            start, 
+                            files, 
+                            callback, 
+                            dependency
+                        );
+                    });
+                }
+                else
+                {
+                    start++;
+                    var new_script = document.createElement("script");
+                    new_script.setAttribute('type', 'text/javascript');
+                    new_script.setAttribute('id', file_name);
+                    new_script.text = js_file;
+                    head.appendChild(new_script);
+                    blockstrap_functions.include(
+                        blockstrap, 
+                        start, 
+                        files, 
+                        callback, 
+                        dependency
+                    );
+                }
+            }
+            else if(!js_file || refresh || store === false)
             {
                 // INCLUDE CORE
                 var filename = blockstrap.settings.core_base + blockstrap.settings.dependency_base + file_name + '.js';
@@ -1535,8 +1574,13 @@ var blockstrap_functions = {
     },
     vars: function(variable)
     {
+        var bs = $.fn.blockstrap;
         if(!variable) variable = false;
-        if(variable)
+        if(variable == 'refresh' && $.isPlainObject(bs.settings) && bs.settings.refresh === true)
+        {
+            return true;
+        }
+        else if(variable)
         {
             if($.fn.blockstrap.settings.vars[variable])
             {

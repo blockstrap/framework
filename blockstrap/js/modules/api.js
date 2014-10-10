@@ -196,8 +196,8 @@
             if(data[map.from.transaction.size]) transaction.size = data[map.from.transaction.size];
             if(data[map.from.transaction.block]) transaction.block = data[map.from.transaction.block];
             if(data[map.from.transaction.time]) transaction.time = data[map.from.transaction.time];
-            if(data[k][map.from.transaction.fees]) transaction.fees = data[k][map.from.transaction.fees];
-            if(data[k][map.from.transaction.value]) transaction.value = data[k][map.from.transaction.value];
+            if(data[map.from.transaction.fees]) transaction.fees = data[map.from.transaction.fees];
+            if(data[map.from.transaction.value]) transaction.value = data[map.from.transaction.value];
             if(callback) callback(transaction);
             else return transaction;
         })

@@ -22,6 +22,14 @@
         },
         "urls": {
             "profile": "#profile"
+        },
+        "tests": {
+            "func": "plugin",
+            "name": "tests",
+            "call": "message",
+            "data": {
+                "content": "This means the tests are complete!"
+            }
         }
     },
     "navigation": [

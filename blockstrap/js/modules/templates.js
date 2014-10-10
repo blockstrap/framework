@@ -162,7 +162,7 @@
             {
                 var rendered_html = Mustache.render(content, filtered_data);
                 var paged_html = templates.filter(rendered_html);
-                if(refresh === true || slug == 'index')
+                if(refresh === true || slug == bs.settings.page_base)
                 {
                     $(bs.element).html('');
                     $(bs.element).append(paged_html);

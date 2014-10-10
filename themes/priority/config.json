@@ -1,22 +1,28 @@
 {
     "theme": "priority",
     "public": true,
+    "cascade": false,
     "security": "9cd922a3249415349e636f76cff3ad75",
     "content_id": "issues",
     "slug_base": "index",
     "modules": [
-        "data",
-        "api",
-        "currencies"
+        "blockstrap/js/modules/data",
+        "blockstrap/js/modules/api",
+        "blockstrap/js/modules/templates",
+        "blockstrap/js/modules/currencies",
+        "themes/priority/js/modules/theme"
     ],
     "dependencies": [
-        "bootstrap.min",
-        "bitcoinjs-lib",
-        "isotope",
-        "qrcode",
-        "issues",
-        "steps",
-        "tx"
+        "blockstrap/js/dependencies/crypto",
+        "blockstrap/js/dependencies/sha3",
+        "blockstrap/js/dependencies/mustache",
+        "blockstrap/js/dependencies/bootstrap.min",
+        "blockstrap/js/dependencies/bitcoinjs-lib",
+        "themes/priority/js/dependencies/isotope",
+        "blockstrap/js/dependencies/qrcode",
+        "themes/priority/js/dependencies/issues",
+        "themes/priority/js/dependencies/steps",
+        "blockstrap/js/dependencies/tx"
     ],
     "bootstrap": [
         "modals",

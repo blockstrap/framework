@@ -20,7 +20,7 @@
         {
             // HARDCODED HACK FOR NOW
             var slug = event.state.slug;
-            if(slug == 'index') slug = 'dashboard';
+            if(slug == bs.settings.page_base) slug = bs.settings.slug_base;
             $.fn.blockstrap.core.nav(slug);
         }
     }
@@ -807,8 +807,8 @@
         var next_step = current_step + 1;
         var form_string = $(button).attr('data-forms');
         var forms = form_string.split(', ');
-        var data_url = 'themes/' + bs.settings.theme + '/' + bs.settings.data_base + 'index';
-        var html_url = 'themes/' + bs.settings.theme + '/' + bs.settings.html_base + 'index';
+        var data_url = 'themes/' + bs.settings.theme + '/' + bs.settings.data_base + bs.settings.page_base;
+        var html_url = 'themes/' + bs.settings.theme + '/' + bs.settings.html_base + bs.settings.page_base;
         
         $(button).addClass('loading');
         
@@ -959,7 +959,7 @@
                         }
                         
                         /* NEED TO RESET THE INDEX HTML AND DATA */
-                        bs.templates.render('index', function()
+                        bs.templates.render(bs.settings.page_base, function()
                         {
                             $("html, body").animate({ scrollTop: 0 }, 350, function()
                             {
@@ -990,7 +990,7 @@
                                 if(current_step >= steps)
                                 {
                                     /* NEED TO RESET THE INDEX HTML AND DATA */
-                                    bs.templates.render('index', function()
+                                    bs.templates.render(bs.settings.page_base, function()
                                     {
                                         location.reload();
                                     }, true);
