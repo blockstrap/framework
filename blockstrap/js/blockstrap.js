@@ -1170,8 +1170,6 @@ var blockstrap_core = function()
                     {
                         console.log('address', results);
                     });
-                    
-                    /*
                     bs.api.transactions(set.tests.api.transactions, 'btc', function(results)
                     {
                         console.log('transactions', results);
@@ -1200,14 +1198,6 @@ var blockstrap_core = function()
                         username: 'beta',
                         password: 'beta123'
                     });
-                    
-                    /*
-                    var address = '1Nz5RqevRodefPyGVB8EpdwSEGS4Ax2f1k';
-                    client.add('addressTransactions');
-                    client.addressTransactions.read(address).done(function(data) {
-                        console.log('rest data', data);
-                    });
-                    */
                 }
             }
         };        

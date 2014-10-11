@@ -700,7 +700,7 @@
                 $.fn.blockstrap.core.refresh(function()
                 {
                     $.fn.blockstrap.core.loader('close');
-                });
+                }, $.fn.blockstrap.core.page());
             }, true);
         }
     }      
@@ -989,8 +989,6 @@
                 });
             });
             
-            console.log('wallet', wallet);
-            
             if(
                 wallet 
                 && wallet.wallet_currency
@@ -1054,8 +1052,6 @@
                             bs.data.save('blockstrap', 'salt', salt, function()
                             {
                                 $("html, body").animate({ scrollTop: 0 }, 350);
-                                console.log('current_step', current_step);
-                                console.log('steps', steps);
                                 if(current_step >= steps)
                                 {
                                     /* NEED TO RESET THE INDEX HTML AND DATA */
