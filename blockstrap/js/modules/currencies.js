@@ -52,6 +52,9 @@
         if(!currency || currency == "btc") currency = "bitcoin";
         else if(currency == "ltc") currency = "litecoin";
         else if(currency == "doge") currency = "dogecoin";
+        else if(currency == "btct") currency = "testnet";
+        else if(currency == "ltct") currency = "litecoin";
+        else if(currency == "doget") currency = "dogecoin";
         try
         {
             var raw_keys = bitcoin.HDNode.fromSeedBuffer(hash, bitcoin.networks[currency]);

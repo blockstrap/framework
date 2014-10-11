@@ -391,7 +391,7 @@
                         $.fn.blockstrap.core.refresh(function()
                         {
                             $.fn.blockstrap.core.loader('close');
-                        });
+                        }, $.fn.blockstrap.core.page());
                     })
                 }
                 else

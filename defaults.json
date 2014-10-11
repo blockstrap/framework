@@ -183,6 +183,12 @@
                 "helloblock": "https://mainnet.helloblock.io/v1/",
                 "blockstrap": "https://api.blockstrap.com/v0/btc/"
             },
+            "auth": {
+                "blockstrap": {
+                    "username": "beta",
+                    "password": "beta123"
+                }
+            },
             "fee": 0.0001
         },
         "ltc": {
@@ -203,6 +209,84 @@
         }
     },
     "apis": {
+        "defaults": {
+            "blockstrap": {
+                "functions": {
+                    "to": {
+                        "address": "addressTransactions/",
+                        "addresses": "addresses?addresses=",
+                        "transaction": "transaction/",
+                        "transactions": "addressTransactions/$call?showtxnio=1",
+                        "block": "blockHeight/",
+                        "relay": "transactions/",
+                        "relay_param": "rawTxHex",
+                        "unspents": "addressUnspents/"
+                    },
+                    "from": {
+                        "address": {
+                            "key": "address",
+                            "address": "address",
+                            "hash": "hash160",
+                            "tx_count": "txsCount",
+                            "received": "confirmedReceivedValue",
+                            "balance": "balance"
+                        },
+                        "addresses": {
+                            "key": "addresses",
+                            "address": "address",
+                            "hash": "hash160",
+                            "tx_count": "txsCount",
+                            "received": "confirmedReceivedValue",
+                            "balance": "balance"
+                        },
+                        "transaction": {
+                            "key": "transaction",
+                            "txid": "txHash",
+                            "size": "size",
+                            "block": "blockHeight",
+                            "time": "blockTime",
+                            "input": "totalInputsValue",
+                            "output": "totalOutputsValue",
+                            "value": "estimatedTxValue",
+                            "fees": "fees"
+                        },
+                        "transactions": {
+                            "key": "transactions",
+                            "txid": "txHash",
+                            "size": "size",
+                            "block": "blockHeight",
+                            "time": "blockTime",
+                            "input": "totalInputsValue",
+                            "inputs": "inputs",
+                            "output": "totalOutputsValue",
+                            "outputs": "outputs",
+                            "value": "estimatedTxValue",
+                            "fees": "fees"
+                        },
+                        "block": {
+                            "key": "block",
+                            "height": "blockHeight",
+                            "hash": "blockHash",
+                            "prev": "prevBlockHash",
+                            "tx_count": "txsCount",
+                            "time": "blockTime"
+                        },
+                        "relay": {
+                            "txid": "txHash",
+                            "inner": "transaction"
+                        },
+                        "unspents": {
+                            "key": "unspents",
+                            "confirmations": "confirmations",
+                            "txid": "txHash",
+                            "index": "index",
+                            "value": "value",
+                            "script": "scriptPubKey"
+                        }
+                    }
+                }
+            }
+        },
         "btc": {
             "helloblock": {
                 "functions": {
@@ -286,7 +370,7 @@
                         "address": "addressTransactions/",
                         "addresses": "addresses?addresses=",
                         "transaction": "transaction/",
-                        "transactions": "addressTransactions/$call/showtxnio=1",
+                        "transactions": "addressTransactions/$call?showtxnio=1",
                         "block": "blockHeight/",
                         "relay": "transactions/",
                         "relay_param": "rawTxHex",
@@ -364,7 +448,7 @@
                         "address": "addressTransactions/",
                         "addresses": "addresses?addresses=",
                         "transaction": "transaction/",
-                        "transactions": "addressTransactions/$call/showtxnio=1",
+                        "transactions": "addressTransactions/$call?showtxnio=1",
                         "block": "blockHeight/",
                         "relay": "transactions/",
                         "relay_param": "rawTxHex",
