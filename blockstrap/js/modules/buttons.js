@@ -771,11 +771,25 @@
     {
         if(e)
         {
+            var bs = $.fn.blockstrap;
             e.preventDefault();
-            $($.fn.blockstrap.element).find('#confirm-modal .modal-footer').show();
-            $.fn.blockstrap.core.confirm('Confirm Device Reset', 'Please confirm that you want to completely remove all of the information from this device? If you have any coins stored, please ensure you first back-up the private keys or make a back-up of the wallet first.', function(confirmed)
+            $(bs.element).find('#confirm-modal .modal-footer').show();
+            bs.core.confirm('Confirm Device Reset', 'Please confirm that you want to completely remove all of the information from this device? If you have any coins stored, please ensure you first back-up the private keys or make a back-up of the wallet first.', function(confirmed)
             {
-                if(confirmed) $.fn.blockstrap.core.reset(true);
+                if(confirmed)
+                {
+                    bs.core.loader('open');
+                    $(bs.element).on('hidden.bs.modal', '#confirm-modal', function()
+                    {
+                        if(confirmed)
+                        {
+                            bs.core.reset(true);
+                            bs.core.loader('close');
+                        }
+                    });
+                    bs.core.modals('close_all');
+                    //$.fn.blockstrap.core.reset(true);
+                }
             });
         }
         else
@@ -885,6 +899,7 @@
                         {
                             var value = $(this).find('input').val();
                             var image = $(this).find('input').attr('data-img');
+                            if(!value) value = $(this).find('select').val();
                             
                             if(value === 'true' || value === true || $(this).find('.bootstrap-switch').hasClass('bootstrap-switch-on')) value = true;
                             else if((value === 'false' || value === false || !value) && ($(this).find('input').hasClass('switch') || $(this).find('input').attr('type') === 'file'))
@@ -924,7 +939,14 @@
                             }
                             else if(setup_type === 'option')
                             {
-                                options[$(this).find('input').attr('id')] = value;
+                                if($(this).find('input').attr('id'))
+                                {
+                                    options[$(this).find('input').attr('id')] = value;
+                                }
+                                else
+                                {
+                                    options[$(this).find('select').attr('id')] = value;
+                                }
                             }
                             else if(setup_type === 'wallet')
                             {
@@ -936,7 +958,14 @@
                                 }
                                 else if($(this).find('select').attr('id') !== 'extra_salty_wallet')
                                 {
-                                    wallet[$(this).find('input').attr('id')] = value;
+                                    if($(this).find('input').attr('id'))
+                                    {
+                                        wallet[$(this).find('input').attr('id')] = value;
+                                    }
+                                    else
+                                    {
+                                        wallet[$(this).find('select').attr('id')] = value;
+                                    }
                                 }
                             }
                             else
@@ -959,6 +988,8 @@
 
                 });
             });
+            
+            console.log('wallet', wallet);
             
             if(
                 wallet 
@@ -1023,12 +1054,14 @@
                             bs.data.save('blockstrap', 'salt', salt, function()
                             {
                                 $("html, body").animate({ scrollTop: 0 }, 350);
+                                console.log('current_step', current_step);
+                                console.log('steps', steps);
                                 if(current_step >= steps)
                                 {
                                     /* NEED TO RESET THE INDEX HTML AND DATA */
                                     bs.templates.render(bs.settings.page_base, function()
                                     {
-                                        location.reload();
+                                        //location.reload();
                                     }, true);
                                 }
                                 else
@@ -1036,6 +1069,11 @@
                                     bs.core.get(data_url, 'json', function(results)
                                     { 
                                         res = {};
+                                        if($.isPlainObject(results))
+                                        {
+                                            res = results;
+                                            res.user = false;
+                                        }
                                         res.setup = {};
                                         res.setup.func = 'setup';
                                         res.setup.step = next_step;
@@ -1049,7 +1087,6 @@
                                             $(bs.element).addClass('loading');
                                             $(bs.element).find('#blockstrap-loader').css({'opacity': 1, 'z-index': 9999999});
                                             bs.core.ready();
-                                            bs.core.loader();
                                         });
                                     });
                                 }

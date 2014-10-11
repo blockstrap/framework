@@ -22,7 +22,11 @@
     "navigation_id": "navigation",
     "mobile_nav_id": "mobile-footer",
     "css": ["less", "font-awesome"],
-    "store": ["app_url", "your_name"],
+    "store": [
+        "app_url", 
+        "your_name",
+        "your_username"
+    ],
     "modules": [
         "forms",
         "accounts",
@@ -51,6 +55,7 @@
         "bitcoinjs-lib",
         "tx",
         "sha3",
+        "rest",
         "ago"
     ],
     "plugins": [
@@ -115,17 +120,6 @@
             "unspents": "1Nz5RqevRodefPyGVB8EpdwSEGS4Ax2f1k"
         }
     },
-    "currencies": {
-        "btc": {
-            "currency": "Bitcoin",
-            "api": "https://mainnet.helloblock.io/v1/",
-            "fee": 0.0001
-        },
-        "ltc": {
-            "currency": "Litecoin",
-            "api": "https://mainnet.helloblock.io/v1/"
-        }
-    },
     "cache": {
         "api": {
             "address": 60000,
@@ -135,10 +129,10 @@
         "accounts": 60000
     },
     "storage": {
-        "dependencies": true,
+        "dependencies": false,
         "modules": false,
         "less": false,
-        "bootstrap": true
+        "bootstrap": false
     },
     "exchange": {
         "btc": 500,
@@ -158,79 +152,285 @@
             "header_bg": "background"
         }
     },
+    "currencies": {
+        "btct": {
+            "currency": "Bitcoin Testnet",
+            "apis": {
+                "helloblock": "https://mainnet.helloblock.io/v1/",
+                "blockstrap": "https://api.blockstrap.com/v0/btct/"
+            },
+            "fee": 0.0001
+        },
+        "ltct": {
+            "currency": "Litecoin Testnet",
+            "apis": {
+                "helloblock": "https://mainnet.helloblock.io/v1/",
+                "blockstrap": "https://api.blockstrap.com/v0/ltct/"
+            },
+            "fee": 0.0001
+        },
+        "doget": {
+            "currency": "Dogecoin Testnet",
+            "apis": {
+                "helloblock": "https://mainnet.helloblock.io/v1/",
+                "blockstrap": "http://neuro.api/v0/dogt/"
+            },
+            "fee": 0.0001
+        },
+        "btc": {
+            "currency": "Bitcoin",
+            "apis": {
+                "helloblock": "https://mainnet.helloblock.io/v1/",
+                "blockstrap": "https://api.blockstrap.com/v0/btc/"
+            },
+            "fee": 0.0001
+        },
+        "ltc": {
+            "currency": "Litecoin",
+            "apis": {
+                "helloblock": "https://mainnet.helloblock.io/v1/",
+                "blockstrap": "https://api.blockstrap.com/v0/ltc/"
+            },
+            "fee": 0.0001
+        },
+        "doge": {
+            "currency": "Dogecoin",
+            "apis": {
+                "helloblock": "https://mainnet.helloblock.io/v1/",
+                "blockstrap": "https://api.blockstrap.com/v0/doge/"
+            },
+            "fee": 0.0001
+        }
+    },
     "apis": {
         "btc": {
-            "functions": {
-                "to": {
-                    "address": "addresses/",
-                    "addresses": "addresses?addresses=",
-                    "transaction": "transactions/",
-                    "transactions": "addresses/$call/transactions?limit=100",
-                    "block": "blocks/",
-                    "relay": "transactions/",
-                    "relay_param": "rawTxHex",
-                    "unspents": "addresses/$call/unspents?limit=100"
-                },
-                "from": {
-                    "address": {
-                        "key": "address",
-                        "address": "address",
-                        "hash": "hash160",
-                        "tx_count": "txsCount",
-                        "received": "confirmedReceivedValue",
-                        "balance": "balance"
+            "helloblock": {
+                "functions": {
+                    "to": {
+                        "address": "addresses/",
+                        "addresses": "addresses?addresses=",
+                        "transaction": "transactions/",
+                        "transactions": "addresses/$call/transactions?limit=100",
+                        "block": "blocks/",
+                        "relay": "transactions/",
+                        "relay_param": "rawTxHex",
+                        "unspents": "addresses/$call/unspents?limit=100"
                     },
-                    "addresses": {
-                        "key": "addresses",
-                        "address": "address",
-                        "hash": "hash160",
-                        "tx_count": "txsCount",
-                        "received": "confirmedReceivedValue",
-                        "balance": "balance"
+                    "from": {
+                        "address": {
+                            "key": "address",
+                            "address": "address",
+                            "hash": "hash160",
+                            "tx_count": "txsCount",
+                            "received": "confirmedReceivedValue",
+                            "balance": "balance"
+                        },
+                        "addresses": {
+                            "key": "addresses",
+                            "address": "address",
+                            "hash": "hash160",
+                            "tx_count": "txsCount",
+                            "received": "confirmedReceivedValue",
+                            "balance": "balance"
+                        },
+                        "transaction": {
+                            "key": "transaction",
+                            "txid": "txHash",
+                            "size": "size",
+                            "block": "blockHeight",
+                            "time": "blockTime",
+                            "input": "totalInputsValue",
+                            "output": "totalOutputsValue",
+                            "value": "estimatedTxValue",
+                            "fees": "fees"
+                        },
+                        "transactions": {
+                            "key": "transactions",
+                            "txid": "txHash",
+                            "size": "size",
+                            "block": "blockHeight",
+                            "time": "blockTime",
+                            "input": "totalInputsValue",
+                            "inputs": "inputs",
+                            "output": "totalOutputsValue",
+                            "outputs": "outputs",
+                            "value": "estimatedTxValue",
+                            "fees": "fees"
+                        },
+                        "block": {
+                            "key": "block",
+                            "height": "blockHeight",
+                            "hash": "blockHash",
+                            "prev": "prevBlockHash",
+                            "tx_count": "txsCount",
+                            "time": "blockTime"
+                        },
+                        "relay": {
+                            "txid": "txHash",
+                            "inner": "transaction"
+                        },
+                        "unspents": {
+                            "key": "unspents",
+                            "confirmations": "confirmations",
+                            "txid": "txHash",
+                            "index": "index",
+                            "value": "value",
+                            "script": "scriptPubKey"
+                        }
+                    }
+                }
+            },
+            "blockstrap": {
+                "functions": {
+                    "to": {
+                        "address": "addressTransactions/",
+                        "addresses": "addresses?addresses=",
+                        "transaction": "transaction/",
+                        "transactions": "addressTransactions/$call/showtxnio=1",
+                        "block": "blockHeight/",
+                        "relay": "transactions/",
+                        "relay_param": "rawTxHex",
+                        "unspents": "addressUnspents/"
                     },
-                    "transaction": {
-                        "key": "transaction",
-                        "txid": "txHash",
-                        "size": "size",
-                        "block": "blockHeight",
-                        "time": "blockTime",
-                        "input": "totalInputsValue",
-                        "output": "totalOutputsValue",
-                        "value": "estimatedTxValue",
-                        "fees": "fees"
+                    "from": {
+                        "address": {
+                            "key": "address",
+                            "address": "address",
+                            "hash": "hash160",
+                            "tx_count": "txsCount",
+                            "received": "confirmedReceivedValue",
+                            "balance": "balance"
+                        },
+                        "addresses": {
+                            "key": "addresses",
+                            "address": "address",
+                            "hash": "hash160",
+                            "tx_count": "txsCount",
+                            "received": "confirmedReceivedValue",
+                            "balance": "balance"
+                        },
+                        "transaction": {
+                            "key": "transaction",
+                            "txid": "txHash",
+                            "size": "size",
+                            "block": "blockHeight",
+                            "time": "blockTime",
+                            "input": "totalInputsValue",
+                            "output": "totalOutputsValue",
+                            "value": "estimatedTxValue",
+                            "fees": "fees"
+                        },
+                        "transactions": {
+                            "key": "transactions",
+                            "txid": "txHash",
+                            "size": "size",
+                            "block": "blockHeight",
+                            "time": "blockTime",
+                            "input": "totalInputsValue",
+                            "inputs": "inputs",
+                            "output": "totalOutputsValue",
+                            "outputs": "outputs",
+                            "value": "estimatedTxValue",
+                            "fees": "fees"
+                        },
+                        "block": {
+                            "key": "block",
+                            "height": "blockHeight",
+                            "hash": "blockHash",
+                            "prev": "prevBlockHash",
+                            "tx_count": "txsCount",
+                            "time": "blockTime"
+                        },
+                        "relay": {
+                            "txid": "txHash",
+                            "inner": "transaction"
+                        },
+                        "unspents": {
+                            "key": "unspents",
+                            "confirmations": "confirmations",
+                            "txid": "txHash",
+                            "index": "index",
+                            "value": "value",
+                            "script": "scriptPubKey"
+                        }
+                    }
+                }
+            }
+        },
+        "doget": {
+            "blockstrap": {
+                "functions": {
+                    "to": {
+                        "address": "addressTransactions/",
+                        "addresses": "addresses?addresses=",
+                        "transaction": "transaction/",
+                        "transactions": "addressTransactions/$call/showtxnio=1",
+                        "block": "blockHeight/",
+                        "relay": "transactions/",
+                        "relay_param": "rawTxHex",
+                        "unspents": "addressUnspents/"
                     },
-                    "transactions": {
-                        "key": "transactions",
-                        "txid": "txHash",
-                        "size": "size",
-                        "block": "blockHeight",
-                        "time": "blockTime",
-                        "input": "totalInputsValue",
-                        "inputs": "inputs",
-                        "output": "totalOutputsValue",
-                        "outputs": "outputs",
-                        "value": "estimatedTxValue",
-                        "fees": "fees"
-                    },
-                    "block": {
-                        "key": "block",
-                        "height": "blockHeight",
-                        "hash": "blockHash",
-                        "prev": "prevBlockHash",
-                        "tx_count": "txsCount",
-                        "time": "blockTime"
-                    },
-                    "relay": {
-                        "txid": "txHash",
-                        "inner": "transaction"
-                    },
-                    "unspents": {
-                        "key": "unspents",
-                        "confirmations": "confirmations",
-                        "txid": "txHash",
-                        "index": "index",
-                        "value": "value",
-                        "script": "scriptPubKey"
+                    "from": {
+                        "address": {
+                            "key": "address",
+                            "address": "address",
+                            "hash": "hash160",
+                            "tx_count": "txsCount",
+                            "received": "confirmedReceivedValue",
+                            "balance": "balance"
+                        },
+                        "addresses": {
+                            "key": "addresses",
+                            "address": "address",
+                            "hash": "hash160",
+                            "tx_count": "txsCount",
+                            "received": "confirmedReceivedValue",
+                            "balance": "balance"
+                        },
+                        "transaction": {
+                            "key": "transaction",
+                            "txid": "txHash",
+                            "size": "size",
+                            "block": "blockHeight",
+                            "time": "blockTime",
+                            "input": "totalInputsValue",
+                            "output": "totalOutputsValue",
+                            "value": "estimatedTxValue",
+                            "fees": "fees"
+                        },
+                        "transactions": {
+                            "key": "transactions",
+                            "txid": "txHash",
+                            "size": "size",
+                            "block": "blockHeight",
+                            "time": "blockTime",
+                            "input": "totalInputsValue",
+                            "inputs": "inputs",
+                            "output": "totalOutputsValue",
+                            "outputs": "outputs",
+                            "value": "estimatedTxValue",
+                            "fees": "fees"
+                        },
+                        "block": {
+                            "key": "block",
+                            "height": "blockHeight",
+                            "hash": "blockHash",
+                            "prev": "prevBlockHash",
+                            "tx_count": "txsCount",
+                            "time": "blockTime"
+                        },
+                        "relay": {
+                            "txid": "txHash",
+                            "inner": "transaction"
+                        },
+                        "unspents": {
+                            "key": "unspents",
+                            "confirmations": "confirmations",
+                            "txid": "txHash",
+                            "index": "index",
+                            "value": "value",
+                            "script": "scriptPubKey"
+                        }
                     }
                 }
             }

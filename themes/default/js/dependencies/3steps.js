@@ -5,7 +5,7 @@ var blockstrap_setup_steps = [
         "info": "(Here to help you get started)",
         "help": {
             "title": "SALT GENERATION",
-            "body": "<p>Before we create any addresses, we first need to establish a device salt. Each piece of information you enter is hashed within the browser and then hashed again with each new field without sending information anywhere. At the end of the process a salt is generated and we can use that to create new accounts.</p><p><b>Once entering these details you cannot change them later or recover them without recreating them yourself.</b></p>"
+            "body": "<p>The first step in creating your account is generating a salt. Every piece of information you enter is hashed and additionally hashed again with each new field. At the end of the process a salt is generated for your account.</p> <p><b>Once enetered you cannot change these details later.</b></p>"
         },
         "progress": {
             "func": "bootstrap",
@@ -13,12 +13,12 @@ var blockstrap_setup_steps = [
             "objects": [
                 {
                     "id": "",
-                    "after": "Level of Entropy",
+                    "after": "Step 1 of 3",
                     "stacks": [
                         {
                             "class": "progress-bar-success progress-bar-striped active",
-                            "value": "3",
-                            "text": "3%"
+                            "value": "33",
+                            "text": "33%"
                         }
                     ]
                 }
@@ -29,13 +29,19 @@ var blockstrap_setup_steps = [
                 "id": "step1",
                 "css": "btn-page active",
                 "href": "",
-                "text": "STEP 1: SALT GENERATION"
+                "text": "SALT GENERATION"
             },
             {
                 "id": "step2",
                 "css": "btn-page",
                 "href": "",
-                "text": "STEP 2: CREATE ACCOUNT"
+                "text": "ADDITIONAL SECURITY"
+            },
+            {
+                "id": "step3",
+                "css": "btn-page",
+                "href": "",
+                "text": "CREATE ACCOUNT"
             }
         ],
         "actions": [
@@ -56,7 +62,7 @@ var blockstrap_setup_steps = [
                     },
                     {
                         "key": "data-steps",
-                        "value": 2
+                        "value": 3
                     }
                 ]
             }
@@ -72,7 +78,7 @@ var blockstrap_setup_steps = [
                         {
                             "title": "Generating Your Device Salt",
                             "intro": "This is a one time installation process. Please read the instructions carefully...",
-                            "html": "<b>REMINDER:</b> We do not store or keep a record of your private keys or personal information anywhere. Instead we take these memorable pieces of information and turn them into 'hashes' which we use to create a salt that is stored in your browser. It is through recreating the steps in this process that you generate your salt and access the accounts in your wallet. As we do not keep this information it is important that you remember the details you enter and keep them safe. <b>REMEMBER: If you cannot recreate this process, you will not be able to access the accounts in your wallet. You cannot change this information later.</b><hr /><b>Please pay extra special attention to the use of an image within the salt. This can of course make things exceptional secure, especially if you take a unique photo that has not been shared anywhere, but in doing soon, loosing access to that photo would also mean potential loss of all accounts created with this device. Unless of course you remember to backup your device salt once it has been generated.</b>",
+                            "html": "<b>REMINDER:</b> We do not store or keep a record of your private keys or personal information anywhere. Instead we take these memorable pieces of information and turn them into 'hashes' which we use to create a salt that is stored in your browser. It is through recreating the steps in this process that you generate your salt and access the accounts in your wallet. As we do not keep this information it is important that you remember the details you enter and keep them safe. <b>REMEMBER: If you cannot recreate this process, you will not be able to access the accounts in your wallet. You cannot change this information later.</b>",
                             "buttons": [
                                 {
                                     "href": "#",
@@ -92,7 +98,7 @@ var blockstrap_setup_steps = [
             {
                 "id": "salt-generation",
                 "css": "col-md-6 odd",
-                "header": "Required Salt Components",
+                "header": "Your Account Information",
                 "body": {
                     "func": "bootstrap",
                     "type": "forms",
@@ -100,6 +106,27 @@ var blockstrap_setup_steps = [
                         {
                             "id": "blockstrap-setup-step1-left",
                             "fields": [
+                                {
+                                    "inputs": {
+                                        "id": "app_url",
+                                        "label": {
+                                            "text": "App URL",
+                                            "css": "col-sm-3"
+                                        },
+                                        "type": "text",
+                                        "placeholder": "",
+                                        "value": "{{urls.root}}",
+                                        "wrapper": {
+                                            "css": "col-sm-9"
+                                        },
+                                        "attributes": [
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "module"
+                                            }
+                                        ]
+                                    }
+                                },
                                 {
                                     "inputs": {
                                         "id": "your_name",
@@ -117,74 +144,6 @@ var blockstrap_setup_steps = [
                                             {
                                                 "key": "data-setup-type",
                                                 "value": "module"
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "inputs": {
-                                        "id": "your_username",
-                                        "label": {
-                                            "text": "Your Username",
-                                            "css": "col-sm-3"
-                                        },
-                                        "type": "text",
-                                        "placeholder": "Pick a simple yet memorable username",
-                                        "value": "",
-                                        "wrapper": {
-                                            "css": "col-sm-9"
-                                        },
-                                        "attributes": [
-                                            {
-                                                "key": "data-setup-type",
-                                                "value": "module"
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "inputs": {
-                                        "id": "your_password",
-                                        "label": {
-                                            "text": "Your Password",
-                                            "css": "col-sm-3"
-                                        },
-                                        "type": "password",
-                                        "placeholder": "Pick something memorable, it cannot be changed or recovered",
-                                        "value": "",
-                                        "wrapper": {
-                                            "css": "col-sm-9"
-                                        },
-                                        "attributes": [
-                                            {
-                                                "key": "data-setup-type",
-                                                "value": "module"
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "inputs": {
-                                        "id": "your_password_repeat",
-                                        "label": {
-                                            "text": "Repeat Password",
-                                            "css": "col-sm-3"
-                                        },
-                                        "type": "password",
-                                        "placeholder": "Better to be safe than sorry",
-                                        "value": "",
-                                        "css": "ignore",
-                                        "wrapper": {
-                                            "css": "col-sm-9"
-                                        },
-                                        "attributes": [
-                                            {
-                                                "key": "data-setup-type",
-                                                "value": "module"
-                                            },
-                                            {
-                                                "key": "data-repeat-id",
-                                                "value": "your_password"
                                             }
                                         ]
                                     }
@@ -250,7 +209,7 @@ var blockstrap_setup_steps = [
             {
                 "id": "auth-settinga",
                 "css": "col-md-6 even",
-                "header": "Optional Security & Settings",
+                "header": "Authentication Settings",
                 "body": {
                     "func": "bootstrap",
                     "type": "forms",
@@ -260,25 +219,276 @@ var blockstrap_setup_steps = [
                             "fields": [
                                 {
                                     "inputs": {
-                                        "id": "app_url",
+                                        "id": "auth_salt",
+                                        "css": "switch",
                                         "label": {
-                                            "text": "App URL",
-                                            "css": "col-sm-3"
+                                            "text": "Add Password to Salt",
+                                            "css": "col-sm-6"
                                         },
-                                        "type": "text",
-                                        "placeholder": "",
-                                        "value": "{{urls.root}}",
-                                        "wrapper": {
-                                            "css": "col-sm-9"
-                                        },
+                                        "type": "checkbox",
                                         "attributes": [
                                             {
+                                                "key": "data-off-color",
+                                                "value": "danger"
+                                            },
+                                            {
+                                                "key": "data-on-color",
+                                                "value": "success"
+                                            },
+                                            {
+                                                "key": "data-off-text",
+                                                "value": "NO"
+                                            },
+                                            {
+                                                "key": "data-on-text",
+                                                "value": "YES"
+                                            },
+                                            {
+                                                "key": "data-label-text",
+                                                "value": "SET"
+                                            },
+                                            {
                                                 "key": "data-setup-type",
-                                                "value": "module"
+                                                "value": "option"
                                             }
-                                        ]
+                                        ],
+                                        "wrapper": {
+                                            "css": "col-sm-6"
+                                        }
                                     }
                                 },
+                                {
+                                    "inputs": {
+                                        "id": "auth_session",
+                                        "css": "switch",
+                                        "label": {
+                                            "text": "Authenticate Each Session",
+                                            "css": "col-sm-6"
+                                        },
+                                        "type": "checkbox",
+                                        "attributes": [
+                                            {
+                                                "key": "data-off-color",
+                                                "value": "danger"
+                                            },
+                                            {
+                                                "key": "data-on-color",
+                                                "value": "success"
+                                            },
+                                            {
+                                                "key": "data-off-text",
+                                                "value": "NO"
+                                            },
+                                            {
+                                                "key": "data-on-text",
+                                                "value": "YES"
+                                            },
+                                            {
+                                                "key": "data-label-text",
+                                                "value": "SET"
+                                            },
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "option"
+                                            }
+                                        ],
+                                        "wrapper": {
+                                            "css": "col-sm-6"
+                                        }
+                                    }
+                                },
+                                {
+                                    "inputs": {
+                                        "id": "auth_tx",
+                                        "css": "switch",
+                                        "label": {
+                                            "text": "Authenticate Each Transaction",
+                                            "css": "col-sm-6"
+                                        },
+                                        "type": "checkbox",
+                                        "attributes": [
+                                            {
+                                                "key": "data-off-color",
+                                                "value": "danger"
+                                            },
+                                            {
+                                                "key": "data-on-color",
+                                                "value": "success"
+                                            },
+                                            {
+                                                "key": "data-off-text",
+                                                "value": "NO"
+                                            },
+                                            {
+                                                "key": "data-on-text",
+                                                "value": "YES"
+                                            },
+                                            {
+                                                "key": "data-label-text",
+                                                "value": "SET"
+                                            },
+                                            {
+                                                "key": "checked",
+                                                "value": "checked"
+                                            },
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "option"
+                                            }
+                                        ],
+                                        "wrapper": {
+                                            "css": "col-sm-6"
+                                        }
+                                    }
+                                },
+                                {
+                                    "inputs": {
+                                        "id": "auth_settings",
+                                        "css": "switch",
+                                        "label": {
+                                            "text": "Authenticate Settings Page",
+                                            "css": "col-sm-6"
+                                        },
+                                        "type": "checkbox",
+                                        "attributes": [
+                                            {
+                                                "key": "data-off-color",
+                                                "value": "danger"
+                                            },
+                                            {
+                                                "key": "data-on-color",
+                                                "value": "success"
+                                            },
+                                            {
+                                                "key": "data-off-text",
+                                                "value": "NO"
+                                            },
+                                            {
+                                                "key": "data-on-text",
+                                                "value": "YES"
+                                            },
+                                            {
+                                                "key": "data-label-text",
+                                                "value": "SET"
+                                            },
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "option"
+                                            }
+                                        ],
+                                        "wrapper": {
+                                            "css": "col-sm-6"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "avatar": "blockstrap/img/avatar.jpg",
+        "name": "Setup Wizard",
+        "info": "(Here to help you)",
+        "help": {
+            "title": "ADDITIONAL SECURITY",
+            "body": "<p>Now you have succesfully generated your salt you can add additional layers of infromation which will be compounded and added to your current salt. Just like before this information isn't stored anywhere, so make sure you record your details in a safe place.</p>"
+        },
+        "progress": {
+            "func": "bootstrap",
+            "type": "bars",
+            "objects": [
+                {
+                    "after": "Step 2 of 3",
+                    "stacks": [
+                        {
+                            "class": "progress-bar-success progress-bar-striped active",
+                            "value": "66",
+                            "text": "66%"
+                        }
+                    ]
+                }
+            ]
+        },
+        "steps": [
+            {
+                "id": "step1",
+                "css": "btn-page",
+                "href": "",
+                "text": "SALT GENERATION"
+            },
+            {
+                "id": "step2",
+                "css": "btn-page active",
+                "href": "",
+                "text": "ADDITIONAL SECURITY"
+            },
+            {
+                "id": "step3",
+                "css": "btn-page",
+                "href": "",
+                "text": "ACTIVATE ACCOUNT"
+            }
+        ],
+        "actions": [
+            {
+                "id": "next-step",
+                "css": "btn btn-primary pull-right btn-setup",
+                "href": "#",
+                "text": "Next Step",
+                "attributes": [
+                    {
+                        "key": "data-forms",
+                        "value": "blockstrap-setup-step2-left, blockstrap-setup-step2-right"
+
+                    },
+                    {
+                        "key": "data-step",
+                        "value": 2
+                    },
+                    {
+                        "key": "data-steps",
+                        "value": 3
+                    }
+                ]
+            }
+        ],
+        "panels": [
+            {
+                "id": "welcome-message",
+                "css": "col-md-12 ribbon",
+                "body": {
+                    "func": "bootstrap",
+                    "type": "jumbotrons",
+                    "objects": [
+                        {
+                            "title": "Extend Your Security Settings",
+                            "intro": "Configure your account to include extra security modules (Reccomended)",
+                            "html": "Here your device can be configured to include extra security modules. Like before this information is not stored anywhere and must be recreated to access your account. You can also use your account photo as an additional layer of entropy to your salt - as with all other information in this set up process, if you lose your image, you will also lose access to your account. <b>REMEMBER: If you cannot recreate this process, you will not be able to access the accounts in your wallet. You cannot change this information later.</b>",
+                            "buttons": [
+                                {
+                                    "href": "#",
+                                    "css": "btn-default btn-reset",
+                                    "text": "Reset"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "additional-modules",
+                "css": "col-md-6 odd",
+                "header": "Additional Salt Components",
+                "body": {
+                    "func": "bootstrap",
+                    "type": "forms",
+                    "objects": [
+                        {
+                            "id": "blockstrap-setup-step2-left",
+                            "fields": [
                                 {
                                     "selects": {
                                         "id": "extra_salty",
@@ -308,14 +518,30 @@ var blockstrap_setup_steps = [
                                         "attributes": [
                                             {
                                                 "key": "data-form",
-                                                "value": "blockstrap-setup-step1-right"
+                                                "value": "blockstrap-setup-step2-left"
                                             }
                                         ],
                                         "wrapper": {
                                             "css": "col-sm-9"
                                         }
                                     }
-                                },
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "application-settings",
+                "css": "col-md-6 even",
+                "header": "Applications Settings",
+                "body": {
+                    "func": "bootstrap",
+                    "type": "forms",
+                    "objects": [
+                        {
+                            "id": "blockstrap-setup-step2-right",
+                            "fields": [
                                 {
                                     "selects": {
                                         "id": "api_service",
@@ -325,8 +551,8 @@ var blockstrap_setup_steps = [
                                         },
                                         "attributes": [
                                             {
-                                                "key": "data-setup-type",
-                                                "value": "option"
+                                                "value": "data-setup-type",
+                                                "text": "option"
                                             }
                                         ],
                                         "values": [
@@ -444,7 +670,7 @@ var blockstrap_setup_steps = [
                                             },
                                             {
                                                 "key": "data-form-id",
-                                                "value": "blockstrap-setup-step1-right"
+                                                "value": "blockstrap-setup-step2-left"
                                             }
                                         ],
                                         "wrapper": {
@@ -464,8 +690,8 @@ var blockstrap_setup_steps = [
         "name": "Setup Wizard",
         "info": "(Here to help you )",
         "help": {
-            "title": "ACCOUNT CREATION",
-            "body": "<p>Please note that we also use compounding encryption to generate the necessary seeds used for each individual account creation. The element you choose to include gets hashed (with the device salt) and then added to the hash of the next. In all cases of security, only public information is stored and only ever within the browser you are currently using.</p>"
+            "title": "CHOOSING A PASSWORD",
+            "body": "<p><b>TIP:</b>The best passwords are seemigly random characters that are easy to remember. For example, The Quick Brown Fox Jumps Over The Lazy Dog would become TQBFJOTLD</p><p><b>BONUS TIP:</b> Don't actually use TQBFJOTLD as your password.</p>"
         },
         "progress": {
             "func": "bootstrap",
@@ -473,12 +699,12 @@ var blockstrap_setup_steps = [
             "objects": [
                 {
                     "id": "",
-                    "after": "Step 2 of 2",
+                    "after": "Step 3 of 3",
                     "stacks": [
                         {
                             "class": "progress-bar-success progress-bar-striped active",
-                            "value": "80",
-                            "text": "80%"
+                            "value": "99",
+                            "text": "99%"
                         }
                     ]
                 }
@@ -489,13 +715,19 @@ var blockstrap_setup_steps = [
                 "id": "step1",
                 "css": "btn-page",
                 "href": "",
-                "text": "STEP 1: SALT GENERATION"
+                "text": "SALT GENERATION"
             },
             {
                 "id": "step2",
+                "css": "btn-page",
+                "href": "",
+                "text": "ADDITIONAL SECURITY"
+            },
+            {
+                "id": "step3",
                 "css": "btn-page active",
                 "href": "",
-                "text": "STEP 2: CREATE ACCOUNT"
+                "text": "CREATE ACCOUNT"
             }
         ],
         "actions": [
@@ -507,16 +739,16 @@ var blockstrap_setup_steps = [
                 "attributes": [
                     {
                         "key": "data-forms",
-                        "value": "blockstrap-setup-step2-left, blockstrap-setup-step2-right"
+                        "value": "blockstrap-setup-step3-left, blockstrap-setup-step3-right"
 
                     },
                     {
                         "key": "data-step",
-                        "value": 2
+                        "value": 3
                     },
                     {
                         "key": "data-steps",
-                        "value": 2
+                        "value": 3
                     }
                 ]
             }
@@ -530,9 +762,9 @@ var blockstrap_setup_steps = [
                     "type": "jumbotrons",
                     "objects": [
                         {
-                            "title": "Creating Your First Account",
+                            "title": "Activating Your Account",
                             "intro": "You're almost ready to get started...",
-                            "html": "Now that you have generated your device salt it's time to create your first account.",
+                            "html": "Now you have generated your salt it's time to create your account.",
                             "buttons": [
                                 {
                                     "href": "#",
@@ -547,13 +779,13 @@ var blockstrap_setup_steps = [
             {
                 "id": "additional-modules",
                 "css": "col-md-6 odd",
-                "header": "Required Account Information",
+                "header": "Account Settings",
                 "body": {
                     "func": "bootstrap",
                     "type": "forms",
                     "objects": [
                         {
-                            "id": "blockstrap-setup-step2-left",
+                            "id": "blockstrap-setup-step3-left",
                             "fields": [
                                 {
                                     "selects": {
@@ -647,13 +879,13 @@ var blockstrap_setup_steps = [
             {
                 "id": "application-settings",
                 "css": "col-md-6 even",
-                "header": "Optional Account Security",
+                "header": "Additional Account Options",
                 "body": {
                     "func": "bootstrap",
                     "type": "forms",
                     "objects": [
                         {
-                            "id": "blockstrap-setup-step2-right",
+                            "id": "blockstrap-setup-step3-right",
                             "fields": [
                                 {
                                     "selects": {
@@ -676,7 +908,7 @@ var blockstrap_setup_steps = [
                                         "attributes": [
                                             {
                                                 "key": "data-form",
-                                                "value": "blockstrap-setup-step2-right"
+                                                "value": "blockstrap-setup-step3-right"
                                             },
                                             {
                                                 "key": "data-setup-type",

@@ -12,70 +12,6 @@
 {
     var buttons = {};
     
-    buttons.auth_salt = function(button)
-    {
-        var input_value = $(button).find('input.switch').val();
-        var toggle_groups = $('#blockstrap-setup-step1-left').find('.salt-passwords').parent().parent();
-        if(input_value === true || input_value === 'true')
-        {
-            var password = $.fn.blockstrap.forms.input({
-                id: 'salt_pw',
-                type: 'password',
-                label: {
-                    text: 'Salt Password',
-                    css: 'col-sm-3',
-                },
-                placeholder: 'Strictly used for salt generation - not device or wallet',
-                css: 'salt-passwords',
-                wrapper: {
-                    css: 'col-sm-9'
-                },
-                attributes: [
-                    {
-                        key: 'data-setup-type',
-                        value: 'module'
-                    }
-                ]
-            });
-            var password_repeat = $.fn.blockstrap.forms.input({
-                id: 'salt_pw_repeat',
-                type: 'password',
-                label: {
-                    text: 'Password Repeat',
-                    css: 'col-sm-3',
-                },
-                css: 'ignore salt-passwords',
-                placeholder: 'Better safe than sorry',
-                wrapper: {
-                    css: 'col-sm-9'
-                },
-                attributes: [
-                    {
-                        key: 'data-repeat-id',
-                        value: 'salt_pw'
-                    }
-                ]
-            });
-            if($('#blockstrap-setup-step1-left').find('.salt-passwords').length < 1)
-            {
-                $('#blockstrap-setup-step1-left').append(password + password_repeat);
-                toggle_groups = $('#blockstrap-setup-step1-left').find('.salt-passwords').parent().parent();
-                $(toggle_groups).hide(0).show(350);
-            }
-            $(toggle_groups).show(350, function()
-            {
-              
-            });
-        }
-        else
-        {
-            $(toggle_groups).hide(350, function()
-            {
-              $(this).remove();
-            });
-        }
-    }
-    
     buttons.extra_fields = function(button)
     {
         var value = $(button).val();
@@ -89,27 +25,48 @@
                 var text = $(this).html();
                 if(value)
                 {
-                    
-                    // TODO: REPLACE WITH FORMS FUNCTIONS
-                    
-                    var component = '';
-                    $(button).find('option:nth-child('+(i+1)+')').remove();
-                    component+= '<div class="form-group" id="extra-'+value+'">';
-                        component+= '<label class="control-label col-sm-3" for="'+value+'">'+text+'</label>';
-                        component+= '<div class="col-sm-9">';
-                            component+= '<input type="text" data-setup-type="'+setup_type+'" class="form-control" id="'+value+'">';
-                        component+= '</div>';
-                    component+= '</div>';
+                    var component = $.fn.blockstrap.forms.process({
+                        objects: [
+                            {
+                                fields_only: true,
+                                fields: [
+                                    {
+                                        inputs: [
+                                            {
+                                                id: value,
+                                                label: {
+                                                    text: text,
+                                                    css: 'col-sm-3',
+                                                },
+                                                type: 'text',
+                                                wrapper: {
+                                                    css: 'col-sm-9'
+                                                },
+                                                attributes: [
+                                                    {
+                                                        key: 'data-setup-type',
+                                                        value: setup_type
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    });
+                    $(button).find('option:nth-child('+(i+1)+')').remove();                    
                     if($(button).attr('data-before'))
                     {
-                        $(form).find('#'+$(button).attr('data-before')).parent().parent().before(component);
+                        var id = $(button).attr('data-before');
+                        $(form).find('#'+id).parent().parent().before(component);
                     }
                     else
                     {
                         $(form).prepend(component);
                     }
-                    $(form).find('#extra-'+value).hide(0);
-                    $(form).find('#extra-'+value).show(350);
+                    $(form).find('#'+value).parent().hide(0);
+                    $(form).find('#'+value).parent().show(350);
                 }
             }
         });
@@ -413,16 +370,6 @@
     {
         $.fn.blockstrap.buttons.extra_fields(this);
     });
-    $($.fn.blockstrap.element).on('click', '.bootstrap-switch-id-auth_salt', function(e)
-    {
-        $.fn.blockstrap.buttons.auth_salt(this);
-    });
-    $($.fn.blockstrap.element).on('click', 'label[for="auth_salt"]', function(e)
-    {
-        var boot_switch = $(this).parent().find('.bootstrap-switch-id-auth_salt');
-        if($(boot_switch).hasClass('bootstrap-switch-off')) $(this).parent().find('input.switch').val('true');
-        else $(this).parent().find('input.switch').val('false');
-    });
     $($.fn.blockstrap.element).on('click', '.bootstrap-switch-id-photo_salt', function(e)
     {
         $.fn.blockstrap.buttons.photo_salt(this);
@@ -457,54 +404,6 @@
     {
         $.fn.blockstrap.buttons.wallet_choice(this);
     });
-    
-    /*
-    
-    REMOVED FOR NOW DUE TO IT PREVENTING TEXT COIPY AND PASTE
-    
-    ADD "swipe" TO DEPENDENCIES AND UNCOMMENT TO ACTIVATE / TEST
-    
-    $($.fn.blockstrap.element).swipe( {
-        //Generic swipe handler for all directions
-        swipeLeft:function(event, direction, distance, duration, fingerCount) 
-        {
-            if($($.fn.blockstrap.element).find('#mobile-footer').css('display') === 'block')
-            {
-                if($($.fn.blockstrap.element).find('#menu-toggle').hasClass('open'))
-                {
-                    $($.fn.blockstrap.element).find('#menu-toggle').trigger('click');
-                }
-                else
-                {
-                    if(!$($.fn.blockstrap.element).find('#sidebar-toggle').hasClass('open'))
-                    {
-                        $($.fn.blockstrap.element).find('#sidebar-toggle').trigger('click');
-                    }
-                }
-            }
-        },
-        swipeRight:function(event, direction, distance, duration, fingerCount) 
-        {
-            if($($.fn.blockstrap.element).find('#mobile-footer').css('display') === 'block')
-            {
-                if($($.fn.blockstrap.element).find('#sidebar-toggle').hasClass('open'))
-                {
-                    $($.fn.blockstrap.element).find('#sidebar-toggle').trigger('click');
-                }
-                else
-                {
-                    if(!$($.fn.blockstrap.element).find('#menu-toggle').hasClass('open'))
-                    {
-                        $($.fn.blockstrap.element).find('#menu-toggle').trigger('click');
-                    }
-                }
-            }
-        },
-        //Default is 75px, set to 0 for demo so any distance triggers swipe
-        threshold:100
-    });
-    
-    */
     
     $(window).resize(function(e)
     {

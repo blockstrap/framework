@@ -794,6 +794,14 @@ var blockstrap_core = function()
                 $(nav).find(slug).addClass('active');
                 $(mnav).find(slug).addClass('active');
             },
+            option: function(key)
+            {
+                var $bs = blockstrap_functions;
+                var options = localStorage.getItem('nw_blockstrap_options');
+                if($bs.json(options)) options = $.parseJSON(options);
+                if(typeof options[key] != 'undefined') return options[key];
+                else return false;
+            },
             page: function()
             {
                 if(window.location.hash)
@@ -968,8 +976,7 @@ var blockstrap_core = function()
                     {
                         bs.templates.render(bs.settings.page_base, function()
                         {
-                            bs.core.ready();
-                            bs.core.loader('close');
+                            
                         }, true);
                     }
                     else
@@ -1163,6 +1170,8 @@ var blockstrap_core = function()
                     {
                         console.log('address', results);
                     });
+                    
+                    /*
                     bs.api.transactions(set.tests.api.transactions, 'btc', function(results)
                     {
                         console.log('transactions', results);
@@ -1187,6 +1196,18 @@ var blockstrap_core = function()
                     {
                         console.log('unspents', results);
                     });
+                    var client = new $.RestClient('https://api.blockstrap.com/v0/btc/', {
+                        username: 'beta',
+                        password: 'beta123'
+                    });
+                    
+                    /*
+                    var address = '1Nz5RqevRodefPyGVB8EpdwSEGS4Ax2f1k';
+                    client.add('addressTransactions');
+                    client.addressTransactions.read(address).done(function(data) {
+                        console.log('rest data', data);
+                    });
+                    */
                 }
             }
         };        

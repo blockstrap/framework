@@ -15,6 +15,11 @@
     var active_requests = {};
     var apis = $.fn.blockstrap.settings.apis;
     var currencies = $.fn.blockstrap.settings.currencies;
+    var api_service = $.fn.blockstrap.core.option('api_service');
+    if($.fn.blockstrap.settings.api_service)
+    {
+        api_service = $.fn.blockstrap.settings.api_service;
+    }
     
     if($.fn.blockstrap.settings.cache.api.timeout)
     {
@@ -23,11 +28,11 @@
     
     api.address = function(hash, currency, callback)
     {
-        if(!$.isPlainObject(apis[currency])) return false;
         api.request(api.url('address', hash, currency), function(results)
         {
             var data = false;
-            var map = apis[currency].functions;
+            console.log('currency', currency);
+            var map = apis[currency][api_service].functions;
             if(results.data && results.data[map.from.address.key]) data = results.data[map.from.address.key];
             var address = {
                 address: 'N/A',
@@ -60,9 +65,9 @@
         }
         api.request(api.url('addresses', hashed_url, currency), function(results)
         {
-            
             var data = false;
-            var map = apis[currency].functions;
+            console.log('currency', currency);
+            var map = apis[currency][api_service].functions;
             if(results.data && results.data[map.from.addresses.key]) data = results.data[map.from.addresses.key];
             var addresses = [];
             $.each(data, function(k, v)
@@ -101,7 +106,8 @@
         api.request(api.url('block', height, currency), function(results)
         {
             var data = false;
-            var map = apis[currency].functions;
+            console.log('currency', currency);
+            var map = apis[currency][api_service].functions;
             if(results.data && results.data[map.from.block.key]) data = results.data[map.from.block.key];
             var block = {
                 currency: currency,
@@ -144,7 +150,8 @@
     api.relay = function(hash, currency, callback)
     {
         var request_data = {};
-        var map = apis[currency].functions;
+        console.log('currency2', currency);
+        var map = apis[currency][api_service].functions;
         request_data[map.to.relay_param] = hash;
         api.request(api.url('relay', '', currency), function(results)
         {
@@ -178,7 +185,8 @@
         api.request(api.url('transaction', txid, currency), function(results)
         {
             var data = false;
-            var map = apis[currency].functions;
+            console.log('currency', currency);
+            var map = apis[currency][api_service].functions;
             if(results.data && results.data[map.from.transaction.key]) data = results.data[map.from.transaction.key];
             var now = new Date().getTime();
             var transaction = {
@@ -208,7 +216,8 @@
         api.request(api.url('transactions', address, currency), function(results)
         {
             var data = false;
-            var map = apis[currency].functions;
+            console.log('currency', currency);
+            var map = apis[currency][api_service].functions;
             if(results.data && results.data[map.from.transactions.key]) data = results.data[map.from.transactions.key];
             var transactions = [];
             var now = new Date().getTime();
@@ -245,7 +254,8 @@
         api.request(api.url('unspents', address, currency), function(results)
         {
             var data = false;
-            var map = apis[currency].functions;
+            console.log('currency', currency);
+            var map = apis[currency][api_service].functions;
             var base = $.fn.blockstrap.settings.base_url;
             if(!confirms) confirms = 1;
             if(results.data && results.data[map.from.unspents.key]) data = results.data[map.from.unspents.key];
@@ -274,11 +284,13 @@
     api.url = function(action, key, currency)
     {
         if(!currency) currency = 'btc';
-        var url = currencies[currency].api + apis[currency].functions.to[action] + key;
-        if(apis[currency].functions.to[action].indexOf("$call") > -1)
+        console.log('currency3', currency);
+        console.log('apis', apis);
+        var url = currencies[currency].apis[api_service] + apis[currency][api_service].functions.to[action] + key;
+        if(apis[currency][api_service].functions.to[action].indexOf("$call") > -1)
         {
-            var call = apis[currency].functions.to[action].replace("$call", key);
-            url = currencies[currency].api + call;
+            var call = apis[currency][api_service].functions.to[action].replace("$call", key);
+            url = currencies[currency].apis[api_service] + call;
         }
         return url;
     }
