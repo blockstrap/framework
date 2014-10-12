@@ -1170,17 +1170,9 @@ var blockstrap_core = function()
                     {
                         console.log('address', results);
                     });
-                    bs.api.transactions(set.tests.api.transactions, 'btc', function(results)
-                    {
-                        console.log('transactions', results);
-                    });
                     bs.api.addresses(set.tests.api.addresses, 'btc', function(results)
                     {
                         console.log('addresses', results);
-                    });
-                    bs.api.transaction(set.tests.api.transaction, 'btc', function(results)
-                    {
-                        console.log('transaction', results);
                     });
                     bs.api.block(set.tests.api.block, 'btc', function(results)
                     {
@@ -1190,13 +1182,17 @@ var blockstrap_core = function()
                     {
                         console.log('relay', results);
                     });
+                    bs.api.transaction(set.tests.api.transaction, 'btc', function(results)
+                    {
+                        console.log('transaction', results);
+                    });
+                    bs.api.transactions(set.tests.api.transactions, 'btc', function(results)
+                    {
+                        console.log('transactions', results);
+                    });
                     bs.api.unspents(set.tests.api.unspents, 'btc', function(results)
                     {
                         console.log('unspents', results);
-                    });
-                    var client = new $.RestClient('https://api.blockstrap.com/v0/btc/', {
-                        username: 'beta',
-                        password: 'beta123'
                     });
                 }
             }

@@ -22,6 +22,18 @@
         {
             "code": "doge",
             "starts": ['D']
+        },
+        {
+            "code": "btct",
+            "starts": ['m', 'n']
+        },
+        {
+            "code": "ltct",
+            "starts": ['m, n']
+        },
+        {
+            "code": "doget",
+            "starts": ['n']
         }
     ];
     
@@ -45,21 +57,40 @@
         return address.charAt(0);
     }
     
+    currencies.key = function(code)
+    {
+        var bs = $.fn.blockstrap;
+        if(!code) code = 'btc';
+        if(
+            !$.isPlainObject(bs.settings.currencies) 
+            || !$.isPlainObject(bs.settings.currencies[code]) 
+            || typeof bs.settings.currencies[code].lib == 'undefined'
+        ){
+            code = 'btc';
+        }
+        if(
+            $.isPlainObject(bs.settings.currencies[code]) 
+            && typeof bs.settings.currencies[code].lib != 'undefined'
+        ){
+            return bs.settings.currencies[code].lib;
+        }
+        else
+        {
+            return 'bitcoin';
+        }
+    }
+    
     currencies.keys = function(secret, currency)
     {
         var keys = {};
         var hash = bitcoin.crypto.sha256(secret);
-        if(!currency || currency == "btc") currency = "bitcoin";
-        else if(currency == "ltc") currency = "litecoin";
-        else if(currency == "doge") currency = "dogecoin";
-        else if(currency == "btct") currency = "testnet";
-        else if(currency == "ltct") currency = "litecoin";
-        else if(currency == "doget") currency = "dogecoin";
+        var currency_key = currencies.key(currency);
+        var currency_obj = bitcoin.networks[currency_key];
         try
         {
-            var raw_keys = bitcoin.HDNode.fromSeedBuffer(hash, bitcoin.networks[currency]);
-            keys.pub = raw_keys.pubKey.getAddress(bitcoin.networks[currency]).toString();
-            keys.priv = raw_keys.privKey.toWIF(bitcoin.networks[currency]);
+            var raw_keys = bitcoin.HDNode.fromSeedBuffer(hash, currency_obj);
+            keys.pub = raw_keys.pubKey.getAddress(currency_obj).toString();
+            keys.priv = raw_keys.privKey.toWIF(currency_obj);
         }
         catch(error)
         {
