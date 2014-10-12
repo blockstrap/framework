@@ -1108,6 +1108,21 @@ var blockstrap_core = function()
                     }
                 });
             },
+            string_to_array: function(string)
+            {
+                var arrayed_string = false;
+                if(typeof value == 'string')
+                {
+                    var first_char = value.charAt(0);
+                    var last_char = value.charAt(value.length - 1);
+                    if(first_char == '[' && last_char == ']')
+                    {
+                        var keys = value.substr(1, value.length - 2);
+                        arrayed_string = keys.split(', ');
+                    }
+                }
+                return arrayed_string;
+            },
             stringed: function(styles)
             {
                 if($.isArray(styles))

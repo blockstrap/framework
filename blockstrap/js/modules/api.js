@@ -30,7 +30,6 @@
     {
         api.request(api.url('address', hash, currency), function(results)
         {
-            var map = api.map(currency);
             var address = {
                 address: 'N/A',
                 hash: 'N/A',
@@ -41,11 +40,7 @@
             }
             if(results)
             {
-                if(results[map.from.address.address]) address.address = results[map.from.address.address];
-                if(results[map.from.address.hash]) address.hash = results[map.from.address.hash];
-                if(results[map.from.address.tx_count]) address.tx_count = results[map.from.address.tx_count];
-                if(results[map.from.address.received]) address.received = results[map.from.address.received];
-                if(results[map.from.address.balance]) address.balance = results[map.from.address.balance];
+                address = api.results(address, results, currency, 'address');               
             }
             if(callback) callback(address);
             else return address;
@@ -82,11 +77,7 @@
                             received: 0,
                             balance: 0
                         }
-                        if(results[k][map.from.addresses.address]) address.address = results[k][map.from.addresses.address];
-                        if(results[k][map.from.addresses.hash]) address.hash = results[k][map.from.addresses.hash];
-                        if(results[k][map.from.addresses.tx_count]) address.tx_count = results[k][map.from.addresses.tx_count];
-                        if(results[k][map.from.addresses.received]) address.received = results[k][map.from.addresses.received];
-                        if(results[k][map.from.addresses.balance]) address.balance = results[k][map.from.addresses.balance];
+                        address = api.results(address, results[k], currency, 'addresses');
                         addresses.push(address);
                     })
                 }
@@ -125,12 +116,7 @@
             };
             if(results)
             {
-                if(results[map.from.block.height]) block.height = results[map.from.block.height];
-                if(results[map.from.block.hash]) block.hash = results[map.from.block.hash];
-                if(results[map.from.block.prev]) block.prev = results[map.from.block.prev];
-                if(results[map.from.block.next]) block.next = results[map.from.block.next];
-                if(results[map.from.block.tx_count]) block.tx_count = results[map.from.block.tx_count];
-                if(results[map.from.block.time]) block.time = results[map.from.block.time];
+                block = api.results(block, results, currency, 'block');
             }
             if(callback) callback(block);
             else return block;
@@ -299,6 +285,32 @@
         }, 'POST', request_data, currency, 'relay')
     }
     
+    api.results = function(defaults, results, currency, request)
+    {
+        var clean_results = false;
+        var map = api.map(currency);
+        if(
+            defaults && results 
+            && currency && request 
+            && $.isPlainObject(defaults) 
+            && $.isPlainObject(results) 
+            && typeof map.from != 'undefined' 
+            && typeof map.from[request] != 'undefined' 
+        ){
+            $.each(defaults, function(field_name, field_value)
+            {
+                if(
+                    typeof map.from[request][field_name] != 'undefined' 
+                    && typeof results[map.from[request][field_name]] != 'undefined' 
+                ){                  
+                    defaults[field_name] = results[map.from[request][field_name]];
+                }
+                
+            });
+        }
+        return defaults;
+    }
+    
     api.transaction = function(txid, currency, callback)
     {
         api.request(api.url('transaction', txid, currency), function(results)
@@ -318,12 +330,7 @@
             }
             if(results)
             {
-                if(results[map.from.transaction.txid]) transaction.txid = results[map.from.transaction.txid];
-                if(results[map.from.transaction.size]) transaction.size = results[map.from.transaction.size];
-                if(results[map.from.transaction.block]) transaction.block = results[map.from.transaction.block];
-                if(results[map.from.transaction.time]) transaction.time = results[map.from.transaction.time];
-                if(results[map.from.transaction.fees]) transaction.fees = results[map.from.transaction.fees];
-                if(results[map.from.transaction.value]) transaction.value = results[map.from.transaction.value];
+                transaction = api.results(transaction, results, currency, 'transaction');
             }
             if(callback) callback(transaction);
             else return transaction;
@@ -351,15 +358,13 @@
                         output: 0,
                         value: 0,
                         fees: 0
-                    }
-                    if(results[k][map.from.transaction.txid]) transaction.txid = results[k][map.from.transaction.txid];
-                    if(results[k][map.from.transaction.size]) transaction.size = results[k][map.from.transaction.size];
-                    if(results[k][map.from.transaction.block]) transaction.block = results[k][map.from.transaction.block];
-                    if(results[k][map.from.transaction.time]) transaction.time = results[k][map.from.transaction.time];
-                    if(results[k][map.from.transaction.input]) transaction.input = results[k][map.from.transaction.input];
-                    if(results[k][map.from.transaction.output]) transaction.output = results[k][map.from.transaction.output];
-                    if(results[k][map.from.transaction.fees]) transaction.fees = results[k][map.from.transaction.fees];
-                    if(results[k][map.from.transaction.value]) transaction.value = results[k][map.from.transaction.value];
+                    };
+                    transaction = api.results(
+                        transaction, 
+                        results[k], 
+                        currency, 
+                        'transactions'
+                    );
                     transactions.push(transaction);
                 });
             }
@@ -386,11 +391,7 @@
                         script: 'N/A'
                     }
                     var confirmations = 0;
-                    if(results[k][map.from.unspents.txid]) unspent.txid = results[k][map.from.unspents.txid];
-                    if(results[k][map.from.unspents.index]) unspent.index = results[k][map.from.unspents.index];
-                    if(results[k][map.from.unspents.value]) unspent.value = results[k][map.from.unspents.value];
-                    if(results[k][map.from.unspents.script]) unspent.script = results[k][map.from.unspents.script];
-                    if(results[k][map.from.unspents.confirmations]) confirmations = results[k][map.from.unspents.confirmations];
+                    unspent = api.results(unspent, results[k], currency, 'unspents');
                     if(confirmations >= confirms) unspents.push(unspent);
                 });
             }

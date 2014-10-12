@@ -275,7 +275,7 @@
                             "key": "Address",
                             "address": "address",
                             "hash": "address_hash160",
-                            "tx_count": "txsCount",
+                            "tx_count": "[outputs_count_unconfirmed, +, inputs_count_unconfirmed]",
                             "received": "confirmedReceivedValue",
                             "balance": "balance"
                         },
