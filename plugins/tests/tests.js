@@ -14,8 +14,14 @@
     
     tests.message = function(data)
     {
-        var content = 'Testing Test Plugin!';
-        if(data.content) content = data.content;
+        var content = 'If you see this it means the tests plugin has been loaded and the message functionality has been used. API Tests will now be running and a new modal window should open soon with the results. Please be patient whilst we run the API tests.';
+        if(
+            typeof data != 'undefined' 
+            && $.isPlainObject(data) 
+            && data.content
+        ){
+            content = data.content;
+        }
         alert(content);
         return false;
     };

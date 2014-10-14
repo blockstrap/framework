@@ -15,7 +15,7 @@
     var active_requests = {};
     var apis = $.fn.blockstrap.settings.apis;
     var currencies = $.fn.blockstrap.settings.currencies;
-    var api_service = $.fn.blockstrap.core.option('api_service');
+    var api_service = $.fn.blockstrap.core.option('api_service', 'helloblock');
     if($.fn.blockstrap.settings.api_service)
     {
         api_service = $.fn.blockstrap.settings.api_service;
@@ -40,7 +40,7 @@
             }
             if(results)
             {
-                address = api.results(address, results, currency, 'address');               
+                address = api.results(address, results, currency, 'address', callback);               
             }
             if(callback) callback(address);
             else return address;
@@ -285,10 +285,12 @@
         }, 'POST', request_data, currency, 'relay')
     }
     
-    api.results = function(defaults, results, currency, request)
+    api.results = function(defaults, results, currency, request, callback)
     {
         var clean_results = false;
         var map = api.map(currency);
+        var bs = $.fn.blockstrap;
+        var $bs = blockstrap_functions;
         if(
             defaults && results 
             && currency && request 
@@ -297,15 +299,123 @@
             && typeof map.from != 'undefined' 
             && typeof map.from[request] != 'undefined' 
         ){
+            var result_count = 0;
+            var number_of_results = $bs.array_length(defaults);
             $.each(defaults, function(field_name, field_value)
             {
+                result_count++;
                 if(
                     typeof map.from[request][field_name] != 'undefined' 
-                    && typeof results[map.from[request][field_name]] != 'undefined' 
-                ){                  
-                    defaults[field_name] = results[map.from[request][field_name]];
+                ){
+                    var this_map = map.from[request][field_name];
+                    var result = results[map.from[request][field_name]];
+                    var arrayed_result = bs.core.string_to_array(this_map);
+                    if(arrayed_result && $bs.array_length(arrayed_result) === 4)
+                    {
+                        if(
+                            (
+                                arrayed_result[1] == '+'
+                                || arrayed_result[1] == '-'
+                                || arrayed_result[1] == '*'
+                                || arrayed_result[1] == '/'
+                            )
+                            &&
+                            (
+                                arrayed_result[3] == 'int'
+                                || arrayed_result[3] == 'float'
+                            )
+                        ){
+                            var parse_type = arrayed_result[3];
+                            if(
+                                typeof results[arrayed_result[0]] != 'undefined'
+                                && typeof results[arrayed_result[2]] != 'undefined'
+                            ){
+                                var res_01 = results[arrayed_result[0]];
+                                var res_02 = results[arrayed_result[2]];
+                                if(parse_type == 'float')
+                                {
+                                    res_01 = parseFloat(results[arrayed_result[0]]);
+                                    res_02 = parseFloat(resultsq[arrayed_result[2]]);
+                                    res_01 = res_01 * 100000000;
+                                    res_02 = res_02 * 100000000;
+                                }
+                                else if(parse_type == 'int')
+                                {
+                                    res_01 = parseInt(results[arrayed_result[0]]);
+                                    res_02 = parseInt(results[arrayed_result[2]]);
+                                }
+                                result = res_01 + res_02;
+                                if(arrayed_result[1] == '-')
+                                {
+                                    result = res_01 - res_02;
+                                }
+                                else if(arrayed_result[1] == '*')
+                                {
+                                    result = res_01 * res_02;
+                                }
+                                else if(arrayed_result[1] == '/')
+                                {
+                                    result = res_01 / res_02;
+                                }
+                                defaults[field_name] = result;
+                            }
+                        }
+                    }
+                    else if(arrayed_result && $bs.array_length(arrayed_result) === 2)
+                    {
+                        var parse_type = arrayed_result[1];
+                        if(
+                            arrayed_result[1] == 'int'
+                            || arrayed_result[1] == 'float'
+                            || arrayed_result[1] == 'hextohash'
+                            || arrayed_result[1] == 'utctoepoch'
+                            || arrayed_result[1] == 'count'
+                            || arrayed_result[1] == 'lowercase'
+                        ){
+                            if(parse_type == 'float')
+                            {
+                                res_01 = parseFloat(results[arrayed_result[0]]);
+                                res_01 = res_01 * 100000000;
+                            }
+                            else if(parse_type == 'int')
+                            {
+                                res_01 = parseInt(results[arrayed_result[0]]);
+                            }
+                            else if(parse_type == 'hextohash')
+                            {
+                                var address = results[arrayed_result[0]];
+                                var hash = bitcoin.Address.fromBase58(address);
+                                res_01 = hash;
+                            }
+                            else if(parse_type == 'utctoepoch')
+                            {
+                                var date = new Date(results[arrayed_result[0]]);
+                                var epoch = date.getTime() / 1000;
+                                res_01 = epoch;
+                            }
+                            else if(parse_type == 'count')
+                            {
+                                var obj = results[arrayed_result[0]];
+                                var count = $bs.array_length(obj);
+                                res_01 = count;
+                            }
+                            else if(parse_type == 'lowercase')
+                            {
+                                res_01 = results[arrayed_result[0]].toLowerCase();
+                            }
+                            defaults[field_name] = res_01;
+                        }
+                    }       
+                    else
+                    {
+                        if(
+                            typeof map.from[request][field_name] != 'undefined' 
+                            && typeof results[map.from[request][field_name]] != 'undefined' 
+                        ){
+                            defaults[field_name] = results[map.from[request][field_name]];
+                        }
+                    }
                 }
-                
             });
         }
         return defaults;
@@ -382,6 +492,13 @@
             var map = api.map(currency);
             if(results)
             {
+                var reverse = false;
+                if(
+                    typeof map.from.unspents.reverse_array != 'undefined' 
+                    && map.from.unspents.reverse_array === true
+                ){
+                    reverse = true;
+                }
                 $.each(results, function(k, v)
                 {
                     var unspent = {
@@ -394,6 +511,7 @@
                     unspent = api.results(unspent, results[k], currency, 'unspents');
                     if(confirmations >= confirms) unspents.push(unspent);
                 });
+                if(reverse) unspents = unspents.reverse();
             }
             if(callback) callback(unspents);
             else return unspents;

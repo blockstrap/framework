@@ -2854,6 +2854,11 @@
                     var hash = payload.slice(1);
                     return new Address(hash, version)
                 };
+                Address.fromBase58 = function(string) {
+                    var payload = base58check.decode(string);
+                    var hash = payload.slice(1);
+                    return hash.toString('hex');
+                };
                 Address.fromOutputScript = function(script, network) {
                     network = network || networks.bitcoin;
                     var type = scripts.classifyOutput(script);
@@ -3685,20 +3690,6 @@
         }],
         37: [function(require, module, exports) {
             var networks = {
-                dogecointestnet: {
-                    magicPrefix: "Dogecoin Signed Message:\n",
-                    bip32: {
-                        "public": 49990397,
-                        "private": 49988504
-                    },
-                    pubKeyHash: 113,
-                    scriptHash: 196,
-                    wif: 241,
-                    dustThreshold: 0,
-                    dustSoftThreshold: 1e8,
-                    feePerKb: 1e8,
-                    estimateFee: estimateFee("dogecointestnet")
-                },
                 bitcoin: {
                     magicPrefix: "Bitcoin Signed Message:\n",
                     bip32: {
@@ -3711,6 +3702,19 @@
                     dustThreshold: 546,
                     feePerKb: 1e4,
                     estimateFee: estimateFee("bitcoin")
+                },
+                bitcointestnet: {
+                    magicPrefix: "Bitcoin Signed Message:\n",
+                    bip32: {
+                        "public": 70617039,
+                        "private": 70615956
+                    },
+                    pubKeyHash: 111,
+                    scriptHash: 196,
+                    wif: 239,
+                    dustThreshold: 546,
+                    feePerKb: 1e4,
+                    estimateFee: estimateFee("testnet")
                 },
                 dogecoin: {
                     magicPrefix: "Dogecoin Signed Message:\n",
@@ -3726,6 +3730,20 @@
                     feePerKb: 1e8,
                     estimateFee: estimateFee("dogecoin")
                 },
+                dogecointestnet: {
+                    magicPrefix: "Dogecoin Signed Message:\n",
+                    bip32: {
+                        "public": 49990397,
+                        "private": 49988504
+                    },
+                    pubKeyHash: 113,
+                    scriptHash: 196,
+                    wif: 241,
+                    dustThreshold: 0,
+                    dustSoftThreshold: 1e8,
+                    feePerKb: 1e8,
+                    estimateFee: estimateFee("dogecointestnet")
+                },
                 litecoin: {
                     magicPrefix: "Litecoin Signed Message:\n",
                     bip32: {
@@ -3740,18 +3758,19 @@
                     feePerKb: 1e5,
                     estimateFee: estimateFee("litecoin")
                 },
-                testnet: {
-                    magicPrefix: "Bitcoin Signed Message:\n",
+                litecointestnet: {
+                    magicPrefix: "Litecoin Signed Message:\n",
                     bip32: {
-                        "public": 70617039,
-                        "private": 70615956
+                        "public": 27108450,
+                        "private": 27106558
                     },
-                    pubKeyHash: 111,
-                    scriptHash: 196,
-                    wif: 239,
-                    dustThreshold: 546,
-                    feePerKb: 1e4,
-                    estimateFee: estimateFee("testnet")
+                    pubKeyHash: 48,
+                    scriptHash: 5,
+                    wif: 176,
+                    dustThreshold: 0,
+                    dustSoftThreshold: 1e5,
+                    feePerKb: 1e5,
+                    estimateFee: estimateFee("litecoin")
                 },
                 viacoin: {
                     magicPrefix: "Viacoin Signed Message:\n",

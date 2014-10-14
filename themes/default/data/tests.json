@@ -28,7 +28,7 @@
             "name": "tests",
             "call": "message",
             "data": {
-                "content": "This means the tests are complete!"
+                "content": ""
             }
         }
     },
