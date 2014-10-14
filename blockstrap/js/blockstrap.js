@@ -567,7 +567,7 @@ var blockstrap_core = function()
                             {
                                 bs.core.refresh(function()
                                 {
-                                    init_callback(window.location.hash);
+                                    init_callback(window.location.hash.substring(1));
                                 }, $bs.slug(window.location.hash), false);
                             }
                             else
@@ -807,7 +807,6 @@ var blockstrap_core = function()
                 ){
                     default_value = options[key];
                 }
-                console.log('default_value', default_value);
                 return default_value;
             },
             page: function()
@@ -923,6 +922,7 @@ var blockstrap_core = function()
                 $.fn.blockstrap.core.table();
                 $.fn.blockstrap.core.forms();
                 $.fn.blockstrap.core.page();
+                $.fn.blockstrap.core.nav($.fn.blockstrap.core.page());
 
                 // TODO: 
                 // Handle inactive modules?
@@ -1186,8 +1186,6 @@ var blockstrap_core = function()
             {
                 var details = '';
                 var passed = true;
-                console.log('expected', expected);
-                console.log('given', given);
                 if($.isPlainObject(expected) || $.isArray(expected))
                 {
                     var ex = expected;

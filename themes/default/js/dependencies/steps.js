@@ -301,8 +301,8 @@ var blockstrap_setup_steps = [
                                                 "text": "Your Telephone"
                                             },
                                             {
-                                                "value": "your_id",
-                                                "text": "Passport Number"
+                                                "value": "your_pin",
+                                                "text": "PIN Number"
                                             }
                                         ],
                                         "attributes": [
@@ -667,6 +667,14 @@ var blockstrap_setup_steps = [
                                             {
                                                 "value": "",
                                                 "text": "-- Select Additional Wallet Security --"
+                                            },
+                                            {
+                                                "value": "wallet_email",
+                                                "text": "Email Address"
+                                            },
+                                            {
+                                                "value": "wallet_tel",
+                                                "text": "Telephone Number"
                                             },
                                             {
                                                 "value": "wallet_pin",
