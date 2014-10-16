@@ -46,6 +46,17 @@
                     $.fn.blockstrap.core.loader('close');
                     $.fn.blockstrap.core.modal('Warning', 'This contact already exists');
                 }
+                else if($.fn.blockstrap.currencies.which(address) != currency)
+                {
+                    var which = $.fn.blockstrap.currencies.which(address);
+                    var currencies = $.fn.blockstrap.settings.currencies;
+                    console.log('which', which);
+                    console.log('currency', currency);
+                    var currency_name = currencies[which].currency;
+                    var currency_selected = currencies[currency].currency;
+                    $.fn.blockstrap.core.loader('close');
+                    $.fn.blockstrap.core.modal('Warning', 'This address does not match the currency you selected. You selected '+currency_name+' but the address you entered appears to be for '+currency_selected+'. This is not 100% accurate, and could be an internal problem.');
+                }
                 else
                 {
                     var data = {};

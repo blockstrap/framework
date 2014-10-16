@@ -17,7 +17,7 @@
     "module_base": "js/modules/",
     "page_base": "index",
     "slug_base": "dashboard",
-    "api_service": "sochain",
+    "api_service": "blockstrap",
     "base_url": "",
     "content_id": "main-content",
     "navigation_id": "navigation",
@@ -362,7 +362,7 @@
                 "functions": {
                     "to": {
                         "address": "addressTransactions/",
-                        "addresses": "",
+                        "addresses": "addressTransactions/",
                         "transaction": "transaction/",
                         "transactions": "addressTransactions/$call?showtxnio=1",
                         "block": "blockHeight/",
@@ -372,12 +372,12 @@
                     },
                     "from": {
                         "address": {
-                            "key": "Address",
+                            "key": "address",
                             "address": "address",
                             "hash": "address_hash160",
-                            "tx_count": "[outputs_count_confirmed, +, inputs_count_confirmed, int]",
+                            "tx_count": "inout_count_total",
                             "received": "inputs_value_confirmed",
-                            "balance": "[inputs_value_confirmed, -, outputs_value_confirmed, int]"
+                            "balance": "balance"
                         },
                         "addresses": {
                             "key": "addresses",
@@ -387,48 +387,48 @@
                             "received": "confirmedReceivedValue",
                             "balance": "balance"
                         },
-                        "transaction": {
-                            "key": "Transaction",
-                            "txid": "[id, lowercase]",
-                            "size": "size",
-                            "block": "_block_height",
-                            "time": "_block_time",
-                            "input": "_input_value",
-                            "output": "_output_value",
-                            "value": "[_output_value, -, _fees, int]",
-                            "fees": "_fees"
-                        },
-                        "transactions": {
-                            "key": "Address.Transactions",
-                            "txid": "[id, lowercase]",
-                            "size": "size",
-                            "block": "_block_height",
-                            "time": "_block_time",
-                            "input": "_input_value",
-                            "output": "_output_value",
-                            "value": "_tx_address_value",
-                            "fees": "_fees"
-                        },
                         "block": {
-                            "key": "Blocks.0",
+                            "key": "blocks.0",
                             "height": "height",
                             "hash": "[id, lowercase]",
                             "prev": "[prev_block_hash, lowercase]",
                             "next": "[next_block_hash, lowercase]",
-                            "tx_count": "_tx_count",
+                            "tx_count": "tx_count",
                             "time": "time"
                         },
                         "relay": {
                             "txid": "",
                             "inner": ""
                         },
-                        "unspents": {
-                            "key": "Address.Transactions",
-                            "confirmations": "_confirmations",
+                        "transaction": {
+                            "key": "transaction",
                             "txid": "[id, lowercase]",
-                            "index": "",
-                            "value": "_tx_address_value",
-                            "script": ""
+                            "size": "size",
+                            "block": "block_height",
+                            "time": "block_time",
+                            "input": "input_value",
+                            "output": "output_value",
+                            "value": "[_output_value, -, _fees, int]",
+                            "fees": "_fees"
+                        },
+                        "transactions": {
+                            "key": "address.transactions",
+                            "txid": "[id, lowercase]",
+                            "size": "size",
+                            "block": "block_height",
+                            "time": "block_time",
+                            "input": "input_value",
+                            "output": "output_value",
+                            "value": "tx_address_value",
+                            "fees": "fees"
+                        },
+                        "unspents": {
+                            "key": "address.transactions",
+                            "confirmations": "confirmations",
+                            "txid": "[id, lowercase]",
+                            "index": "pos",
+                            "value": "tx_address_value",
+                            "script": "script"
                         }
                     }
                 }
@@ -759,10 +759,10 @@
                         "address": {
                             "key": "",
                             "address": "address",
-                            "hash": "",
+                            "hash": "[address, hextohash]",
                             "tx_count": "total_txs",
-                            "received": "received_value",
-                            "balance": "balance"
+                            "received": "[received_value, float]",
+                            "balance": "[balance, float]"
                         },
                         "addresses": {
                             "key": "",
@@ -772,6 +772,19 @@
                             "received": "",
                             "balance": ""
                         },
+                        "block": {
+                            "key": "",
+                            "height": "block_no",
+                            "hash": "blockhash",
+                            "prev": "previous_blockhash",
+                            "next": "next_blockhash",
+                            "tx_count": "[txs, count]",
+                            "time": "time"
+                        },
+                        "relay": {
+                            "txid": "tx_hex",
+                            "inner": "transaction"
+                        },
                         "transaction": {
                             "key": "",
                             "txid": "txid",
@@ -780,39 +793,27 @@
                             "time": "time",
                             "input": "",
                             "output": "",
-                            "value": "sent_value",
-                            "fees": "fee"
+                            "value": "[sent_value, float]",
+                            "fees": "[fee, float]"
                         },
                         "transactions": {
-                            "key": "",
+                            "key": ".txs",
                             "txid": "txid",
                             "size": "",
                             "block": "block_no",
                             "time": "time",
                             "input": "",
                             "output": "",
-                            "value": "sent_value",
-                            "fees": "fee"
-                        },
-                        "block": {
-                            "key": "",
-                            "height": "block_no",
-                            "hash": "blockhash",
-                            "prev": "previous_blockhash",
-                            "next": "next_blockhash",
-                            "tx_count": "",
-                            "time": "time"
-                        },
-                        "relay": {
-                            "txid": "tx_hex",
-                            "inner": "transaction"
+                            "value": "",
+                            "fees": ""
                         },
                         "unspents": {
                             "key": ".txs",
+                            "reverse_array": true,
                             "confirmations": "confirmations",
                             "txid": "txid",
                             "index": "output_no",
-                            "value": "value",
+                            "value": "[value, float]",
                             "script": "script_hex"
                         }
                     }
@@ -836,10 +837,10 @@
                         "address": {
                             "key": "",
                             "address": "address",
-                            "hash": "",
+                            "hash": "[address, hextohash]",
                             "tx_count": "total_txs",
-                            "received": "received_value",
-                            "balance": "balance"
+                            "received": "[received_value, float]",
+                            "balance": "[balance, float]"
                         },
                         "addresses": {
                             "key": "",
@@ -849,6 +850,19 @@
                             "received": "",
                             "balance": ""
                         },
+                        "block": {
+                            "key": "",
+                            "height": "block_no",
+                            "hash": "blockhash",
+                            "prev": "previous_blockhash",
+                            "next": "next_blockhash",
+                            "tx_count": "[txs, count]",
+                            "time": "time"
+                        },
+                        "relay": {
+                            "txid": "tx_hex",
+                            "inner": "transaction"
+                        },
                         "transaction": {
                             "key": "",
                             "txid": "txid",
@@ -857,39 +871,27 @@
                             "time": "time",
                             "input": "",
                             "output": "",
-                            "value": "sent_value",
-                            "fees": "fee"
+                            "value": "[sent_value, float]",
+                            "fees": "[fee, float]"
                         },
                         "transactions": {
-                            "key": "",
+                            "key": ".txs",
                             "txid": "txid",
                             "size": "",
                             "block": "block_no",
                             "time": "time",
                             "input": "",
                             "output": "",
-                            "value": "sent_value",
-                            "fees": "fee"
-                        },
-                        "block": {
-                            "key": "",
-                            "height": "block_no",
-                            "hash": "blockhash",
-                            "prev": "previous_blockhash",
-                            "next": "next_blockhash",
-                            "tx_count": "",
-                            "time": "time"
-                        },
-                        "relay": {
-                            "txid": "tx_hex",
-                            "inner": "transaction"
+                            "value": "",
+                            "fees": ""
                         },
                         "unspents": {
                             "key": ".txs",
+                            "reverse_array": true,
                             "confirmations": "confirmations",
                             "txid": "txid",
                             "index": "output_no",
-                            "value": "value",
+                            "value": "[value, float]",
                             "script": "script_hex"
                         }
                     }
@@ -913,10 +915,10 @@
                         "address": {
                             "key": "",
                             "address": "address",
-                            "hash": "",
+                            "hash": "[address, hextohash]",
                             "tx_count": "total_txs",
-                            "received": "received_value",
-                            "balance": "balance"
+                            "received": "[received_value, float]",
+                            "balance": "[balance, float]"
                         },
                         "addresses": {
                             "key": "",
@@ -926,6 +928,19 @@
                             "received": "",
                             "balance": ""
                         },
+                        "block": {
+                            "key": "",
+                            "height": "block_no",
+                            "hash": "blockhash",
+                            "prev": "previous_blockhash",
+                            "next": "next_blockhash",
+                            "tx_count": "[txs, count]",
+                            "time": "time"
+                        },
+                        "relay": {
+                            "txid": "tx_hex",
+                            "inner": "transaction"
+                        },
                         "transaction": {
                             "key": "",
                             "txid": "txid",
@@ -934,39 +949,27 @@
                             "time": "time",
                             "input": "",
                             "output": "",
-                            "value": "sent_value",
-                            "fees": "fee"
+                            "value": "[sent_value, float]",
+                            "fees": "[fee, float]"
                         },
                         "transactions": {
-                            "key": "",
+                            "key": ".txs",
                             "txid": "txid",
                             "size": "",
                             "block": "block_no",
                             "time": "time",
                             "input": "",
                             "output": "",
-                            "value": "sent_value",
-                            "fees": "fee"
-                        },
-                        "block": {
-                            "key": "",
-                            "height": "block_no",
-                            "hash": "blockhash",
-                            "prev": "previous_blockhash",
-                            "next": "next_blockhash",
-                            "tx_count": "",
-                            "time": "time"
-                        },
-                        "relay": {
-                            "txid": "tx_hex",
-                            "inner": "transaction"
+                            "value": "",
+                            "fees": ""
                         },
                         "unspents": {
                             "key": ".txs",
+                            "reverse_array": true,
                             "confirmations": "confirmations",
                             "txid": "txid",
                             "index": "output_no",
-                            "value": "value",
+                            "value": "[value, float]",
                             "script": "script_hex"
                         }
                     }
@@ -990,10 +993,10 @@
                         "address": {
                             "key": "",
                             "address": "address",
-                            "hash": "",
+                            "hash": "[address, hextohash]",
                             "tx_count": "total_txs",
-                            "received": "received_value",
-                            "balance": "balance"
+                            "received": "[received_value, float]",
+                            "balance": "[balance, float]"
                         },
                         "addresses": {
                             "key": "",
@@ -1003,6 +1006,19 @@
                             "received": "",
                             "balance": ""
                         },
+                        "block": {
+                            "key": "",
+                            "height": "block_no",
+                            "hash": "blockhash",
+                            "prev": "previous_blockhash",
+                            "next": "next_blockhash",
+                            "tx_count": "[txs, count]",
+                            "time": "time"
+                        },
+                        "relay": {
+                            "txid": "tx_hex",
+                            "inner": "transaction"
+                        },
                         "transaction": {
                             "key": "",
                             "txid": "txid",
@@ -1011,39 +1027,27 @@
                             "time": "time",
                             "input": "",
                             "output": "",
-                            "value": "sent_value",
-                            "fees": "fee"
+                            "value": "[sent_value, float]",
+                            "fees": "[fee, float]"
                         },
                         "transactions": {
-                            "key": "",
+                            "key": ".txs",
                             "txid": "txid",
                             "size": "",
                             "block": "block_no",
                             "time": "time",
                             "input": "",
                             "output": "",
-                            "value": "sent_value",
-                            "fees": "fee"
-                        },
-                        "block": {
-                            "key": "",
-                            "height": "block_no",
-                            "hash": "blockhash",
-                            "prev": "previous_blockhash",
-                            "next": "next_blockhash",
-                            "tx_count": "",
-                            "time": "time"
-                        },
-                        "relay": {
-                            "txid": "tx_hex",
-                            "inner": "transaction"
+                            "value": "",
+                            "fees": ""
                         },
                         "unspents": {
                             "key": ".txs",
+                            "reverse_array": true,
                             "confirmations": "confirmations",
                             "txid": "txid",
                             "index": "output_no",
-                            "value": "value",
+                            "value": "[value, float]",
                             "script": "script_hex"
                         }
                     }

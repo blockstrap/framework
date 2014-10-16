@@ -128,19 +128,28 @@
         var key = bitcoin.ECKey.fromWIF(privkey);
         tx.sign(0, key);
         var raw = tx.toHex();
-        return raw;
+        console.log('raw', raw);
+        //return raw;
+        return false;
     }
     
-    currencies.send = function(to_address, to_amount, from_address, keys, callback)
-    {
+    currencies.send = function(
+        to_address, 
+        to_amount, 
+        from_address, 
+        keys, 
+        callback, 
+        currency
+    ){
         var available_balance = 0;
         var private_key = keys.priv;
-        var fee = $.fn.blockstrap.settings.currencies.btc.fee * 100000000;
-        $.fn.blockstrap.api.balance(from_address, 'btc', function(balance)
+        if(!currency) currency = 'btc';
+        var fee = $.fn.blockstrap.settings.currencies[currency].fee * 100000000;
+        $.fn.blockstrap.api.balance(from_address, currency, function(balance)
         {
             if(balance - fee >= to_amount)
             {
-                $.fn.blockstrap.api.unspents(keys.pub, 'btc', function(unspents)
+                $.fn.blockstrap.api.unspents(keys.pub, currency, function(unspents)
                 {
                     if($.isArray(unspents))
                     {

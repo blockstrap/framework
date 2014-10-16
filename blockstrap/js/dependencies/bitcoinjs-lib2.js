@@ -3714,7 +3714,7 @@
                     wif: 239,
                     dustThreshold: 546,
                     feePerKb: 1e4,
-                    estimateFee: estimateFee("testnet")
+                    estimateFee: estimateFee("bitcointestnet")
                 },
                 dogecoin: {
                     magicPrefix: "Dogecoin Signed Message:\n",
@@ -3764,13 +3764,13 @@
                         "public": 27108450,
                         "private": 27106558
                     },
-                    pubKeyHash: 48,
-                    scriptHash: 5,
-                    wif: 176,
+                    pubKeyHash: 111,
+                    scriptHash: 196,
+                    wif: 239,
                     dustThreshold: 0,
                     dustSoftThreshold: 1e5,
                     feePerKb: 1e5,
-                    estimateFee: estimateFee("litecoin")
+                    estimateFee: estimateFee("litecointestnet")
                 },
                 viacoin: {
                     magicPrefix: "Viacoin Signed Message:\n",

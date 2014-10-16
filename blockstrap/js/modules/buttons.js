@@ -277,7 +277,7 @@
                     {
                         $.fn.blockstrap.core.ready();
                         $.fn.blockstrap.core.loader('close');
-                    }, true);
+                    }, $.fn.blockstrap.core.page());
                 }
             )
         }
@@ -1173,6 +1173,7 @@
         var fields = [];
         var form_id = $(button).attr('data-form-id');
         var account_id = $(button).attr('data-account-id');
+        var currency = $(button).attr('data-to-currency');
         var to_address = $(button).attr('data-to-address');
         var to_amount = parseInt($(button).attr('data-to-amount'));
         var form = $('form#'+form_id);
@@ -1208,21 +1209,31 @@
                     {
                         $.fn.blockstrap.currencies.send(to_address, to_amount, from_address, keys, function(tx)
                         {
-                            account.ts = new Date().getTime();
-                            account.balance = change;
-                            account.tx_count++;
-                            $.fn.blockstrap.data.save('accounts', account_id, account, function(obj)
+                            if(tx && typeof tx.txid != 'undefined')
                             {
-                                $.fn.blockstrap.core.refresh(function()
+                                account.ts = new Date().getTime();
+                                account.balance = change;
+                                account.tx_count++;
+                                $.fn.blockstrap.data.save('accounts', account_id, account, function(obj)
                                 {
-                                    var title = 'Sent ' + parseInt(to_amount) / 100000000 + ' Bitcoin to ' + to_address;
-                                    var base = $.fn.blockstrap.settings.base_url;
-                                    var content = '<p>Transaction ID: ' + tx.txid + '</p><p>You can <a href="' + base + '?txid=' + tx.txid + '#transaction">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchain.info/tx/' + tx.txid + '">this</a>.</p><p>Please note that upon refreshing or switching pages, balances may return to their previous totals when transactions are successful but unconfirmed, where they can take anywhere upto 10 minutes to be confirmed. We will provide dual balances for each currency in the next release.</p>';
-                                    $.fn.blockstrap.core.modal(title, content);
-                                    $.fn.blockstrap.core.loader('close');
+                                    $.fn.blockstrap.core.refresh(function()
+                                    {
+                                        var title = 'Sent ' + parseInt(to_amount) / 100000000 + ' Bitcoin to ' + to_address;
+                                        var base = $.fn.blockstrap.settings.base_url;
+                                        var content = '<p>Transaction ID: ' + tx.txid + '</p><p>You can <a href="' + base + '?txid=' + tx.txid + '#transaction">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchain.info/tx/' + tx.txid + '">this</a>.</p><p>Please note that upon refreshing or switching pages, balances may return to their previous totals when transactions are successful but unconfirmed, where they can take anywhere upto 10 minutes to be confirmed. We will provide dual balances for each currency in the next release.</p>';
+                                        $.fn.blockstrap.core.modal(title, content);
+                                        $.fn.blockstrap.core.loader('close');
+                                    });
                                 });
-                            });
-                        });
+                            }
+                            else
+                            {
+                                var title = 'Warning';
+                                var content = 'Unable to relay transaction.';
+                                $.fn.blockstrap.core.modal(title, content);
+                                $.fn.blockstrap.core.loader('close');
+                            }
+                        }, currency);
                     }
                 });
             });
@@ -1235,6 +1246,7 @@
         var fields = [];
         var form_id = $(button).attr('data-form-id');
         var account_id = $(button).attr('data-account-id');
+        var currency = $(button).attr('data-to-currency');
         var form = $('form#'+form_id);
         var account = $.fn.blockstrap.accounts.get(account_id);
         $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)

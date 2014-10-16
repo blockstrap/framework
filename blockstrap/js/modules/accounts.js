@@ -118,6 +118,10 @@
                 key: 'data-to-amount',
                 value: tx.amount
             });
+            options.buttons.forms[1].attributes.push({
+                key: 'data-to-currency',
+                value: account.currency.code
+            });
             var amount = parseInt(tx.amount) / 100000000;
             var fee = $.fn.blockstrap.settings.currencies[account.currency.code].fee;
             amount = amount + ' ' + account.currency.type;
@@ -601,7 +605,7 @@
             if(key)
             {
                 
-                var keys = $.fn.blockstrap.currencies.keys(key);
+                var keys = $.fn.blockstrap.currencies.keys(key, account.currency.code);
                 if(keys.pub === account.address)
                 {
                     if(callback) callback(true, keys);
