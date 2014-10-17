@@ -1,6 +1,6 @@
 /*
  * 
- *  Blockstrap v0.5
+ *  Blockstrap v0.4.0.1
  *  http://blockstrap.com
  *
  *  Designed, Developed and Maintained by Neuroware.io Inc
@@ -186,8 +186,10 @@
             {
                 var extra_key = false;
                 var key_to_call = false;
-                if(map.from[call].key.indexOf(".") > -1)
-                {
+                if(
+                    typeof map.from[call] != 'undefined'
+                    && map.from[call].key.indexOf(".") > -1
+                ){
                     var key_array = map.from[call].key.split('.');
                     if(blockstrap_functions.array_length(key_array) == 2)
                     {
@@ -201,46 +203,60 @@
                             extra_key = key_array[1];
                             if(extra_key === '0') extra_key = 0;
                         }
-                    }       
-                }
-                var data = false;
-                if(
-                    results 
-                    && key_to_call 
-                    || 
-                    (
-                    results
-                    && typeof results.data != 'undefined'
-                    && typeof results.data[map.from[call].key] != 'undefined'
-                    )
-                ){
-                    if(key_to_call)
-                    {
-                        if(extra_key || extra_key === 0)
+                    } 
+                    var data = false;
+                    if(
+                        results 
+                        && key_to_call 
+                        || 
+                        (
+                        results
+                        && typeof results.data != 'undefined'
+                        && typeof map.from[call] != 'undefined'
+                        && typeof map.from[call].key != 'undefined'
+                        && typeof results.data[map.from[call].key] != 'undefined'
+                        )
+                    ){
+                        if(key_to_call)
                         {
-                            data = results.data[key_to_call][extra_key];
+                            if(extra_key || extra_key === 0)
+                            {
+                                data = results.data[key_to_call][extra_key];
+                            }
+                            else
+                            {
+                                data = results.data[key_to_call];
+                            }
                         }
                         else
                         {
-                            data = results.data[key_to_call];
+                            if(call)
+                            {
+                                console.log('call', call);
+                                data = results.data[map.from[call].key];
+                            }
+                            else
+                            {
+                                data = results.data;
+                            }
                         }
+                    }
+                    else if(
+                        typeof results.data != 'undefined' 
+                        && !map.from[call].key
+                    ){
+                        data = results.data;
                     }
                     else
                     {
-                        data = results.data[map.from[call].key];
+                        data = results;
                     }
-                }
-                else if(
-                    typeof results.data != 'undefined' 
-                    && !map.from[call].key
-                ){
-                    data = results.data;
+                    if(callback) callback(data);
                 }
                 else
                 {
-                    data = results;
+                    if(callback) callback(results);
                 }
-                if(callback) callback(data);
             },
             error: function()
             {
@@ -255,7 +271,8 @@
         var request_data = {};
         var map = api.map(currency);
         request_data[map.to.relay_param] = hash;
-        api.request(api.url('relay', '', currency), function(results)
+        console.log('currency', currency);
+        api.request(api.url('relay', hash, currency), function(results)
         {
             var data = false;
             var tx = false;

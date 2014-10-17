@@ -1,6 +1,6 @@
 /*
  * 
- *  Blockstrap v0.5
+ *  Blockstrap v0.4.0.1
  *  http://blockstrap.com
  *
  *  Designed, Developed and Maintained by Neuroware.io Inc
@@ -31,6 +31,8 @@ var blockstrap_core = function()
         var resize_time = new Date();
         var resize_timeout = false;
         var test_results = '';
+        var bs_hooks = {};
+        var bs_vars = {};
         
         // PREVENT DUPLICATES
         $.fn.blockstrap = function(options)
@@ -94,6 +96,33 @@ var blockstrap_core = function()
                 var date = new Date();;
                 if(time) date = new Date(time * 1000);
                 return jQuery.timeago(date)
+            },
+            add_actions: function(hook, key, bs_module, bs_function, vars)
+            {
+                if(typeof bs_hooks[hook] == 'undefined') bs_hooks[hook] = {};
+                if(typeof bs_vars[hook] == 'undefined') bs_vars[hook] = {};
+                if(bs_module.indexOf(".") > -1)
+                {
+                    var bs_module_array = bs_module.split('.');
+                    bs_hooks[hook][key] = $.fn.blockstrap[bs_module_array[0]][bs_module_array[1]][bs_function];
+                }
+                else
+                {
+                    bs_hooks[hook][key] = $.fn.blockstrap[bs_module][bs_function];
+                }
+                bs_vars[hook][key] = vars;
+            },
+            apply_actions: function(hook)
+            {
+                if(
+                    typeof bs_hooks[hook] != 'undefined' 
+                    && $.isPlainObject(bs_hooks[hook])
+                ){
+                    $.each(bs_hooks[hook], function(key, func)
+                    {
+                        func(bs_vars[hook][key]);
+                    });
+                }
             },
             boot: function(bootstrap, key, html, index, callback)
             {
@@ -506,6 +535,8 @@ var blockstrap_core = function()
             {
                 var bs = $.fn.blockstrap;
                 var $bs = blockstrap_functions;
+                
+                bs.core.apply_actions('init');
                 
                 $.fn.blockstrap.core.publicize(function()
                 {

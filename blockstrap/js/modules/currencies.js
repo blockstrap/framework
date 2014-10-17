@@ -1,6 +1,6 @@
 /*
  * 
- *  Blockstrap v0.5
+ *  Blockstrap v0.4.0.1
  *  http://blockstrap.com
  *
  *  Designed, Developed and Maintained by Neuroware.io Inc
@@ -129,8 +129,8 @@
         tx.sign(0, key);
         var raw = tx.toHex();
         console.log('raw', raw);
-        //return raw;
-        return false;
+        return raw;
+        //return false;
     }
     
     currencies.send = function(
@@ -176,7 +176,7 @@
                             fee, 
                             to_amount
                         );
-                        $.fn.blockstrap.api.relay(raw_transaction, 'btc', function(tx)
+                        $.fn.blockstrap.api.relay(raw_transaction, currency, function(tx)
                         {
                             if(tx && tx.txid)
                             {
