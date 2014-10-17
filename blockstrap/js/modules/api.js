@@ -232,7 +232,6 @@
                         {
                             if(call)
                             {
-                                console.log('call', call);
                                 data = results.data[map.from[call].key];
                             }
                             else
@@ -271,7 +270,6 @@
         var request_data = {};
         var map = api.map(currency);
         request_data[map.to.relay_param] = hash;
-        console.log('currency', currency);
         api.request(api.url('relay', hash, currency), function(results)
         {
             var data = false;
