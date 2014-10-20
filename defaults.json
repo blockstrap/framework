@@ -1,11 +1,11 @@
 {
-    "v": "0.3.1.1",
+    "v": "0.4.0.1",
     "public": false,
     "security": false,
     "role": "admin",
     "id": "blockstrap",
     "theme": "default",
-    "less": true,
+    "less": false,
     "test": false,
     "refresh": false,
     "cascade": true,
@@ -17,7 +17,7 @@
     "module_base": "js/modules/",
     "page_base": "index",
     "slug_base": "dashboard",
-    "api_service": "helloblock",
+    "api_service": "blockstrap",
     "base_url": "",
     "content_id": "main-content",
     "navigation_id": "navigation",
@@ -229,10 +229,10 @@
         "accounts": 60000
     },
     "storage": {
-        "dependencies": false,
-        "modules": false,
-        "less": false,
-        "bootstrap": false
+        "dependencies": true,
+        "modules": true,
+        "less": true,
+        "bootstrap": true
     },
     "exchange": {
         "btc": 500,
@@ -366,6 +366,7 @@
                         "transaction": "transaction/",
                         "transactions": "addressTransactions/$call?showtxnio=1",
                         "block": "blockHeight/",
+                        "market": "marketStats/",
                         "relay": "transactionRelay/",
                         "relay_param": "",
                         "unspents": "addressUnspents/$call?showtxnio=1"
@@ -397,6 +398,15 @@
                             "tx_count": "tx_count",
                             "time": "time"
                         },
+                        "market": {
+                            "key": "market",
+                            "btc_to_usd": "price_24hr",
+                            "daily_txs": "txn_count_24hr",
+                            "daily_sent": "value_sent_24hr",
+                            "hash_rate": "hashrate",
+                            "btc_discovered": "coins_discovered",
+                            "market_cap": "marketcap"
+                        },
                         "relay": {
                             "txid": "",
                             "inner": ""
@@ -425,11 +435,12 @@
                         },
                         "unspents": {
                             "key": "address.transactions",
+                            "reverse_array": true,
                             "confirmations": "confirmations",
                             "txid": "[id, lowercase]",
-                            "index": "pos",
+                            "index": "tx_address_pos",
                             "value": "tx_address_value",
-                            "script": "script"
+                            "script": "[tx_address_script_pub_key, lowercase]"
                         }
                     }
                 }

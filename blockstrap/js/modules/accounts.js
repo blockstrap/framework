@@ -125,7 +125,7 @@
             var amount = parseInt(tx.amount) / 100000000;
             var fee = $.fn.blockstrap.settings.currencies[account.currency.code].fee;
             amount = amount + ' ' + account.currency.type;
-            intro = '<p>Please confirm you want to send ' + amount + ' to ' + tx.to + '</p><p>Please also note that there is a network mining fee of ' + fee + ' ' + account.currency.type + ' applied to this transaction to ensure that it is propergated throughout the network quickly.</p>';
+            intro = '<p class="left">Please confirm you want to send ' + amount + ' to ' + tx.to + '</p><p>Please also note that there is a network mining fee of ' + fee + ' ' + account.currency.type + ' applied to this transaction to ensure that it is propergated throughout the network quickly.</p>';
         }
         var form = $.fn.blockstrap.forms.process(options);
         $.fn.blockstrap.core.modal('Verify Ownership of ' + account.name, intro + form);
@@ -492,11 +492,21 @@
             if(force_refresh) ts = 0;
             if(ts + cache_time < now)
             {
+                var current_balance = account.balance;
                 var current_tx_count = account.tx_count;
                 $.fn.blockstrap.api.address(account.address, account.currency.code, function(results)
                 {
-                    if(results.tx_count && results.tx_count > current_tx_count)
-                    {
+                    if(
+                        (
+                        results.tx_count 
+                        && results.tx_count > current_tx_count
+                        )
+                        ||
+                        (
+                        results.balance 
+                        && results.balance != current_balance
+                        )
+                    ){
                         account.balance = results.balance;
                         account.tx_count = results.tx_count;
                         account.ts = now;

@@ -6044,19 +6044,22 @@ html {
   position: absolute;
   width: 221px;
   height: 36px;
-  background: url(http://localhost/neuro/wallet/blockstrap/img/logo.png) no-repeat;
+  background: url(http://localhost/neuro/wallet/themes/default/img/logo.png) no-repeat;
   top: 50%;
   left: 50%;
   margin: -21px 0 0 -110px;
 }
 .blockstrap-wrapper .loading {
   color: transparent !important;
-  background-image: url(http://localhost/neuro/wallet/blockstrap/img/loading.gif) !important;
+  background-image: url(http://localhost/neuro/wallet/themes/default/img/loading.gif) !important;
   background-repeat: no-repeat !important;
   background-position: center center !important;
 }
 .blockstrap-wrapper p.break-word {
   word-wrap: break-word;
+}
+.blockstrap-wrapper p.left-aligned {
+  text-align: left !important;
 }
 .blockstrap-wrapper.loading {
   background: black;
@@ -7040,6 +7043,9 @@ MODALS
   padding: 20px;
   border: 1px solid #bbbbbb;
 }
+.blockstrap-wrapper .modal .modal-dialog .modal-body p.left {
+  text-align: left;
+}
 .blockstrap-wrapper .modal .modal-dialog .modal-body.no-footer {
   border-radius: 0 0 4px 4px;
 }
@@ -7216,8 +7222,8 @@ FONTS
 */
 @font-face {
   font-family: 'pro';
-  src: url('http://localhost/neuro/wallet/blockstrap/fonts/absolut_pro_light_reduced-webfont.eot');
-  src: url('http://localhost/neuro/wallet/blockstrap/fonts/absolut_pro_light_reduced-webfont.eot?#iefix') format('embedded-opentype'), url('http://localhost/neuro/wallet/blockstrap/fonts/absolut_pro_light_reduced-webfont.woff') format('woff'), url('http://localhost/neuro/wallet/blockstrap/fonts/absolut_pro_light_reduced-webfont.ttf') format('truetype'), url('http://localhost/neuro/wallet/blockstrap/fonts/absolut_pro_light_reduced-webfont.svg#absolut_pro_reducedregular') format('svg');
+  src: url('http://localhost/neuro/wallet/themes/default/fonts/absolut_pro_light_reduced-webfont.eot');
+  src: url('http://localhost/neuro/wallet/themes/default/fonts/absolut_pro_light_reduced-webfont.eot?#iefix') format('embedded-opentype'), url('http://localhost/neuro/wallet/themes/default/fonts/absolut_pro_light_reduced-webfont.woff') format('woff'), url('http://localhost/neuro/wallet/themes/default/fonts/absolut_pro_light_reduced-webfont.ttf') format('truetype'), url('http://localhost/neuro/wallet/themes/default/fonts/absolut_pro_light_reduced-webfont.svg#absolut_pro_reducedregular') format('svg');
   font-weight: normal;
   font-style: normal;
 }

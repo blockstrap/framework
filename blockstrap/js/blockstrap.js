@@ -50,43 +50,46 @@ var blockstrap_core = function()
         // IN-ESCAPABLE INCLUDES
         $.fn.blockstrap.defaults = function()
         {
-            var defaults = {
-                dependencies: [
-                    'crypto',
-                    'sha3',
-                    'mustache'
-                ],
-                modules: [
-                    'templates',
-                    'theme'
-                ]
-            }
-            var modules = $.fn.blockstrap.settings.modules;
-            var dependencies = $.fn.blockstrap.settings.dependencies;
-            var d_length = blockstrap_functions.array_length(dependencies);
-            var m_length = blockstrap_functions.array_length(modules);
-            if(!$.isArray($.fn.blockstrap.settings.dependencies))
+            if($.fn.blockstrap.settings.cascade === true)
             {
-                $.fn.blockstrap.settings.dependencies = [];
-            }
-            if(!$.isArray($.fn.blockstrap.settings.modules))
-            {
-                $.fn.blockstrap.settings.modules = [];
-            }
-            $.each(defaults.dependencies, function(k, dependency)
-            {
-                if($.inArray(dependency, dependencies) < 0 || d_length < 1)
-                {
-                    $.fn.blockstrap.settings.dependencies.push(dependency);
-                }   
-            });
-            $.each(defaults.modules, function(k, module)
-            {
-                if($.inArray(module, modules) < 0 || m_length < 1)
-                {
-                    $.fn.blockstrap.settings.modules.push(module);
+                var defaults = {
+                    dependencies: [
+                        'crypto',
+                        'sha3',
+                        'mustache'
+                    ],
+                    modules: [
+                        'templates',
+                        'theme'
+                    ]
                 }
-            });
+                var modules = $.fn.blockstrap.settings.modules;
+                var dependencies = $.fn.blockstrap.settings.dependencies;
+                var d_length = blockstrap_functions.array_length(dependencies);
+                var m_length = blockstrap_functions.array_length(modules);
+                if(!$.isArray($.fn.blockstrap.settings.dependencies))
+                {
+                    $.fn.blockstrap.settings.dependencies = [];
+                }
+                if(!$.isArray($.fn.blockstrap.settings.modules))
+                {
+                    $.fn.blockstrap.settings.modules = [];
+                }
+                $.each(defaults.dependencies, function(k, dependency)
+                {
+                    if($.inArray(dependency, dependencies) < 0 || d_length < 1)
+                    {
+                        $.fn.blockstrap.settings.dependencies.push(dependency);
+                    }   
+                });
+                $.each(defaults.modules, function(k, module)
+                {
+                    if($.inArray(module, modules) < 0 || m_length < 1)
+                    {
+                        $.fn.blockstrap.settings.modules.push(module);
+                    }
+                });
+            }
         }
         
         // CORE FUNCTIONS
@@ -374,11 +377,11 @@ var blockstrap_core = function()
                             }
                             objs['nw_accounts'].push(obj);
                         }
-                        else if(key.substring(0, 14) == 'nw_contacts_')
+                        else if(key.substring(0, 12) == 'nw_contacts_')
                         {
-                            if(!$.isArray(objs['nw_blockstrap']))
+                            if(!$.isArray(objs['nw_contacts']))
                             {
-                                objs['nw_blockstrap'] = [];
+                                objs['nw_contacts'] = [];
                             }
                             objs['nw_contacts'].push(obj);
                         }

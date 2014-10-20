@@ -144,6 +144,28 @@
         }
     }
     
+    api.market = function(currency, stat, callback)
+    {
+        api.request(api.url('market', stat, currency), function(results)
+        {
+            var map = api.map(currency);
+            var market = {
+                btc_to_usd: 0,
+                daily_txs: 0,
+                daily_sent: 0,
+                hash_rate: 0,
+                btc_discovered: 0,
+                market_cap: 0
+            };
+            if(results)
+            {
+                market = api.results(market, results, currency, 'market');
+            }
+            if(callback) callback(market);
+            else return market;
+        }, 'GET', false, currency, 'market');
+    }
+    
     api.request = function(url, callback, type, data, currency, call, username, password)
     {
         if(!type) type = 'GET';
@@ -188,22 +210,25 @@
                 var key_to_call = false;
                 if(
                     typeof map.from[call] != 'undefined'
-                    && map.from[call].key.indexOf(".") > -1
+                    && typeof map.from[call].key != 'undefined'
                 ){
-                    var key_array = map.from[call].key.split('.');
-                    if(blockstrap_functions.array_length(key_array) == 2)
+                    if(map.from[call].key.indexOf(".") > -1)
                     {
-                        if(key_array[0] == '')
+                        var key_array = map.from[call].key.split('.');
+                        if(blockstrap_functions.array_length(key_array) == 2)
                         {
-                            key_to_call = key_array[1];
+                            if(key_array[0] == '')
+                            {
+                                key_to_call = key_array[1];
+                            }
+                            else
+                            {
+                                key_to_call = key_array[0];
+                                extra_key = key_array[1];
+                                if(extra_key === '0') extra_key = 0;
+                            }
                         }
-                        else
-                        {
-                            key_to_call = key_array[0];
-                            extra_key = key_array[1];
-                            if(extra_key === '0') extra_key = 0;
-                        }
-                    } 
+                    }
                     var data = false;
                     if(
                         results 
@@ -278,12 +303,17 @@
             {
                 if(results.data)
                 {
-                    if(map.from.relay.inner)
-                    {
+                    if(
+                        map.from.relay.inner
+                        && typeof results.data[map.from.relay.inner] != 'undefined'
+                        && typeof results.data[map.from.relay.inner][map.from.relay.txid] != 'undefined'
+                    ){
                         data = results.data[map.from.relay.inner][map.from.relay.txid];
                     }
-                    else if(map.from.relay.txid)
-                    {
+                    else if(
+                        map.from.relay.txid
+                        && typeof results.data[map.from.relay.txid] != 'undefined'
+                    ){
                         data = results.data[map.from.relay.txid];
                     }
                     if(data)
@@ -389,8 +419,8 @@
                         ){
                             if(parse_type == 'float')
                             {
-                                res_01 = parseFloat(results[arrayed_result[0]]);
-                                res_01 = res_01 * 100000000;
+                                res_01 = parseFloat(results[arrayed_result[0]]).toPrecision(8);
+                                res_01 = parseInt((res_01 * 100000000));
                             }
                             else if(parse_type == 'int')
                             {
@@ -544,6 +574,7 @@
             if(
                 typeof apis[currency] == 'undefined' 
                 || typeof apis[currency][api_service] == 'undefined'
+                || typeof apis[currency][api_service].functions.to[action] == 'undefined'
             ){
                 return false;
             }

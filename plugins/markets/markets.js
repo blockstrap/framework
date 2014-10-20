@@ -11,6 +11,10 @@
 (function($) 
 {
     var markets = {};
+    
+    // THESE ARE DEFAULT CONDITIONS
+    // IF API BEING USED DOES NOT SUPPORT MARKET API
+    // THESE VALUES WILL NOT BE UPDATED UNLESS API SUPPORTS
     var conditions = {
         "btc_to_usd" : {
             text: "BTC to USD",
@@ -81,26 +85,36 @@
     
     markets.update = function()
     {
-        var bs_auth = $.fn.blockstrap.settings.currencies.btc.auth;
-        var username = bs_auth.blockstrap.username;
-        var password = bs_auth.blockstrap.password;
-        var url = 'http://api.blockstrap.com/v0/btc/marketStats';
-        $.fn.blockstrap.api.request(url, function(results)
+        $.fn.blockstrap.api.market('btc', '', function(results)
         {
-            if(
-                $.isPlainObject(results) 
-                && $.isPlainObject(results.data)
-                && results.status == 'success'
-            ){
-                var market = results.data.market;
-                conditions['btc_to_usd']['value'] = market.price_24hr;
-                conditions['daily_txs']['value'] = market.txn_count_24hr;
-                conditions['daily_sent']['value'] = market.value_sent_24hr;
-                conditions['hash_rate']['value'] = market.hashrate;
-                conditions['btc_discovered']['value'] = (market.coins_discovered / 1000000);
-                conditions['market_cap']['value'] = (market.marketcap / 1000000000);
+            if($.isPlainObject(results))
+            {
+                if(results.btc_to_usd)
+                {
+                    conditions['btc_to_usd']['value'] = results.btc_to_usd;
+                }
+                if(results.daily_txs)
+                {
+                    conditions['daily_txs']['value'] = results.daily_txs;
+                }
+                if(results.daily_sent)
+                {
+                    conditions['daily_sent']['value'] = results.daily_sent;
+                }
+                if(results.hash_rate)
+                {
+                    conditions['hash_rate']['value'] = results.hash_rate;
+                }
+                if(results.btc_discovered)
+                {
+                    conditions['btc_discovered']['value'] = (results.btc_discovered / 1000000);
+                }
+                if(results.market_cap)
+                {
+                    conditions['market_cap']['value'] = (results.market_cap / 1000000000);
+                }
             }
-        }, 'GET', false, 'btc', false, username, password);
+        });
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE

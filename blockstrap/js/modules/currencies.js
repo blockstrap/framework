@@ -107,30 +107,50 @@
         var fee = 0;
         var balance = 0;
         var total = 0;
+        var input_index = 0;
+        var key = bitcoin.ECKey.fromWIF(privkey);
+        var inputs_to_sign = [];
+        var debug = false;
+        
         if(this_fee) fee = this_fee;
         if(amount_to_send) total = amount_to_send;
         
+        if(debug)
+        {
+            console.log('inputs', inputs);
+            console.log('outputs', outputs);
+        }
+
         $.each(inputs, function(i, o)
         {
-            balance+= o.value;
-            tx.addInput(o.txid, o.n);
+            if(balance <= (amount_to_send + fee))
+            {
+                balance+= o.value;
+                tx.addInput(o.txid, o.n);
+                inputs_to_sign.push(input_index);
+                input_index++;
+            }
         });
         $.each(outputs, function(i, o)
         {
             tx.addOutput(o.address, o.value)
         });
-        if(balance > (total + fee))
+        if(balance >= (total + fee))
         {
             var change = balance - (total + fee);
             tx.addOutput(return_to, change);
         }
-        
-        var key = bitcoin.ECKey.fromWIF(privkey);
-        tx.sign(0, key);
+        $.each(inputs_to_sign, function(k)
+        {
+            tx.sign(k, key);
+        });
         var raw = tx.toHex();
-        console.log('raw', raw);
-        return raw;
-        //return false;
+        if(debug)
+        {
+            console.log('raw', raw);
+            return false;
+        }
+        else return raw;
     }
     
     currencies.send = function(
@@ -166,7 +186,7 @@
                                 script: unspent.script,
                                 value: unspent.value,
                             });
-                            available_balance = available_balance + unspent.value;
+                            //available_balance = available_balance + unspent.value;
                         });
                         var raw_transaction = currencies.raw(
                             from_address, 
