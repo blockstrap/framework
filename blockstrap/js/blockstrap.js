@@ -1389,8 +1389,11 @@ var blockstrap_core = function()
                 if($.isPlainObject(results))
                 {
                     $.fn.blockstrap.settings = $.extend({}, settings, results);
-                    // NOW NEED TO GET THEME SPECIFIC OPTIONS AND MERGE WITH THESE
                     
+                    // MERGE WITH HTML ATTRBUTE OPTIONS
+                    $.fn.blockstrap.core.settings(element);
+                    
+                    // NOW NEED TO GET THEME SPECIFIC OPTIONS AND MERGE WITH THESE
                     var current_theme = $.fn.blockstrap.settings.theme;
                     $.fn.blockstrap.core.get('themes/'+current_theme+'/config', 'json', function(results)
                     {
@@ -1402,7 +1405,6 @@ var blockstrap_core = function()
                                 results
                             );
                             
-                            $.fn.blockstrap.core.settings(element);
                             $.fn.blockstrap.defaults();
 
                             var bs = $.fn.blockstrap;

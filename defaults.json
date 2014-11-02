@@ -229,10 +229,10 @@
         "accounts": 60000
     },
     "storage": {
-        "dependencies": true,
-        "modules": true,
-        "less": true,
-        "bootstrap": true
+        "dependencies": false,
+        "modules": false,
+        "less": false,
+        "bootstrap": false
     },
     "exchange": {
         "btc": 500,

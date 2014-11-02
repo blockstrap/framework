@@ -2,7 +2,7 @@
     "theme": "priority",
     "public": true,
     "cascade": false,
-    "security": "9cd922a3249415349e636f76cff3ad75",
+    "security": "",
     "content_id": "issues",
     "slug_base": "index",
     "modules": [
@@ -33,11 +33,6 @@
         "priority"
     ],
     "styles": false,
-    "storage": {
-        "dependencies": true,
-        "modules": true,
-        "bootstrap": true
-    },
     "plugins": false,
     "buttons": {
         "classes": [

@@ -23,6 +23,15 @@
         coin: 10
     };
     
+    theme.hash = function()
+    {
+        var salt = localStorage.getItem('nw_blockstrap_salt');
+        if(blockstrap_functions.json(salt)) salt = $.parseJSON(salt);
+        var obj = CryptoJS.SHA3(salt, { outputLength: 512 });
+        var hash = obj.toString().substring(0, 32);
+        return hash;
+    }
+    
     // NEW DOM CONTENT
     theme.new = function()
     {
@@ -118,7 +127,8 @@
                                 $.fn.blockstrap.core.refresh(function()
                                 {
                                     theme.new();
-                                    $.fn.blockstrap.core.modal('Success', '<p>Your device salt has now been generated.</p><p>You can safely continue using this application, but please remember that if you loose or change or device salt from this or any other application on this device at this domain, you will not be able to access the funds linked to these issues.</p>');
+                                    var hash = theme.hash();
+                                    $.fn.blockstrap.core.modal('Success', '<p>Your device salt has now been generated.</p><p>Please add the following hash to your security configuration: <strong>'+hash+'</strong></p><p>You can safely continue using this application, but please remember that if you loose or change or device salt from this or any other application on this device at this domain, you will not be able to access the funds linked to these issues.</p>');
                                 }, 'index');
                             })
                         })
@@ -135,11 +145,8 @@
             e.preventDefault();
             var id = $(this).find('#id').val();
             var to = $(this).find('#to').val();
-            var salt = localStorage.getItem('nw_blockstrap_salt');
-            if(blockstrap_functions.json(salt)) salt = $.parseJSON(salt);
+            var hash = theme.hash();
             var security = $.fn.blockstrap.settings.security;
-            var obj = CryptoJS.SHA3(salt, { outputLength: 512 });
-            var hash = obj.toString().substring(0, 32);
             if(security && hash == security)
             {
                 if(!$.fn.blockstrap.currencies.validate(to))
