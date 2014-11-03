@@ -91,8 +91,8 @@
             e.preventDefault();
             var modules = {};
             var form = $(this);
-            var pw = $(form).find('#salt_pw').val();
-            var pw2 = $(form).find('#salt_pw_repeat').val()
+            var pw = $(form).find('#your_password').val();
+            var pw2 = $(form).find('#your_password_repeat').val();
             if(pw && pw == pw2)
             {
                 $.fn.blockstrap.core.loader('open');

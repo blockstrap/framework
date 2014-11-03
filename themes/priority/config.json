@@ -14,6 +14,7 @@
         "themes/priority/js/modules/theme"
     ],
     "dependencies": [
+        "themes/priority/js/dependencies/issues",
         "blockstrap/js/dependencies/crypto",
         "blockstrap/js/dependencies/sha3",
         "blockstrap/js/dependencies/mustache",
@@ -21,7 +22,6 @@
         "blockstrap/js/dependencies/bitcoinjs-lib",
         "themes/priority/js/dependencies/isotope",
         "blockstrap/js/dependencies/qrcode",
-        "themes/priority/js/dependencies/issues",
         "themes/priority/js/dependencies/steps",
         "blockstrap/js/dependencies/tx"
     ],

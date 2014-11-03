@@ -29,27 +29,6 @@ var blockstrap_setup_steps = [
                     "fields": [
                         {
                             "inputs": {
-                                "id": "app_url",
-                                "label": {
-                                    "text": "App URL",
-                                    "css": "col-sm-3"
-                                },
-                                "type": "text",
-                                "placeholder": "",
-                                "value": "{{urls.root}}",
-                                "wrapper": {
-                                    "css": "col-sm-9"
-                                },
-                                "attributes": [
-                                    {
-                                        "key": "data-setup-type",
-                                        "value": "module"
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "inputs": {
                                 "id": "your_name",
                                 "label": {
                                     "text": "Your Name",
@@ -65,6 +44,70 @@ var blockstrap_setup_steps = [
                                     {
                                         "key": "data-setup-type",
                                         "value": "module"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "inputs": {
+                                "id": "your_username",
+                                "label": {
+                                    "text": "Your Username",
+                                    "css": "col-sm-3"
+                                },
+                                "type": "text",
+                                "placeholder": "Something short but memorable",
+                                "value": "",
+                                "wrapper": {
+                                    "css": "col-sm-9"
+                                },
+                                "attributes": [
+                                    {
+                                        "key": "data-setup-type",
+                                        "value": "module"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "inputs": {
+                                "id": "your_password",
+                                "label": {
+                                    "text": "Your Password",
+                                    "css": "col-sm-3"
+                                },
+                                "type": "password",
+                                "placeholder": "Pick something memorable, it cannot be changed or recovered",
+                                "value": "",
+                                "wrapper": {
+                                    "css": "col-sm-9"
+                                },
+                                "attributes": [
+                                    {
+                                        "key": "data-setup-type",
+                                        "value": "module"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "inputs": {
+                                "id": "your_password_repeat",
+                                "label": {
+                                    "text": "Repeat Password",
+                                    "css": "col-sm-3"
+                                },
+                                "type": "password",
+                                "placeholder": "Better to be safe than sorry",
+                                "value": "",
+                                "css": "ignore",
+                                "wrapper": {
+                                    "css": "col-sm-9"
+                                },
+                                "attributes": [
+                                    {
+                                        "key": "data-repeat-id",
+                                        "value": "your_password"
                                     }
                                 ]
                             }
@@ -124,13 +167,14 @@ var blockstrap_setup_steps = [
                         },
                         {
                             "inputs": {
-                                "id": "salt_pw",
+                                "id": "app_url",
                                 "label": {
-                                    "text": "Device Password",
+                                    "text": "App URL",
                                     "css": "col-sm-3"
                                 },
-                                "type": "password",
-                                "placeholder": "It is important that this is memorable",
+                                "type": "text",
+                                "placeholder": "",
+                                "value": "{{urls.root}}",
                                 "wrapper": {
                                     "css": "col-sm-9"
                                 },
@@ -138,27 +182,6 @@ var blockstrap_setup_steps = [
                                     {
                                         "key": "data-setup-type",
                                         "value": "module"
-                                    }
-                                ]
-                            }
-                        },
-                        {
-                            "inputs": {
-                                "id": "salt_pw_repeat",
-                                "label": {
-                                    "text": "Repeat Password",
-                                    "css": "col-sm-3"
-                                },
-                                "type": "password",
-                                "placeholder": "Better safe than sorry",
-                                "wrapper": {
-                                    "css": "col-sm-9"
-                                },
-                                "css": "ignore",
-                                "attributes": [
-                                    {
-                                        "key": "data-repeat-id",
-                                        "value": "salt_pw"
                                     }
                                 ]
                             }

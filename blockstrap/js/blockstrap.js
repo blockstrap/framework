@@ -548,7 +548,6 @@ var blockstrap_core = function()
                     {
                         bs.core.modals();
                         bs.core.buttons();
-                        bs.core.ready();
 
                         if($.isPlainObject(bs.styles))
                         {
