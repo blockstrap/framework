@@ -59,9 +59,6 @@
         "rest",
         "ago"
     ],
-    "plugins": [
-        "markets"
-    ],
     "bootstrap": [
         "lists", 
         "jumbotrons", 
@@ -262,12 +259,6 @@
                 "sochain": "https://chain.so/api/v2/",
                 "blockr": "http://tbtc.blockr.io/api/v1/"
             },
-            "auth": {
-                "blockstrap": {
-                    "username": "beta",
-                    "password": "beta123"
-                }
-            },
             "fee": 0.0001
         },
         "ltct": {
@@ -278,12 +269,6 @@
                 "blockstrap": "https://api.blockstrap.com/v0/ltct/",
                 "sochain": "https://chain.so/api/v2/",
                 "blockr": "http://ltc.blockr.io/api/v1/"
-            },
-            "auth": {
-                "blockstrap": {
-                    "username": "beta",
-                    "password": "beta123"
-                }
             },
             "fee": 0.0001
         },
@@ -296,12 +281,6 @@
                 "sochain": "https://chain.so/api/v2/",
                 "blockr": "http://dgc.blockr.io/api/v1/"
             },
-            "auth": {
-                "blockstrap": {
-                    "username": "beta",
-                    "password": "beta123"
-                }
-            },
             "fee": 0.0001
         },
         "btc": {
@@ -312,12 +291,6 @@
                 "blockstrap": "https://api.blockstrap.com/v0/btc/",
                 "sochain": "https://chain.so/api/v2/",
                 "blockr": "http://btc.blockr.io/api/v1/"
-            },
-            "auth": {
-                "blockstrap": {
-                    "username": "beta",
-                    "password": "beta123"
-                }
             },
             "fee": 0.0001
         },
@@ -330,12 +303,6 @@
                 "sochain": "https://chain.so/api/v2/",
                 "blockr": "http://ltc.blockr.io/api/v1/"
             },
-            "auth": {
-                "blockstrap": {
-                    "username": "beta",
-                    "password": "beta123"
-                }
-            },
             "fee": 0.0001
         },
         "doge": {
@@ -347,12 +314,6 @@
                 "sochain": "https://chain.so/api/v2/",
                 "blockr": "http://dgc.blockr.io/api/v1/"
             },
-            "auth": {
-                "blockstrap": {
-                    "username": "beta",
-                    "password": "beta123"
-                }
-            },
             "fee": 0.0001
         }
     },
@@ -362,7 +323,7 @@
                 "functions": {
                     "to": {
                         "address": "addressTransactions/",
-                        "addresses": "addressTransactions/",
+                        "addresses": "addresses/",
                         "transaction": "transaction/",
                         "transactions": "addressTransactions/$call?showtxnio=1",
                         "block": "blockHeight/",

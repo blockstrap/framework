@@ -10,6 +10,7 @@
         "blockstrap/js/modules/api",
         "blockstrap/js/modules/templates",
         "blockstrap/js/modules/currencies",
+        "blockstrap/js/modules/security",
         "themes/priority/js/modules/theme"
     ],
     "dependencies": [

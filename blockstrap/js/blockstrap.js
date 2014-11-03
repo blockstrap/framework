@@ -564,6 +564,9 @@ var blockstrap_core = function()
                         $(bs.element).animate({'opacity':1}, 600, function()
                         {
                             bs.core.loading();
+                            
+                            bs.core.apply_actions('init_callback');
+                            
                             $(window).resize(function(e)
                             {
                                 bs.core.resize();
@@ -685,8 +688,8 @@ var blockstrap_core = function()
                         JSON.stringify($.fn.blockstrap.settings.theme)
                     );
                 }
-                    $.fn.blockstrap.core.defaults();
-                    $.fn.blockstrap.core.init();
+                $.fn.blockstrap.core.defaults();
+                $.fn.blockstrap.core.init();
             },
             loader: function(force_state, element)
             {
@@ -911,8 +914,14 @@ var blockstrap_core = function()
                                 var hash = obj.toString().substring(0, 32);
                                 if(!security && hash != security)
                                 {
-                                    var content = '<p>In order to determine that you are the administrator of this application, you will need to add a hash of your salt to the configuration files unders settings > security.</p><p>Please add the following hash: <strong>' + hash + '</strong></p>';
-                                    bs.core.modal('Warning', content);
+                                    $.fn.blockstrap.core.add_actions(
+                                        'init_callback', 
+                                        'update_security',
+                                        'security', 
+                                        'update', 
+                                        hash
+                                    );
+                                    if(callback) callback();
                                 }
                                 else
                                 {

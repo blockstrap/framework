@@ -101,6 +101,13 @@
         }
     }
     
+    security.update = function(hash)
+    {
+        var bs = $.fn.blockstrap;
+        var content = '<p>In order to determine that you are the administrator of this application, you will need to add a hash of your salt to the configuration files unders settings > security.</p><p>Please add the following hash: <strong>' + hash + '</strong></p>';
+        bs.core.modal('Warning', content);
+    }
+    
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {security:security});
 })
