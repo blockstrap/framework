@@ -2,7 +2,7 @@
     "theme": "priority",
     "public": true,
     "cascade": false,
-    "security": "",
+    "security": "9d2caf7f21ee0a0a679b2d15c79d165f",
     "content_id": "issues",
     "slug_base": "index",
     "modules": [

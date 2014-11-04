@@ -562,10 +562,7 @@ var blockstrap_core = function()
                         // SMOOTHER FADE-IN
                         $(bs.element).animate({'opacity':1}, 600, function()
                         {
-                            bs.core.loading();
-                            
-                            bs.core.apply_actions('init_callback');
-                            
+                            bs.core.apply_actions('init_callback');   
                             $(window).resize(function(e)
                             {
                                 bs.core.resize();
@@ -693,60 +690,28 @@ var blockstrap_core = function()
             loader: function(force_state, element)
             {
                 var original_element = element;
-                if(!element) element = $($.fn.blockstrap.element).find('#loading-blockstrap');
+                if(!element) element = $($.fn.blockstrap.element);
                 if(force_state && force_state === 'open')
                 {
-                    $($.fn.blockstrap.element).removeClass('loading');
+                    $(element).addClass('loading');
                 }
                 else if(force_state && force_state === 'close')
                 {
-                    $($.fn.blockstrap.element).addClass('loading');
-                }
-                if($(element).length < 1)
-                {
-                    var loader = '<div class="loading-elements" id="loading-blockstrap" style="opacity: 1; z-index: 0">';
-                        loader+= '<a class="loading-elements" id="loader-wrapper" style="opacity: 1;">';
-                            loader+'<span id="logo"><span>( loading )</span></span>';
-                        loader+= '</a>';
-                        loader+= '<span class="loading-elements" id="loader-canvas" style="opacity: 1;"><canvas class="sonic" height="400" width="400"></canvas></span>';
-                    loader+= '</div>';
-                    $($.fn.blockstrap.element).prepend(loader);
-                    if(original_element) element = original_element;
-                    else element = $($.fn.blockstrap.element).find('#loading-blockstrap');
-                    
-                    // IS SONIC LOADER AVAILABLE ...?
-                    if($.isPlainObject(blockstrap_loader))
+                    $(element).animate({'opacity': 0}, 350, function()
                     {
-                        $(element).find('#loader-canvas').html(blockstrap_loader.canvas);
-                        blockstrap_loader.play();
-                    }
-                }
-                if(!$($.fn.blockstrap.element).hasClass('loading'))
-                {
-                    $($.fn.blockstrap.element).addClass('loading');
-                    $(element).css({'opacity':1, 'z-index': 9999998});
-                    $(element).find('#loader-wrapper').css({'opacity':0});
-                    $(element).find('#loader-wrapper').animate({'opacity':1}, 350);
+                        $(element).removeClass('loading');
+                        $(element).removeClass('installing');
+                        $(element).animate({'opacity': 1}, 150, function()
+                        {
+
+                        });
+                    });
                 }
                 else
                 {
-                    $($.fn.blockstrap.element).find('.loading').removeClass('loading');
-                    $(element).find('#loader-wrapper').animate({'opacity':0}, 350, function()
-                    {
-                        $(element).css({'opacity':0, 'z-index': 0});
-                        $($.fn.blockstrap.element).removeClass('loading');
-                    });
+                    $(element).addClass('loading');
                 }
-            },
-            loading: function()
-            {
-                var loaders = $($.fn.blockstrap.element).find('.loading-elements');
-                $(loaders).animate({'opacity':1}).delay(0).animate({'opacity':0}, 600, function(e)
-                {
-                    if($(this).hasClass('loading')) $(this).removeClass('loading');
-                    $($.fn.blockstrap.element).removeClass('loading');
-                    $(loaders).css({'opacity':1});
-                })
+                    
             },
             modal: function(title, content, id)
             {
@@ -1421,35 +1386,6 @@ var blockstrap_core = function()
                             var modules = $.fn.blockstrap.settings.modules;
                             var bootstrap = $.fn.blockstrap.settings.bootstrap;
                             var plugins = $.fn.blockstrap.settings.plugins;
-
-                            // LOADING SCREEN
-                            // TODO: REMOVE FROM CORE...?
-                            // BETTER PLACED IN THEMES...?
-                            $.ajax({
-                                url: $.fn.blockstrap.settings.core_base + 'html/' + 'loading.html',
-                                dataType: 'HTML',
-                                type: 'GET',
-                                complete: function(results)
-                                {
-                                    var element = $.fn.blockstrap.element;
-                                    var id = $.fn.blockstrap.settings.content_id;
-                                    if($(element).find('#' + id).length < 1)
-                                    {
-                                        if(results)
-                                        {
-                                            if(results.responseText && results.responseText === '404')
-                                            {
-                                                // Do nothing!
-                                            }
-                                            else
-                                            {
-                                                var loading = results.responseText;
-                                                $($.fn.blockstrap.element).append(loading);
-                                            }
-                                        }
-                                    }
-                                }
-                            });
 
                             // UPDATE CORE IF REQUIRED
                             $bs.update(bs.settings.v, function()

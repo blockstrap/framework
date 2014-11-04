@@ -193,5 +193,15 @@ var priority_issues = [
             name: priority_authors.apps.name
         },
         details: 'This involves something that needs describing...'
+    },
+    {
+        title: 'Issue 19: Multi-Currency Support for Prioritizer',
+        address: '1Q8UW6j8wEbpuXDo8C7GrZ5vJKVNHw1zJr',
+        slug: 'issue_18:_multi_currency_support_for_prioritizer',
+        author: { 
+            href: priority_authors.framework.href,
+            name: priority_authors.framework.name
+        },
+        details: 'This involves something that needs describing...'
     }
 ]
