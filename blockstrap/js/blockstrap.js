@@ -505,20 +505,27 @@ var blockstrap_core = function()
                     $.fn.blockstrap.core.modal('Warning', 'Search functionality will be available in the next major update');
                 });
             },
-            get: function(file, extension, callback)
+            get: function(file, extension, callback, skip)
             {
-                $.ajax({
-                    url: file + '.' + extension,
-                    dataType: extension,
-                    success: function(results)
-                    {
-                        if(callback) callback(results, file, extension);
-                    },
-                    error: function(results)
-                    {
-                        if(callback) callback(results, file, extension);
-                    }
-                });
+                if(typeof skip == 'undefined' || !skip)
+                {
+                    $.ajax({
+                        url: file + '.' + extension,
+                        dataType: extension,
+                        success: function(results)
+                        {
+                            if(callback) callback(results, file, extension);
+                        },
+                        error: function(results)
+                        {
+                            if(callback) callback(results, file, extension);
+                        }
+                    });
+                }
+                else
+                {
+                    if(callback) callback({}, file, extension);
+                }
             },
             image: function(input, callback)
             {
@@ -1356,6 +1363,9 @@ var blockstrap_core = function()
             var settings = $.extend({}, defaults, options);
             $.fn.blockstrap.plugins = {};
             
+            var skip = false;
+            if(settings.skip_config) skip = true;
+            
             // THEN GET CONFIG FILE
             $.fn.blockstrap.core.get('themes/config', 'json', function(results)
             {
@@ -1365,6 +1375,8 @@ var blockstrap_core = function()
                     
                     // MERGE WITH HTML ATTRBUTE OPTIONS
                     $.fn.blockstrap.core.settings(element);
+                    
+                    if($.fn.blockstrap.settings.skip_config) skip = true;
                     
                     // NOW NEED TO GET THEME SPECIFIC OPTIONS AND MERGE WITH THESE
                     var current_theme = $.fn.blockstrap.settings.theme;
@@ -1524,9 +1536,9 @@ var blockstrap_core = function()
                                 });
                             });
                         }
-                    });
+                    }, skip);
                 }
-            });
+            }, skip);
         }                     
         
         $.ajax({
