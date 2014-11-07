@@ -100,7 +100,7 @@ var blockstrap_core = function()
                 if(time) date = new Date(time * 1000);
                 return jQuery.timeago(date)
             },
-            add_actions: function(hook, key, bs_module, bs_function, vars)
+            add_action: function(hook, key, bs_module, bs_function, vars)
             {
                 if(typeof bs_hooks[hook] == 'undefined') bs_hooks[hook] = {};
                 if(typeof bs_vars[hook] == 'undefined') bs_vars[hook] = {};
@@ -908,7 +908,7 @@ var blockstrap_core = function()
                                 var hash = obj.toString().substring(0, 32);
                                 if(!security && hash != security)
                                 {
-                                    $.fn.blockstrap.core.add_actions(
+                                    $.fn.blockstrap.core.add_action(
                                         'init_callback', 
                                         'update_security',
                                         'security', 

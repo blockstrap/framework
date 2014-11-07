@@ -122,7 +122,7 @@
     
     // QUICK FIX FOR NOW - IF ADDING AN ACTION FROM WITHIN A PLUGIN 
     // THAT CALLS THAT SAME PLUGIN - IT MUST BE ADDED AFTER THE MERGE
-    $.fn.blockstrap.core.add_actions(
+    $.fn.blockstrap.core.add_action(
         'init', 
         'market_updates',
         'plugins.markets', 
