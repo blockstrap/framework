@@ -211,7 +211,7 @@ var blockstrap_core = function()
             },
             confirm: function(title, content, confirmed_callback, cancel_callback)
             {
-                $('#confirm-modal form, #confirm-modal .btn-success, $confirm-modal .btn-danger').unbind();
+                $('#confirm-modal form, #confirm-modal .btn-success, #confirm-modal .btn-danger').unbind();
                 $.fn.blockstrap.core.modal(title, content, 'confirm-modal');
                 $('#confirm-modal form').bind('submit', function()
                 {
