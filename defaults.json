@@ -56,7 +56,7 @@
         "tables",
         "qrcode",
         "bootstrap-filestyle.min",
-        "bitcoinjs-lib2",
+        "bitcoinjs-lib",
         "tx",
         "sha3",
         "rest",
