@@ -46,7 +46,6 @@
         "currencies"
     ],
     "dependencies": [
-        "sonic", 
         "crypto",
         "effects", 
         "steps",
@@ -57,9 +56,7 @@
         "qrcode",
         "bootstrap-filestyle.min",
         "bitcoinjs-lib",
-        "tx",
         "sha3",
-        "rest",
         "ago"
     ],
     "bootstrap": [
