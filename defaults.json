@@ -232,8 +232,10 @@
         "bootstrap": false
     },
     "exchange": {
-        "btc": 500,
-        "ltc": 5
+        "usd": {
+            "btc": 500,
+            "ltc": 5
+        }
     },
     "styles": {
         "vars": {

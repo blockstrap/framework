@@ -359,14 +359,22 @@
         {
             $.fn.blockstrap.core.modal('Warning', to + ' is not a valid address');
         }
-        else if(to, account_id, amount)
+        else if(to && account_id && amount)
         {
-            var tx = {
-                to: to,
-                from: account_id,
-                amount: amount
-            };
-            $.fn.blockstrap.accounts.access(account_id, tx);
+            var account = $.fn.blockstrap.accounts.get(account_id);
+            if(!account)
+            {
+                $.fn.blockstrap.core.modal('Warning', account_id + ' is not a valid account');
+            }
+            else
+            {
+                var tx = {
+                    to: to,
+                    from: account_id,
+                    amount: amount
+                };
+                $.fn.blockstrap.accounts.access(account_id, tx);
+            }
         }
     }
     
