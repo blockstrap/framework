@@ -22,7 +22,10 @@
     "content_id": "main-content",
     "navigation_id": "navigation",
     "mobile_nav_id": "mobile-footer",
-    "css": ["less", "font-awesome"],
+    "css": [
+        "less",
+        "font-awesome"
+    ],
     "store": [
         "app_url", 
         "your_name",

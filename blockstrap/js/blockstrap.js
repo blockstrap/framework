@@ -96,7 +96,7 @@ var blockstrap_core = function()
         $.fn.blockstrap.core = {
             ago: function(time)
             {
-                var date = new Date();;
+                var date = new Date();
                 if(time) date = new Date(time * 1000);
                 return jQuery.timeago(date)
             },
@@ -155,11 +155,19 @@ var blockstrap_core = function()
                     bs.core.boot(bootstrap, key, html, index, callback);
                 });
             },
-            buttons: function()
+            buttons: function(classes, ids)
             {
                 var bs = $.fn.blockstrap;
                 var button_ids = bs.settings.buttons.ids;
                 var button_classes = bs.settings.buttons.classes;
+                if(typeof classes != 'undefined' && $.isArray(classes))
+                {
+                    button_classes = classes;
+                }
+                if(typeof ids != 'undefined' && $.isArray(ids))
+                {
+                    button_ids = ids;
+                }
                 if($.isArray(button_ids))
                 {
                     $.each(button_ids, function(k, id_name)
@@ -169,7 +177,14 @@ var blockstrap_core = function()
                         key = key.replace(/-/g, '_');
                         $(bs.element).on('click', id_name, function(e)
                         {
-                            bs.buttons[key](this, e);
+                            if($.isPlainObject(bs.buttons) && $.isFunction(bs.buttons[key]))
+                            {
+                                bs.buttons[key](this, e);
+                            }
+                            else if($.isPlainObject(bs.theme) && $.isFunction(bs.theme.buttons[key]))
+                            {
+                                bs.theme.buttons[key](this, e);
+                            }
                         });
                     });
                 }
@@ -182,46 +197,50 @@ var blockstrap_core = function()
                         key = key.replace(/-/g, '_');
                         $(bs.element).on('click', class_name, function(e)
                         {
-                            if($.isPlainObject(bs.buttons))
+                            if($.isPlainObject(bs.buttons) && $.isFunction(bs.buttons[key]))
                             {
-                                if($.isFunction(bs.buttons[key]))
-                                {
-                                    bs.buttons[key](this, e);
-                                }
+                                bs.buttons[key](this, e);
                             }
-                            else if($.isPlainObject(bs.theme))
+                            else if($.isPlainObject(bs.theme) && $.isFunction(bs.theme.buttons[key]))
                             {
-                                if($.isFunction(bs.theme.buttons[key]))
-                                {
-                                    bs.theme.buttons[key](this, e);
-                                }
+                                bs.theme.buttons[key](this, e);
                             }
                         });
                     });
                 }
             },
-            confirm: function(title, content, callback)
+            confirm: function(title, content, confirmed_callback, cancel_callback)
             {
-                $('#confirm-modal form, #confirm-modal .btn-success').unbind();
+                $('#confirm-modal form, #confirm-modal .btn-success, $confirm-modal .btn-danger').unbind();
                 $.fn.blockstrap.core.modal(title, content, 'confirm-modal');
                 $('#confirm-modal form').bind('submit', function()
                 {
-                    callback(true);
+                    if(confirmed_callback) confirmed_callback(true);
                 });
                 $('#confirm-modal .btn-success').bind('click', function()
                 {
-                    callback(true);
+                    if(confirmed_callback) confirmed_callback(true);
+                });
+                $('#confirm-modal .btn-danger').bind('click', function()
+                {
+                    if(cancel_callback) cancel_callback(false);
+                });
+                $($.fn.blockstrap.element).on('hide.bs.modal', '#confirm-modal', function()
+                {
+                    if(cancel_callback) cancel_callback(false);
                 });
             },
-            css: function(callback)
+            css: function(callback, files)
             {
                 var theme = $.fn.blockstrap.settings.theme;
                 var core_css = $.fn.blockstrap.settings.core_base + 'css/';
                 var theme_css = $.fn.blockstrap.settings.theme_base + theme + '/css/';
-                $.isArray($.fn.blockstrap.settings.css)
+                var css_files = $.fn.blockstrap.settings.css;
+                if(typeof files != 'undefined' && $.isArray(files)) css_files = files;
+                $.isArray(css_files)
                 {
-                    var files = Object.keys($.fn.blockstrap.settings.css).length;
-                    $.each($.fn.blockstrap.settings.css, function(k, v)
+                    var file_len = Object.keys(css_files).length;
+                    $.each(css_files, function(k, v)
                     {
                         $.ajax({
                             url: theme_css+v+'.css',
@@ -231,7 +250,7 @@ var blockstrap_core = function()
                                     url: core_css+v+'.css',
                                     error: function()
                                     {
-                                        if((k+1) >= files)
+                                        if((k+1) >= file_len)
                                         {
                                             callback();
                                         }
@@ -242,7 +261,7 @@ var blockstrap_core = function()
                                         {
                                             $('head').append('<link rel="stylesheet" type="text/css" href="'+core_css+v+'.css">');
                                         }
-                                        if((k+1) >= files)
+                                        if((k+1) >= file_len)
                                         {
                                             callback();
                                         }
@@ -257,7 +276,7 @@ var blockstrap_core = function()
                                         url: core_css+v+'.css',
                                         error: function()
                                         {
-                                            if((k+1) >= files)
+                                            if((k+1) >= file_len)
                                             {
                                                 callback();
                                             }
@@ -268,7 +287,7 @@ var blockstrap_core = function()
                                             {
                                                 $('head').append('<link rel="stylesheet" type="text/css" href="'+core_css+v+'.css">');
                                             }
-                                            if((k+1) >= files)
+                                            if((k+1) >= file_len)
                                             {
                                                 callback();
                                             }
@@ -278,21 +297,13 @@ var blockstrap_core = function()
                                 else
                                 {
                                     $('head').append('<link rel="stylesheet" type="text/css" href="'+theme_css+v+'.css">');
-                                    if((k+1) >= files)
+                                    if((k+1) >= file_len)
                                     {
                                         callback();
                                     }
                                 }
                             }
                         });
-                        
-                        /*
-                        $('head').append('<link rel="stylesheet" type="text/css" href="'+core_css+v+'.css">');
-                        if((k+1) >= files)
-                        {
-                            callback();
-                        }
-                        */
                     })
                 }
             },
@@ -536,7 +547,6 @@ var blockstrap_core = function()
                     {
                         var image = e.target.result;
                         callback(image);
-
                     };       
                     reader.readAsDataURL(input.files[0]);
                 }
@@ -694,15 +704,21 @@ var blockstrap_core = function()
                 $.fn.blockstrap.core.defaults();
                 $.fn.blockstrap.core.init();
             },
-            loader: function(force_state, element)
+            loader: function(state)
             {
-                var original_element = element;
-                if(!element) element = $($.fn.blockstrap.element);
-                if(force_state && force_state === 'open')
+                var element = $($.fn.blockstrap.element);
+                if(state && state === 'open')
                 {
-                    $(element).addClass('loading');
+                    $(element).animate({'opacity': 0}, 350, function()
+                    {
+                        $(element).addClass('loading');
+                        $(element).animate({'opacity': 1}, 150, function()
+                        {
+
+                        });
+                    });
                 }
-                else if(force_state && force_state === 'close')
+                else if(state && state === 'close')
                 {
                     $(element).animate({'opacity': 0}, 350, function()
                     {
@@ -716,7 +732,14 @@ var blockstrap_core = function()
                 }
                 else
                 {
-                    $(element).addClass('loading');
+                    if($(element).hasClass('loading'))
+                    {
+                        $(element).removeClass('loading');
+                    }
+                    else
+                    {
+                        $(element).addClass('loading');
+                    }
                 }
                     
             },
@@ -988,23 +1011,12 @@ var blockstrap_core = function()
                             localStorage.removeItem(k);
                         }
                     });
-                    bs.settings.info.storage = {
-                        local: {
-                            used: '' + ((JSON.stringify(localStorage).length * 2) / 1000000) + ' MB',
-                            remaining: '' + ((2490000 - (JSON.stringify(localStorage).length * 2)) / 1000000) + ' MB'
-                        }
-                    };
                     if(reload)
                     {
                         bs.templates.render(bs.settings.page_base, function()
                         {
                             
                         }, true);
-                    }
-                    else
-                    {
-                        var remaining = bs.settings.info.storage.local.remaining;
-                        bs.core.modal('Device Reset', remaining + ' Local Storage Remaining');
                     }
                 }
             },
@@ -1031,7 +1043,6 @@ var blockstrap_core = function()
                     /* 
 
                     THESE FUNCTIONS NEED TO RUN EVERY TIME
-                    THE WINDOW IS RESIZED - TODO: NEEDS TIMER
 
                     */
                     $.fn.blockstrap.core.table();
