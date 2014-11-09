@@ -91,37 +91,6 @@
         $($.fn.blockstrap.element).find('.activated').removeClass('activated').addClass('active');
     }
     
-    buttons.check = function()
-    {
-        var hash = false;
-        if(window.location.href.split('#').length === 2) 
-        {
-            hash = window.location.href.split('#')[1];
-        }
-        if(hash)
-        {
-            $($.fn.blockstrap.element).find('.btn-page').each(function()
-            {
-                if($(this).attr('href') === '#'+hash)
-                {
-                    if($('#mobile-footer').css('display') === 'block')
-                    {
-                        if($(this).parent().attr('id') === 'mobile-footer')
-                        {
-                            $(this).trigger('click');
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        $(this).trigger('click');
-                        return false;
-                    }
-                }
-            })
-        }
-    }
-    
     buttons.create_account = function(button, e)
     {
         e.preventDefault();
@@ -1246,7 +1215,6 @@
         var fields = [];
         var form_id = $(button).attr('data-form-id');
         var account_id = $(button).attr('data-account-id');
-        var currency = $(button).attr('data-to-currency');
         var form = $('form#'+form_id);
         var account = $.fn.blockstrap.accounts.get(account_id);
         $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
