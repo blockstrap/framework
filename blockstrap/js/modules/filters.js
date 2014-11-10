@@ -114,7 +114,7 @@
         {
             var latest = 0;
             var accounts = $.fn.blockstrap.accounts.get();
-            if($.isArray(accounts))
+            if($.isArray(accounts) && blockstrap_functions.array_length(accounts) > 0)
             {
                 $.each(accounts, function(k, account)
                 {
@@ -126,10 +126,17 @@
                         });
                     };
                 });
-                var ago = $.fn.blockstrap.core.ago(latest);
-                var placeholders = ['ago'];
-                var replacements = [ago];
-                return $.fn.blockstrap.templates.filter(html, placeholders, replacements);
+                if(latest > 0)
+                {
+                    var ago = $.fn.blockstrap.core.ago(latest);
+                    var placeholders = ['ago'];
+                    var replacements = [ago];
+                    return $.fn.blockstrap.templates.filter(html, placeholders, replacements);
+                }
+                else
+                {
+                    return alternative;
+                }
             }
             else if(alternative)
             {

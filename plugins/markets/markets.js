@@ -47,7 +47,7 @@
     
     markets.filter = function(data)
     {
-        var objs = [];']['
+        var objs = [];
         if($.isArray(data))
         {
             $.each(data, function(k, object)
