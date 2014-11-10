@@ -818,6 +818,7 @@ var blockstrap_core = function()
             },
             nav: function(slug)
             {
+                if(slug == $.fn.blockstrap.settings.page_base) slug = $.fn.blockstrap.settings.slug_base;
                 var nav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id);
                 var mnav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.mobile_nav_id);
                 $(nav).find('.active').removeClass('active');
