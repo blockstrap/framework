@@ -150,12 +150,12 @@
         {
             var map = api.map(currency);
             var market = {
-                btc_to_usd: 0,
-                daily_txs: 0,
-                daily_sent: 0,
-                hash_rate: 0,
-                btc_discovered: 0,
-                market_cap: 0
+                price_usd_now: 0,
+                txn_count_24hr: 0,
+                sent_usd_24hr: 0,
+                sent_value_24hr: 0,
+                coins_discovered_24hr: 0,
+                marketcap: 0
             };
             if(results)
             {

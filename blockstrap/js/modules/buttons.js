@@ -838,7 +838,7 @@
             var options = {};
             var continue_salting = true;
             
-            bs.core.loader();
+            bs.core.loader('open');
             
             $.each(forms, function(form_index, form_id)
             {
@@ -1026,7 +1026,7 @@
                                     /* NEED TO RESET THE INDEX HTML AND DATA */
                                     bs.templates.render(bs.settings.page_base, function()
                                     {
-                                        //location.reload();
+                                        
                                     }, true);
                                 }
                                 else
@@ -1052,6 +1052,7 @@
                                             $(bs.element).addClass('loading');
                                             $(bs.element).find('#blockstrap-loader').css({'opacity': 1, 'z-index': 9999999});
                                             bs.core.ready();
+                                            $.fn.blockstrap.core.loader('close');
                                         });
                                     });
                                 }

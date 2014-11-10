@@ -142,27 +142,27 @@
                     "data": [
                         {
                             "css": "col-sm-6 panel",
-                            "id": "btc_to_usd"
+                            "id": "price_usd_now"
                         },
                         {
                             "css": "col-sm-6 panel",
-                            "id": "daily_txs"
+                            "id": "txn_count_24hr"
                         },
                         {
                             "css": "col-sm-6 panel",
-                            "id": "daily_sent"
+                            "id": "sent_usd_24hr"
                         },
                         {
                             "css": "col-sm-6 panel",
-                            "id": "hash_rate"
+                            "id": "sent_value_24hr"
                         },
                         {
                             "css": "col-sm-6 panel",
-                            "id": "btc_discovered"
+                            "id": "coins_discovered_24hr"
                         },
                         {
                             "css": "col-sm-6 panel",
-                            "id": "market_cap"
+                            "id": "marketcap"
                         }
                     ]
                 }

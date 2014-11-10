@@ -16,29 +16,29 @@
     // IF API BEING USED DOES NOT SUPPORT MARKET API
     // THESE VALUES WILL NOT BE UPDATED UNLESS API SUPPORTS
     var conditions = {
-        "btc_to_usd" : {
+        "price_usd_now" : {
             text: "BTC to USD",
             prefix: "US$",
             value: 5555
         },
-        "daily_txs": {
+        "txn_count_24hr": {
             text: "Daily TXs",
             value: 555
         },
-        "daily_sent": {
+        "sent_usd_24hr": {
             text: "Daily BTC Sent",
             value: 5555555
         },
-        "hash_rate": {
-            text: "Hash Rate GH/s",
+        "sent_value_24hr": {
+            text: "Daily US$ Sent",
             value: 555555
         },
-        "btc_discovered": {
+        "coins_discovered_24hr": {
             text: "BTC Discovered",
             affix: "Million",
             value: 55
         },
-        "market_cap": {
+        "marketcap": {
             text: "Market Cap US$",
             affix: "Billion",
             value: 55.5
@@ -89,29 +89,29 @@
         {
             if($.isPlainObject(results))
             {
-                if(results.btc_to_usd)
+                if(results.price_usd_now)
                 {
-                    conditions['btc_to_usd']['value'] = results.btc_to_usd;
+                    conditions['price_usd_now']['value'] = results.price_usd_now;
                 }
-                if(results.daily_txs)
+                if(results.txn_count_24hr)
                 {
-                    conditions['daily_txs']['value'] = results.daily_txs;
+                    conditions['txn_count_24hr']['value'] = results.txn_count_24hr;
                 }
-                if(results.daily_sent)
+                if(results.sent_usd_24hr)
                 {
-                    conditions['daily_sent']['value'] = results.daily_sent;
+                    conditions['sent_usd_24hr']['value'] = results.sent_usd_24hr;
                 }
-                if(results.hash_rate)
+                if(results.sent_value_24hr)
                 {
-                    conditions['hash_rate']['value'] = results.hash_rate;
+                    conditions['sent_value_24hr']['value'] = results.sent_value_24hr;
                 }
-                if(results.btc_discovered)
+                if(results.coins_discovered_24hr)
                 {
-                    conditions['btc_discovered']['value'] = (results.btc_discovered / 1000000);
+                    conditions['coins_discovered_24hr']['value'] = (results.coins_discovered_24hr / 1000000);
                 }
-                if(results.market_cap)
+                if(results.marketcap)
                 {
-                    conditions['market_cap']['value'] = (results.market_cap / 1000000000);
+                    conditions['marketcap']['value'] = (results.marketcap / 1000000000);
                 }
             }
         });

@@ -50,8 +50,6 @@
                 {
                     var which = $.fn.blockstrap.currencies.which(address);
                     var currencies = $.fn.blockstrap.settings.currencies;
-                    console.log('which', which);
-                    console.log('currency', currency);
                     var currency_name = currencies[which].currency;
                     var currency_selected = currencies[currency].currency;
                     $.fn.blockstrap.core.loader('close');
