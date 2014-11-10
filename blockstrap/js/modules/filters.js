@@ -102,6 +102,46 @@
         else return false;
     }
     
+    filters.last = function(blockstrap, data)
+    {
+        var html = '';
+        var type = 'tx';
+        var alternative = false;
+        if(data.html) html = data.html;
+        if(data.type) type = data.type;
+        if(data.alternative) alternative = data.alternative;
+        if(type == 'tx')
+        {
+            var latest = 0;
+            var accounts = $.fn.blockstrap.accounts.get();
+            if($.isArray(accounts))
+            {
+                $.each(accounts, function(k, account)
+                {
+                    if($.isPlainObject(account.txs) && blockstrap_functions.array_length(account.txs) > 0)
+                    {
+                        $.each(account.txs, function(key, tx)
+                        {
+                            if(tx.time && tx.time > latest) latest = tx.time;
+                        });
+                    };
+                });
+                var ago = $.fn.blockstrap.core.ago(latest);
+                var placeholders = ['ago'];
+                var replacements = [ago];
+                return $.fn.blockstrap.templates.filter(html, placeholders, replacements);
+            }
+            else if(alternative)
+            {
+                return alternative;
+            }
+        }
+        else
+        {
+            return data;
+        }
+    }
+    
     filters.plugin = function(blockstrap, data)
     {
         if(data.name && data.call && data.data)
