@@ -242,68 +242,18 @@ var blockstrap_core = function()
                     var file_len = Object.keys(css_files).length;
                     $.each(css_files, function(k, v)
                     {
-                        $.ajax({
-                            url: theme_css+v+'.css',
-                            error: function()
-                            {
-                                $.ajax({
-                                    url: core_css+v+'.css',
-                                    error: function()
-                                    {
-                                        if((k+1) >= file_len)
-                                        {
-                                            callback();
-                                        }
-                                    },
-                                    success: function(res)
-                                    {
-                                        if(res != '404')
-                                        {
-                                            $('head').append('<link rel="stylesheet" type="text/css" href="'+core_css+v+'.css">');
-                                        }
-                                        if((k+1) >= file_len)
-                                        {
-                                            callback();
-                                        }
-                                    }
-                                });
-                            },
-                            success: function(res)
-                            {
-                                if(res == '404')
-                                {
-                                    $.ajax({
-                                        url: core_css+v+'.css',
-                                        error: function()
-                                        {
-                                            if((k+1) >= file_len)
-                                            {
-                                                callback();
-                                            }
-                                        },
-                                        success: function(res)
-                                        {
-                                            if(res != '404')
-                                            {
-                                                $('head').append('<link rel="stylesheet" type="text/css" href="'+core_css+v+'.css">');
-                                            }
-                                            if((k+1) >= file_len)
-                                            {
-                                                callback();
-                                            }
-                                        }
-                                    });
-                                }
-                                else
-                                {
-                                    $('head').append('<link rel="stylesheet" type="text/css" href="'+theme_css+v+'.css">');
-                                    if((k+1) >= file_len)
-                                    {
-                                        callback();
-                                    }
-                                }
-                            }
-                        });
+                        if(blockstrap_functions.exists(theme_css+v+'.css'))
+                        {
+                            blockstrap_functions.get_css(theme_css+v+'.css');
+                        }
+                        else if(blockstrap_functions.exists(core_css+v+'.css'))
+                        {
+                            blockstrap_functions.get_css(core_css+v+'.css');
+                        }
+                        if((k+1) >= file_len)
+                        {
+                            callback();
+                        }
                     })
                 }
             },
@@ -1589,10 +1539,37 @@ var blockstrap_functions = {
     },
     exists: function(url)
     {
-        var http = new XMLHttpRequest();
-        http.open('HEAD', url, false);
-        http.send();
-        return http.status!=404;
+        try
+        {
+            var http = new XMLHttpRequest();
+            http.open('HEAD', url, false);
+            http.send();
+            return http.status!=404;
+        }
+        catch(err)
+        {
+            return false;   
+        }
+    },
+    get_css: function(attributes, fallbacks)
+    {
+        if(typeof attributes === "string") {
+            var href = attributes;
+            attributes = {
+                href: href
+            };
+        }
+        if(!attributes.rel) {
+            attributes.rel = "stylesheet"
+        }
+        // appending the stylesheet
+        // no jQuery stuff here, just plain dom manipulations
+        var styleSheet = document.createElement("link");
+        for(var key in attributes) {
+            styleSheet.setAttribute(key, attributes[key]);
+        }
+        var head = document.getElementsByTagName("head")[0];
+        head.appendChild(styleSheet);  
     },
     include: function(blockstrap, start, files, callback, dependency)
     {
@@ -1610,9 +1587,7 @@ var blockstrap_functions = {
             var file_name = files[start];
             var js_file = localStorage.getItem('nw_js_'+file_name);
             var store = true;
-            
             if(blockstrap_functions.json(js_file)) js_file = $.parseJSON(js_file);
-            
             if(!dependency)
             {
                 if(storage.modules === false) store = false;
@@ -1621,7 +1596,6 @@ var blockstrap_functions = {
             {
                 if(storage.dependencies === false) store = false;
             }
-            
             if(blockstrap.settings.cascade === false)
             {
                 if(!js_file || refresh === true)
@@ -1632,6 +1606,16 @@ var blockstrap_functions = {
                         {
                             localStorage.setItem('nw_js_'+file_name, js);
                         }
+                        start++;
+                        blockstrap_functions.include(
+                            blockstrap, 
+                            start, 
+                            files, 
+                            callback, 
+                            dependency
+                        );
+                    }).fail(function(jqxhr, settings, exception)
+                    {
                         start++;
                         blockstrap_functions.include(
                             blockstrap, 
@@ -1669,12 +1653,34 @@ var blockstrap_functions = {
                 }
                 $.getScript(filename, function(core_js)
                 {
-
                     if(core_js != '404')
                     {
                         js+= "\n" + core_js;
                     }
-                    
+                    var theme_filename = 'themes/'+blockstrap.settings.theme+'/js/dependencies/' + file_name + '.js';
+                    if(!dependency)
+                    {
+                        theme_filename = 'themes/'+blockstrap.settings.theme+'/js/modules/' + file_name + '.js';
+                    }
+                    $.getScript(theme_filename, function(theme_js)
+                    {
+                        if(theme_js != '404')
+                        {
+                            js+= "\n" + theme_js;
+                        }
+                        if(store === true)
+                        {
+                            localStorage.setItem('nw_js_'+file_name, js);
+                        }   
+                        start++;
+                        blockstrap_functions.include(blockstrap, start, files, callback, dependency);
+                    }).fail(function(jqxhr, settings, exception)
+                    {
+                        start++;
+                        blockstrap_functions.include(blockstrap, start, files, callback, dependency);
+                    });
+                }).fail(function(jqxhr, settings, exception)
+                {
                     var theme_filename = 'themes/'+blockstrap.settings.theme+'/js/dependencies/' + file_name + '.js';
                     if(!dependency)
                     {
@@ -1692,6 +1698,10 @@ var blockstrap_functions = {
                             localStorage.setItem('nw_js_'+file_name, js);
                         }
                         
+                        start++;
+                        blockstrap_functions.include(blockstrap, start, files, callback, dependency);
+                    }).fail(function(jqxhr, settings, exception)
+                    {
                         start++;
                         blockstrap_functions.include(blockstrap, start, files, callback, dependency);
                     });
