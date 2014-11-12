@@ -233,8 +233,12 @@
     },
     "exchange": {
         "usd": {
-            "btc": 500,
-            "ltc": 5
+            "btc": 367.35,
+            "ltc": 3.57,
+            "doge": 0.00022388,
+            "btct": 0,
+            "ltct": 0,
+            "doget": 0
         }
     },
     "styles": {

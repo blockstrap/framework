@@ -427,7 +427,7 @@
         {
             $.each(balances, function(code, currency)
             {
-                var total = (parseFloat(currency.balance) * 100000000) * parseFloat(exchange_rates[rate]);
+                var total = (parseFloat(currency.balance) * 100000000) * parseFloat(exchange_rates[rate][code]);
                 grand_total = grand_total + total;
             });
         }

@@ -11,10 +11,6 @@
  *  
  */
 
-// HARD-CODED / REMOVE LATER
-var bs_theme_config = 'config.default';
-//var bs_theme_config = 'config';
-
 var blockstrap_loader;
 var blockstrap_core = function()
 {
@@ -1510,7 +1506,11 @@ var blockstrap_core = function()
             {
                 // CONSTRUCT PLUGIN AFTER
                 // FIRST COLLECTING DEFAULTS
-                plugin(false, false, defaults);
+                blockstrap_functions.check(defaults, function(passed)
+                {
+                    if(passed) plugin(false, false, defaults); 
+                    else alert('Your browser does not support the minimum requirements - please learn more at http://docs.blockstrap.com - either that or you may have private browsing activated, which would also prevent Blockstrap from working.');
+                });
             }
         });
     })
@@ -1537,6 +1537,22 @@ var blockstrap_functions = {
         if(obj) length = Object.keys(obj).length;
         return length;
     },
+    check: function(options, callback)
+    {
+        try 
+        {
+            var mod = 'nw';
+            localStorage.setItem(mod, mod);
+            localStorage.removeItem(mod);
+            if(callback) callback(true);
+            else return true;
+        } 
+        catch(e) 
+        {
+            if(callback) callback(false);
+            else return false;
+        }
+    },
     exists: function(url)
     {
         try
@@ -1551,21 +1567,22 @@ var blockstrap_functions = {
             return false;   
         }
     },
-    get_css: function(attributes, fallbacks)
+    get_css: function(attributes)
     {
-        if(typeof attributes === "string") {
+        if(typeof attributes === "string") 
+        {
             var href = attributes;
             attributes = {
                 href: href
             };
         }
-        if(!attributes.rel) {
+        if(!attributes.rel) 
+        {
             attributes.rel = "stylesheet"
         }
-        // appending the stylesheet
-        // no jQuery stuff here, just plain dom manipulations
         var styleSheet = document.createElement("link");
-        for(var key in attributes) {
+        for(var key in attributes) 
+        {
             styleSheet.setAttribute(key, attributes[key]);
         }
         var head = document.getElementsByTagName("head")[0];
