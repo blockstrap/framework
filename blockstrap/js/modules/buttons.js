@@ -1,6 +1,6 @@
 /*
  * 
- *  Blockstrap v0.4.0.1
+ *  Blockstrap v0.4.1.0
  *  http://blockstrap.com
  *
  *  Designed, Developed and Maintained by Neuroware.io Inc
@@ -299,7 +299,7 @@
                             text: "Email",
                             css: "col-xs-3"
                         },
-                        type: "text",
+                        type: "",
                         value: email,
                         wrapper: {
                             css: "col-xs-9"
@@ -385,6 +385,7 @@
     {
         e.preventDefault();
         var key = $(button).attr('data-key');
+        var new_key = key;
         var element = $(button).attr('data-element');
         var collection = $(button).attr('data-collection');
         var form_id = $(button).attr('data-form-id');
@@ -400,6 +401,11 @@
             {
                 obj.data.contact_email = value;
             }
+            else if(id.indexOf('name') > -1)
+            {
+                obj[id] = value;
+                new_key = blockstrap_functions.slug(value);
+            }
             else if(id.indexOf('.') > -1)
             {
                 var ids = id.split('.');
@@ -407,16 +413,6 @@
                 if($.fn.blockstrap.currencies.validate(address))
                 {
                     obj[ids[0]][ids[1]][ids[2]][ids[3]].key = address;
-                    if(i >= $(form).find('.form-group').length - 1)
-                    {
-                        $.fn.blockstrap.data.save(collection, key, obj, function()
-                        {
-                            $.fn.blockstrap.core.refresh(function()
-                            {
-                                $.fn.blockstrap.core.modal('Success', 'Edit Saved');
-                            });
-                        });
-                    }
                 }
                 else
                 {
@@ -426,6 +422,22 @@
             else
             {
                 obj[id] = value;
+            }
+            if(new_key !== key) 
+            {
+                localStorage.removeItem('nw_' + collection + '_' + key);
+                obj.id = new_key;
+                key = new_key;
+            }
+            if(i >= $(form).find('.form-group').length - 1)
+            {
+                $.fn.blockstrap.data.save(collection, key, obj, function()
+                {
+                    $.fn.blockstrap.core.refresh(function()
+                    {
+                        $.fn.blockstrap.core.modal('Success', 'Edit Saved');
+                    }, $.fn.blockstrap.core.page());
+                });
             }
         });
     }

@@ -14,7 +14,7 @@
                         {
                             "title": "Your Contacts",
                             "intro": "These are your contacts. Contacts make it easier to send money to addresses where you may send more than once.",
-                            "html": "Do we want to display any additional content for contacts here below the primary taglines?",
+                            "html": "More information on <a href='http://docs.blockstrap.com/en/applications/wallet/contacts/'>contacts</a> is available in our <a href='http://docs.blockstrap.com/'>documentation</a>.",
                             "buttons": [
                                 {
                                     "href": "#",

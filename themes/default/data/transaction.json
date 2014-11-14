@@ -10,8 +10,7 @@
                     "objects": [
                         {
                             "title": "Transaction ID: {{vars.txid}}",
-                            "intro": "This information about the transaction comes from the blockchain, not the device.",
-                            "html": "Not sure what to put here - if anything at all ...?",
+                            "intro": "This information about the transaction comes from the device, not the blockchain",
                             "buttons": [
                                 {
                                     "href": "#",

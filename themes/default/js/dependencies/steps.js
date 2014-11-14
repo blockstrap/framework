@@ -5,7 +5,7 @@ var blockstrap_setup_steps = [
         "info": "(Here to help you get started)",
         "help": {
             "title": "SALT GENERATION",
-            "body": "<p>Before we create any addresses, we first need to establish a device salt. Each piece of information you enter is hashed within the browser and then hashed again with each new field without sending information anywhere. At the end of the process a salt is generated and we can use that to create new accounts.</p><p><b>Once entering these details you cannot change them later or recover them without recreating them yourself.</b></p>"
+            "body": "<p>Before we create any addresses we first need to establish a device salt. Each piece of information you enter is hashed and re-hashed before ever leaving the browser. We never see any of your details from the resulting hashes. At the end of the process a device salt is generated that we can use to more securely create new accounts.</p><p><b>Once entering these details you cannot change them later or recover them without recreating this process with the exact same data.</b></p>"
         },
         "progress": {
             "func": "bootstrap",
@@ -27,7 +27,7 @@ var blockstrap_setup_steps = [
         "steps": [
             {
                 "id": "step1",
-                "css": "btn-page active",
+                "css": "btn-page active current",
                 "href": "",
                 "text": "STEP 1: SALT GENERATION"
             },
@@ -72,7 +72,7 @@ var blockstrap_setup_steps = [
                         {
                             "title": "Generating Your Device Salt",
                             "intro": "This is a one time installation process. Please read the instructions carefully...",
-                            "html": "<b>REMINDER:</b> We do not store or keep a record of your private keys or personal information anywhere. Instead we take these memorable pieces of information and turn them into 'hashes' which we use to create a salt that is stored in your browser. It is through recreating the steps in this process that you generate your salt and access the accounts in your wallet. As we do not keep this information it is important that you remember the details you enter and keep them safe. <b>REMEMBER: If you cannot recreate this process, you will not be able to access the accounts in your wallet. You cannot change this information later.</b><hr /><b>Please pay extra special attention to the use of an image within the salt. This can of course make things exceptional secure, especially if you take a unique photo that has not been shared anywhere, but in doing soon, loosing access to that photo would also mean potential loss of all accounts created with this device. Unless of course you remember to backup your device salt once it has been generated.</b>",
+                            "html": "<b>REMINDER:</b> We do not store or keep a record of your private keys or personal information anywhere. Instead we take these memorable pieces of information and turn them into 'hashes' which we use to create a salt that is stored in your browser. It is through recreating the steps in this process that you generate your salt and access the accounts in your wallet. As we do not keep this information it is important that you remember the details you enter and keep them safe. <b>REMEMBER: If you cannot recreate this process, you will not be able to access the accounts in your wallet. You cannot change this information later.</b><hr /><b>Please take extra special care if adding an image to the device salt. While this can make your account extremely secure and impossible to breach - especially if you take a unique photo that has not been shared anywhere - you must realise that loosing access to that photo would also mean the potential loss of all accounts created with this device. Should you use an image, we strongly recommend you backup your device salt once it has been generated.</b>",
                             "buttons": [
                                 {
                                     "href": "#",
@@ -150,7 +150,7 @@ var blockstrap_setup_steps = [
                                             "css": "col-sm-3"
                                         },
                                         "type": "password",
-                                        "placeholder": "Pick something memorable, it cannot be changed or recovered",
+                                        "placeholder": "This cannot be changed later",
                                         "value": "",
                                         "wrapper": {
                                             "css": "col-sm-9"
@@ -171,7 +171,7 @@ var blockstrap_setup_steps = [
                                             "css": "col-sm-3"
                                         },
                                         "type": "password",
-                                        "placeholder": "Better to be safe than sorry",
+                                        "placeholder": "Confirm your password again",
                                         "value": "",
                                         "css": "ignore",
                                         "wrapper": {
@@ -473,7 +473,7 @@ var blockstrap_setup_steps = [
         "info": "(Here to help you )",
         "help": {
             "title": "ACCOUNT CREATION",
-            "body": "<p>Please note that we also use compounding encryption to generate the necessary seeds used for each individual account creation. The element you choose to include gets hashed (with the device salt) and then added to the hash of the next. In all cases of security, only public information is stored and only ever within the browser you are currently using.</p>"
+            "body": "<p>Please note that we use compounding encryption to generate the necessary seeds used for each individual account created. The element you choose to include gets hashed (along with the device salt) and then re-hashed again. Only publicly available information related to this account is stored, and is strictly within the browser you are currently using.</p>"
         },
         "progress": {
             "func": "bootstrap",
@@ -501,7 +501,7 @@ var blockstrap_setup_steps = [
             },
             {
                 "id": "step2",
-                "css": "btn-page active",
+                "css": "btn-page active current",
                 "href": "",
                 "text": "STEP 2: CREATE ACCOUNT"
             }

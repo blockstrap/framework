@@ -1,6 +1,6 @@
 /*
  * 
- *  Blockstrap v0.4.0.1
+ *  Blockstrap v0.4.1.0
  *  http://blockstrap.com
  *
  *  Designed, Developed and Maintained by Neuroware.io Inc
@@ -12,7 +12,7 @@
 {
     var contacts = {};
     
-    contacts.get = function()
+    contacts.get = function(id)
     {
         var contacts = false;
         if(localStorage)
@@ -22,7 +22,8 @@
                 if(key.substring(0, 12) === 'nw_contacts_')
                 {
                     if(!$.isArray(contacts)) contacts = [];
-                    contacts.push($.parseJSON(contact));
+                    if(id && key == 'nw_contacts_' + id) contacts.push($.parseJSON(contact));
+                    else if(!id) contacts.push($.parseJSON(contact));
                 }
             });
         }

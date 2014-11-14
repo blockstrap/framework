@@ -10,8 +10,8 @@
                     "objects": [
                         {
                             "title": "Welcome back {{user.name}}",
-                            "intro": "Here is an overview of your wallet and its accounts.",
-                            "html": "Not sure what to put here - if anything at all ...?",
+                            "intro": "Here is an overview of your recent accounts and the bitcoin markets.",
+                            "html": "Blockstrap is still in beta! Please read out <a href='http://docs.blockstrap.com/en/applications/wallet/security/'>beta / security disclaimer</a> before getting started",
                             "buttons": [
                                 {
                                     "href": "#",

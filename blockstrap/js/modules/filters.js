@@ -1,6 +1,6 @@
 /*
  * 
- *  Blockstrap v0.4.0.1
+ *  Blockstrap v0.4.1.0
  *  http://blockstrap.com
  *
  *  Designed, Developed and Maintained by Neuroware.io Inc
@@ -214,6 +214,8 @@
             });
             $.each(txs.slice(0, limit), function(k, tx)
             {
+                console.log('tx', tx);
+                console.log('tx', (tx.input - tx.value) - tx.fees);
                 var css = 'from';
                 var address = false;
                 var txc = tx.currency;

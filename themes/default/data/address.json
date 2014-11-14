@@ -10,8 +10,7 @@
                     "objects": [
                         {
                             "title": "Address: {{vars.key}}",
-                            "intro": "This information about the address comes from the blockchain, not the device.",
-                            "html": "Not sure what to put here - if anything at all ...?",
+                            "intro": "This information about this address comes from the device, not the blockchain",
                             "buttons": [
                                 {
                                     "href": "#",

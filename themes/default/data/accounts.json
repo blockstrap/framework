@@ -14,7 +14,7 @@
                         {
                             "title": "Your Accounts",
                             "intro": "These are all the different accounts you have in different currencies. More advanced filtering coming soon!",
-                            "html": "Do we want to display any additional content for accounts here below the primary taglines?",
+                            "html": "More information on <a href='http://docs.blockstrap.com/en/applications/wallet/accounts/'>accounts</a> is available in our <a href='http://docs.blockstrap.com/'>documentation</a>.",
                             "buttons": [
                                 {
                                     "href": "#",

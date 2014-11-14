@@ -7899,3 +7899,9 @@ body .blockstrap-wrapper {
     text-align: right;
   }
 }
+
+/* ADD-ONS SINCE LAST LESS IMPORTATION */
+html body .blockstrap-wrapper #navigation a.nav-links.current {
+    background: #2b3f4b;
+    color: #AAA;
+}

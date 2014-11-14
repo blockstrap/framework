@@ -42,6 +42,12 @@
             "css": "btn-page",
             "href": "#contacts",
             "text": "Contacts"
+        },
+        {
+            "id": "docs",
+            "css": "",
+            "href": "http://docs.blockstrap.com",
+            "text": "Help"
         }
     ],
     "sidebar": {
@@ -87,8 +93,8 @@
                     "objects": [
                         {
                             "title": "Welcome back {{user.name}}",
-                            "intro": "Here is an overview of your wallet and its accounts.",
-                            "html": "Not sure what to put here - if anything at all ...?",
+                            "intro": "Here is an overview of your recent accounts and the bitcoin markets.",
+                            "html": "Blockstrap is still in beta! Please read out <a href='http://docs.blockstrap.com/en/applications/wallet/security/'>beta / security disclaimer</a> before getting started",
                             "buttons": [
                                 {
                                     "href": "#",
@@ -303,7 +309,7 @@
             {
                 "id": "send",
                 "title": "Send Money",
-                "body": "<p>Easily send money to your contacts, or just type a raw address too.</p>",
+                "body": "<p>Send money to one of your contacts in your wallet or enter a raw address.</p>",
                 "close": "Cancel",
                 "form": {
                     "css": "form-horizontal",
