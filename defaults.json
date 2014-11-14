@@ -343,7 +343,7 @@
                             "key": "address",
                             "address": "address",
                             "hash": "address_hash160",
-                            "tx_count": "inout_count_total",
+                            "tx_count": "transaction_count_total",
                             "received": "inputs_value_confirmed",
                             "balance": "balance"
                         },
@@ -352,7 +352,7 @@
                             "delimiter": ",",
                             "address": "address",
                             "hash": "address_hash160",
-                            "tx_count": "inout_count_total",
+                            "tx_count": "transaction_count_total",
                             "received": "inputs_value_confirmed",
                             "balance": "balance"
                         },
@@ -397,7 +397,7 @@
                             "time": "block_time",
                             "input": "input_value",
                             "output": "output_value",
-                            "value": "tx_address_value",
+                            "value": "tx_address_ledger_value",
                             "fees": "fees"
                         },
                         "unspents": {
