@@ -230,7 +230,6 @@
                 var intro = value + ' ' + $.fn.blockstrap.settings.currencies[txc].currency;
                 var html = '<a href="' + base + '?txid=' + tx.txid +'#transaction">' + intro + '</a>';
                 
-                // HACK PUTTING IN TO ADDRESS RATHER THAN FROM ADDRESS
                 address = '<a href="' +base+ '?key='+tx.acc+'#address">' + tx.acc + '</a>';
                 html+= ' '+verb+' ' + address;
                 

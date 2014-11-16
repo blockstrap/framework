@@ -96,9 +96,7 @@
         e.preventDefault();
         var wallet = {};
         var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form'));
-        $(button).addClass('loading');
         $.fn.blockstrap.core.loader('open');
-        $.fn.blockstrap.core.modals('close_all');
         if($(form).length > 0)
         {
             $(form).find('.form-group').each(function(i)

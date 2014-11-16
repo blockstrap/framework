@@ -151,9 +151,9 @@
             var map = api.map(currency);
             var market = {
                 price_usd_now: 0,
-                txn_count_24hr: 0,
+                tx_count_24hr: 0,
                 sent_usd_24hr: 0,
-                sent_value_24hr: 0,
+                sent_coins_24hr: 0,
                 coins_discovered_24hr: 0,
                 marketcap: 0
             };

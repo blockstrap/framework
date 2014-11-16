@@ -521,6 +521,8 @@ var blockstrap_core = function()
                         {
                             bs.core.nav(nav);
                         }
+                        
+                        bs.core.loader('close');
 
                         // SMOOTHER FADE-IN
                         $(bs.element).animate({'opacity':1}, 600, function()
@@ -928,6 +930,7 @@ var blockstrap_core = function()
             refresh: function(callback, slug)
             {
                 var bs = $.fn.blockstrap;
+                bs.core.loader('open');
                 if(!slug) slug = bs.settings.page_base;
                 bs.templates.render(bs.settings.page_base, function()
                 {
@@ -935,11 +938,13 @@ var blockstrap_core = function()
                     {
                         bs.templates.render(slug, function()
                         {
+                            bs.core.loader('close');
                             if(callback) callback();
                         }, false);
                     }
                     else
                     {
+                        bs.core.loader('close');
                         if(callback) callback();
                     }
                 }, true);
@@ -962,7 +967,7 @@ var blockstrap_core = function()
                     {
                         bs.templates.render(bs.settings.page_base, function()
                         {
-                            
+                            bs.core.loader('close');
                         }, true);
                     }
                 }

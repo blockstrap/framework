@@ -21,16 +21,16 @@
             prefix: "US$",
             value: 5555
         },
-        "txn_count_24hr": {
+        "tx_count_24hr": {
             text: "Daily TXs",
             value: 555
         },
         "sent_usd_24hr": {
-            text: "Daily BTC Sent",
+            text: "Daily US$ Sent",
             value: 5555555
         },
-        "sent_value_24hr": {
-            text: "Daily US$ Sent",
+        "sent_coins_24hr": {
+            text: "Daily BTC Sent",
             value: 555555
         },
         "coins_discovered_24hr": {
@@ -93,17 +93,17 @@
                 {
                     conditions['price_usd_now']['value'] = results.price_usd_now;
                 }
-                if(results.txn_count_24hr)
+                if(results.tx_count_24hr)
                 {
-                    conditions['txn_count_24hr']['value'] = results.txn_count_24hr;
+                    conditions['tx_count_24hr']['value'] = results.tx_count_24hr;
                 }
                 if(results.sent_usd_24hr)
                 {
-                    conditions['sent_usd_24hr']['value'] = results.sent_usd_24hr;
+                    conditions['sent_usd_24hr']['value'] = (results.sent_usd_24hr / 100000000);
                 }
-                if(results.sent_value_24hr)
+                if(results.sent_coins_24hr)
                 {
-                    conditions['sent_value_24hr']['value'] = results.sent_value_24hr;
+                    conditions['sent_coins_24hr']['value'] = (results.sent_coins_24hr / 100000000);
                 }
                 if(results.coins_discovered_24hr)
                 {

@@ -6010,7 +6010,7 @@ RESETS AND WRAPPERS
 */
 body,
 html {
-  background: #dddddd;
+  background: #000;
 }
 .collapsable {
   vertical-align: top;

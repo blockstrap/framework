@@ -167,7 +167,6 @@
                     $(bs.element).html('');
                     $(bs.element).append(paged_html);
                     bs.core.ready();
-                    bs.core.loader('close');
                     if(callback) callback(paged_html);
                 }
                 else
@@ -176,7 +175,6 @@
                     {
                         $(bs.element).find('#' + bs.settings.content_id).html(paged_html);
                         bs.core.ready();
-                        bs.core.loader('close');
                         if(callback) callback(paged_html);
                     }
                     else
@@ -184,7 +182,6 @@
                         $(bs.element).html('');
                         $(bs.element).append(paged_html);
                         bs.core.ready();
-                        bs.core.loader('close');
                         if(callback) callback(paged_html);
                     }
                 }

@@ -276,7 +276,7 @@
                 "sochain": "https://chain.so/api/v2/",
                 "blockr": "http://ltc.blockr.io/api/v1/"
             },
-            "fee": 0.0001
+            "fee": 0.001
         },
         "doget": {
             "currency": "Dogecoin Testnet",
@@ -287,7 +287,7 @@
                 "sochain": "https://chain.so/api/v2/",
                 "blockr": "http://dgc.blockr.io/api/v1/"
             },
-            "fee": 0.0001
+            "fee": 1
         },
         "btc": {
             "currency": "Bitcoin",
@@ -309,7 +309,7 @@
                 "sochain": "https://chain.so/api/v2/",
                 "blockr": "http://ltc.blockr.io/api/v1/"
             },
-            "fee": 0.0001
+            "fee": 0.001
         },
         "doge": {
             "currency": "Dogecoin",
@@ -320,7 +320,7 @@
                 "sochain": "https://chain.so/api/v2/",
                 "blockr": "http://dgc.blockr.io/api/v1/"
             },
-            "fee": 0.0001
+            "fee": 1
         }
     },
     "apis": {
@@ -367,11 +367,11 @@
                         },
                         "market": {
                             "key": "market",
-                            "price_usd_now": "price_usd_now",
-                            "txn_count_24hr": "txn_count_24hr",
-                            "sent_usd_24hr": "sent_usd_24hr",
-                            "sent_value_24hr": "sent_value_24hr",
-                            "coins_discovered_24hr": "coins_discovered_24hr",
+                            "price_usd_now": "fiat_usd_now",
+                            "tx_count_24hr": "tx_count_24hr",
+                            "sent_usd_24hr": "output_value_24hr",
+                            "sent_coins_24hr": "output_value_24hr",
+                            "coins_discovered_24hr": "coinbase_value_todate",
                             "marketcap": "marketcap"
                         },
                         "relay": {

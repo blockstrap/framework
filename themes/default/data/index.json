@@ -144,7 +144,7 @@
                         },
                         {
                             "css": "col-sm-6 panel",
-                            "id": "txn_count_24hr"
+                            "id": "tx_count_24hr"
                         },
                         {
                             "css": "col-sm-6 panel",
@@ -152,7 +152,7 @@
                         },
                         {
                             "css": "col-sm-6 panel",
-                            "id": "sent_value_24hr"
+                            "id": "sent_coins_24hr"
                         },
                         {
                             "css": "col-sm-6 panel",
