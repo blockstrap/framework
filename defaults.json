@@ -17,7 +17,7 @@
     "module_base": "js/modules/",
     "page_base": "index",
     "slug_base": "dashboard",
-    "api_service": "blockstrap",
+    "api_service": "sochain",
     "base_url": "",
     "content_id": "main-content",
     "navigation_id": "navigation",

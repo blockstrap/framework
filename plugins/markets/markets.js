@@ -114,7 +114,7 @@
                     conditions['marketcap']['value'] = (results.marketcap / 1000000000);
                 }
             }
-        });
+        }, 'blockstrap');
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE

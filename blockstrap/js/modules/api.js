@@ -26,8 +26,13 @@
         api_timeout = $.fn.blockstrap.settings.cache.api.timeout;
     }
     
-    api.address = function(hash, currency, callback)
+    api.address = function(hash, currency, callback, service)
     {
+        var original_service = api_service;
+        if(service && service !== api_service)
+        {
+            api_service = service;
+        }
         api.request(api.url('address', hash, currency), function(results)
         {
             var address = {
@@ -42,14 +47,33 @@
             {
                 address = api.results(address, results, currency, 'address', callback);               
             }
-            if(callback) callback(address);
-            else return address;
+            if(callback) 
+            {
+                if(api_service !== original_service)
+                {
+                    api_service = original_service;
+                }
+                callback(address);
+            }
+            else 
+            {
+                if(api_service !== original_service)
+                {
+                    api_service = original_service;
+                }
+                return address;
+            }
         }, 'GET', false, currency, 'address');
     }
     
-    api.addresses = function(hashes, currency, callback)
+    api.addresses = function(hashes, currency, callback, service)
     {
         var hashed_url = '';
+        var original_service = api_service;
+        if(service && service !== api_service)
+        {
+            api_service = service;
+        }
         if($.isArray(hashes))
         {
             var delimiter = '&addresses=';
@@ -81,8 +105,22 @@
                         addresses.push(address);
                     })
                 }
-                if(callback) callback(addresses);
-                else return addresses;
+                if(callback) 
+                {
+                    if(api_service !== original_service)
+                    {
+                        api_service = original_service;
+                    }
+                    callback(addresses);
+                }
+                else 
+                {
+                    if(api_service !== original_service)
+                    {
+                        api_service = original_service;
+                    }
+                    return addresses;
+                }
             }, 'GET', false, currency, 'addresses');
         }
         else
@@ -91,17 +129,41 @@
         }
     }
     
-    api.balance = function(hash, currency, callback)
+    api.balance = function(hash, currency, callback, service)
     {
+        var original_service = api_service;
+        if(service && service !== api_service)
+        {
+            api_service = service;
+        }
         api.address(hash, currency, function(address)
         {
-            if(address && address.balance) callback(address.balance);
-            else callback(0);
+            if(address && address.balance) 
+            {
+                if(api_service !== original_service)
+                {
+                    api_service = original_service;
+                }
+                callback(address.balance);
+            }
+            else 
+            {
+                if(api_service !== original_service)
+                {
+                    api_service = original_service;
+                }
+                callback(0);
+            }
         });
     }
     
-    api.block = function(height, currency, callback)
+    api.block = function(height, currency, callback, service)
     {
+        var original_service = api_service;
+        if(service && service !== api_service)
+        {
+            api_service = service;
+        }
         api.request(api.url('block', height, currency), function(results)
         {
             var map = api.map(currency);
@@ -118,8 +180,22 @@
             {
                 block = api.results(block, results, currency, 'block');
             }
-            if(callback) callback(block);
-            else return block;
+            if(callback) 
+            {
+                if(api_service !== original_service)
+                {
+                    api_service = original_service;
+                }
+                callback(block);
+            }
+            else 
+            {
+                if(api_service !== original_service)
+                {
+                    api_service = original_service;
+                }
+                return block;
+            }
         }, 'GET', false, currency, 'block');
     }
     
@@ -144,8 +220,13 @@
         }
     }
     
-    api.market = function(currency, stat, callback)
+    api.market = function(currency, stat, callback, service)
     {
+        var original_service = api_service;
+        if(service && service !== api_service)
+        {
+            api_service = service;
+        }
         api.request(api.url('market', stat, currency), function(results)
         {
             var map = api.map(currency);
@@ -161,8 +242,22 @@
             {
                 market = api.results(market, results, currency, 'market');
             }
-            if(callback) callback(market);
-            else return market;
+            if(callback) 
+            {
+                if(api_service !== original_service)
+                {
+                    api_service = original_service;
+                }
+                callback(market);
+            }
+            else 
+            {
+                if(api_service !== original_service)
+                {
+                    api_service = original_service;
+                }
+                return market;
+            }
         }, 'GET', false, currency, 'market');
     }
     
@@ -290,8 +385,13 @@
         })
     }
     
-    api.relay = function(hash, currency, callback)
+    api.relay = function(hash, currency, callback, service)
     {
+        var original_service = api_service;
+        if(service && service !== api_service)
+        {
+            api_service = service;
+        }
         var request_data = {};
         var map = api.map(currency);
         request_data[map.to.relay_param] = hash;
@@ -325,8 +425,22 @@
                     }
                 }
             }
-            if(callback) callback(tx);
-            else return tx;
+            if(callback) 
+            {
+                if(api_service !== original_service)
+                {
+                    api_service = original_service;
+                }
+                callback(tx);
+            }
+            else 
+            {
+                if(api_service !== original_service)
+                {
+                    api_service = original_service;
+                }
+                return tx;
+            }
         }, 'POST', request_data, currency, 'relay')
     }
     
@@ -466,8 +580,13 @@
         return defaults;
     }
     
-    api.transaction = function(txid, currency, callback)
+    api.transaction = function(txid, currency, callback, service)
     {
+        var original_service = api_service;
+        if(service && service !== api_service)
+        {
+            api_service = service;
+        }
         api.request(api.url('transaction', txid, currency), function(results)
         {
             var map = api.map(currency);
@@ -487,13 +606,32 @@
             {
                 transaction = api.results(transaction, results, currency, 'transaction');
             }
-            if(callback) callback(transaction);
-            else return transaction;
+            if(callback) 
+            {
+                if(api_service !== original_service)
+                {
+                    api_service = original_service;
+                }
+                callback(transaction);
+            }
+            else 
+            {
+                if(api_service !== original_service)
+                {
+                    api_service = original_service;
+                }
+                return transaction;
+            }
         }, 'GET', false, currency, 'transaction');
     }
     
-    api.transactions = function(address, currency, callback)
+    api.transactions = function(address, currency, callback, service)
     {
+        var original_service = api_service;
+        if(service && service !== api_service)
+        {
+            api_service = service;
+        }
         api.request(api.url('transactions', address, currency), function(results)
         {
             var transactions = [];
@@ -523,13 +661,32 @@
                     transactions.push(transaction);
                 });
             }
-            if(callback) callback(transactions);
-            else return transactions;
+            if(callback) 
+            {
+                if(api_service !== original_service)
+                {
+                    api_service = original_service;
+                }
+                callback(transactions);
+            }
+            else 
+            {
+                if(api_service !== original_service)
+                {
+                    api_service = original_service;
+                }
+                return transactions;
+            }
         }, 'GET', false, currency, 'transactions');
     }
     
-    api.unspents = function(address, currency, callback, confirms)
+    api.unspents = function(address, currency, callback, confirms, service)
     {
+        var original_service = api_service;
+        if(service && service !== api_service)
+        {
+            api_service = service;
+        }
         if(!confirms) confirms = 0;
         api.request(api.url('unspents', address, currency), function(results)
         {
@@ -558,8 +715,22 @@
                 });
                 if(reverse) unspents = unspents.reverse();
             }
-            if(callback) callback(unspents);
-            else return unspents;
+            if(callback) 
+            {
+                if(api_service !== original_service)
+                {
+                    api_service = original_service;
+                }
+                callback(unspents);
+            }
+            else 
+            {
+                if(api_service !== original_service)
+                {
+                    api_service = original_service;
+                }
+                return unspents;
+            }
         }, 'GET', false, currency, 'unspents');
     }
     
