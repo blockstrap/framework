@@ -421,7 +421,10 @@ var blockstrap_core = function()
                         $(select).append('<option value="">-- Select Currency --</option>');
                         $.each(currencies, function(currency, v)
                         {
-                            $(select).append('<option value="'+currency+'">'+v.currency+'</option>');
+                            if(typeof v.private == 'undefined')
+                            {
+                                $(select).append('<option value="'+currency+'">'+v.currency+'</option>');
+                            }
                         });
                     }
                 });
@@ -709,6 +712,7 @@ var blockstrap_core = function()
                         {
                             $(this).modal('hide');
                         });
+                        $('body').removeClass('modal-open');
                     }
                 }
                 else
@@ -930,6 +934,7 @@ var blockstrap_core = function()
             refresh: function(callback, slug)
             {
                 var bs = $.fn.blockstrap;
+                bs.core.modals('close_all');
                 bs.core.loader('open');
                 if(!slug) slug = bs.settings.page_base;
                 bs.templates.render(bs.settings.page_base, function()
@@ -1565,7 +1570,8 @@ var blockstrap_functions = {
             var http = new XMLHttpRequest();
             http.open('HEAD', url, false);
             http.send();
-            return http.status!=404;
+            if(http.response === '404') return false;
+            else return http.status!=404;
         }
         catch(err)
         {

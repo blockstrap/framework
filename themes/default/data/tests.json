@@ -158,7 +158,7 @@
                         },
                         {
                             "css": "col-sm-6 panel",
-                            "id": "coins_discovered_24hr"
+                            "id": "coins_discovered"
                         },
                         {
                             "css": "col-sm-6 panel",

@@ -51,32 +51,33 @@
                 "css": "col-md-6 even",
                 "header": "Market Conditions",
                 "body": {
-                    "func": "bootstrap",
-                    "type": "panels",
-                    "objects": [
+                    "func": "plugin",
+                    "name": "markets",
+                    "call": "filter",
+                    "data": [
                         {
-                            "css": "col-sm-6",
-                            "html": "<span class='panel-value'>US$ 555</span><span class='panel-description'>BTC to USD</span>"
+                            "css": "col-sm-6 panel",
+                            "id": "price_usd_now"
                         },
                         {
-                            "css": "col-sm-6",
-                            "html": "<span class='panel-value'>2,424,687</span><span class='panel-description'>Daily TXs</span>"
+                            "css": "col-sm-6 panel",
+                            "id": "tx_count_24hr"
                         },
                         {
-                            "css": "col-sm-6",
-                            "html": "<span class='panel-value'>24,687</span><span class='panel-description'>Daily BTC Sent</span>"
+                            "css": "col-sm-6 panel",
+                            "id": "sent_usd_24hr"
                         },
                         {
-                            "css": "col-sm-6",
-                            "html": "<span class='panel-value'>5,332,369</span><span class='panel-description'>Hash Rate GH/s</span>"
+                            "css": "col-sm-6 panel",
+                            "id": "sent_coins_24hr"
                         },
                         {
-                            "css": "col-sm-6",
-                            "html": "<span class='panel-value'>12.2 Million</span><span class='panel-description'>BTC Discovered</span>"
+                            "css": "col-sm-6 panel",
+                            "id": "coins_discovered"
                         },
                         {
-                            "css": "col-sm-6",
-                            "html": "<span class='panel-value'>10.4 Billion</span><span class='panel-description'>Market Cap USD</span>"
+                            "css": "col-sm-6 panel",
+                            "id": "marketcap"
                         }
                     ]
                 }

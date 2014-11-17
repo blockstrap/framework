@@ -17,7 +17,7 @@
     "module_base": "js/modules/",
     "page_base": "index",
     "slug_base": "dashboard",
-    "api_service": "sochain",
+    "api_service": "blockstrap",
     "base_url": "",
     "content_id": "main-content",
     "navigation_id": "navigation",
@@ -289,6 +289,12 @@
             },
             "fee": 1
         },
+        "multi": {
+            "private": true,
+            "apis": {
+                "blockstrap": "https://api.blockstrap.com/v0/multi/"
+            }
+        },
         "btc": {
             "currency": "Bitcoin",
             "lib": "bitcoin",
@@ -369,9 +375,9 @@
                             "key": "market",
                             "price_usd_now": "fiat_usd_now",
                             "tx_count_24hr": "tx_count_24hr",
-                            "sent_usd_24hr": "output_value_24hr",
+                            "sent_usd_24hr": "[output_value_24hr, *, fiat_usd_now, int]",
                             "sent_coins_24hr": "output_value_24hr",
-                            "coins_discovered_24hr": "coinbase_value_todate",
+                            "coins_discovered": "coinbase_value_todate",
                             "marketcap": "marketcap"
                         },
                         "relay": {
@@ -387,7 +393,7 @@
                             "input": "input_value",
                             "output": "output_value",
                             "value": "[output_value, -, fees, int]",
-                            "fees": "_fees"
+                            "fees": "fees"
                         },
                         "transactions": {
                             "key": "address.transactions",

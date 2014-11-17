@@ -27,13 +27,14 @@
         },
         "sent_usd_24hr": {
             text: "Daily US$ Sent",
+            affix: "Million",
             value: 5555555
         },
         "sent_coins_24hr": {
             text: "Daily BTC Sent",
             value: 555555
         },
-        "coins_discovered_24hr": {
+        "coins_discovered": {
             text: "BTC Discovered",
             affix: "Million",
             value: 55
@@ -85,36 +86,42 @@
     
     markets.update = function()
     {
-        $.fn.blockstrap.api.market('btc', '', function(results)
+        $.fn.blockstrap.api.market('multi', '', function(results)
         {
-            if($.isPlainObject(results))
+            if(
+                $.isPlainObject(results) 
+                && typeof results.data != 'undefined'
+                && typeof results.data.markets != 'undefined'
+                && typeof results.data.markets.btc != 'undefined'
+            )
             {
-                if(results.price_usd_now)
+                results = results.data.markets.btc;
+                if(results.fiat_usd_now)
                 {
-                    conditions['price_usd_now']['value'] = results.price_usd_now;
+                    conditions['price_usd_now']['value'] = results.fiat_usd_now;
                 }
                 if(results.tx_count_24hr)
                 {
                     conditions['tx_count_24hr']['value'] = results.tx_count_24hr;
                 }
-                if(results.sent_usd_24hr)
+                if(results.output_value_24hr_fiat_now)
                 {
-                    conditions['sent_usd_24hr']['value'] = (results.sent_usd_24hr / 100000000);
+                    conditions['sent_usd_24hr']['value'] = ((results.output_value_24hr_fiat_now / 1000000) / 100000000);
                 }
-                if(results.sent_coins_24hr)
+                if(results.output_value_24hr)
                 {
-                    conditions['sent_coins_24hr']['value'] = (results.sent_coins_24hr / 100000000);
+                    conditions['sent_coins_24hr']['value'] = (results.output_value_24hr / 100000000);
                 }
-                if(results.coins_discovered_24hr)
+                if(results.coinbase_value_todate)
                 {
-                    conditions['coins_discovered_24hr']['value'] = (results.coins_discovered_24hr / 1000000);
+                    conditions['coins_discovered']['value'] = ((results.coinbase_value_todate / 1000000) / 100000000);
                 }
                 if(results.marketcap)
                 {
                     conditions['marketcap']['value'] = (results.marketcap / 1000000000);
                 }
             }
-        }, 'blockstrap');
+        }, 'blockstrap', true);
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE

@@ -343,13 +343,17 @@
                     {
                         $.fn.blockstrap.core.modal(title, content);
                         if(callback) callback();
-                    }, $.fn.blockstrap.core.page(), false, true);
+                    }, $.fn.blockstrap.core.page());
                 }
                 else
                 {
                     if(callback) callback();
                 }
             });
+        }
+        else
+        {
+            if(callback) callback();
         }
     }
     
@@ -518,35 +522,31 @@
                         account.balance = results.balance;
                         account.tx_count = results.tx_count;
                         account.ts = now;
-                    }
-                    $.fn.blockstrap.data.save('accounts', account.id, account, function(obj)
-                    {
-                        var txs = blockstrap_functions.array_length(obj.txs);
-                        if(obj.tx_count > current_tx_count)
+
+
+                        $.fn.blockstrap.api.transactions(account.address, account.currency.code, function(transactions)
                         {
-                            $.fn.blockstrap.api.transactions(account.address, account.currency.code, function(transactions)
+                            if(!$.isPlainObject(account.txs)) account.txs = {};
+                            if($.isArray(transactions))
                             {
-                                if(!$.isPlainObject(obj.txs)) obj.txs = {};
-                                if($.isArray(transactions))
+                                $.each(transactions, function(k, transaction)
                                 {
-                                    $.each(transactions, function(k, transaction)
-                                    {
-                                        obj.txs['txid_'+transaction.txid] = transaction;
-                                    });
-                                }
-                                $.fn.blockstrap.data.save('accounts', obj.id, obj, function(updated_account)
-                                {
-                                    if(callback) callback(obj);
-                                    else return obj;
+                                    account.txs['txid_'+transaction.txid] = transaction;
                                 });
+                            }
+                            $.fn.blockstrap.data.save('accounts', account.id, account, function(updated_account)
+                            {
+                                if(callback) callback(account);
+                                else return account;
                             });
-                        }
-                        else
-                        {
-                            if(callback) callback(obj);
-                            else return obj;
-                        }
-                    });
+                        });
+                    }
+                    else
+                    {
+                        if(callback) callback(false);
+                        else return false;
+                    }
+                    
                 })
             }
             else
@@ -562,7 +562,7 @@
         }
     }
     
-    accounts.updates = function(index, callback)
+    accounts.updates = function(index, callback, old_txs, old_tx_count)
     {
         if(!index) index = 0;
         var accounts = $.fn.blockstrap.accounts.get();
@@ -574,8 +574,22 @@
             index++;
             $.fn.blockstrap.accounts.update(account, function(obj)
             {
-                var new_txs = [];
-                var new_tx_count = 0;
+                if(typeof old_txs == 'undefined' || !old_txs)
+                {
+                    var new_txs = [];
+                }
+                else if($.isArray(old_txs))
+                {
+                    var new_txs = old_txs;
+                }
+                if(typeof old_tx_count == 'undefined' || !old_tx_count)
+                {
+                    var new_tx_count = 0;
+                }
+                else if(old_tx_count)
+                {
+                    var new_tx_count = old_tx_count;
+                }
                 if(obj.tx_count > current_tx_count)
                 {
                     new_tx_count = obj.tx_count - current_tx_count;
@@ -597,7 +611,7 @@
                 }
                 else
                 {
-                    $.fn.blockstrap.accounts.updates(index, callback);
+                    $.fn.blockstrap.accounts.updates(index, callback, new_txs, new_tx_count);
                 }
             });
         }
