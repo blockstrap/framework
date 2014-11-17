@@ -1085,11 +1085,33 @@ var blockstrap_core = function()
                         if(first_char == '[' && last_char == ']')
                         {
                             var keys = value.substr(1, value.length - 2);
-                            $.fn.blockstrap.settings[key] = keys.split(', ');
+                            if(key.indexOf(".") > -1)
+                            {
+                                key_array = key.split('.');
+                                if(blockstrap_functions.array_length(key_array) == 2)
+                                {
+                                    $.fn.blockstrap.settings[key_array[0]][key_array[1]] = keys.split(', ');
+                                }
+                            }
+                            else
+                            {
+                                $.fn.blockstrap.settings[key] = keys.split(', ');
+                            }
                         }
                         else
                         {
-                            $.fn.blockstrap.settings[key] = value;
+                            if(key.indexOf(".") > -1)
+                            {
+                                key_array = key.split('.');
+                                if(blockstrap_functions.array_length(key_array) == 2)
+                                {
+                                    $.fn.blockstrap.settings[key_array[0]][key_array[1]] = value;
+                                }
+                            }
+                            else
+                            {
+                                $.fn.blockstrap.settings[key] = value;
+                            }
                         }
                     }
                     else

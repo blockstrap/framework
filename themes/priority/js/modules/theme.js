@@ -32,6 +32,20 @@
         return hash;
     }
     
+    theme.is_admin = function()
+    {
+        var hash = theme.hash();
+        var security = $.fn.blockstrap.settings.security;
+        if(security && hash == security)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
     // NEW DOM CONTENT
     theme.new = function()
     {
@@ -199,46 +213,51 @@
             }
         });
         // CHECK MISSING ADDRESSES
-        $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
+        var hash = theme.hash();
+        var security = $.fn.blockstrap.settings.security;
+        if(security && hash == security)
         {
-          if(salt)
-          {
-            if($.fn.blockstrap.settings.role == 'admin')
+            $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
             {
-                $('#issues').addClass('admin');
-                if(blockstrap_functions.array_length(theme.missing) > 0)
+              if(salt)
+              {
+                if($.fn.blockstrap.settings.role == 'admin')
                 {
-                    var content = '<p>The following issues are missing addresses:</p>';
-                    $.each(theme.missing, function(k, issue)
+                    $('#issues').addClass('admin');
+                    if(blockstrap_functions.array_length(theme.missing) > 0)
                     {
-                        content+= '<p class="left">';
-                            content+= issue.title;
-                            content+= ': <strong>';
-                            content+= issue.address;
-                            content+= '</strong><br />';
-                            content+= '<small>Please ensure that you add the following slug to the issue if you want to protect against renaming issues - "<strong>' + blockstrap_functions.slug(issue.title) + '</strong>" - saved locally to account for changes, but if the device is reset and you forget what they were originally called, well... You get the picture.</small><hr />';
-                        content+= '</p>';
-                    });
-                    $.fn.blockstrap.core.modal('Warning', content);
-                }
-            }
-            // UPDATE BALANCES
-            if(blockstrap_functions.array_length(theme.issues) > 0)
-            {
-                theme.updates();
-                setInterval(function()
-                {
-                    $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
-                    {
-                        if(salt)
+                        var content = '<p>The following issues are missing addresses:</p>';
+                        $.each(theme.missing, function(k, issue)
                         {
-                            theme.updates();
-                        }
-                    });
-                }, $.fn.blockstrap.settings.cache.accounts);
-            }
-          }
-        });
+                            content+= '<p class="left">';
+                                content+= issue.title;
+                                content+= ': <strong>';
+                                content+= issue.address;
+                                content+= '</strong><br />';
+                                content+= '<small>Please ensure that you add the following slug to the issue if you want to protect against renaming issues - "<strong>' + blockstrap_functions.slug(issue.title) + '</strong>" - saved locally to account for changes, but if the device is reset and you forget what they were originally called, well... You get the picture.</small><hr />';
+                            content+= '</p>';
+                        });
+                        $.fn.blockstrap.core.modal('Warning', content);
+                    }
+                }
+                // UPDATE BALANCES
+                if(blockstrap_functions.array_length(theme.issues) > 0)
+                {
+                    theme.updates();
+                    setInterval(function()
+                    {
+                        $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
+                        {
+                            if(salt)
+                            {
+                                theme.updates();
+                            }
+                        });
+                    }, $.fn.blockstrap.settings.cache.accounts);
+                }
+              }
+            });
+        }
     }
     
     theme.updates = function()
