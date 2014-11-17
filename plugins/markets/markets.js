@@ -95,31 +95,55 @@
                 && typeof results.data.markets.btc != 'undefined'
             )
             {
-                results = results.data.markets.btc;
-                if(results.fiat_usd_now)
+                res = results.data.markets.btc;
+                if(res.fiat_usd_now)
                 {
-                    conditions['price_usd_now']['value'] = results.fiat_usd_now;
+                    conditions['price_usd_now']['value'] = res.fiat_usd_now;
                 }
-                if(results.tx_count_24hr)
+                if(res.tx_count_24hr)
                 {
-                    conditions['tx_count_24hr']['value'] = results.tx_count_24hr;
+                    conditions['tx_count_24hr']['value'] = res.tx_count_24hr;
                 }
-                if(results.output_value_24hr_fiat_now)
+                if(res.output_value_24hr_fiat_now)
                 {
-                    conditions['sent_usd_24hr']['value'] = ((results.output_value_24hr_fiat_now / 1000000) / 100000000);
+                    conditions['sent_usd_24hr']['value'] = ((res.output_value_24hr_fiat_now / 1000000) / 100000000);
                 }
-                if(results.output_value_24hr)
+                if(res.output_value_24hr)
                 {
-                    conditions['sent_coins_24hr']['value'] = (results.output_value_24hr / 100000000);
+                    conditions['sent_coins_24hr']['value'] = (res.output_value_24hr / 100000000);
                 }
-                if(results.coinbase_value_todate)
+                if(res.coinbase_value_todate)
                 {
-                    conditions['coins_discovered']['value'] = ((results.coinbase_value_todate / 1000000) / 100000000);
+                    conditions['coins_discovered']['value'] = ((res.coinbase_value_todate / 1000000) / 100000000);
                 }
-                if(results.marketcap)
+                if(res.marketcap)
                 {
-                    conditions['marketcap']['value'] = (results.marketcap / 1000000000);
+                    conditions['marketcap']['value'] = (res.marketcap / 1000000000);
                 }
+            }
+            // NOW NEED TO UPDATE EXCHANGE RATE
+            if(
+                $.isPlainObject(results) 
+                && typeof results.data != 'undefined'
+                && typeof results.data.markets != 'undefined'
+            )
+            {
+                var market_info = results.data.markets;
+                var currencies = $.fn.blockstrap.settings.currencies;
+                $.each(currencies, function(k, v)
+                {
+                    var rate = $.fn.blockstrap.settings.exchange.usd[k];
+                    
+                    // TODO: REPLACE
+                    if(k == 'doget') k = 'dogt';
+                    if(
+                        typeof market_info[k] != 'undefined'
+                        && typeof market_info[k].fiat_usd_now != 'undefined'
+                    )
+                    {
+                        $.fn.blockstrap.settings.exchange.usd[k] = market_info[k].fiat_usd_now;
+                    }
+                });
             }
         }, 'blockstrap', true);
     }
