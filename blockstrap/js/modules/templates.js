@@ -148,7 +148,7 @@
         return results;
     }       
     
-    templates.render = function(slug, callback, refresh)
+    templates.render = function(slug, callback, refresh, cancel_ready)
     {
         var bs = $.fn.blockstrap;
         var $bs = blockstrap_functions;
@@ -166,7 +166,7 @@
                 {
                     $(bs.element).html('');
                     $(bs.element).append(paged_html);
-                    bs.core.ready();
+                    if(!cancel_ready) bs.core.ready();
                     if(callback) callback(paged_html);
                 }
                 else
@@ -174,14 +174,14 @@
                     if($(bs.element).find('#' + bs.settings.content_id).length > 0)
                     {
                         $(bs.element).find('#' + bs.settings.content_id).html(paged_html);
-                        bs.core.ready();
+                        if(!cancel_ready) bs.core.ready();
                         if(callback) callback(paged_html);
                     }
                     else
                     {
                         $(bs.element).html('');
                         $(bs.element).append(paged_html);
-                        bs.core.ready();
+                        if(!cancel_ready) bs.core.ready();
                         if(callback) callback(paged_html);
                     }
                 }

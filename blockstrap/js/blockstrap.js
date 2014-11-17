@@ -943,16 +943,18 @@ var blockstrap_core = function()
                     {
                         bs.templates.render(slug, function()
                         {
+                            bs.core.ready();
                             bs.core.loader('close');
                             if(callback) callback();
-                        }, false);
+                        }, false, true);
                     }
                     else
                     {
+                        bs.core.ready();
                         bs.core.loader('close');
                         if(callback) callback();
                     }
-                }, true);
+                }, true, true);
             },
             reset: function(reload)
             {
