@@ -1032,7 +1032,15 @@ var blockstrap_core = function()
                                 {
                                     if(store_key === k)
                                     {
-                                        $.fn.blockstrap.data.save('keys', store_key, v, function()
+                                        if(k == 'your_password') 
+                                        {
+                                            safe_v = CryptoJS.SHA3(v, { outputLength: 512 }).toString();
+                                        }
+                                        else
+                                        {
+                                            safe_v = v;
+                                        }
+                                        $.fn.blockstrap.data.save('keys', store_key, safe_v, function()
                                         {
 
                                         });

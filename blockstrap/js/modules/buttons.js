@@ -751,29 +751,43 @@
         if(e)
         {
             var bs = $.fn.blockstrap;
+            var password = $.parseJSON(localStorage.getItem('nw_keys_your_password'));
+            var form = $.fn.blockstrap.forms.input({
+                id: 'password',
+                type: 'password',
+                label: 'Password',
+                placeholder: 'Confirm your user password',
+                attributes: [
+                    {
+                        key: 'data-pw',
+                        value: password
+                    }
+                ]
+            });
             e.preventDefault();
             $(bs.element).find('#confirm-modal .modal-footer').show();
-            bs.core.confirm('Confirm Device Reset', 'Please confirm that you want to completely remove all of the information from this device? If you have any coins stored, please ensure you first back-up the private keys or make a back-up of the wallet first.', function(confirmed)
+            bs.core.confirm('Confirm Device Reset', '<p>Please confirm that you want to completely remove all of the information from this device? If you have any coins stored, please ensure you first back-up the private keys or make a back-up of the wallet first.</p><p>'+form+'</p>', function(confirmed)
             {
                 if(confirmed)
                 {
                     bs.core.loader('open');
+                    var pw = CryptoJS.SHA3($('#confirm-modal').find('input#password').val(), { outputLength: 512 }).toString();
                     $(bs.element).on('hidden.bs.modal', '#confirm-modal', function()
                     {
-                        if(confirmed)
+                        if(confirmed && pw == password)
                         {
                             bs.core.reset(true);
+                            location.reload();
+                        }
+                        else
+                        {
                             bs.core.loader('close');
+                            bs.core.modal('Warning', 'The provided password does not match your user device password.');
                         }
                     });
                     bs.core.modals('close_all');
-                    //$.fn.blockstrap.core.reset(true);
                 }
             });
-        }
-        else
-        {
-            $.fn.blockstrap.core.reset(true);
         }
     }
     

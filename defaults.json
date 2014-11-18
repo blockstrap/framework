@@ -29,7 +29,8 @@
     "store": [
         "app_url", 
         "your_name",
-        "your_username"
+        "your_username",
+        "your_password"
     ],
     "modules": [
         "forms",
