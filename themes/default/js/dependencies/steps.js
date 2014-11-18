@@ -36,6 +36,12 @@ var blockstrap_setup_steps = [
                 "css": "btn-page",
                 "href": "",
                 "text": "STEP 2: CREATE ACCOUNT"
+            },
+            {
+                "id": "docs",
+                "css": "",
+                "href": "http://docs.blockstrap.com",
+                "text": "Help"
             }
         ],
         "actions": [
@@ -504,6 +510,12 @@ var blockstrap_setup_steps = [
                 "css": "btn-page active current",
                 "href": "",
                 "text": "STEP 2: CREATE ACCOUNT"
+            },
+            {
+                "id": "docs",
+                "css": "",
+                "href": "http://docs.blockstrap.com",
+                "text": "Help"
             }
         ],
         "actions": [

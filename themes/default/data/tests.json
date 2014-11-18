@@ -50,6 +50,12 @@
             "css": "btn-page",
             "href": "#contacts",
             "text": "Contacts"
+        },
+        {
+            "id": "docs",
+            "css": "",
+            "href": "http://docs.blockstrap.com",
+            "text": "Help"
         }
     ],
     "sidebar": {

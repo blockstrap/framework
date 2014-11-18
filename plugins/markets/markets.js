@@ -19,30 +19,30 @@
         "price_usd_now" : {
             text: "BTC to USD",
             prefix: "US$",
-            value: 5555
+            value: 0
         },
         "tx_count_24hr": {
             text: "Daily TXs",
-            value: 555
+            value: 0
         },
         "sent_usd_24hr": {
             text: "Daily US$ Sent",
             affix: "Million",
-            value: 5555555
+            value: 0
         },
         "sent_coins_24hr": {
             text: "Daily BTC Sent",
-            value: 555555
+            value: 0
         },
         "coins_discovered": {
             text: "BTC Discovered",
             affix: "Million",
-            value: 55
+            value: 0
         },
         "marketcap": {
             text: "Market Cap US$",
             affix: "Billion",
-            value: 55.5
+            value: 0
         }
     };
     
