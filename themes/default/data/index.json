@@ -815,8 +815,8 @@
                 }
             ]
         },
-        "print_guide": "Print Guide",
-        "support_forums": "Get Help"
+        "print_guide": "Install Guide",
+        "support_forums": "Docs"
     },
     "setup": {
         "func": "setup",
