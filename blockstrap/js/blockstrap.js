@@ -1433,22 +1433,26 @@ var blockstrap_core = function()
                                         if($.isArray(dependencies))
                                         {
                                             // INCLUDE JS DEPENDENCIES
+                                            $('.bs.installing').attr('data-loading-content','Now Installing '+$bs.array_length(dependencies)+' Dependencies');
                                             $bs.include(bs, 0, dependencies, function()
                                             {
                                                 if($.isArray(modules))
                                                 {
                                                     // INCLUDE JS MODULES
+                                                    $('.bs.installing').attr('data-loading-content','Now Installing '+$bs.array_length(modules)+' Modules');
                                                     $bs.include(bs, 0, modules, function()
                                                     {
-                                                        $.fn.blockstrap.snippets = {};
+                                                        $.fn.blockstrap.snippets = {}; 
                                                         if($.isArray(bootstrap))
                                                         {
                                                             // INCLUDE BOOTSTRAP COMPONENTS
+                                                            $('.bs.installing').attr('data-loading-content','Now Installing '+$bs.array_length(bootstrap)+' Bootstrap Snippets');
                                                             bs.core.bootstrap(0, bootstrap, function()
                                                             {
                                                                 if($.isArray(plugins))
                                                                 {
                                                                     // FINISH WITH PLUGINS
+                                                                    $('.bs.installing').attr('data-loading-content','Now Installing '+$bs.array_length(plugins)+' Plugins');
                                                                     bs.core.plugins(0, plugins, function()
                                                                     {
                                                                         bs.core.loaded(); 
@@ -1465,6 +1469,7 @@ var blockstrap_core = function()
                                                             if($.isArray(plugins))
                                                             {
                                                                 // FINISH WITH PLUGINS
+                                                                $('.bs.installing').attr('data-loading-content','Now Installing '+$bs.array_length(plugins)+' Plugins');
                                                                 bs.core.plugins(0, plugins, function()
                                                                 {
                                                                     bs.core.loaded(); 
@@ -1482,6 +1487,7 @@ var blockstrap_core = function()
                                                     if($.isArray(plugins))
                                                     {
                                                         // FINISH WITH PLUGINS
+                                                        $('.bs.installing').attr('data-loading-content','Now Installing '+$bs.array_length(plugins)+' Plugins');
                                                         bs.core.plugins(0, plugins, function()
                                                         {
                                                             bs.core.loaded(); 
@@ -1499,17 +1505,20 @@ var blockstrap_core = function()
                                             if($.isArray(modules))
                                             {
                                                 // INCLUDE JS MODULES
+                                                $('.bs.installing').attr('data-loading-content','Now Installing '+$bs.array_length(modules)+' Modules');
                                                 $bs.include(bs, 0, modules, function()
                                                 {
                                                     $.fn.blockstrap.snippets = {};
                                                     if($.isArray(bootstrap))
                                                     {
                                                         // INCLUDE BOOTSTRAP COMPONENTS
+                                                        $('.bs.installing').attr('data-loading-content','Now Installing '+$bs.array_length(bootstrap)+' Bootstrap Snippets');
                                                         bs.core.bootstrap(0, bootstrap, function()
                                                         {
                                                             if($.isArray(plugins))
                                                             {
                                                                 // FINISH WITH PLUGINS
+                                                                $('.bs.installing').attr('data-loading-content','Now Installing '+$bs.array_length(plugins)+' Plugins');
                                                                 bs.core.plugins(0, plugins, function()
                                                                 {
                                                                     bs.core.loaded(); 
@@ -1526,6 +1535,7 @@ var blockstrap_core = function()
                                                         if($.isArray(plugins))
                                                         {
                                                             // FINISH WITH PLUGINS
+                                                            $('.bs.installing').attr('data-loading-content','Now Installing '+$bs.array_length(plugins)+' Plugins');
                                                             bs.core.plugins(0, plugins, function()
                                                             {
                                                                 bs.core.loaded(); 
@@ -1543,6 +1553,7 @@ var blockstrap_core = function()
                                                 if($.isArray(plugins))
                                                 {
                                                     // FINISH WITH PLUGINS
+                                                    $('.bs.installing').attr('data-loading-content','Now Installing '+$bs.array_length(plugins)+' Plugins');
                                                     bs.core.plugins(0, plugins, function()
                                                     {
                                                         bs.core.loaded(); 
