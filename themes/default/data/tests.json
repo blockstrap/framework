@@ -490,7 +490,7 @@
                                 "id": "extra_salty_wallet",
                                 "css": "extra-fields",
                                 "label": {
-                                    "text": "More Security",
+                                    "text": "More",
                                     "css": "col-xs-3 hidden-label"
                                 },
                                 "values": [
@@ -631,7 +631,7 @@
                             {
                                 "id": "more-security",
                                 "css": "btn-default pull-right btn-split",
-                                "text": "More Security",
+                                "text": "More",
                                 "type": "button",
                                 "attributes": [
                                     {

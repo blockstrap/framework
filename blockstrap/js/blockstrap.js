@@ -260,13 +260,13 @@ var blockstrap_core = function()
                                     if(success === true)
                                     {
                                         blockstrap_functions.get_css(core_css+v+'.css');
-                                    }
-                                    if((k+1) >= file_len)
-                                    {
-                                        if(!called)
+                                        if((k+1) >= file_len)
                                         {
-                                            called = true;
-                                            callback();
+                                            if(!called)
+                                            {
+                                                called = true;
+                                                callback();
+                                            }
                                         }
                                     }
                                 });
@@ -1623,34 +1623,27 @@ var blockstrap_functions = {
         {    
             var http = new XMLHttpRequest();
             http.open("GET", url, false);
-            if(http.response == '404' || http.status == 404)
+            http.onreadystatechange = function()
             {
-                callback(false);
-            }
-            else if(!http.response) 
-            {
-                callback(true);
-            }
-            else
-            {
-                http.onreadystatechange = function()
+                if(this.status == 404)
                 {
-                    if(this.readyState==4 && this.status==200)
-                    {
-                        var msg = http.responseText;
-                        if(msg == '404') 
-                        {
-                            callback(false);
-                        }
-                        else
-                        {
-                            callback(true);
-                        }
-                    }
-                    else
+                    callback(false);
+                }
+                else if(this.readyState==4)
+                {
+                    var msg = this.responseText;
+                    if(msg == '404') 
                     {
                         callback(false);
                     }
+                    else
+                    {
+                        callback(true);
+                    }
+                }
+                else
+                {
+                    callback(false);
                 }
             }
             http.send(null);

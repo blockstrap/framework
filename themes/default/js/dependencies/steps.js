@@ -680,7 +680,7 @@ var blockstrap_setup_steps = [
                                         "id": "extra_salty_wallet",
                                         "css": "extra-fields",
                                         "label": {
-                                            "text": "More Security",
+                                            "text": "More",
                                             "css": "col-sm-3"
                                         },
                                         "values": [

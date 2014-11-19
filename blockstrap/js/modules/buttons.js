@@ -516,13 +516,13 @@
             if($(this).css('display') === 'none')
             {
                 $(this).show(350);
-                $(button).text('Less Security');
+                $(button).text('Less');
                 $(button).removeClass('btn-default').addClass('btn-danger');
             }
             else
             {
                 $(this).hide(350);
-                $(button).text('More Security');
+                $(button).text('More');
                 $(button).removeClass('btn-danger').addClass('btn-default');
             }
         });

@@ -114,7 +114,7 @@
                 }
                 if(typeof res.output_value_24hr_fiat_now != 'undefined')
                 {
-                    conditions['sent_usd_24hr']['value'] = ((res.output_value_24hr_fiat_now / 1000000) / 100000000);
+                    conditions['sent_usd_24hr']['value'] = (parseFloat(res.output_value_24hr_fiat_now) / 1000000);
                 }
                 if(typeof res.output_value_24hr != 'undefined')
                 {
