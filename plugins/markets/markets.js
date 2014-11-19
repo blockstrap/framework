@@ -58,9 +58,17 @@
                 var content = '';
                 if(object.css) css = object.css;
                 if(conditions[object.id]) obj = conditions[object.id];
-                if(obj.prefix) content+= obj.prefix + ' ';
-                if(obj.value) content+= Number(parseFloat(obj.value).toFixed(2)).toLocaleString();
-                if(obj.affix) content+= ' ' + obj.affix;
+                if(!obj.value)
+                {
+                    content+= 'N/A';
+                    obj.text = 'unable to connect to server';
+                }
+                else 
+                {
+                    if(obj.prefix) content+= obj.prefix + ' ';
+                    content+= Number(parseFloat(obj.value).toFixed(2)).toLocaleString();
+                    if(obj.affix) content+= ' ' + obj.affix;
+                }
                 var html = markets.span(obj.text, content);
                 objs.push({css: css, html: html});
             });
@@ -96,27 +104,27 @@
             )
             {
                 res = results.data.markets.btc;
-                if(res.fiat_usd_now)
+                if(typeof res.fiat_usd_now != 'undefined')
                 {
                     conditions['price_usd_now']['value'] = res.fiat_usd_now;
                 }
-                if(res.tx_count_24hr)
+                if(typeof res.tx_count_24hr != 'undefined')
                 {
                     conditions['tx_count_24hr']['value'] = res.tx_count_24hr;
                 }
-                if(res.output_value_24hr_fiat_now)
+                if(typeof res.output_value_24hr_fiat_now != 'undefined')
                 {
                     conditions['sent_usd_24hr']['value'] = ((res.output_value_24hr_fiat_now / 1000000) / 100000000);
                 }
-                if(res.output_value_24hr)
+                if(typeof res.output_value_24hr != 'undefined')
                 {
                     conditions['sent_coins_24hr']['value'] = (res.output_value_24hr / 100000000);
                 }
-                if(res.coinbase_value_todate)
+                if(typeof res.coinbase_value_todate != 'undefined')
                 {
                     conditions['coins_discovered']['value'] = ((res.coinbase_value_todate / 1000000) / 100000000);
                 }
-                if(res.marketcap)
+                if(typeof res.marketcap != 'undefined')
                 {
                     conditions['marketcap']['value'] = (res.marketcap / 1000000000);
                 }

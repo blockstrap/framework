@@ -238,18 +238,40 @@ var blockstrap_core = function()
                     var file_len = Object.keys(css_files).length;
                     $.each(css_files, function(k, v)
                     {
-                        if(blockstrap_functions.exists(theme_css+v+'.css'))
+                        var called = false;
+                        blockstrap_functions.exists(theme_css+v+'.css', function(success)
                         {
-                            blockstrap_functions.get_css(theme_css+v+'.css');
-                        }
-                        else if(blockstrap_functions.exists(core_css+v+'.css'))
-                        {
-                            blockstrap_functions.get_css(core_css+v+'.css');
-                        }
-                        if((k+1) >= file_len)
-                        {
-                            callback();
-                        }
+                            if(success === true)
+                            {
+                                blockstrap_functions.get_css(theme_css+v+'.css');
+                                if((k+1) >= file_len)
+                                {
+                                    if(!called)
+                                    {
+                                        called = true;
+                                        callback();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                blockstrap_functions.exists(core_css+v+'.css', function(success)
+                                {
+                                    if(success === true)
+                                    {
+                                        blockstrap_functions.get_css(core_css+v+'.css');
+                                    }
+                                    if((k+1) >= file_len)
+                                    {
+                                        if(!called)
+                                        {
+                                            called = true;
+                                            callback();
+                                        }
+                                    }
+                                });
+                            }
+                        })
                     })
                 }
             },
@@ -1595,19 +1617,47 @@ var blockstrap_functions = {
             else return false;
         }
     },
-    exists: function(url)
+    exists: function(url, callback)
     {
         try
-        {
+        {    
             var http = new XMLHttpRequest();
-            http.open('HEAD', url, false);
-            http.send();
-            if(http.response === '404') return false;
-            else return http.status!=404;
+            http.open("GET", url, false);
+            if(http.response == '404' || http.status == 404)
+            {
+                callback(false);
+            }
+            else if(!http.response) 
+            {
+                callback(true);
+            }
+            else
+            {
+                http.onreadystatechange = function()
+                {
+                    if(this.readyState==4 && this.status==200)
+                    {
+                        var msg = http.responseText;
+                        if(msg == '404') 
+                        {
+                            callback(false);
+                        }
+                        else
+                        {
+                            callback(true);
+                        }
+                    }
+                    else
+                    {
+                        callback(false);
+                    }
+                }
+            }
+            http.send(null);
         }
         catch(err)
         {
-            return false;   
+            callback(false);
         }
     },
     get_css: function(attributes)
@@ -1616,7 +1666,8 @@ var blockstrap_functions = {
         {
             var href = attributes;
             attributes = {
-                href: href
+                href: href,
+                rel: 'stylesheet'
             };
         }
         if(!attributes.rel) 
