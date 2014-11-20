@@ -87,7 +87,6 @@
                 authors: true
             }
         });
-        console.log($container);
         $('#filters').on('click', 'a', function(e)
         {
             e.preventDefault();
