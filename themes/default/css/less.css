@@ -6880,7 +6880,8 @@ TABLES
 .blockstrap-wrapper #main-content table.table tbody tr td .btn-xs,
 .blockstrap-wrapper table.table tbody tr td .btn-xs {
   float: right;
-  margin-left: 7px;
+  margin-left: 10px;
+  margin-bottom: 10px;
 }
 .blockstrap-wrapper #main-content table.table thead tr th .mobile-view,
 .blockstrap-wrapper table.table thead tr th .mobile-view,
