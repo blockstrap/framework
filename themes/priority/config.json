@@ -22,8 +22,7 @@
         "blockstrap/js/dependencies/bitcoinjs-lib",
         "themes/priority/js/dependencies/isotope",
         "blockstrap/js/dependencies/qrcode",
-        "themes/priority/js/dependencies/steps",
-        "blockstrap/js/dependencies/tx"
+        "themes/priority/js/dependencies/steps"
     ],
     "bootstrap": [
         "modals",
