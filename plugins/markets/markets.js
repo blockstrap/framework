@@ -66,7 +66,7 @@
                 else 
                 {
                     if(obj.prefix) content+= obj.prefix + ' ';
-                    content+= Number(parseFloat(obj.value).toFixed(2)).toLocaleString();
+                    content+= $.fn.blockstrap.core.add_commas(Number(parseFloat(obj.value).toFixed(2)));
                     if(obj.affix) content+= ' ' + obj.affix;
                 }
                 var html = markets.span(obj.text, content);

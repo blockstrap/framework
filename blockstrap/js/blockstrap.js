@@ -111,6 +111,10 @@ var blockstrap_core = function()
                 }
                 bs_vars[hook][key] = vars;
             },
+            add_commas: function(num)
+            {
+                return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            },
             apply_actions: function(hook)
             {
                 if(
