@@ -150,6 +150,9 @@ var blockstrap_core = function()
                 var $bs = blockstrap_functions;
                 var key = bootstrap[index];
                 var url = bs.settings.core_base + 'html/bootstrap/' + key;
+                
+                $('.bs.installing').attr('data-loading-content','Now Installing ' + (index + 1) + ' of  '+blockstrap_functions.array_length(bootstrap)+' Bootstrap Snippets');
+                
                 bs.core.get(url, 'html', function(html)
                 {
                     bs.core.boot(bootstrap, key, html, index, callback);
@@ -837,6 +840,9 @@ var blockstrap_core = function()
                 var bs = $.fn.blockstrap;
                 var $bs = blockstrap_functions;
                 if(!index) index = 0;
+                
+                $('.bs.installing').attr('data-loading-content','Now Installing ' + (index + 1) + ' of  '+blockstrap_functions.array_length(plugins)+' Plugins');
+                
                 if($.isArray(plugins))
                 {
                     var plugin = plugins[index];
@@ -1437,26 +1443,26 @@ var blockstrap_core = function()
                                         if($.isArray(dependencies))
                                         {
                                             // INCLUDE JS DEPENDENCIES
-                                            $('.bs.installing').attr('data-loading-content','Now Installing '+$bs.array_length(dependencies)+' Dependencies');
+                                            $('.bs.installing').attr('data-loading-content','Now Installing 1 of '+$bs.array_length(dependencies)+' Dependencies');
                                             $bs.include(bs, 0, dependencies, function()
                                             {
                                                 if($.isArray(modules))
                                                 {
                                                     // INCLUDE JS MODULES
-                                                    $('.bs.installing').attr('data-loading-content','Now Installing '+$bs.array_length(modules)+' Modules');
+                                                    $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(modules)+' Modules');
                                                     $bs.include(bs, 0, modules, function()
                                                     {
                                                         $.fn.blockstrap.snippets = {}; 
                                                         if($.isArray(bootstrap))
                                                         {
                                                             // INCLUDE BOOTSTRAP COMPONENTS
-                                                            $('.bs.installing').attr('data-loading-content','Now Installing '+$bs.array_length(bootstrap)+' Bootstrap Snippets');
+                                                            $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(bootstrap)+' Bootstrap Snippets');
                                                             bs.core.bootstrap(0, bootstrap, function()
                                                             {
                                                                 if($.isArray(plugins))
                                                                 {
                                                                     // FINISH WITH PLUGINS
-                                                                    $('.bs.installing').attr('data-loading-content','Now Installing '+$bs.array_length(plugins)+' Plugins');
+                                                                    $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
                                                                     bs.core.plugins(0, plugins, function()
                                                                     {
                                                                         bs.core.loaded(); 
@@ -1473,7 +1479,7 @@ var blockstrap_core = function()
                                                             if($.isArray(plugins))
                                                             {
                                                                 // FINISH WITH PLUGINS
-                                                                $('.bs.installing').attr('data-loading-content','Now Installing '+$bs.array_length(plugins)+' Plugins');
+                                                                $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
                                                                 bs.core.plugins(0, plugins, function()
                                                                 {
                                                                     bs.core.loaded(); 
@@ -1491,7 +1497,7 @@ var blockstrap_core = function()
                                                     if($.isArray(plugins))
                                                     {
                                                         // FINISH WITH PLUGINS
-                                                        $('.bs.installing').attr('data-loading-content','Now Installing '+$bs.array_length(plugins)+' Plugins');
+                                                        $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
                                                         bs.core.plugins(0, plugins, function()
                                                         {
                                                             bs.core.loaded(); 
@@ -1509,20 +1515,20 @@ var blockstrap_core = function()
                                             if($.isArray(modules))
                                             {
                                                 // INCLUDE JS MODULES
-                                                $('.bs.installing').attr('data-loading-content','Now Installing '+$bs.array_length(modules)+' Modules');
+                                                $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(modules)+' Modules');
                                                 $bs.include(bs, 0, modules, function()
                                                 {
                                                     $.fn.blockstrap.snippets = {};
                                                     if($.isArray(bootstrap))
                                                     {
                                                         // INCLUDE BOOTSTRAP COMPONENTS
-                                                        $('.bs.installing').attr('data-loading-content','Now Installing '+$bs.array_length(bootstrap)+' Bootstrap Snippets');
+                                                        $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(bootstrap)+' Bootstrap Snippets');
                                                         bs.core.bootstrap(0, bootstrap, function()
                                                         {
                                                             if($.isArray(plugins))
                                                             {
                                                                 // FINISH WITH PLUGINS
-                                                                $('.bs.installing').attr('data-loading-content','Now Installing '+$bs.array_length(plugins)+' Plugins');
+                                                                $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
                                                                 bs.core.plugins(0, plugins, function()
                                                                 {
                                                                     bs.core.loaded(); 
@@ -1539,7 +1545,7 @@ var blockstrap_core = function()
                                                         if($.isArray(plugins))
                                                         {
                                                             // FINISH WITH PLUGINS
-                                                            $('.bs.installing').attr('data-loading-content','Now Installing '+$bs.array_length(plugins)+' Plugins');
+                                                            $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
                                                             bs.core.plugins(0, plugins, function()
                                                             {
                                                                 bs.core.loaded(); 
@@ -1557,7 +1563,7 @@ var blockstrap_core = function()
                                                 if($.isArray(plugins))
                                                 {
                                                     // FINISH WITH PLUGINS
-                                                    $('.bs.installing').attr('data-loading-content','Now Installing '+$bs.array_length(plugins)+' Plugins');
+                                                    $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
                                                     bs.core.plugins(0, plugins, function()
                                                     {
                                                         bs.core.loaded(); 
@@ -1699,6 +1705,11 @@ var blockstrap_functions = {
         
         if(!dependency) dependency = false;
         if(!start) start = 0;
+        
+        var include_type = 'Modules';
+        if(dependency) include_type = 'Dependencies';
+        
+        $('.bs.installing').attr('data-loading-content','Now Installing ' + (start + 1) + ' of  '+blockstrap_functions.array_length(files)+' ' + include_type);
         
         if($.isArray(files) && files[start])
         {
