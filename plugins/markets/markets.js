@@ -46,6 +46,18 @@
         }
     };
     
+    $($.fn.blockstrap.element).on('click', '.btn-markets', function(e)
+    {
+        e.preventDefault();
+        markets.update(function()
+        {
+            $.fn.blockstrap.core.refresh(function()
+            {
+                
+            }, $.fn.blockstrap.core.page())
+        });
+    });
+    
     markets.filter = function(data)
     {
         var objs = [];
@@ -92,7 +104,7 @@
         return html;
     }
     
-    markets.update = function()
+    markets.update = function(callback)
     {
         $.fn.blockstrap.api.market('multi', '', function(results)
         {
@@ -152,6 +164,10 @@
                         $.fn.blockstrap.settings.exchange.usd[k] = market_info[k].fiat_usd_now;
                     }
                 });
+            };
+            if(typeof callback == 'function')
+            {
+                callback();
             }
         }, 'blockstrap', true);
     }

@@ -7910,3 +7910,6 @@ html body .blockstrap-wrapper #main-content .panel-wrapper.col-md-6.odd,
 html body .blockstrap-wrapper #main-content .panel-wrapper.col-md-6.even {
     margin-bottom: 30px;
 }
+html body .blockstrap-wrapper #main-content .panel-heading .btn {
+    font-family: sans-serif;
+}
