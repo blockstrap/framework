@@ -49,7 +49,7 @@
             {
                 "id": "market-conditions",
                 "css": "col-md-6 even",
-                "header": "Market Conditions",
+                "header": "Market Conditions <a href='#' class='pull-right btn btn-sm btn-default btn-markets'>Refresh</a>",
                 "body": {
                     "func": "plugin",
                     "name": "markets",

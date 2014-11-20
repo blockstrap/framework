@@ -7625,6 +7625,10 @@ body .blockstrap-wrapper {
   body .blockstrap-wrapper #main-content .panel .panel-heading {
     text-align: center;
   }
+  html .blockstrap-wrapper #main-content .panel .panel-heading .btn,
+  body .blockstrap-wrapper #main-content .panel .panel-heading .btn {
+    display: none;
+  }
   html .blockstrap-wrapper #main-content .panel-wrapper,
   body .blockstrap-wrapper #main-content .panel-wrapper,
   html .blockstrap-wrapper #main-content .panel-wrapper.col-md-6.odd,
