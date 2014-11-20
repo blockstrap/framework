@@ -494,15 +494,7 @@
     buttons.logout = function(button, e)
     {
         e.preventDefault();
-        var login_status = localStorage.getItem('nw_blockstrap_login');
-        if(blockstrap_functions.json(login_status))
-        {
-            $.fn.blockstrap.security.logout();
-        }
-        else
-        {
-            $.fn.blockstrap.core.modal('Warning', '<p>No login information has been established yet. Would you like to create login credentials now?<p><p><a href="#" class="btn btn-sm btn-success" id="create-login-credentials">Create Credentials</a> <a href="#" class="btn btn-sm btn-danger" data-dismiss="modal">Cancel</a></p>');
-        }
+        $.fn.blockstrap.security.logout();
     }
     
     buttons.more_security = function(button, e)
@@ -804,38 +796,6 @@
         else
         {
             $.fn.blockstrap.accounts.prepare(to, from, amount);
-        }
-    }
-    
-    buttons.set_credentials = function(button, e)
-    {
-        e.preventDefault();
-        var form_id = $(button).attr('data-form');
-        var username_id = $(button).attr('data-field-username');
-        var password_id = $(button).attr('data-field-password');
-        var repeat_id = $(button).attr('data-field-repeat');
-        var form = $($.fn.blockstrap.element).find('#'+form_id);
-        var username = $(form).find('#'+username_id).val();
-        var password = $(form).find('#'+password_id).val();
-        var repeat = $(form).find('#'+repeat_id).val();
-        if(username && password && password == repeat)
-        {
-            $(button).addClass('loading');
-            $.fn.blockstrap.security.credentials(username, password, function()
-            {
-                location.reload();
-            });
-        }
-        else
-        {
-            if(password != repeat)
-            {
-                $.fn.blockstrap.core.modal('Warning', 'Password Mismatch');
-            }
-            else
-            {
-                $.fn.blockstrap.core.modal('Warning', 'Missing Username & Password');
-            }
         }
     }
     
