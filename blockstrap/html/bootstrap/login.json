@@ -1,7 +1,8 @@
 {
     "login": {
         "avatar": {
-            "func": "avatars"
+            "func": "avatars",
+            "default": "{{urls.root}}blockstrap/img/avatar.jpg"
         },
         "intro": "Welcome Back {{user.name}}",
         "username": "Username",
