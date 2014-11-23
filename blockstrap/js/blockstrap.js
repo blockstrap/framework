@@ -1597,6 +1597,9 @@ var blockstrap_core = function()
                     else alert('Your browser does not support the minimum requirements - please learn more at http://docs.blockstrap.com - either that or you may have private browsing activated, which would also prevent Blockstrap from working.');
                 });
             }
+        }).fail(function(jqxhr, settings, exception)
+        {
+            alert('It seems this browser is unable to load files via AJAX under the current environment. This is usually only a problem when opening Blockstrap without a web-server. It\'s typically a Chrome issue. Try using Firefox, Safari, or even Internet Explorer.');
         });
     })
     (jQuery, window, document);
