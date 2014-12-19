@@ -106,6 +106,8 @@
     
     markets.update = function(callback)
     {
+        $('.bs.installing').attr('data-loading-content','Now Fetching Market Conditions');
+        
         $.fn.blockstrap.api.market('multi', '', function(results)
         {
             if(
@@ -165,6 +167,7 @@
                     }
                 });
             };
+            $('.bs.installing').attr('data-loading-content','LOADING');
             if(typeof callback == 'function')
             {
                 callback();
