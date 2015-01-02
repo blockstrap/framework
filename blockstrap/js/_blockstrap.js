@@ -12,8 +12,6 @@
  */
 
 var blockstrap_loader;
-
-var $; // TODO NEED TO REPLACE WITH jQUERY CALLS THROUGHOUT
 var blockstrap_core = function()
 {
     /* 
@@ -242,7 +240,7 @@ var blockstrap_core = function()
                 var theme_css = $.fn.blockstrap.settings.theme_base + theme + '/css/';
                 var css_files = $.fn.blockstrap.settings.css;
                 if(typeof files != 'undefined' && $.isArray(files)) css_files = files;
-                if(css_files && $.isArray(css_files))
+                $.isArray(css_files)
                 {
                     var file_len = Object.keys(css_files).length;
                     $.each(css_files, function(k, v)
@@ -282,10 +280,6 @@ var blockstrap_core = function()
                             }
                         })
                     })
-                }
-                else
-                {
-                    callback();
                 }
             },
             defaults: function()
@@ -566,7 +560,6 @@ var blockstrap_core = function()
                         $(bs.element).animate({'opacity':1}, 600, function()
                         {
                             bs.core.apply_actions('init_callback');   
-                            console.log('loaded');
                             $(window).resize(function(e)
                             {
                                 bs.core.resize();
@@ -1120,58 +1113,54 @@ var blockstrap_core = function()
                     element = $('#blockstrap');
                 }
                 $.fn.blockstrap.element = element;
+                $($.fn.blockstrap.element).addClass('blockstrap-wrapper loading');
+
+                // DATA ATTRIBUTES
+                var attributes = $($.fn.blockstrap.element).data();
                 
-                if($($.fn.blockstrap.element).length > 0)
+                $.each(attributes, function(key, value)
                 {
-                    $($.fn.blockstrap.element).addClass('blockstrap-wrapper loading');
-
-                    // DATA ATTRIBUTES
-                    var attributes = $($.fn.blockstrap.element).data();
-
-                    $.each(attributes, function(key, value)
+                    if(typeof value == 'string')
                     {
-                        if(typeof value == 'string')
+                        var first_char = value.charAt(0);
+                        var last_char = value.charAt(value.length - 1);
+                        if(first_char == '[' && last_char == ']')
                         {
-                            var first_char = value.charAt(0);
-                            var last_char = value.charAt(value.length - 1);
-                            if(first_char == '[' && last_char == ']')
+                            var keys = value.substr(1, value.length - 2);
+                            if(key.indexOf(".") > -1)
                             {
-                                var keys = value.substr(1, value.length - 2);
-                                if(key.indexOf(".") > -1)
+                                key_array = key.split('.');
+                                if(blockstrap_functions.array_length(key_array) == 2)
                                 {
-                                    key_array = key.split('.');
-                                    if(blockstrap_functions.array_length(key_array) == 2)
-                                    {
-                                        $.fn.blockstrap.settings[key_array[0]][key_array[1]] = keys.split(', ');
-                                    }
-                                }
-                                else
-                                {
-                                    $.fn.blockstrap.settings[key] = keys.split(', ');
+                                    $.fn.blockstrap.settings[key_array[0]][key_array[1]] = keys.split(', ');
                                 }
                             }
                             else
                             {
-                                if(key.indexOf(".") > -1)
-                                {
-                                    key_array = key.split('.');
-                                    if(blockstrap_functions.array_length(key_array) == 2)
-                                    {
-                                        $.fn.blockstrap.settings[key_array[0]][key_array[1]] = value;
-                                    }
-                                }
-                                else
-                                {
-                                    $.fn.blockstrap.settings[key] = value;
-                                }
+                                $.fn.blockstrap.settings[key] = keys.split(', ');
                             }
                         }
                         else
                         {
-                            $.fn.blockstrap.settings[key] = value;
+                            if(key.indexOf(".") > -1)
+                            {
+                                key_array = key.split('.');
+                                if(blockstrap_functions.array_length(key_array) == 2)
+                                {
+                                    $.fn.blockstrap.settings[key_array[0]][key_array[1]] = value;
+                                }
+                            }
+                            else
+                            {
+                                $.fn.blockstrap.settings[key] = value;
+                            }
                         }
-                    });
-                }
+                    }
+                    else
+                    {
+                        $.fn.blockstrap.settings[key] = value;
+                    }
+                });
             },
             string_to_array: function(string)
             {
@@ -1315,15 +1304,7 @@ var blockstrap_core = function()
                 var bs = $.fn.blockstrap;
                 var test_count = 7;
                 var this_count = 0;
-                var set = false;
-                if(typeof bs.settings.tests !== 'undefined')
-                {
-                    set = bs.settings.tests.api;
-                }
-                else
-                {
-                    run = false;
-                }
+                var set = bs.settings.tests.api;
                 if(run)
                 {
                     bs.api.address(set.address.request, 'btc', function(results)
@@ -1603,33 +1584,23 @@ var blockstrap_core = function()
             }, skip);
         }                     
         
-        if(typeof blockstrap_defaults == 'undefined')
-        {
-            $.ajax({
-                url: 'defaults.json',
-                dataType: 'json',
-                success: function(defaults)
+        $.ajax({
+            url: 'defaults.json',
+            dataType: 'json',
+            success: function(defaults)
+            {
+                // CONSTRUCT PLUGIN AFTER
+                // FIRST COLLECTING DEFAULTS
+                blockstrap_functions.check(defaults, function(passed)
                 {
-                    // CONSTRUCT PLUGIN AFTER
-                    // FIRST COLLECTING DEFAULTS
-                    blockstrap_functions.check(defaults, function(passed)
-                    {
-                        if(passed) plugin(false, false, defaults); 
-                        else alert('Your browser does not support the minimum requirements - please learn more at http://docs.blockstrap.com - either that or you may have private browsing activated, which would also prevent Blockstrap from working.');
-                    });
-                }
-            }).fail(function(jqxhr, settings, exception)
-            {
-                alert('It seems this browser is unable to load files via AJAX under the current environment. This is usually only a problem when opening Blockstrap without a web-server. It\'s typically a Chrome issue. Try using Firefox, Safari, or even Internet Explorer.');
-            });
-        }
-        else
+                    if(passed) plugin(false, false, defaults); 
+                    else alert('Your browser does not support the minimum requirements - please learn more at http://docs.blockstrap.com - either that or you may have private browsing activated, which would also prevent Blockstrap from working.');
+                });
+            }
+        }).fail(function(jqxhr, settings, exception)
         {
-            blockstrap_functions.check(blockstrap_defaults, function()
-            {
-                plugin(false, false, blockstrap_defaults); 
-            });
-        }
+            alert('It seems this browser is unable to load files via AJAX under the current environment. This is usually only a problem when opening Blockstrap without a web-server. It\'s typically a Chrome issue. Try using Firefox, Safari, or even Internet Explorer.');
+        });
     })
     (jQuery, window, document);
 };
@@ -1819,10 +1790,10 @@ var blockstrap_functions = {
                     {
                         js+= "\n" + core_js;
                     }
-                    var theme_filename = blockstrap.settings.theme_base + blockstrap.settings.theme+'/js/dependencies/' + file_name + '.js';
+                    var theme_filename = 'themes/'+blockstrap.settings.theme+'/js/dependencies/' + file_name + '.js';
                     if(!dependency)
                     {
-                        theme_filename = blockstrap.settings.theme_base + blockstrap.settings.theme+'/js/modules/' + file_name + '.js';
+                        theme_filename = 'themes/'+blockstrap.settings.theme+'/js/modules/' + file_name + '.js';
                     }
                     $.getScript(theme_filename, function(theme_js)
                     {
@@ -1843,10 +1814,10 @@ var blockstrap_functions = {
                     });
                 }).fail(function(jqxhr, settings, exception)
                 {
-                    var theme_filename = blockstrap.settings.theme_base + blockstrap.settings.theme+'/js/dependencies/' + file_name + '.js';
+                    var theme_filename = 'themes/'+blockstrap.settings.theme+'/js/dependencies/' + file_name + '.js';
                     if(!dependency)
                     {
-                        theme_filename = blockstrap.settings.theme_base + blockstrap.settings.theme+'/js/modules/' + file_name + '.js';
+                        theme_filename = 'themes/'+blockstrap.settings.theme+'/js/modules/' + file_name + '.js';
                     }
                     $.getScript(theme_filename, function(theme_js)
                     {
@@ -1904,7 +1875,6 @@ var blockstrap_functions = {
             } 
             else 
             {
-                $ = jQuery;
                 blockstrap_core();
             }
         }
