@@ -152,40 +152,54 @@
     {
         var bs = $.fn.blockstrap;
         var $bs = blockstrap_functions;
-        var data_url = 'themes/' + bs.settings.theme + '/' + bs.settings.data_base + slug;
-        var html_url = 'themes/' + bs.settings.theme + '/' + bs.settings.html_base + slug;
+        var data_url = bs.settings.theme_base + bs.settings.theme + '/' + bs.settings.data_base + slug;
+        var html_url = bs.settings.theme_base + bs.settings.theme + '/' + bs.settings.html_base + slug;
         bs.core.get(data_url, 'json', function(data)
         {
-            template_data = $.extend({}, template_data, data);
-            var filtered_data = $.fn.blockstrap.core.filter(template_data);
-            $.fn.blockstrap.core.get(html_url, 'html', function(content)
+            if(data.status != 404)
             {
-                var rendered_html = Mustache.render(content, filtered_data);
-                var paged_html = templates.filter(rendered_html);
-                if(refresh === true || slug == bs.settings.page_base)
+                template_data = $.extend({}, template_data, data);
+                var filtered_data = $.fn.blockstrap.core.filter(template_data);
+                $.fn.blockstrap.core.get(html_url, 'html', function(content)
                 {
-                    $(bs.element).html('');
-                    $(bs.element).append(paged_html);
-                    if(!cancel_ready) bs.core.ready();
-                    if(callback) callback(paged_html);
-                }
-                else
-                {
-                    if($(bs.element).find('#' + bs.settings.content_id).length > 0)
+                    if(content)
                     {
-                        $(bs.element).find('#' + bs.settings.content_id).html(paged_html);
-                        if(!cancel_ready) bs.core.ready();
-                        if(callback) callback(paged_html);
+                        var rendered_html = Mustache.render(content, filtered_data);
+                        var paged_html = templates.filter(rendered_html);
+                        if(refresh === true || slug == bs.settings.page_base)
+                        {
+                            $(bs.element).html('');
+                            $(bs.element).append(paged_html);
+                            if(!cancel_ready) bs.core.ready();
+                            if(callback) callback(paged_html);
+                        }
+                        else
+                        {
+                            if($(bs.element).find('#' + bs.settings.content_id).length > 0)
+                            {
+                                $(bs.element).find('#' + bs.settings.content_id).html(paged_html);
+                                if(!cancel_ready) bs.core.ready();
+                                if(callback) callback(paged_html);
+                            }
+                            else
+                            {
+                                $(bs.element).html('');
+                                $(bs.element).append(paged_html);
+                                if(!cancel_ready) bs.core.ready();
+                                if(callback) callback(paged_html);
+                            }
+                        }
                     }
                     else
                     {
-                        $(bs.element).html('');
-                        $(bs.element).append(paged_html);
-                        if(!cancel_ready) bs.core.ready();
-                        if(callback) callback(paged_html);
+                        if(callback) callback(false);
                     }
-                }
-            });
+                });
+            }
+            else
+            {
+                if(callback) callback(false);
+            }
         });
     }
     

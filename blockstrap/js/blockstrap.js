@@ -566,7 +566,6 @@ var blockstrap_core = function()
                         $(bs.element).animate({'opacity':1}, 600, function()
                         {
                             bs.core.apply_actions('init_callback');   
-                            console.log('loaded');
                             $(window).resize(function(e)
                             {
                                 bs.core.resize();
