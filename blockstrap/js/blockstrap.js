@@ -968,6 +968,7 @@ var blockstrap_core = function()
                         $.fn.blockstrap.buttons.new();
                     }
                 }
+                $.fn.blockstrap.core.apply_actions('ready'); 
             },
             refresh: function(callback, slug)
             {
