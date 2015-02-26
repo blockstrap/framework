@@ -1950,31 +1950,45 @@ var blockstrap_functions = {
     },
     update: function(version, callback)
     {
-        var current_version_array = version.split('.');
         var results = localStorage.getItem('nw_blockstrap_v');
-        var stored_version_array = false;
-        if(results) stored_version_array = $.parseJSON(results).split('.');
-        if($.isArray(stored_version_array))
-        {
-            $.each(stored_version_array, function(k, v)
+        if(results) results = $.parseJSON(results);
+        if(/^[0-9\.]+$/.test(version) && /^[0-9\.]+$/.test(results)) {
+            var current_version_array = version.split('.');
+            var stored_version_array = results.split('.');
+            if($.isArray(stored_version_array))
             {
-                if(parseInt(current_version_array[k]) > parseInt(v))
+                $.each(stored_version_array, function(k, v)
                 {
-                    $.fn.blockstrap.settings.vars.refresh = true;
-                    callback();
-                }
-                if(k >= (blockstrap_functions.array_length(stored_version_array) - 1))
-                {
-                    localStorage.setItem('nw_blockstrap_v', JSON.stringify(version));
-                    callback();
-                }
-            })
+                    if(parseInt(current_version_array[k]) > parseInt(v))
+                    {
+                        $.fn.blockstrap.settings.vars.refresh = true;
+                        callback();
+                    }
+                    if(k >= (blockstrap_functions.array_length(stored_version_array) - 1))
+                    {
+                        localStorage.setItem('nw_blockstrap_v', JSON.stringify(version));
+                        callback();
+                    }
+                })
+            }
+            else
+            {
+                $.fn.blockstrap.settings.vars.refresh = true;
+                localStorage.setItem('nw_blockstrap_v', JSON.stringify(version));
+                callback();
+            }
         }
         else
         {
-            $.fn.blockstrap.settings.vars.refresh = true;
-            localStorage.setItem('nw_blockstrap_v', JSON.stringify(version));
-            callback();
+            if(version != results) {
+                $.fn.blockstrap.settings.vars.refresh = true;
+                localStorage.setItem('nw_blockstrap_v', JSON.stringify(version));
+                callback();
+            }
+            else
+            {
+                callback();
+            }
         }
     },
     vars: function(variable)
