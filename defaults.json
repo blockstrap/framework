@@ -1,5 +1,6 @@
 {
-    "v": "0.4.2.0",
+    "v": "0.5.0.0",
+    "key": "ADD_YOUR_KEY_HERE",
     "public": false,
     "security": false,
     "role": "admin",

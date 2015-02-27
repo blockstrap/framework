@@ -844,6 +844,7 @@ var blockstrap_core = function()
             option: function(key, default_value)
             {
                 if(!default_value) default_value = false;
+                var bs = $.fn.blockstrap;
                 var $bs = blockstrap_functions;
                 var options = localStorage.getItem('nw_blockstrap_options');
                 if($bs.json(options)) options = $.parseJSON(options);
@@ -853,6 +854,10 @@ var blockstrap_core = function()
                 ){
                     default_value = options[key];
                 }
+                if(!default_value && typeof bs.settings[key] != 'undefined')
+                {
+                    default_value = bs.settings[key];
+                }   
                 return default_value;
             },
             page: function()

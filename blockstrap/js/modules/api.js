@@ -15,7 +15,8 @@
     var active_requests = {};
     var apis = $.fn.blockstrap.settings.apis;
     var currencies = $.fn.blockstrap.settings.currencies;
-    var api_service = $.fn.blockstrap.core.option('api_service', 'helloblock');
+    var api_service = $.fn.blockstrap.core.option('api_service', 'blockstrap');
+    var api_key = $.fn.blockstrap.core.option('key', false);
     if($.fn.blockstrap.settings.api_service)
     {
         api_service = $.fn.blockstrap.settings.api_service;
@@ -824,6 +825,17 @@
                 url = currencies[currency].apis[api_service] + call;
             }
         }
+        if(api_key)
+        {
+            if(url.indexOf("?") > -1)
+            {
+                url+='&api_key='+api_key;
+            }
+            else
+            {
+                url+='?api_key='+api_key;
+            }
+        }   
         return url;
     }
     
