@@ -21,7 +21,7 @@
         api_service = $.fn.blockstrap.settings.api_service;
     }
     
-    if($.fn.blockstrap.settings.cache.api.timeout)
+    if($.fn.blockstrap.settings.cache && $.fn.blockstrap.settings.cache.api && $.fn.blockstrap.settings.cache.api.timeout)
     {
         api_timeout = $.fn.blockstrap.settings.cache.api.timeout;
     }

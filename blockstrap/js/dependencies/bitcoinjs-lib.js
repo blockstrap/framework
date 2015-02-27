@@ -3716,6 +3716,32 @@
                     feePerKb: 1e4,
                     estimateFee: estimateFee("bitcointestnet")
                 },
+                darkcoin: {
+                    magicPrefix: "Darkcoin Signed Message:\n",
+                    bip32: {
+                        "public": 76067358,
+                        "private": 76066276
+                    },
+                    pubKeyHash: 76, // DONE
+                    scriptHash: 16, // DONE
+                    wif: 204, // DONE
+                    dustThreshold: 546,
+                    feePerKb: 1e4,
+                    estimateFee: estimateFee("darkcoin")
+                },
+                darkcointestnet: {
+                    magicPrefix: "Darkcoin Signed Message:\n",
+                    bip32: {
+                        "public": 70617039,
+                        "private": 70615956
+                    },
+                    pubKeyHash: 139, // DONE
+                    scriptHash: 19, // DONE
+                    wif: 239, // DONE
+                    dustThreshold: 546,
+                    feePerKb: 1e4,
+                    estimateFee: estimateFee("darkcointestnet")
+                },
                 dogecoin: {
                     magicPrefix: "Dogecoin Signed Message:\n",
                     bip32: {

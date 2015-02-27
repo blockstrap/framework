@@ -155,10 +155,26 @@ var blockstrap_core = function()
                 
                 $('.bs.installing').attr('data-loading-content','Now Installing ' + (index + 1) + ' of  '+blockstrap_functions.array_length(bootstrap)+' Bootstrap Snippets');
                 
-                bs.core.get(url, 'html', function(html)
+                var store = false;
+                var refresh = blockstrap_functions.vars('refresh');
+                var snippet = localStorage.getItem('nw_boot_'+key);
+                var storage = $.fn.blockstrap.settings.storage;
+                if(storage.bootstrap === true) store = true;
+                if(snippet && store && refresh !== true)
                 {
-                    bs.core.boot(bootstrap, key, html, index, callback);
-                });
+                    bs.core.boot(bootstrap, key, snippet, index, callback);
+                }
+                else
+                {
+                    bs.core.get(url, 'html', function(html)
+                    {
+                        if(store === true)
+                        {
+                            localStorage.setItem('nw_boot_'+key, html);
+                        }
+                        bs.core.boot(bootstrap, key, html, index, callback);
+                    });
+                }
             },
             buttons: function(classes, ids)
             {
@@ -562,15 +578,26 @@ var blockstrap_core = function()
                         
                         bs.core.loader('close');
 
-                        // SMOOTHER FADE-IN
-                        $(bs.element).animate({'opacity':1}, 600, function()
+                        if($(bs.element).length > 0)
                         {
-                            bs.core.apply_actions('init_callback');   
+                            // SMOOTHER FADE-IN
+                            $(bs.element).animate({'opacity':1}, 600, function()
+                            {
+                                bs.core.apply_actions('init_callback');
+                                $(window).resize(function(e)
+                                {
+                                    bs.core.resize();
+                                })
+                            });
+                        }
+                        else
+                        {
+                            bs.core.apply_actions('init_callback');
                             $(window).resize(function(e)
                             {
                                 bs.core.resize();
                             })
-                        });
+                        }
                     }
 
                     // RESET IF REQUIRED
@@ -1838,6 +1865,10 @@ var blockstrap_functions = {
                     }).fail(function(jqxhr, settings, exception)
                     {
                         start++;
+                        if(store === true)
+                        {
+                            localStorage.setItem('nw_js_'+file_name, js);
+                        }   
                         blockstrap_functions.include(blockstrap, start, files, callback, dependency);
                     });
                 }).fail(function(jqxhr, settings, exception)
@@ -1864,6 +1895,10 @@ var blockstrap_functions = {
                     }).fail(function(jqxhr, settings, exception)
                     {
                         start++;
+                        if(store === true)
+                        {
+                            localStorage.setItem('nw_js_'+file_name, js);
+                        }
                         blockstrap_functions.include(blockstrap, start, files, callback, dependency);
                     });
                 });

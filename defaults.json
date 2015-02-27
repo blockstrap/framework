@@ -1,5 +1,5 @@
 {
-    "v": "0.4.1.0",
+    "v": "0.4.2.0",
     "public": false,
     "security": false,
     "role": "admin",
@@ -290,6 +290,14 @@
             },
             "fee": 1
         },
+        "drkt": {
+            "currency": "Darkcoin Testnet",
+            "lib": "darkcointestnet",
+            "apis": {
+                "blockstrap": "https://api.blockstrap.com/v0/drkt/"
+            },
+            "fee": 0.0001
+        },
         "multi": {
             "private": true,
             "apis": {
@@ -328,6 +336,14 @@
                 "blockr": "http://dgc.blockr.io/api/v1/"
             },
             "fee": 1
+        },
+        "drk": {
+            "currency": "Darkcoin",
+            "lib": "darkcoin",
+            "apis": {
+                "blockstrap": "https://api.blockstrap.com/v0/drk/"
+            },
+            "fee": 0.0001
         }
     },
     "apis": {

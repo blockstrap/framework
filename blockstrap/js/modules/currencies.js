@@ -20,6 +20,10 @@
             "starts": ['L']
         },
         {
+            "code": "drk",
+            "starts": ['X']
+        },
+        {
             "code": "doge",
             "starts": ['D']
         },
@@ -30,6 +34,10 @@
         {
             "code": "ltct",
             "starts": ['m, n']
+        },
+        {
+            "code": "drkt",
+            "starts": ['y']
         },
         {
             "code": "doget",
