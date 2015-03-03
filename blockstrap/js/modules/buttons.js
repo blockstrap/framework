@@ -550,7 +550,8 @@
         if($('#menu-toggle').hasClass('open') || $('#sidebar-toggle').hasClass('open')) menu = true;
         if(slugs[0] === "" && href)
         {
-            slug = slugs[1];            
+            slug = slugs[1];   
+            $(button).addClass('loading');
             $.fn.blockstrap.core.nav(slug);
             var data_url = 'themes/'+bs.settings.theme+'/'+bs.settings.data_base+slug;
             var html_url = 'themes/'+bs.settings.theme+'/'+bs.settings.html_base+slug;
