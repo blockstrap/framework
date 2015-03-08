@@ -1640,6 +1640,7 @@ var blockstrap_core = function()
             $.ajax({
                 url: 'defaults.json',
                 dataType: 'json',
+                cache: false,
                 success: function(defaults)
                 {
                     // CONSTRUCT PLUGIN AFTER
