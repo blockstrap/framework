@@ -1436,6 +1436,14 @@ var blockstrap_core = function()
                         );
                     });
                 }
+            },
+            upgrade: function(saved_version, this_version, refresh, callback)
+            {
+                if(typeof saved_version == 'undefined') saved_version = 0;
+                if(typeof this_version == 'undefined') this_version = 1;
+                if(typeof refresh == 'undefined') refresh = false;
+                // Now need to implement patches!
+                callback();
             }
         };        
 
@@ -1483,19 +1491,87 @@ var blockstrap_core = function()
                             var plugins = $.fn.blockstrap.settings.plugins;
 
                             // UPDATE CORE IF REQUIRED
-                            $bs.update(bs.settings.v, function()
+                            $bs.update(bs.settings.v, function(saved_version, this_version, refresh)
                             {
-                                // USE LESS.css ...?
-                                bs.core.less(function()
+                                bs.core.upgrade(saved_version, this_version, refresh, function()
                                 {
-                                    // INSERT CSS
-                                    bs.core.css(function()
+                                    // USE LESS.css ...?
+                                    bs.core.less(function()
                                     {
-                                        if($.isArray(dependencies))
+                                        // INSERT CSS
+                                        bs.core.css(function()
                                         {
-                                            // INCLUDE JS DEPENDENCIES
-                                            $('.bs.installing').attr('data-loading-content','Now Installing 1 of '+$bs.array_length(dependencies)+' Dependencies');
-                                            $bs.include(bs, 0, dependencies, function()
+                                            if($.isArray(dependencies))
+                                            {
+                                                // INCLUDE JS DEPENDENCIES
+                                                $('.bs.installing').attr('data-loading-content','Now Installing 1 of '+$bs.array_length(dependencies)+' Dependencies');
+                                                $bs.include(bs, 0, dependencies, function()
+                                                {
+                                                    if($.isArray(modules))
+                                                    {
+                                                        // INCLUDE JS MODULES
+                                                        $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(modules)+' Modules');
+                                                        $bs.include(bs, 0, modules, function()
+                                                        {
+                                                            $.fn.blockstrap.snippets = {}; 
+                                                            if($.isArray(bootstrap))
+                                                            {
+                                                                // INCLUDE BOOTSTRAP COMPONENTS
+                                                                $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(bootstrap)+' Bootstrap Snippets');
+                                                                bs.core.bootstrap(0, bootstrap, function()
+                                                                {
+                                                                    if($.isArray(plugins))
+                                                                    {
+                                                                        // FINISH WITH PLUGINS
+                                                                        $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
+                                                                        bs.core.plugins(0, plugins, function()
+                                                                        {
+                                                                            bs.core.loaded(); 
+                                                                        });
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        bs.core.loaded(); 
+                                                                    }
+                                                                })
+                                                            }
+                                                            else
+                                                            {
+                                                                if($.isArray(plugins))
+                                                                {
+                                                                    // FINISH WITH PLUGINS
+                                                                    $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
+                                                                    bs.core.plugins(0, plugins, function()
+                                                                    {
+                                                                        bs.core.loaded(); 
+                                                                    });
+                                                                }
+                                                                else
+                                                                {
+                                                                    bs.core.loaded();
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                    else
+                                                    {
+                                                        if($.isArray(plugins))
+                                                        {
+                                                            // FINISH WITH PLUGINS
+                                                            $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
+                                                            bs.core.plugins(0, plugins, function()
+                                                            {
+                                                                bs.core.loaded(); 
+                                                            });
+                                                        }
+                                                        else
+                                                        {
+                                                            bs.core.loaded();
+                                                        }
+                                                    }
+                                                }, true);
+                                            }
+                                            else
                                             {
                                                 if($.isArray(modules))
                                                 {
@@ -1503,7 +1579,7 @@ var blockstrap_core = function()
                                                     $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(modules)+' Modules');
                                                     $bs.include(bs, 0, modules, function()
                                                     {
-                                                        $.fn.blockstrap.snippets = {}; 
+                                                        $.fn.blockstrap.snippets = {};
                                                         if($.isArray(bootstrap))
                                                         {
                                                             // INCLUDE BOOTSTRAP COMPONENTS
@@ -1521,7 +1597,7 @@ var blockstrap_core = function()
                                                                 }
                                                                 else
                                                                 {
-                                                                    bs.core.loaded(); 
+                                                                    bs.core.loaded();
                                                                 }
                                                             })
                                                         }
@@ -1559,73 +1635,8 @@ var blockstrap_core = function()
                                                         bs.core.loaded();
                                                     }
                                                 }
-                                            }, true);
-                                        }
-                                        else
-                                        {
-                                            if($.isArray(modules))
-                                            {
-                                                // INCLUDE JS MODULES
-                                                $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(modules)+' Modules');
-                                                $bs.include(bs, 0, modules, function()
-                                                {
-                                                    $.fn.blockstrap.snippets = {};
-                                                    if($.isArray(bootstrap))
-                                                    {
-                                                        // INCLUDE BOOTSTRAP COMPONENTS
-                                                        $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(bootstrap)+' Bootstrap Snippets');
-                                                        bs.core.bootstrap(0, bootstrap, function()
-                                                        {
-                                                            if($.isArray(plugins))
-                                                            {
-                                                                // FINISH WITH PLUGINS
-                                                                $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
-                                                                bs.core.plugins(0, plugins, function()
-                                                                {
-                                                                    bs.core.loaded(); 
-                                                                });
-                                                            }
-                                                            else
-                                                            {
-                                                                bs.core.loaded();
-                                                            }
-                                                        })
-                                                    }
-                                                    else
-                                                    {
-                                                        if($.isArray(plugins))
-                                                        {
-                                                            // FINISH WITH PLUGINS
-                                                            $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
-                                                            bs.core.plugins(0, plugins, function()
-                                                            {
-                                                                bs.core.loaded(); 
-                                                            });
-                                                        }
-                                                        else
-                                                        {
-                                                            bs.core.loaded();
-                                                        }
-                                                    }
-                                                });
                                             }
-                                            else
-                                            {
-                                                if($.isArray(plugins))
-                                                {
-                                                    // FINISH WITH PLUGINS
-                                                    $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
-                                                    bs.core.plugins(0, plugins, function()
-                                                    {
-                                                        bs.core.loaded(); 
-                                                    });
-                                                }
-                                                else
-                                                {
-                                                    bs.core.loaded();
-                                                }
-                                            }
-                                        }
+                                        });
                                     });
                                 });
                             });
@@ -1994,7 +2005,8 @@ var blockstrap_functions = {
     {
         var results = localStorage.getItem('nw_blockstrap_v');
         if(results) results = $.parseJSON(results);
-        if(/^[0-9\.]+$/.test(version) && /^[0-9\.]+$/.test(results)) {
+        if(/^[0-9\.]+$/.test(version) && /^[0-9\.]+$/.test(results)) 
+        {
             var current_version_array = version.split('.');
             var stored_version_array = results.split('.');
             if($.isArray(stored_version_array))
@@ -2004,12 +2016,11 @@ var blockstrap_functions = {
                     if(parseInt(current_version_array[k]) > parseInt(v))
                     {
                         $.fn.blockstrap.settings.vars.refresh = true;
-                        callback();
                     }
                     if(k >= (blockstrap_functions.array_length(stored_version_array) - 1))
                     {
                         localStorage.setItem('nw_blockstrap_v', JSON.stringify(version));
-                        callback();
+                        callback(results, version, $.fn.blockstrap.settings.vars.refresh);
                     }
                 })
             }
@@ -2017,19 +2028,20 @@ var blockstrap_functions = {
             {
                 $.fn.blockstrap.settings.vars.refresh = true;
                 localStorage.setItem('nw_blockstrap_v', JSON.stringify(version));
-                callback();
+                callback(results, version, true);
             }
         }
         else
         {
-            if(version != results) {
+            if(version != results) 
+            {
                 $.fn.blockstrap.settings.vars.refresh = true;
                 localStorage.setItem('nw_blockstrap_v', JSON.stringify(version));
-                callback();
+                callback(results, version, true);
             }
             else
             {
-                callback();
+                callback(results, version, false);
             }
         }
     },
