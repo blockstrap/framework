@@ -516,13 +516,15 @@ var blockstrap_core = function()
                     $.fn.blockstrap.core.modal('Warning', 'Search functionality will be available in the next major update');
                 });
             },
-            get: function(file, extension, callback, skip)
+            get: function(file, extension, callback, skip, cache)
             {
+                if(typeof cache == 'undefined') cache = true;
                 if(typeof skip == 'undefined' || !skip)
                 {
                     $.ajax({
                         url: file + '.' + extension,
                         dataType: extension,
+                        cache: cache,
                         success: function(results)
                         {
                             if(callback) callback(results, file, extension);
@@ -1641,9 +1643,9 @@ var blockstrap_core = function()
                                 });
                             });
                         }
-                    }, skip);
+                    }, skip, false);
                 }
-            }, skip);
+            }, skip, false);
         }                     
         
         if(typeof blockstrap_defaults == 'undefined')
