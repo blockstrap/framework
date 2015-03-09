@@ -1441,6 +1441,7 @@ var blockstrap_core = function()
             },
             upgrade: function(saved_version, this_version, refresh, callback)
             {
+                var settings = $.fn.blockstrap.settings;
                 var $bs = blockstrap_functions;
                 if(typeof saved_version == 'undefined') saved_version = 0;
                 if(typeof this_version == 'undefined') this_version = 1;
