@@ -202,6 +202,6 @@ var priority_issues = [
             href: priority_authors.framework.href,
             name: priority_authors.framework.name
         },
-        details: 'This priority theme currently only works with Bitcoin. Would like it to work with all available currencies.'
+        details: 'This priority theme currently only works with Bitcoin. Would like it to work with all available blockchains.'
     }
 ]

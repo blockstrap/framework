@@ -30,9 +30,9 @@
         return contacts;
     }
     
-    contacts.new = function(name, address, currency, fields, callback)
+    contacts.new = function(name, address, blockchain, fields, callback)
     {
-        if(!$.fn.blockstrap.currencies.validate(address))
+        if(!$.fn.blockstrap.blockchains.validate(address))
         {
             callback();
             $.fn.blockstrap.core.modal('Error', 'This is not a valid address!');
@@ -47,14 +47,14 @@
                     $.fn.blockstrap.core.loader('close');
                     $.fn.blockstrap.core.modal('Warning', 'This contact already exists');
                 }
-                else if($.fn.blockstrap.currencies.which(address) != currency)
+                else if($.fn.blockstrap.blockchains.which(address) != blockchain)
                 {
-                    var which = $.fn.blockstrap.currencies.which(address);
-                    var currencies = $.fn.blockstrap.settings.currencies;
-                    var currency_name = currencies[which].currency;
-                    var currency_selected = currencies[currency].currency;
+                    var which = $.fn.blockstrap.blockchains.which(address);
+                    var blockchains = $.fn.blockstrap.settings.blockchains;
+                    var blockchain_name = blockchains[which].blockchain;
+                    var blockchain_selected = blockchains[blockchain].blockchain;
                     $.fn.blockstrap.core.loader('close');
-                    $.fn.blockstrap.core.modal('Warning', 'This address does not match the currency you selected. You selected '+currency_name+' but the address you entered appears to be for '+currency_selected+'. This is not 100% accurate, and could be an internal problem.');
+                    $.fn.blockstrap.core.modal('Warning', 'This address does not match the blockchain you selected. You selected '+blockchain_name+' but the address you entered appears to be for '+blockchain_selected+'. This is not 100% accurate, and could be an internal problem.');
                 }
                 else
                 {
@@ -63,24 +63,24 @@
                     {
                         $.each(fields, function(k, v)
                         {
-                            if(v !== name && v !== address && v !== currency)
+                            if(v !== name && v !== address && v !== blockchain)
                             {
                                 data[k] = v;
                             }
                         });
                     };
-                    var currencies = [];
+                    var blockchains = [];
                     var addresses = [];
                     addresses.push({key:address});
-                    currencies.push({
-                        code: currency,
-                        currency: $.fn.blockstrap.settings.currencies[currency].currency,
+                    blockchains.push({
+                        code: blockchain,
+                        blockchain: $.fn.blockstrap.settings.blockchains[blockchain].blockchain,
                         addresses: addresses
                     });
                     contact = {
                         id: id,
                         name: name,
-                        currencies: currencies,
+                        blockchains: blockchains,
                         data: data,
                         tx_to: 0,
                         tx_from: 0
@@ -96,7 +96,7 @@
         else
         {
             $.fn.blockstrap.core.loader('close');
-            $.fn.blockstrap.core.modal('Warning', 'Currency not supported');
+            $.fn.blockstrap.core.modal('Warning', 'Blockchain not supported');
         }
     }
     

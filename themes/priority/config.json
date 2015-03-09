@@ -9,7 +9,7 @@
         "blockstrap/js/modules/data",
         "blockstrap/js/modules/api",
         "blockstrap/js/modules/templates",
-        "blockstrap/js/modules/currencies",
+        "blockstrap/js/modules/blockchains",
         "blockstrap/js/modules/security",
         "themes/priority/js/modules/theme"
     ],

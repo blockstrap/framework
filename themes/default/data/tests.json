@@ -407,10 +407,10 @@
                     "fields": [
                         {
                             "selects": {
-                                "id": "wallet_currency",
-                                "css": "bs-currency-select",
+                                "id": "wallet_blockchain",
+                                "css": "bs-blockchain-select",
                                 "label": {
-                                    "text": "Currency",
+                                    "text": "Blockchain",
                                     "css": "col-xs-3"
                                 },
                                 "wrapper": {
@@ -709,10 +709,10 @@
                         },
                         {
                             "selects": {
-                                "id": "contact_currency",
-                                "css": "bs-currency-select",
+                                "id": "contact_blockchain",
+                                "css": "bs-blockchain-select",
                                 "label": {
-                                    "text": "Address Currency",
+                                    "text": "Address Blockchain",
                                     "css": "col-xs-3"
                                 },
                                 "attributes": [
@@ -806,19 +806,19 @@
             "total": "Total",
             "accounts": [
                 {
-                    "currency": "Bitcoin (<a href='#'>3</a>)",
+                    "blockchain": "Bitcoin (<a href='#'>3</a>)",
                     "total": "2.25300100"
                 },
                 {
-                    "currency": "Dogecoin (<a href='#'>2</a>)",
+                    "blockchain": "Dogecoin (<a href='#'>2</a>)",
                     "total": "4,672.00100253"
                 },
                 {
-                    "currency": "Litecoin (<a href='#'>1</a>)",
+                    "blockchain": "Litecoin (<a href='#'>1</a>)",
                     "total": "0"
                 },
                 {
-                    "currency": "Peercoin (<a href='#'>1</a>)",
+                    "blockchain": "Peercoin (<a href='#'>1</a>)",
                     "total": "0.99000001"
                 }
             ]

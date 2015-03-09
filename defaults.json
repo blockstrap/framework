@@ -45,7 +45,7 @@
         "styles", 
         "templates",
         "filters",
-        "currencies"
+        "blockchains"
     ],
     "dependencies": [
         "crypto",
@@ -102,7 +102,7 @@
         {
             "name": "Blockstrap Donations",
             "address": "13uXA8zfLjsnrg69f6FcHVRfwBGobYU3bc",
-            "currency": "btc",
+            "blockchain": "btc",
             "contact_email": "info@neroware.io"
         }
     ],      
@@ -113,7 +113,7 @@
                 "results": {
                     "address": "1Nz5RqevRodefPyGVB8EpdwSEGS4Ax2f1k",
                     "balance": 10019000,
-                    "currency": "btc",
+                    "blockchain": "btc",
                     "hash": "f1260c3cd86ecc03ce460c303ec0e8006e32273d",
                     "received": 10019000,
                     "tx_count": 2
@@ -128,7 +128,7 @@
                     {
                         "address": "1121cQLqCsDsLPAkJW5ddTCREZ7Bp4ufrk",
                         "balance": 0,
-                        "currency": "btc",
+                        "blockchain": "btc",
                         "hash": "0030ececbad05ffcdff89f3f26e38ca3d735a8de",
                         "received": 5000000000,
                         "tx_count": 2
@@ -136,7 +136,7 @@
                     {
                         "address": "12higDjoCCNXSA95xZMWUdPvXNmkAduhWv",
                         "balance": 1,
-                        "currency": "btc",
+                        "blockchain": "btc",
                         "hash": "12ab8dc588ca9d5787dde7eb29569da63c3a238c",
                         "received": 7764439255613,
                         "tx_count": 78
@@ -146,7 +146,7 @@
             "block": {
                 "request": "15968",
                 "results": {
-                    "currency": "btc",
+                    "blockchain": "btc",
                     "hash": "00000000201016a83272835468d457d15965d57f57c0da5944dc94ea9389f360",
                     "height": 15968,
                     "next": "0000000037d7c9885177df7af395d2e99b176a9372a03b855abdf2c9adac90b1",
@@ -163,7 +163,7 @@
                 "request": "06032a172f88ba823785f87341eab26ee7a2eb2de9d2f105220d6580e3affc16",
                 "results": {
                     "block": 15968,
-                    "currency": "btc",
+                    "blockchain": "btc",
                     "fees": 0,
                     "input": 300000000000,
                     "output": 300000000000,
@@ -178,7 +178,7 @@
                 "results": [
                     {
                         "block": 317958,
-                        "currency": "btc",
+                        "blockchain": "btc",
                         "fees": 10000,
                         "input": 1030000,
                         "output": 1020000,
@@ -189,7 +189,7 @@
                     },
                     {
                         "block": 317957,
-                        "currency": "btc",
+                        "blockchain": "btc",
                         "fees": 0,
                         "input": 25000000,
                         "output": 25000000,
@@ -257,9 +257,9 @@
             "header_bg": "background"
         }
     },
-    "currencies": {
+    "blockchains": {
         "btct": {
-            "currency": "Bitcoin Testnet",
+            "blockchain": "Bitcoin Testnet",
             "lib": "bitcointestnet",
             "apis": {
                 "helloblock": "https://mainnet.helloblock.io/v1/",
@@ -270,7 +270,7 @@
             "fee": 0.0001
         },
         "ltct": {
-            "currency": "Litecoin Testnet",
+            "blockchain": "Litecoin Testnet",
             "lib": "litecointestnet",
             "apis": {
                 "helloblock": "https://mainnet.helloblock.io/v1/",
@@ -281,7 +281,7 @@
             "fee": 0.001
         },
         "doget": {
-            "currency": "Dogecoin Testnet",
+            "blockchain": "Dogecoin Testnet",
             "lib": "dogecointestnet",
             "apis": {
                 "helloblock": "https://mainnet.helloblock.io/v1/",
@@ -292,7 +292,7 @@
             "fee": 1
         },
         "drkt": {
-            "currency": "Darkcoin Testnet",
+            "blockchain": "Darkcoin Testnet",
             "lib": "darkcointestnet",
             "apis": {
                 "blockstrap": "https://api.blockstrap.com/v0/drkt/"
@@ -306,7 +306,7 @@
             }
         },
         "btc": {
-            "currency": "Bitcoin",
+            "blockchain": "Bitcoin",
             "lib": "bitcoin",
             "apis": {
                 "helloblock": "https://mainnet.helloblock.io/v1/",
@@ -317,7 +317,7 @@
             "fee": 0.0001
         },
         "ltc": {
-            "currency": "Litecoin",
+            "blockchain": "Litecoin",
             "lib": "litecoin",
             "apis": {
                 "helloblock": "https://mainnet.helloblock.io/v1/",
@@ -328,7 +328,7 @@
             "fee": 0.001
         },
         "doge": {
-            "currency": "Dogecoin",
+            "blockchain": "Dogecoin",
             "lib": "dogecoin",
             "apis": {
                 "helloblock": "https://mainnet.helloblock.io/v1/",
@@ -339,7 +339,7 @@
             "fee": 1
         },
         "drk": {
-            "currency": "Darkcoin",
+            "blockchain": "Darkcoin",
             "lib": "darkcoin",
             "apis": {
                 "blockstrap": "https://api.blockstrap.com/v0/drk/"

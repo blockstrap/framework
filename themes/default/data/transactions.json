@@ -11,7 +11,7 @@
                         {
                             "title": "Your Accounts",
                             "intro": "You currently have 3 Bitcoin addresses, 2 Dogecoin addresses, 1 Litecoin address and 1 Peercoin address.",
-                            "html": "<a href='#' class='active btn btn-subtle btn-xs btn-table-filter btn-table-filter-all' data-col='*' data-table='account-table'>all</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='2' data-table='account-table'>date</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='3' data-table='account-table'>from</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='4' data-table='account-table'>to</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='5' data-table='account-table'>account</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='6' data-table='account-table'>currency</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='7' data-table='account-table'>amount</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='8' data-table='account-table'>actions</a>",
+                            "html": "<a href='#' class='active btn btn-subtle btn-xs btn-table-filter btn-table-filter-all' data-col='*' data-table='account-table'>all</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='2' data-table='account-table'>date</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='3' data-table='account-table'>from</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='4' data-table='account-table'>to</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='5' data-table='account-table'>account</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='6' data-table='account-table'>blockchain</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='7' data-table='account-table'>amount</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='8' data-table='account-table'>actions</a>",
                             "buttons": [
                                 {
                                     "href": "#",
@@ -56,7 +56,7 @@
                                                 "html": "Account"
                                             },
                                             {
-                                                "html": "Currency"
+                                                "html": "Blockchain"
                                             },
                                             {
                                                 "html": "Amount"

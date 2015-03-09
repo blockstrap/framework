@@ -13,7 +13,7 @@
                     "objects": [
                         {
                             "title": "Your Accounts",
-                            "intro": "These are all the different accounts you have in different currencies. More advanced filtering coming soon!",
+                            "intro": "These are all the different accounts you have in different blockchains. More advanced filtering coming soon!",
                             "html": "More information on <a href='http://docs.blockstrap.com/en/applications/wallet/accounts/'>accounts</a> is available in our <a href='http://docs.blockstrap.com/'>documentation</a>.",
                             "buttons": [
                                 {

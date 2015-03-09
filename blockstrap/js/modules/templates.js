@@ -36,7 +36,7 @@
 
             if(blockstrap_functions.json(raw_name)) name = $.parseJSON(raw_name);
             // ADDRESS INFO
-            var add_currency = 'Bitcoin';
+            var add_blockchain = 'Bitcoin';
             var key = blockstrap_functions.vars('key');
             var account = false;
             if($.isPlainObject($.fn.blockstrap.accounts))
@@ -49,25 +49,25 @@
                 account.tx_count = 0;
                 account.receievd = 0;
                 account.balance = 0;
-                account.currency = false;
+                account.blockchain = false;
             }
-            if(account.currency && $.fn.blockstrap.settings.currencies[account.currency])
+            if(account.blockchain && $.fn.blockstrap.settings.blockchains[account.blockchain])
             {
-                add_currency = $.fn.blockstrap.settings.currencies[account.currency].currency;
+                add_blockchain = $.fn.blockstrap.settings.blockchains[account.blockchain].blockchain;
             }
             
             // TX INFO
             var tx = false;
-            var tx_currency = 'Bitcoin';
+            var tx_blockchain = 'Bitcoin';
             var txid = blockstrap_functions.vars('txid');
             
             if($.isPlainObject($.fn.blockstrap.accounts))
             {
                 tx = $.fn.blockstrap.accounts.tx(txid);
             }
-            if(tx.currency && $.fn.blockstrap.settings.currencies[tx.currency])
+            if(tx.blockchain && $.fn.blockstrap.settings.blockchains[tx.blockchain])
             {
-                tx_currency = $.fn.blockstrap.settings.currencies[tx.currency].currency;
+                tx_blockchain = $.fn.blockstrap.settings.blockchains[tx.blockchain].blockchain;
             }
             else
             {
@@ -104,11 +104,11 @@
                 tx.size + ' (Bytes)',
                 tx.time,
                 tx.block,
-                parseInt(tx.input) / 100000000 + ' ' + tx_currency,
-                parseInt(tx.output) / 100000000 + ' ' + tx_currency,
-                parseInt(tx.fees) / 100000000 + ' ' + tx_currency,
+                parseInt(tx.input) / 100000000 + ' ' + tx_blockchain,
+                parseInt(tx.output) / 100000000 + ' ' + tx_blockchain,
+                parseInt(tx.fees) / 100000000 + ' ' + tx_blockchain,
                 account.tx_count,
-                parseInt(account.balance) / 100000000 + ' ' + add_currency
+                parseInt(account.balance) / 100000000 + ' ' + add_blockchain
             ];
         }
         // TODO: FIX HACK PART TWO

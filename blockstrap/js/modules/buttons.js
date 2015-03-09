@@ -149,14 +149,14 @@
         }
         if(
             wallet 
-            && wallet.wallet_currency
+            && wallet.wallet_blockchain
             && wallet.wallet_name 
             && wallet.wallet_password 
             && !wallet.cancel
         )
         {
             $.fn.blockstrap.accounts.new(
-                wallet.wallet_currency, 
+                wallet.wallet_blockchain, 
                 wallet.wallet_name,
                 wallet.wallet_password,
                 wallet,
@@ -229,13 +229,13 @@
             contact 
             && contact.contact_name
             && contact.contact_address 
-            && contact.contact_currency 
+            && contact.contact_blockchain 
         )
         {
             $.fn.blockstrap.contacts.new(
                 contact.contact_name, 
                 contact.contact_address,
-                contact.contact_currency,
+                contact.contact_blockchain,
                 contact,
                 function(contact)
                 {
@@ -312,19 +312,19 @@
             }
             else
             {
-                if($.isArray(obj.currencies))
+                if($.isArray(obj.blockchains))
                 {
-                    $.each(obj.currencies, function(k, currency)
+                    $.each(obj.blockchains, function(k, blockchain)
                     {
-                        if($.isArray(currency.addresses))
+                        if($.isArray(blockchain.addresses))
                         {
-                            $.each(currency.addresses, function(key, address)
+                            $.each(blockchain.addresses, function(key, address)
                             {
                                 fields.push({
                                     inputs: {
-                                        id: "currencies."+k+".addresses."+key+".key",
+                                        id: "blockchains."+k+".addresses."+key+".key",
                                         label: {
-                                            text: currency.currency + " Address",
+                                            text: blockchain.blockchain + " Address",
                                             css: "col-xs-3"
                                         },
                                         type: "text",
@@ -408,7 +408,7 @@
             {
                 var ids = id.split('.');
                 var address = value;
-                if($.fn.blockstrap.currencies.validate(address))
+                if($.fn.blockstrap.blockchains.validate(address))
                 {
                     obj[ids[0]][ids[1]][ids[2]][ids[3]].key = address;
                 }
@@ -945,14 +945,14 @@
             
             if(
                 wallet 
-                && wallet.wallet_currency
+                && wallet.wallet_blockchain
                 && wallet.wallet_name 
                 && wallet.wallet_password
                 && !wallet.cancel
             )
             {
                 bs.accounts.new(
-                    wallet.wallet_currency, 
+                    wallet.wallet_blockchain, 
                     wallet.wallet_name,
                     wallet.wallet_password,
                     wallet,
@@ -967,7 +967,7 @@
                                 bs.contacts.new(
                                     contact.name, 
                                     contact.address,
-                                    contact.currency,
+                                    contact.blockchain,
                                     contact,
                                     function()
                                     {
@@ -1128,13 +1128,13 @@
         var fields = [];
         var form_id = $(button).attr('data-form-id');
         var account_id = $(button).attr('data-account-id');
-        var currency = $(button).attr('data-to-currency');
+        var blockchain = $(button).attr('data-to-blockchain');
         var to_address = $(button).attr('data-to-address');
         var to_amount = parseInt($(button).attr('data-to-amount'));
         var form = $('form#'+form_id);
         var account = $.fn.blockstrap.accounts.get(account_id);
         var balance = account.balance;
-        var fee = $.fn.blockstrap.settings.currencies.btc.fee * 100000000;
+        var fee = $.fn.blockstrap.settings.blockchains.btc.fee * 100000000;
         var from_address = account.address;
         var change = balance - (to_amount + fee);
         var current_tx_count = account.tx_count;
@@ -1162,7 +1162,7 @@
                 {
                     if(verified === true)
                     {
-                        $.fn.blockstrap.currencies.send(to_address, to_amount, from_address, keys, function(tx)
+                        $.fn.blockstrap.blockchains.send(to_address, to_amount, from_address, keys, function(tx)
                         {
                             if(tx && typeof tx.txid != 'undefined')
                             {
@@ -1175,7 +1175,7 @@
                                     {
                                         var title = 'Sent ' + parseInt(to_amount) / 100000000 + ' Bitcoin to ' + to_address;
                                         var base = $.fn.blockstrap.settings.base_url;
-                                        var content = '<p>Transaction ID: ' + tx.txid + '</p><p>You can <a href="' + base + '?txid=' + tx.txid + '#transaction">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchains.io/' + currency + '/transaction/' + tx.txid + '">this</a>.</p><p>Please note that upon refreshing or switching pages, balances may return to their previous totals when transactions are successful but unconfirmed, where they can take anywhere upto 10 minutes to be confirmed. We will provide dual balances for each currency in the next release.</p>';
+                                        var content = '<p>Transaction ID: ' + tx.txid + '</p><p>You can <a href="' + base + '?txid=' + tx.txid + '#transaction">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchains.io/' + blockchain + '/transaction/' + tx.txid + '">this</a>.</p><p>Please note that upon refreshing or switching pages, balances may return to their previous totals when transactions are successful but unconfirmed, where they can take anywhere upto 10 minutes to be confirmed. We will provide dual balances for each blockchain in the next release.</p>';
                                         $.fn.blockstrap.core.modal(title, content);
                                         $.fn.blockstrap.core.loader('close');
                                     });
@@ -1188,7 +1188,7 @@
                                 $.fn.blockstrap.core.modal(title, content);
                                 $.fn.blockstrap.core.loader('close');
                             }
-                        }, currency);
+                        }, blockchain);
                     }
                 });
             });
@@ -1270,18 +1270,18 @@
                 {
                     var value = '';
                     var text = '';
-                    var currencies = contact.currencies;
-                    if($.isArray(currencies))
+                    var blockchains = contact.blockchains;
+                    if($.isArray(blockchains))
                     {
-                        $.each(currencies, function(currency_key, currency)
+                        $.each(blockchains, function(blockchain_key, blockchain)
                         {
-                            var addresses = currency.addresses;
+                            var addresses = blockchain.addresses;
                             if($.isArray(addresses))
                             {
                                 $.each(addresses, function(address_key, address)
                                 {
                                     value = address.key;
-                                    text = contact.name +': '+ currency.currency;
+                                    text = contact.name +': '+ blockchain.blockchain;
                                 });
                             }
                         });

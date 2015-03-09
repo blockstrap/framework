@@ -45,24 +45,24 @@
                                 <div class="cell">
                                     {{name}}
                                     <div class="hidden">
-                                    {{#currencies}}
+                                    {{#blockchains}}
                                         {{#addresses}}
                                             <a href="?key={{key}}#address">{{key}}</a>
                                         {{/addresses}}
-                                    {{/currencies}}
+                                    {{/blockchains}}
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div class="cell">
-                                    {{#currencies}}
+                                    {{#blockchains}}
                                         {{#addresses}}
                                             <p>
-                                                {{currency}}: 
+                                                {{blockchain}}: 
                                                 <a href="?key={{key}}#address">{{key}}</a>
                                             </p>
                                         {{/addresses}}
-                                    {{/currencies}}
+                                    {{/blockchains}}
                                 </div>
                             </td>
                             <td>
@@ -80,11 +80,11 @@
                             <td>
                                 <div class="cell">
                                     
-                                    {{#currencies}}
+                                    {{#blockchains}}
                                         {{#addresses}}
                                             <a href="{{urls.root}}?key={{key}}#send" class="btn btn-primary btn-xs">Send</a>
                                         {{/addresses}}
-                                    {{/currencies}}
+                                    {{/blockchains}}
                                     
                                     <a 
                                        href="#" 

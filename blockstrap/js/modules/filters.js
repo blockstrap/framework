@@ -48,7 +48,7 @@
             {
                 data.push({
                     code: k,
-                    currency: v.name,
+                    blockchain: v.name,
                     count: v.count,
                     balance: v.balance
                 });
@@ -216,7 +216,7 @@
             {
                 var css = 'from';
                 var address = false;
-                var txc = tx.currency;
+                var txc = tx.blockchain;
                 var value = parseInt(tx.value) / 100000000;
                 var verb = 'to';
                 if(tx.value < 0)
@@ -227,7 +227,7 @@
                 }
 
                 var base = $.fn.blockstrap.settings.base_url;
-                var intro = value + ' ' + $.fn.blockstrap.settings.currencies[txc].currency;
+                var intro = value + ' ' + $.fn.blockstrap.settings.blockchains[txc].blockchain;
                 var html = '<a href="' + base + '?txid=' + tx.txid +'#transaction">' + intro + '</a>';
                 
                 address = '<a href="' +base+ '?key='+tx.acc+'#address">' + tx.acc + '</a>';

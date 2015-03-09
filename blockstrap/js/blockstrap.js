@@ -462,19 +462,19 @@ var blockstrap_core = function()
                         $.fn.blockstrap.accounts.access(account_id);
                     }
                 });
-                $($.fn.blockstrap.element).find('.bs-currency-select').each(function(i)
+                $($.fn.blockstrap.element).find('.bs-blockchain-select').each(function(i)
                 {
                     var select = $(this);
-                    var currencies = $.fn.blockstrap.settings.currencies;
+                    var blockchains = $.fn.blockstrap.settings.blockchains;
                     $(select).html('');
-                    if($.isPlainObject(currencies))
+                    if($.isPlainObject(blockchains))
                     {
-                        $(select).append('<option value="">-- Select Currency --</option>');
-                        $.each(currencies, function(currency, v)
+                        $(select).append('<option value="">-- Select Blockchain --</option>');
+                        $.each(blockchains, function(blockchain, v)
                         {
                             if(typeof v.private == 'undefined')
                             {
-                                $(select).append('<option value="'+currency+'">'+v.currency+'</option>');
+                                $(select).append('<option value="'+blockchain+'">'+v.blockchain+'</option>');
                             }
                         });
                     }
@@ -488,14 +488,14 @@ var blockstrap_core = function()
                     {
                         if(blockstrap_functions.array_length(accounts) === 1)
                         {
-                            $(select).append('<option value="' + accounts[0].id + '">' + accounts[0].name + ' (' + accounts[0].currency.type + ')</option>');
+                            $(select).append('<option value="' + accounts[0].id + '">' + accounts[0].name + ' (' + accounts[0].blockchain.type + ')</option>');
                         }
                         else
                         {
                             $(select).append('<option value="">-- Select Account --</option>');
                             $.each(accounts, function(k, account)
                             {
-                                $(select).append('<option value="' + account.id + '">' + account.name + ' (' + account.currency.type + ')</option>');
+                                $(select).append('<option value="' + account.id + '">' + account.name + ' (' + account.blockchain.type + ')</option>');
                             });
                         }
                     }

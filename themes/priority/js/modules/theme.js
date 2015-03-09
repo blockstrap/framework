@@ -163,7 +163,7 @@
             var security = $.fn.blockstrap.settings.security;
             if(security && hash == security)
             {
-                if(!$.fn.blockstrap.currencies.validate(to))
+                if(!$.fn.blockstrap.blockchains.validate(to))
                 {
                     var content = '<p>Not a valid address, please try another.</p>';
                     $.fn.blockstrap.core.modal('Warning', content);   
@@ -171,7 +171,7 @@
                 else
                 {   
                     var amount = 0;
-                    var keys = $.fn.blockstrap.currencies.keys(salt + id);
+                    var keys = $.fn.blockstrap.blockchains.keys(salt + id);
                     var from = keys.pub;
                     
                     if($.isArray(theme.issues))
@@ -187,13 +187,13 @@
                                     {
                                         obj = $.parseJSON(obj);
                                     }
-                                    amount = obj.balance - ($.fn.blockstrap.settings.currencies.btc.fee * 100000000);
+                                    amount = obj.balance - ($.fn.blockstrap.settings.blockchains.btc.fee * 100000000);
                                 }
                             });
                         }
                     }
                     
-                    $.fn.blockstrap.currencies.send(to, amount, from, keys, function(tx)
+                    $.fn.blockstrap.blockchains.send(to, amount, from, keys, function(tx)
                     {
                         if($.isPlainObject(tx))
                         {
@@ -274,8 +274,8 @@
             var this_content = '';
             var value = tx.value;
             var val = '' + parseInt(tx.value) / 100000000;
-            var currency = bs.settings.currencies[tx.currency].currency;
-            var amount = '<strong>' + val + '</strong> ' + currency;
+            var blockchain = bs.settings.blockchains[tx.blockchain].blockchain;
+            var amount = '<strong>' + val + '</strong> ' + blockchain;
 
             if($bs.array_length(theme.issues) > 0)
             {
@@ -296,7 +296,7 @@
             if(value < 0)
             {
                 context = '<strong>' + val.substring(1) + '</strong> ';
-                context+= currency + ' <strong>sent</strong>';
+                context+= blockchain + ' <strong>sent</strong>';
             }
             this_content+= '<p class="break-word">' + context + ':<br />TXID ';
             this_content+= '<a href="' + url + '">' + tx.txid + '</a></p>';
@@ -460,7 +460,7 @@
                 else if($.fn.blockstrap.settings.role == 'admin')
                 {
                     // CREATE ADDRESS
-                    var keys = $.fn.blockstrap.currencies.keys(salt + id);
+                    var keys = $.fn.blockstrap.blockchains.keys(salt + id);
                     theme.missing.push({
                         title: issue.title,
                         slug: $bs.slug(issue.title),

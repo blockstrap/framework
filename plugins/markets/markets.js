@@ -151,8 +151,8 @@
             )
             {
                 var market_info = results.data.markets;
-                var currencies = $.fn.blockstrap.settings.currencies;
-                $.each(currencies, function(k, v)
+                var blockchains = $.fn.blockstrap.settings.blockchains;
+                $.each(blockchains, function(k, v)
                 {
                     var rate = $.fn.blockstrap.settings.exchange.usd[k];
                     

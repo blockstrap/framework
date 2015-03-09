@@ -577,10 +577,10 @@ var blockstrap_setup_steps = [
                             "fields": [
                                 {
                                     "selects": {
-                                        "id": "wallet_currency",
-                                        "css": "bs-currency-select",
+                                        "id": "wallet_blockchain",
+                                        "css": "bs-blockchain-select",
                                         "label": {
-                                            "text": "Currency",
+                                            "text": "Blockchain",
                                             "css": "col-sm-3"
                                         },
                                         "wrapper": {

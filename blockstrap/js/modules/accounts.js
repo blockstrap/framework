@@ -30,7 +30,7 @@
                 var key_array = v.split('_');
                 var this_key = key_array[1];
                 var value = account[this_key];
-                if(this_key == 'currency')
+                if(this_key == 'blockchain')
                 {
                     value = account[this_key].code;
                 }
@@ -119,13 +119,13 @@
                 value: tx.amount
             });
             options.buttons.forms[1].attributes.push({
-                key: 'data-to-currency',
-                value: account.currency.code
+                key: 'data-to-blockchain',
+                value: account.blockchain.code
             });
             var amount = parseInt(tx.amount) / 100000000;
-            var fee = $.fn.blockstrap.settings.currencies[account.currency.code].fee;
-            amount = amount + ' ' + account.currency.type;
-            intro = '<p class="left">Please confirm you want to send ' + amount + ' to ' + tx.to + '</p><p>Please also note that there is a network mining fee of ' + fee + ' ' + account.currency.type + ' applied to this transaction to ensure that it is propergated throughout the network quickly.</p>';
+            var fee = $.fn.blockstrap.settings.blockchains[account.blockchain.code].fee;
+            amount = amount + ' ' + account.blockchain.type;
+            intro = '<p class="left">Please confirm you want to send ' + amount + ' to ' + tx.to + '</p><p>Please also note that there is a network mining fee of ' + fee + ' ' + account.blockchain.type + ' applied to this transaction to ensure that it is propergated throughout the network quickly.</p>';
         }
         var form = $.fn.blockstrap.forms.process(options);
         $.fn.blockstrap.core.modal('Verify Ownership of ' + account.name, intro + form);
@@ -160,24 +160,24 @@
             {
                 var balance = 0;
                 if(v.balance) balance = parseInt(v.balance);
-                if(balances[v.currency.code])
+                if(balances[v.blockchain.code])
                 {
-                    balances[v.currency.code].balance = parseInt(balances[v.currency.code].balance) + balance;
-                    balances[v.currency.code].count++;
-                    balances[v.currency.code].name = v.currency.type;
+                    balances[v.blockchain.code].balance = parseInt(balances[v.blockchain.code].balance) + balance;
+                    balances[v.blockchain.code].count++;
+                    balances[v.blockchain.code].name = v.blockchain.type;
                 }
                 else
                 {
-                    balances[v.currency.code] = {};
-                    balances[v.currency.code].balance = parseInt(balance);
-                    balances[v.currency.code].count = 1;
-                    balances[v.currency.code].name = v.currency.type;
+                    balances[v.blockchain.code] = {};
+                    balances[v.blockchain.code].balance = parseInt(balance);
+                    balances[v.blockchain.code].count = 1;
+                    balances[v.blockchain.code].name = v.blockchain.type;
                 }
             });
-            $.each(balances, function(currency, obj)
+            $.each(balances, function(blockchain, obj)
             {
-                var this_balance = balances[currency].balance;
-                balances[currency].balance = parseInt(this_balance) / 100000000;
+                var this_balance = balances[blockchain].balance;
+                balances[blockchain].balance = parseInt(this_balance) / 100000000;
             });
             return balances;
         }
@@ -210,9 +210,9 @@
         }
     }
     
-    accounts.new = function(currency, name, password, keys, callback)
+    accounts.new = function(blockchain, name, password, keys, callback)
     {
-        if(currency && name && password && keys && callback && $.isPlainObject($.fn.blockstrap.settings.currencies[currency]))
+        if(blockchain && name && password && keys && callback && $.isPlainObject($.fn.blockstrap.settings.blockchains[blockchain]))
         {
             var key = '';
             var slug = blockstrap_functions.slug(name);
@@ -251,16 +251,16 @@
                                     key = key_obj.toString();
                                 });
                             };
-                            var address_keys = $.fn.blockstrap.currencies.keys(key, currency);
+                            var address_keys = $.fn.blockstrap.blockchains.keys(key, blockchain);
                             var address = address_keys.pub;
                             var pw_obj = CryptoJS.SHA3(salt+password, { outputLength: 512 });
                             var pw = pw_obj.toString();
-                            var currency_name =  $.fn.blockstrap.settings.currencies[currency].currency;
+                            var blockchain_name =  $.fn.blockstrap.settings.blockchains[blockchain].blockchain;
                             var account = {
                                 id: slug,
-                                currency: {
-                                    type: currency_name,
-                                    code: currency
+                                blockchain: {
+                                    type: blockchain_name,
+                                    code: blockchain
                                 },
                                 name: name,
                                 password: pw,
@@ -288,13 +288,13 @@
         else
         {
             $.fn.blockstrap.core.loader('close');
-            if($.isPlainObject($.fn.blockstrap.settings.currencies[currency]))
+            if($.isPlainObject($.fn.blockstrap.settings.blockchains[blockchain]))
             {
                 $.fn.blockstrap.core.modal('Warning', 'Missing device requirements');
             }
             else
             {
-                $.fn.blockstrap.core.modal('Warning', 'Currency not supported');
+                $.fn.blockstrap.core.modal('Warning', 'Blockchain not supported');
             }
         }
     }
@@ -330,12 +330,12 @@
                         {
                             var value = tx.value;
                             var val = '' + parseInt(tx.value) / 100000000;
-                            var currency = $.fn.blockstrap.settings.currencies[tx.currency].currency;
-                            var amount = '<strong>' + val + '</strong> ' + currency;
+                            var blockchain = $.fn.blockstrap.settings.blockchains[tx.blockchain].blockchain;
+                            var amount = '<strong>' + val + '</strong> ' + blockchain;
                             var context = amount + ' <strong>recieved</strong>';
                             var base = $.fn.blockstrap.settings.base_url;
                             var url = base + '?txid=' + tx.txid + '#transaction';
-                            if(value < 0) context = '<strong>' + val.substring(1) + '</strong> ' + currency + ' <strong>sent</strong>';
+                            if(value < 0) context = '<strong>' + val.substring(1) + '</strong> ' + blockchain + ' <strong>sent</strong>';
                             content+= '<p class="break-word">' + context + ':<br /><a href="' + url + '">' + tx.txid + '</a></p>';
                         });
                     }
@@ -359,7 +359,7 @@
     
     accounts.prepare = function(to, account_id, amount)
     {
-        if(to && !$.fn.blockstrap.currencies.validate(to))
+        if(to && !$.fn.blockstrap.blockchains.validate(to))
         {
             $.fn.blockstrap.core.modal('Warning', to + ' is not a valid address');
         }
@@ -429,9 +429,9 @@
         var balances = accounts.balances();
         if($.isPlainObject(balances))
         {
-            $.each(balances, function(code, currency)
+            $.each(balances, function(code, blockchain)
             {
-                var total = (parseFloat(currency.balance) * 100000000) * parseFloat(exchange_rates[rate][code]);
+                var total = (parseFloat(blockchain.balance) * 100000000) * parseFloat(exchange_rates[rate][code]);
                 grand_total = grand_total + total;
             });
         }
@@ -506,7 +506,7 @@
             {
                 var current_balance = account.balance;
                 var current_tx_count = account.tx_count;
-                $.fn.blockstrap.api.address(account.address, account.currency.code, function(results)
+                $.fn.blockstrap.api.address(account.address, account.blockchain.code, function(results)
                 {
                     if(
                         (
@@ -524,7 +524,7 @@
                         account.ts = now;
 
 
-                        $.fn.blockstrap.api.transactions(account.address, account.currency.code, function(transactions)
+                        $.fn.blockstrap.api.transactions(account.address, account.blockchain.code, function(transactions)
                         {
                             if(!$.isPlainObject(account.txs)) account.txs = {};
                             if($.isArray(transactions))
@@ -637,7 +637,7 @@
             if(key)
             {
                 
-                var keys = $.fn.blockstrap.currencies.keys(key, account.currency.code);
+                var keys = $.fn.blockstrap.blockchains.keys(key, account.blockchain.code);
                 if(keys.pub === account.address)
                 {
                     if(callback) callback(true, keys);

@@ -14,7 +14,7 @@
     var api_timeout = 15000;
     var active_requests = {};
     var apis = $.fn.blockstrap.settings.apis;
-    var currencies = $.fn.blockstrap.settings.currencies;
+    var blockchains = $.fn.blockstrap.settings.blockchains;
     var api_service = $.fn.blockstrap.core.option('api_service', 'blockstrap');
     var api_key = $.fn.blockstrap.core.option('key', false);
     if($.fn.blockstrap.settings.api_service)
@@ -27,14 +27,14 @@
         api_timeout = $.fn.blockstrap.settings.cache.api.timeout;
     }
     
-    api.address = function(hash, currency, callback, service, return_raw)
+    api.address = function(hash, blockchain, callback, service, return_raw)
     {
         var original_service = api_service;
         if(service && service !== api_service)
         {
             api_service = service;
         }
-        api.request(api.url('address', hash, currency), function(results)
+        api.request(api.url('address', hash, blockchain), function(results)
         {
             if(return_raw && callback)
             {
@@ -46,13 +46,13 @@
                     address: 'N/A',
                     hash: 'N/A',
                     tx_count: 0,
-                    currency: currency,
+                    blockchain: blockchain,
                     received: 0,
                     balance: 0,
                 }
                 if(results)
                 {
-                    address = api.results(address, results, currency, 'address', callback);               
+                    address = api.results(address, results, blockchain, 'address', callback);               
                 }
                 if(callback) 
                 {
@@ -71,10 +71,10 @@
                     return address;
                 }
             }
-        }, 'GET', false, currency, 'address');
+        }, 'GET', false, blockchain, 'address');
     }
     
-    api.addresses = function(hashes, currency, callback, service)
+    api.addresses = function(hashes, blockchain, callback, service)
     {
         var hashed_url = '';
         var original_service = api_service;
@@ -85,7 +85,7 @@
         if($.isArray(hashes))
         {
             var delimiter = '&addresses=';
-            var map = api.map(currency);
+            var map = api.map(blockchain);
             if(map.from.addresses.delimiter) delimiter = map.from.addresses.delimiter;
             
             $.each(hashes, function(k, hash)
@@ -94,7 +94,7 @@
                 else hashed_url+= delimiter + hash;
             });
 
-            api.request(api.url('addresses', hashed_url, currency), function(results)
+            api.request(api.url('addresses', hashed_url, blockchain), function(results)
             {
                 var addresses = [];
                 if(results)
@@ -105,11 +105,11 @@
                             address: 'N/A',
                             hash: 'N/A',
                             tx_count: 0,
-                            currency: currency,
+                            blockchain: blockchain,
                             received: 0,
                             balance: 0
                         }
-                        address = api.results(address, results[k], currency, 'addresses');
+                        address = api.results(address, results[k], blockchain, 'addresses');
                         addresses.push(address);
                     })
                 }
@@ -129,7 +129,7 @@
                     }
                     return addresses;
                 }
-            }, 'GET', false, currency, 'addresses');
+            }, 'GET', false, blockchain, 'addresses');
         }
         else
         {
@@ -137,14 +137,14 @@
         }
     }
     
-    api.balance = function(hash, currency, callback, service)
+    api.balance = function(hash, blockchain, callback, service)
     {
         var original_service = api_service;
         if(service && service !== api_service)
         {
             api_service = service;
         }
-        api.address(hash, currency, function(address)
+        api.address(hash, blockchain, function(address)
         {
             if(address && address.balance) 
             {
@@ -165,14 +165,14 @@
         });
     }
     
-    api.block = function(height, currency, callback, service, return_raw)
+    api.block = function(height, blockchain, callback, service, return_raw)
     {
         var original_service = api_service;
         if(service && service !== api_service)
         {
             api_service = service;
         }
-        api.request(api.url('block', height, currency), function(results)
+        api.request(api.url('block', height, blockchain), function(results)
         {
             if(return_raw && callback)
             {
@@ -180,9 +180,9 @@
             }
             else
             {
-                var map = api.map(currency);
+                var map = api.map(blockchain);
                 var block = {
-                    currency: currency,
+                    blockchain: blockchain,
                     height: 'N/A',
                     hash: 'N/A',
                     prev: 'N/A',
@@ -192,7 +192,7 @@
                 };
                 if(results)
                 {
-                    block = api.results(block, results, currency, 'block');
+                    block = api.results(block, results, blockchain, 'block');
                 }
                 if(callback) 
                 {
@@ -211,14 +211,14 @@
                     return block;
                 }
             }
-        }, 'GET', false, currency, 'block');
+        }, 'GET', false, blockchain, 'block');
     }
     
-    api.map = function(currency)
+    api.map = function(blockchain)
     {
-        if(!currency) currency = 'btc';
-        if(typeof apis[currency] == 'undefined') currency = 'defaults';
-        if(typeof apis[currency][api_service] == 'undefined')
+        if(!blockchain) blockchain = 'btc';
+        if(typeof apis[blockchain] == 'undefined') blockchain = 'defaults';
+        if(typeof apis[blockchain][api_service] == 'undefined')
         {
             if(typeof apis['defaults'][api_service] != 'undefined')
             {
@@ -231,18 +231,18 @@
         }
         else
         {
-            return apis[currency][api_service].functions;
+            return apis[blockchain][api_service].functions;
         }
     }
     
-    api.market = function(currency, stat, callback, service, return_raw)
+    api.market = function(blockchain, stat, callback, service, return_raw)
     {
         var original_service = api_service;
         if(service && service !== api_service)
         {
             api_service = service;
         }
-        api.request(api.url('market', stat, currency), function(results)
+        api.request(api.url('market', stat, blockchain), function(results)
         {
             if(return_raw && callback)
             {
@@ -250,7 +250,7 @@
             }
             else
             {
-                var map = api.map(currency);
+                var map = api.map(blockchain);
                 var market = {
                     price_usd_now: 0,
                     tx_count_24hr: 0,
@@ -261,7 +261,7 @@
                 };
                 if(results)
                 {
-                    market = api.results(market, results, currency, 'market');
+                    market = api.results(market, results, blockchain, 'market');
                 }
                 if(callback) 
                 {
@@ -280,21 +280,21 @@
                     return market;
                 }
             }
-        }, 'GET', false, currency, 'market');
+        }, 'GET', false, blockchain, 'market');
     }
     
-    api.request = function(url, callback, type, data, currency, call, username, password)
+    api.request = function(url, callback, type, data, blockchain, call, username, password)
     {
         if(!type) type = 'GET';
-        if(!currency) currency = 'btc';
-        var map = api.map(currency);
+        if(!blockchain) blockchain = 'btc';
+        var map = api.map(blockchain);
         var headers = false;
         if(
-            $.isPlainObject(currencies[currency]) 
-            && $.isPlainObject(currencies[currency].auth) 
-            && $.isPlainObject(currencies[currency].auth[api_service])
+            $.isPlainObject(blockchains[blockchain]) 
+            && $.isPlainObject(blockchains[blockchain].auth) 
+            && $.isPlainObject(blockchains[blockchain].auth[api_service])
         ){
-            var auth = currencies[currency].auth[api_service];
+            var auth = blockchains[blockchain].auth[api_service];
             if(
                 !username 
                 && typeof auth.username != 'undefined'
@@ -407,7 +407,7 @@
         })
     }
     
-    api.relay = function(hash, currency, callback, service, return_raw)
+    api.relay = function(hash, blockchain, callback, service, return_raw)
     {
         var original_service = api_service;
         if(service && service !== api_service)
@@ -415,9 +415,9 @@
             api_service = service;
         }
         var request_data = {};
-        var map = api.map(currency);
+        var map = api.map(blockchain);
         request_data[map.to.relay_param] = hash;
-        api.request(api.url('relay', hash, currency), function(results)
+        api.request(api.url('relay', hash, blockchain), function(results)
         {
             if(return_raw && callback)
             {
@@ -447,7 +447,7 @@
                         if(data)
                         {
                             tx = {
-                                currency: currency,
+                                blockchain: blockchain,
                                 txid: data
                             }
                         }
@@ -470,18 +470,18 @@
                     return tx;
                 }
             }
-        }, 'POST', request_data, currency, 'relay')
+        }, 'POST', request_data, blockchain, 'relay')
     }
     
-    api.results = function(defaults, results, currency, request, callback)
+    api.results = function(defaults, results, blockchain, request, callback)
     {
         var clean_results = false;
-        var map = api.map(currency);
+        var map = api.map(blockchain);
         var bs = $.fn.blockstrap;
         var $bs = blockstrap_functions;
         if(
             defaults && results 
-            && currency && request 
+            && blockchain && request 
             && $.isPlainObject(defaults) 
             && $.isPlainObject(results) 
             && typeof map.from != 'undefined' 
@@ -616,14 +616,14 @@
         return defaults;
     }
     
-    api.transaction = function(txid, currency, callback, service, return_raw)
+    api.transaction = function(txid, blockchain, callback, service, return_raw)
     {
         var original_service = api_service;
         if(service && service !== api_service)
         {
             api_service = service;
         }
-        api.request(api.url('transaction', txid, currency), function(results)
+        api.request(api.url('transaction', txid, blockchain), function(results)
         {
             if(return_raw && callback)
             {
@@ -631,10 +631,10 @@
             }
             else
             {
-                var map = api.map(currency);
+                var map = api.map(blockchain);
                 var now = new Date().getTime();
                 var transaction = {
-                    currency: currency,
+                    blockchain: blockchain,
                     txid: 'N/A',
                     size: 'N/A',
                     block: 'N/A',
@@ -646,7 +646,7 @@
                 }
                 if(results)
                 {
-                    transaction = api.results(transaction, results, currency, 'transaction');
+                    transaction = api.results(transaction, results, blockchain, 'transaction');
                 }
                 if(callback) 
                 {
@@ -665,17 +665,17 @@
                     return transaction;
                 }
             }
-        }, 'GET', false, currency, 'transaction');
+        }, 'GET', false, blockchain, 'transaction');
     }
     
-    api.transactions = function(address, currency, callback, service, return_raw)
+    api.transactions = function(address, blockchain, callback, service, return_raw)
     {
         var original_service = api_service;
         if(service && service !== api_service)
         {
             api_service = service;
         }
-        api.request(api.url('transactions', address, currency), function(results)
+        api.request(api.url('transactions', address, blockchain), function(results)
         {
             if(return_raw && callback)
             {
@@ -684,14 +684,14 @@
             else
             {
                 var transactions = [];
-                var map = api.map(currency);
+                var map = api.map(blockchain);
                 var now = new Date().getTime();
                 if(results)
                 {
                     $.each(results, function(k, v)
                     {
                         var transaction = {
-                            currency: currency,
+                            blockchain: blockchain,
                             txid: 'N/A',
                             size: 'N/A',
                             block: 'N/A',
@@ -704,7 +704,7 @@
                         transaction = api.results(
                             transaction, 
                             results[k], 
-                            currency, 
+                            blockchain, 
                             'transactions'
                         );
                         transactions.push(transaction);
@@ -727,10 +727,10 @@
                     return transactions;
                 }
             }
-        }, 'GET', false, currency, 'transactions');
+        }, 'GET', false, blockchain, 'transactions');
     }
     
-    api.unspents = function(address, currency, callback, confirms, service, return_raw)
+    api.unspents = function(address, blockchain, callback, confirms, service, return_raw)
     {
         var original_service = api_service;
         if(service && service !== api_service)
@@ -738,7 +738,7 @@
             api_service = service;
         }
         if(!confirms) confirms = 0;
-        api.request(api.url('unspents', address, currency), function(results)
+        api.request(api.url('unspents', address, blockchain), function(results)
         {
             if(return_raw && callback)
             {
@@ -747,7 +747,7 @@
             else
             {
                 var unspents = [];
-                var map = api.map(currency);
+                var map = api.map(blockchain);
                 if(results)
                 {
                     var reverse = false;
@@ -766,7 +766,7 @@
                             script: 'N/A'
                         }
                         var confirmations = 0;
-                        unspent = api.results(unspent, results[k], currency, 'unspents');
+                        unspent = api.results(unspent, results[k], blockchain, 'unspents');
                         if(confirmations >= confirms) unspents.push(unspent);
                     });
                     if(reverse) unspents = unspents.reverse();
@@ -788,41 +788,41 @@
                     return unspents;
                 }
             }
-        }, 'GET', false, currency, 'unspents');
+        }, 'GET', false, blockchain, 'unspents');
     }
     
-    api.url = function(action, key, currency)
+    api.url = function(action, key, blockchain)
     {
         var url = false;
-        if(!currency) currency = 'btc';
+        if(!blockchain) blockchain = 'btc';
         if(
             typeof apis['defaults'] == 'undefined' 
             || typeof apis['defaults'][api_service] == 'undefined'
         ){
             if(
-                typeof apis[currency] == 'undefined' 
-                || typeof apis[currency][api_service] == 'undefined'
-                || typeof apis[currency][api_service].functions.to[action] == 'undefined'
+                typeof apis[blockchain] == 'undefined' 
+                || typeof apis[blockchain][api_service] == 'undefined'
+                || typeof apis[blockchain][api_service].functions.to[action] == 'undefined'
             ){
                 return false;
             }
             else
             {
-                url = currencies[currency].apis[api_service] + apis[currency][api_service].functions.to[action] + key;
-                if(apis[currency][api_service].functions.to[action].indexOf("$call") > -1)
+                url = blockchains[blockchain].apis[api_service] + apis[blockchain][api_service].functions.to[action] + key;
+                if(apis[blockchain][api_service].functions.to[action].indexOf("$call") > -1)
                 {
-                    var call = apis[currency][api_service].functions.to[action].replace("$call", key);
-                    url = currencies[currency].apis[api_service] + call;
+                    var call = apis[blockchain][api_service].functions.to[action].replace("$call", key);
+                    url = blockchains[blockchain].apis[api_service] + call;
                 }
             }
         }
         else
         {
-            url = currencies[currency].apis[api_service] + apis['defaults'][api_service].functions.to[action] + key;
+            url = blockchains[blockchain].apis[api_service] + apis['defaults'][api_service].functions.to[action] + key;
             if(apis['defaults'][api_service].functions.to[action].indexOf("$call") > -1)
             {
                 var call = apis['defaults'][api_service].functions.to[action].replace("$call", key);
-                url = currencies[currency].apis[api_service] + call;
+                url = blockchains[blockchain].apis[api_service] + call;
             }
         }
         if(api_key)

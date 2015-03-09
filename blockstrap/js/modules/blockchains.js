@@ -61,7 +61,7 @@
             return false;
         }
         // IF PASSING THIS FAR RETURN BACK FIRST CHARACTER OF ADDRESS
-        // THIS CAN THEN BE USED FOR TEMPORARY CURRENCY VERIFICATION
+        // THIS CAN THEN BE USED FOR TEMPORARY BLOCKCHAIN VERIFICATION
         return address.charAt(0);
     }
     
