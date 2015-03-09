@@ -1441,10 +1441,44 @@ var blockstrap_core = function()
             },
             upgrade: function(saved_version, this_version, refresh, callback)
             {
+                var $bs = blockstrap_functions;
                 if(typeof saved_version == 'undefined') saved_version = 0;
                 if(typeof this_version == 'undefined') this_version = 1;
                 if(typeof refresh == 'undefined') refresh = false;
-                // Now need to implement patches!
+                // TODO: Now need to implement patches!
+                // But first...
+                // Quick fix to prevent immediate problems...
+                // Check Accounts
+                var accounts = new Array();
+                if(typeof localStorage != 'undefined')
+                {
+                    $.each(localStorage, function(k, v)
+                    {
+                        if(k.substring(0, 12) == "nw_accounts_") 
+                        {
+                            var account = $.parseJSON(v);
+                            if(typeof account.currency != 'undefined')
+                            {
+                                account.blockchain = account.currency;
+                                delete account.currency;
+                                // Now need to update TXS
+                                if($.isPlainObject(account.txs) && $bs.array_length(account.txs) > 0)
+                                {
+                                    $.each(account.txs, function(txk, txv)
+                                    {
+                                        if(typeof txv.currency != 'undefined')
+                                        {
+                                            account.txs[txk].blockchain = account.txs[txk].currency;
+                                            delete account.txs[txk].currency;
+                                        }
+                                    });
+                                }
+                                localStorage.setItem(k, JSON.stringify(account));
+                            }
+                            accounts.push(account);
+                        }
+                    });
+                }
                 callback();
             }
         };        
