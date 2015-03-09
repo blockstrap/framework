@@ -146,7 +146,10 @@
         if(balance >= (total + fee))
         {
             var change = balance - (total + fee);
-            tx.addOutput(return_to, change);
+            if(change > 0)
+            {
+                tx.addOutput(return_to, change);
+            }
         }
         $.each(inputs_to_sign, function(k)
         {
