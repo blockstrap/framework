@@ -1451,6 +1451,7 @@ var blockstrap_core = function()
                 // Quick fix to prevent immediate problems...
                 // Check Accounts
                 var accounts = new Array();
+                var contacts = new Array();
                 if(typeof localStorage != 'undefined')
                 {
                     $.each(localStorage, function(k, v)
@@ -1477,6 +1478,22 @@ var blockstrap_core = function()
                                 localStorage.setItem(k, JSON.stringify(account));
                             }
                             accounts.push(account);
+                        }
+                        else if(k.substring(0, 12) == "nw_contacts_") 
+                        {
+                            var contact = $.parseJSON(v);
+                            if(typeof contact.currencies != 'undefined')
+                            {
+                                var bc = contact.currencies;
+                                delete contact.currencies;
+                                contact.blockchains = {
+                                    code: bc.code,
+                                    blockchain: bc.currency,
+                                    addresses: bc.addresses
+                                }
+                                localStorage.setItem(k, JSON.stringify(contact));
+                            }
+                            contacts.push(contact);
                         }
                     });
                 }
