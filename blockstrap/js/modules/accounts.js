@@ -30,9 +30,12 @@
                 var key_array = v.split('_');
                 var this_key = key_array[1];
                 var value = account[this_key];
-                if(this_key == 'blockchain')
+                // TODO: HARD-CODED FIX THAT SHOULD BE DEALT WITH BY PATCH?
+                if(this_key == 'blockchain' || this_key == 'currency')
                 {
-                    value = account[this_key].code;
+                    value = account['blockchain'].code;
+                    type = 'hidden';
+                    group_css = 'hidden';
                 }
                 if(this_key == 'password')
                 {
