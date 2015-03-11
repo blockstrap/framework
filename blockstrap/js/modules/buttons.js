@@ -799,6 +799,16 @@
         }
     }
     
+    buttons.save_salt = function(button, e)
+    {
+        e.preventDefault();
+        var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form-id'));
+        var data = $(form).find('#data').val();
+        var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
+        saveAs(blob, "blockstrap-wallet-backup.txt");
+        $.fn.blockstrap.core.modals('close_all');
+    }
+    
     buttons.setup = function(button, e)
     {
         e.preventDefault();

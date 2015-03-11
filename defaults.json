@@ -58,7 +58,8 @@
         "bootstrap-filestyle.min",
         "bitcoinjs-lib",
         "sha3",
-        "ago"
+        "ago",
+        "filesaver"
     ],
     "bootstrap": [
         "lists", 
@@ -94,7 +95,8 @@
             "set-credentials",
             "submit-import",
             "submit-payment",
-            "submit-verification"
+            "submit-verification",
+            "save-salt"
         ]
     },
     "contacts": [

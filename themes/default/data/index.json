@@ -303,7 +303,23 @@
                                 "css": "data-backup"
                             }
                         }
-                    ]
+                    ],
+                    "buttons": {
+                        "forms": [
+                            {
+                                "type": "submit",
+                                "id": "save-salt",
+                                "css": "btn-primary pull-right",
+                                "text": "Save",
+                                "attributes": [
+                                    {
+                                        "key": "data-form-id",
+                                        "value": "backup"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
                 }
             },
             {
