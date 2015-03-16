@@ -96,7 +96,8 @@
             "submit-import",
             "submit-payment",
             "submit-verification",
-            "save-salt"
+            "save-salt",
+            "save-wallet"
         ]
     },
     "contacts": [

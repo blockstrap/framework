@@ -784,6 +784,31 @@
         }
     }
     
+    buttons.save_salt = function(button, e)
+    {
+        e.preventDefault();
+        var new_data = {};
+        var ts = Date.now();
+        var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form-id'));
+        var data = $.parseJSON($(form).find('#data').val());
+        new_data.nw_keys = data.nw_keys;
+        new_data.nw_blockstrap = data.nw_blockstrap;
+        var blob = new Blob([JSON.stringify(new_data)], {type: 'text/plain;charset=utf-8'});
+        saveAs(blob, 'blockstrap-salt-backup-'+ts+'.txt');
+        $.fn.blockstrap.core.modals('close_all');
+    }
+    
+    buttons.save_wallet = function(button, e)
+    {
+        e.preventDefault();
+        var ts = Date.now();
+        var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form-id'));
+        var data = $(form).find('#data').val();
+        var blob = new Blob([data], {type: 'text/plain;charset=utf-8'});
+        saveAs(blob, 'blockstrap-wallet-backup-'+ts+'.txt');
+        $.fn.blockstrap.core.modals('close_all');
+    }
+    
     buttons.send_money = function(button, e)
     {
         e.preventDefault();
@@ -798,16 +823,6 @@
         {
             $.fn.blockstrap.accounts.prepare(to, from, amount);
         }
-    }
-    
-    buttons.save_salt = function(button, e)
-    {
-        e.preventDefault();
-        var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form-id'));
-        var data = $(form).find('#data').val();
-        var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
-        saveAs(blob, "blockstrap-wallet-backup.txt");
-        $.fn.blockstrap.core.modals('close_all');
     }
     
     buttons.setup = function(button, e)

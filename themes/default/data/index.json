@@ -293,7 +293,7 @@
             {
                 "id": "backup",
                 "title": "Backup Your Wallet",
-                "body": "<p>By default, the information for this wallet is stored in LocalStorage, which resides within this browsers memory. If you copy and paste the information below into a plain text file you can import it again later if information or the device itself is lost.</p>",
+                "body": "<p>By default, the information for this wallet is stored in LocalStorage, which resides within this browsers memory. If you copy and paste the information below into a plain text file you can import it again later if information or the device itself is lost. Alternatively, clicking on the save buttons below will try to export the information into a file for you. Please note that saving your wallet will try to back-up all accounts and contacts and can get fairly large quite quickly, whereas saving your salts will only save your primary account information and would force you to recreate the accounts and contacts again - so only do this if you remember the account details used previously. Future versions will include more practical ways to ensure all accouts can be saved without overloading buffers, but for now, please take care!</p>",
                 "close": "Cancel",
                 "form": {
                     "fields": [
@@ -308,9 +308,21 @@
                         "forms": [
                             {
                                 "type": "submit",
+                                "id": "save-wallet",
+                                "css": "btn-primary pull-right",
+                                "text": "Save Wallet",
+                                "attributes": [
+                                    {
+                                        "key": "data-form-id",
+                                        "value": "backup"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "submit",
                                 "id": "save-salt",
                                 "css": "btn-primary pull-right",
-                                "text": "Save",
+                                "text": "Save Salts Only",
                                 "attributes": [
                                     {
                                         "key": "data-form-id",
