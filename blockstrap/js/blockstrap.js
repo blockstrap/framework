@@ -1564,7 +1564,7 @@ var blockstrap_core = function()
         };        
 
         // PLUGIN CONSTRUCTOR
-        function plugin(element, options, defaults)
+        function plugin(element, options, defaults, store, force_skip)
         {
             // MERGE DEFAULT AND PLUGIN OPTIONS
             var settings = $.extend({}, defaults, options);
@@ -1572,6 +1572,7 @@ var blockstrap_core = function()
             
             var skip = false;
             if(settings.skip_config) skip = true;
+            if(force_skip === true) skip = true
             
             // THEN GET CONFIG FILE
             $.fn.blockstrap.core.get('themes/config', 'json', function(results)
@@ -1598,6 +1599,11 @@ var blockstrap_core = function()
                             );
                             
                             $.fn.blockstrap.defaults();
+                            
+                            if(store)
+                            {
+                                localStorage.setItem('nw_inc_config', JSON.stringify($.fn.blockstrap.settings));
+                            }
 
                             var bs = $.fn.blockstrap;
                             var $bs = blockstrap_functions;
@@ -1764,24 +1770,49 @@ var blockstrap_core = function()
         
         if(typeof blockstrap_defaults == 'undefined')
         {
-            $.ajax({
-                url: 'defaults.json',
-                dataType: 'json',
-                cache: false,
-                success: function(defaults)
-                {
-                    // CONSTRUCT PLUGIN AFTER
-                    // FIRST COLLECTING DEFAULTS
-                    blockstrap_functions.check(defaults, function(passed)
-                    {
-                        if(passed) plugin(false, false, defaults); 
-                        else alert('Your browser does not support the minimum requirements - please learn more at http://docs.blockstrap.com - either that or you may have private browsing activated, which would also prevent Blockstrap from working.');
-                    });
-                }
-            }).fail(function(jqxhr, settings, exception)
+            var bs = $.fn.blockstrap;
+            var $bs = blockstrap_functions;
+            var config = localStorage.getItem('nw_inc_config');
+            if(blockstrap_functions.json(config)) config = $.parseJSON(config);
+            $.fn.blockstrap.settings = config;
+            var refresh = blockstrap_functions.vars('refresh');
+            var store = true;
+            var storage = false;
+            if(typeof bs.settings != 'undefined' && bs.settings)
             {
-                alert('It seems this browser is unable to load files via AJAX under the current environment. This is usually only a problem when opening Blockstrap without a web-server. It\'s typically a Chrome issue. Try using Firefox, Safari, or even Internet Explorer.');
-            });
+                storage = bs.settings.storage;
+                if(storage.config === false) store = false;
+            }
+            if(!config || refresh === true || store === false)
+            {
+                $.ajax({
+                    url: 'defaults.json',
+                    dataType: 'json',
+                    cache: false,
+                    success: function(defaults)
+                    {
+                        // CONSTRUCT PLUGIN AFTER
+                        // FIRST COLLECTING DEFAULTS
+                        blockstrap_functions.check(defaults, function(passed)
+                        {
+                            if(passed) plugin(false, false, defaults, store); 
+                            else alert('Your browser does not support the minimum requirements - please learn more at http://docs.blockstrap.com - either that or you may have private browsing activated, which would also prevent Blockstrap from working.');
+                        });
+                    }
+                }).fail(function(jqxhr, settings, exception)
+                {
+                    alert('It seems this browser is unable to load files via AJAX under the current environment. This is usually only a problem when opening Blockstrap without a web-server. It\'s typically a Chrome issue. Try using Firefox, Safari, or even Internet Explorer.');
+                });
+            }
+            else
+            {
+                var skip = true;
+                blockstrap_functions.check(config, function(passed)
+                {
+                    if(passed) plugin(false, false, config, store, skip); 
+                    else alert('Your browser does not support the minimum requirements - please learn more at http://docs.blockstrap.com - either that or you may have private browsing activated, which would also prevent Blockstrap from working.');
+                });
+            }
         }
         else
         {
@@ -2175,7 +2206,7 @@ var blockstrap_functions = {
         }
         else if(variable)
         {
-            if($.fn.blockstrap.settings.vars[variable])
+            if(typeof $.fn.blockstrap.settings != 'undefined' && $.fn.blockstrap.settings && $.fn.blockstrap.settings.vars[variable])
             {
                 return $.fn.blockstrap.settings.vars[variable];
             }
