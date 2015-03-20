@@ -405,7 +405,7 @@
                             "marketcap": "marketcap"
                         },
                         "relay": {
-                            "txid": "",
+                            "txid": "id",
                             "inner": ""
                         },
                         "transaction": {
@@ -413,7 +413,7 @@
                             "txid": "[id, lowercase]",
                             "size": "size",
                             "block": "block_height",
-                            "time": "block_time",
+                            "time": "time",
                             "input": "input_value",
                             "output": "output_value",
                             "value": "[output_value, -, fees, int]",
@@ -424,7 +424,7 @@
                             "txid": "[id, lowercase]",
                             "size": "size",
                             "block": "block_height",
-                            "time": "block_time",
+                            "time": "time",
                             "input": "input_value",
                             "output": "output_value",
                             "value": "tx_address_ledger_value",
