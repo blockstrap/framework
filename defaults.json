@@ -227,9 +227,7 @@
             "timeout": 60000
         },
         "pages": 60000,
-        "accounts": 60000
-    },
-    "cache": {
+        "accounts": 60000,
         "dependencies": true,
         "modules": true,
         "less": true,

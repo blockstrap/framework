@@ -547,7 +547,7 @@ var blockstrap_core = function()
                     $.fn.blockstrap.core.modal('Warning', 'Search functionality will be available in the next major update');
                 });
             },
-            get: function(file, extension, callback, skip, cache)
+            get: function(file, extension, callback, skip, cached)
             {
                 var bs = $.fn.blockstrap;
                 var $bs = blockstrap_functions;
@@ -560,6 +560,7 @@ var blockstrap_core = function()
                 {
                     store = false;
                 }
+                if(refresh === true) cached = false;
                 if(!saved_file || refresh === true || store === false)
                 {
                     if(typeof cache == 'undefined') cache = true;
@@ -568,7 +569,7 @@ var blockstrap_core = function()
                         $.ajax({
                             url: file + '.' + extension,
                             dataType: extension,
-                            cache: cache,
+                            cache: cached,
                             success: function(results)
                             {
                                 if(store === true)
