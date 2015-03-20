@@ -158,8 +158,8 @@ var blockstrap_core = function()
                 var store = false;
                 var refresh = blockstrap_functions.vars('refresh');
                 var snippet = localStorage.getItem('nw_boot_'+key);
-                var storage = $.fn.blockstrap.settings.storage;
-                if(storage.bootstrap === true) store = true;
+                var cache = $.fn.blockstrap.settings.cache;
+                if(cache.bootstrap === true) store = true;
                 if(snippet && store && refresh !== true)
                 {
                     bs.core.boot(bootstrap, key, snippet, index, callback);
@@ -270,9 +270,9 @@ var blockstrap_core = function()
                         var css = localStorage.getItem('nw_inc_css_'+v);
                         if(blockstrap_functions.json(css)) css = $.parseJSON(css);
                         var refresh = blockstrap_functions.vars('refresh');
-                        var storage = bs.settings.storage;
+                        var cache = bs.settings.cache;
                         var store = true;
-                        if(storage.css === false) store = false;
+                        if(cache.css === false) store = false;
                         if(!css || refresh === true || store === false) 
                         {
                             // FETCH CSS?
@@ -690,9 +690,9 @@ var blockstrap_core = function()
                     var less = localStorage.getItem('nw_inc_less');
                     if(blockstrap_functions.json(less)) less = $.parseJSON(less);
                     var refresh = blockstrap_functions.vars('refresh');
-                    var storage = $.fn.blockstrap.settings.storage;
+                    var cache = $.fn.blockstrap.settings.cache;
                     var store = true;
-                    if(storage.less === false) store = false;
+                    if(cache.less === false) store = false;
                     if(!less || refresh === true || store === false) 
                     {
                         $('head').append('<link rel="stylesheet/less" type="text/css" href="' + $.fn.blockstrap.settings.theme_base + $.fn.blockstrap.settings.theme + '/less/blockstrap.less">');
@@ -922,9 +922,9 @@ var blockstrap_core = function()
                     var plug = localStorage.getItem('nw_inc_plugin_'+plugin);
                     if(blockstrap_functions.json(plug)) plug = $.parseJSON(plug);
                     var refresh = blockstrap_functions.vars('refresh');
-                    var storage = bs.settings.storage;
+                    var cache = bs.settings.cache;
                     var store = true;
-                    if(storage.plugins === false) store = false;
+                    if(cache.plugins === false) store = false;
                     if(!plug || refresh === true || store === false) 
                     {
                         $.getScript(plugin_url, function(plugin_js)
@@ -1777,11 +1777,11 @@ var blockstrap_core = function()
             $.fn.blockstrap.settings = config;
             var refresh = blockstrap_functions.vars('refresh');
             var store = true;
-            var storage = false;
+            var cache = false;
             if(typeof bs.settings != 'undefined' && bs.settings)
             {
-                storage = bs.settings.storage;
-                if(storage.config === false) store = false;
+                cache = bs.settings.cache;
+                if(cache.config === false) store = false;
             }
             if(!config || refresh === true || store === false)
             {
@@ -1927,7 +1927,7 @@ var blockstrap_functions = {
     {
         var head = document.getElementsByTagName('head')[0];
         var refresh = blockstrap_functions.vars('refresh');
-        var storage = blockstrap.settings.storage;
+        var cache = blockstrap.settings.cache;
         var limit = files.length;
         
         if(!dependency) dependency = false;
@@ -1947,11 +1947,11 @@ var blockstrap_functions = {
             if(blockstrap_functions.json(js_file)) js_file = $.parseJSON(js_file);
             if(!dependency)
             {
-                if(storage.modules === false) store = false;
+                if(cache.modules === false) store = false;
             }
             else
             {
-                if(storage.dependencies === false) store = false;
+                if(cache.dependencies === false) store = false;
             }
             if(blockstrap.settings.cascade === false)
             {
