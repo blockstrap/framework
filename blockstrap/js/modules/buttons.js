@@ -1169,7 +1169,6 @@
         }
         else
         {
-            $.fn.blockstrap.core.modals('close_all');
             $.fn.blockstrap.core.loader('open');
             $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
             {
@@ -1198,13 +1197,14 @@
                                 {
                                     $.fn.blockstrap.core.refresh(function()
                                     {
+                                        $.fn.blockstrap.core.modals('close_all');
                                         var title = 'Sent ' + parseInt(to_amount) / 100000000 + ' Bitcoin to ' + to_address;
                                         var base = $.fn.blockstrap.settings.base_url;
                                         var content = '<p>Transaction ID: ' + tx.txid + '</p><p>You can <a href="' + base + '?txid=' + tx.txid + '#transaction">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchains.io/' + blockchain + '/transaction/' + tx.txid + '">this</a>.</p>'
                                         //content+= '<p>Please note that upon refreshing or switching pages, balances may return to their previous totals when transactions are successful but unconfirmed, where they can take anywhere upto 10 minutes to be confirmed. We will provide dual balances for each blockchain in the next release.</p>';
                                         content+='<p>Please note that a '+(fee / 100000000)+' '+$.fn.blockstrap.settings.blockchains[blockchain].blockchain+' mining fee was also added to the transaction.</p>';
                                         $.fn.blockstrap.core.modal(title, content);
-                                    });
+                                    }, blockstrap_functions.slug(window.location.hash));
                                 });
                             }
                             else
