@@ -237,7 +237,7 @@
         "plugins": true,
         "css": true,
         "config": true,
-        "data": true,
+        "json": true,
         "html": true
     },
     "exchange": {

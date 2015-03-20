@@ -549,26 +549,52 @@ var blockstrap_core = function()
             },
             get: function(file, extension, callback, skip, cache)
             {
-                if(typeof cache == 'undefined') cache = true;
-                if(typeof skip == 'undefined' || !skip)
+                var bs = $.fn.blockstrap;
+                var $bs = blockstrap_functions;
+                var saved_file = localStorage.getItem('nw_inc_file_'+file+'_'+extension);
+                if($bs.json(saved_file)) saved_file = $.parseJSON(saved_file);
+                var refresh = $bs.vars('refresh');
+                var store = true;
+                var cache = bs.settings.cache;
+                if(typeof cache != 'undefined' && cache[extension] === false)
                 {
-                    $.ajax({
-                        url: file + '.' + extension,
-                        dataType: extension,
-                        cache: cache,
-                        success: function(results)
-                        {
-                            if(callback) callback(results, file, extension);
-                        },
-                        error: function(results)
-                        {
-                            if(callback) callback(results, file, extension);
-                        }
-                    });
+                    store = false;
+                }
+                if(!saved_file || refresh === true || store === false)
+                {
+                    if(typeof cache == 'undefined') cache = true;
+                    if(typeof skip == 'undefined' || !skip)
+                    {
+                        $.ajax({
+                            url: file + '.' + extension,
+                            dataType: extension,
+                            cache: cache,
+                            success: function(results)
+                            {
+                                if(store === true)
+                                {
+                                    localStorage.setItem('nw_inc_file_'+file+'_'+extension, JSON.stringify(results));
+                                }
+                                if(callback) callback(results, file, extension);
+                            },
+                            error: function(results)
+                            {
+                                if(store === true)
+                                {
+                                    localStorage.setItem('nw_inc_file_'+file+'_'+extension, JSON.stringify(results));
+                                }
+                                if(callback) callback(results, file, extension);
+                            }
+                        });
+                    }
+                    else
+                    {
+                        if(callback) callback({}, file, extension);
+                    }
                 }
                 else
                 {
-                    if(callback) callback({}, file, extension);
+                    if(callback) callback(saved_file, file, extension);
                 }
             },
             image: function(input, callback)
