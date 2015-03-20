@@ -224,7 +224,8 @@
     "cache": {
         "api": {
             "address": 60000,
-            "timeout": 60000
+            "timeout": 60000,
+            "markets": 60000
         },
         "pages": 60000,
         "accounts": 60000,

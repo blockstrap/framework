@@ -104,75 +104,109 @@
         return html;
     }
     
-    markets.update = function(callback)
+    markets.update = function(results, callback)
+    {
+        if(
+            $.isPlainObject(results) 
+            && typeof results.data != 'undefined'
+            && typeof results.data.markets != 'undefined'
+            && typeof results.data.markets.btc != 'undefined'
+        )
+        {
+            res = results.data.markets.btc;
+            if(typeof res.fiat_usd_now != 'undefined')
+            {
+                conditions['price_usd_now']['value'] = res.fiat_usd_now;
+            }
+            if(typeof res.tx_count_24hr != 'undefined')
+            {
+                conditions['tx_count_24hr']['value'] = res.tx_count_24hr;
+            }
+            if(typeof res.output_value_24hr_fiat_now != 'undefined')
+            {
+                conditions['sent_usd_24hr']['value'] = (parseFloat(res.output_value_24hr_fiat_now) / 1000000);
+            }
+            if(typeof res.output_value_24hr != 'undefined')
+            {
+                conditions['sent_coins_24hr']['value'] = (res.output_value_24hr / 100000000);
+            }
+            if(typeof res.coinbase_value_todate != 'undefined')
+            {
+                conditions['coins_discovered']['value'] = ((res.coinbase_value_todate / 1000000) / 100000000);
+            }
+            if(typeof res.marketcap != 'undefined')
+            {
+                conditions['marketcap']['value'] = (res.marketcap / 1000000000);
+            }
+        }
+        // NOW NEED TO UPDATE EXCHANGE RATE
+        if(
+            $.isPlainObject(results) 
+            && typeof results.data != 'undefined'
+            && typeof results.data.markets != 'undefined'
+        )
+        {
+            var market_info = results.data.markets;
+            var blockchains = $.fn.blockstrap.settings.blockchains;
+            $.each(blockchains, function(k, v)
+            {
+                var rate = $.fn.blockstrap.settings.exchange.usd[k];
+
+                // TODO: REPLACE
+                if(k == 'doget') k = 'dogt';
+                if(
+                    typeof market_info[k] != 'undefined'
+                    && typeof market_info[k].fiat_usd_now != 'undefined'
+                )
+                {
+                    $.fn.blockstrap.settings.exchange.usd[k] = market_info[k].fiat_usd_now;
+                }
+            });
+        };
+        $('.bs.installing').attr('data-loading-content','LOADING');
+        if(typeof callback == 'function')
+        {
+            callback();
+        }
+    }
+    
+    markets.updates = function(callback)
     {
         $('.bs.installing').attr('data-loading-content','Now Fetching Market Conditions');
         
-        $.fn.blockstrap.api.market('multi', '', function(results)
+        var saved_conditions = localStorage.getItem('nw_market_conditions');
+        if(blockstrap_functions.json(saved_conditions))
         {
-            if(
-                $.isPlainObject(results) 
-                && typeof results.data != 'undefined'
-                && typeof results.data.markets != 'undefined'
-                && typeof results.data.markets.btc != 'undefined'
-            )
+            saved_conditions = $.parseJSON(saved_conditions);
+        }
+        var refresh = blockstrap_functions.vars('refresh');
+        var ts = 0;
+        var cache_time = 60000;
+        var now = new Date().getTime();
+        if(
+            $.fn.blockstrap.settings
+            && $.fn.blockstrap.settings.cache
+            && $.fn.blockstrap.settings.cache.api
+            && $.fn.blockstrap.settings.cache.api.markets
+        ){
+            cache_time = $.fn.blockstrap.settings.cache.api.markets;
+        }
+        if(saved_conditions && typeof saved_conditions.ts != 'undefined')
+        {
+            ts = saved_conditions.ts;
+        }
+        if(refresh === true || ts + cache_time < now)
+        {
+            $.fn.blockstrap.api.market('multi', '', function(results)
             {
-                res = results.data.markets.btc;
-                if(typeof res.fiat_usd_now != 'undefined')
-                {
-                    conditions['price_usd_now']['value'] = res.fiat_usd_now;
-                }
-                if(typeof res.tx_count_24hr != 'undefined')
-                {
-                    conditions['tx_count_24hr']['value'] = res.tx_count_24hr;
-                }
-                if(typeof res.output_value_24hr_fiat_now != 'undefined')
-                {
-                    conditions['sent_usd_24hr']['value'] = (parseFloat(res.output_value_24hr_fiat_now) / 1000000);
-                }
-                if(typeof res.output_value_24hr != 'undefined')
-                {
-                    conditions['sent_coins_24hr']['value'] = (res.output_value_24hr / 100000000);
-                }
-                if(typeof res.coinbase_value_todate != 'undefined')
-                {
-                    conditions['coins_discovered']['value'] = ((res.coinbase_value_todate / 1000000) / 100000000);
-                }
-                if(typeof res.marketcap != 'undefined')
-                {
-                    conditions['marketcap']['value'] = (res.marketcap / 1000000000);
-                }
-            }
-            // NOW NEED TO UPDATE EXCHANGE RATE
-            if(
-                $.isPlainObject(results) 
-                && typeof results.data != 'undefined'
-                && typeof results.data.markets != 'undefined'
-            )
-            {
-                var market_info = results.data.markets;
-                var blockchains = $.fn.blockstrap.settings.blockchains;
-                $.each(blockchains, function(k, v)
-                {
-                    var rate = $.fn.blockstrap.settings.exchange.usd[k];
-                    
-                    // TODO: REPLACE
-                    if(k == 'doget') k = 'dogt';
-                    if(
-                        typeof market_info[k] != 'undefined'
-                        && typeof market_info[k].fiat_usd_now != 'undefined'
-                    )
-                    {
-                        $.fn.blockstrap.settings.exchange.usd[k] = market_info[k].fiat_usd_now;
-                    }
-                });
-            };
-            $('.bs.installing').attr('data-loading-content','LOADING');
-            if(typeof callback == 'function')
-            {
-                callback();
-            }
-        }, 'blockstrap', true);
+                localStorage.setItem('nw_market_conditions', JSON.stringify({ts: now, data:results}));
+                markets.update(results, callback);
+            }, 'blockstrap', true);
+        }
+        else
+        {
+            markets.update(saved_conditions.data, callback);
+        }
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
@@ -184,7 +218,7 @@
         'init', 
         'market_updates',
         'plugins.markets', 
-        'update', 
+        'updates', 
         conditions
     );
 })
