@@ -887,8 +887,39 @@ var blockstrap_core = function()
                 {
                     var plugin = plugins[index];
                     var plugin_url = 'plugins/' + plugin + '/' + plugin + '.js';
-                    $.getScript(plugin_url, function(plugin_js)
+                    // Need to cache plugin?
+                    var plug = localStorage.getItem('nw_inc_plugin_'+plugin);
+                    if(blockstrap_functions.json(plug)) plug = $.parseJSON(plug);
+                    var refresh = blockstrap_functions.vars('refresh');
+                    var storage = bs.settings.storage;
+                    var store = true;
+                    if(storage.plugins === false) store = false;
+                    if(!plug || refresh === true || store === false) 
                     {
+                        $.getScript(plugin_url, function(plugin_js)
+                        {
+                            if(store === true && plugin_js)
+                            {
+                                localStorage.setItem('nw_inc_plugin_'+plugin, JSON.stringify(plugin_js));
+                            }
+                            if(index >= $bs.array_length(plugins) - 1)
+                            {
+                                if(callback) callback();
+                            }
+                            else
+                            {
+                                bs.core.plugins(index + 1, plugins, callback);
+                            }
+                        });   
+                    }
+                    else
+                    {
+                        var head = document.getElementsByTagName('head')[0];
+                        var new_script = document.createElement("script");
+                        new_script.setAttribute('type', 'text/javascript');
+                        new_script.setAttribute('id', plugin);
+                        new_script.text = plug;
+                        head.appendChild(new_script);
                         if(index >= $bs.array_length(plugins) - 1)
                         {
                             if(callback) callback();
@@ -897,7 +928,7 @@ var blockstrap_core = function()
                         {
                             bs.core.plugins(index + 1, plugins, callback);
                         }
-                    });
+                    }
                 }
             },
             print: function(contents)

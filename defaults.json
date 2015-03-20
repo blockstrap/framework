@@ -230,10 +230,13 @@
         "accounts": 60000
     },
     "storage": {
-        "dependencies": false,
-        "modules": false,
-        "less": false,
-        "bootstrap": false
+        "dependencies": true,
+        "modules": true,
+        "less": true,
+        "bootstrap": true,
+        "plugins": true,
+        "css": true,
+        "config": true
     },
     "exchange": {
         "usd": {
