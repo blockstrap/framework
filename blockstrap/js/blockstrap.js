@@ -253,6 +253,8 @@ var blockstrap_core = function()
             },
             css: function(callback, files)
             {
+                var bs = $.fn.blockstrap;
+                var $bs = blockstrap_functions;
                 var theme = $.fn.blockstrap.settings.theme;
                 var core_css = $.fn.blockstrap.settings.core_base + 'css/';
                 var theme_css = $.fn.blockstrap.settings.theme_base + theme + '/css/';
@@ -264,39 +266,68 @@ var blockstrap_core = function()
                     $.each(css_files, function(k, v)
                     {
                         var called = false;
-                        blockstrap_functions.exists(theme_css+v+'.css', function(success)
+                        
+                        var css = localStorage.getItem('nw_inc_css_'+v);
+                        if(blockstrap_functions.json(css)) css = $.parseJSON(css);
+                        var refresh = blockstrap_functions.vars('refresh');
+                        var storage = bs.settings.storage;
+                        var store = true;
+                        if(storage.css === false) store = false;
+                        if(!css || refresh === true || store === false) 
                         {
-                            if(success === true)
+                            // FETCH CSS?
+                            blockstrap_functions.exists(theme_css+v+'.css', function(success)
                             {
-                                blockstrap_functions.get_css(theme_css+v+'.css');
-                                if((k+1) >= file_len)
+                                if(success === true)
                                 {
-                                    if(!called)
+                                    blockstrap_functions.get_css(theme_css+v+'.css', store, v);
+                                    if((k+1) >= file_len)
                                     {
-                                        called = true;
-                                        callback();
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                blockstrap_functions.exists(core_css+v+'.css', function(success)
-                                {
-                                    if(success === true)
-                                    {
-                                        blockstrap_functions.get_css(core_css+v+'.css');
-                                        if((k+1) >= file_len)
+                                        if(!called)
                                         {
-                                            if(!called)
-                                            {
-                                                called = true;
-                                                callback();
-                                            }
+                                            called = true;
+                                            callback();
                                         }
                                     }
-                                });
+                                }
+                                else
+                                {
+                                    blockstrap_functions.exists(core_css+v+'.css', function(success)
+                                    {
+                                        if(success === true)
+                                        {
+                                            blockstrap_functions.get_css(core_css+v+'.css', store, v);
+                                            if((k+1) >= file_len)
+                                            {
+                                                if(!called)
+                                                {
+                                                    called = true;
+                                                    callback();
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            })
+                        }
+                        else
+                        {
+                            var styleSheet = document.createElement("link");
+                            for(var key in css) 
+                            {
+                                styleSheet.setAttribute(key, css[key]);
                             }
-                        })
+                            var head = document.getElementsByTagName("head")[0];
+                            head.appendChild(styleSheet);
+                            if((k+1) >= file_len)
+                            {
+                                if(!called)
+                                {
+                                    called = true;
+                                    callback();
+                                }
+                            }
+                        }
                     })
                 }
                 else
@@ -1835,7 +1866,7 @@ var blockstrap_functions = {
             callback(false);
         }
     },
-    get_css: function(attributes)
+    get_css: function(attributes, store, id)
     {
         if(typeof attributes === "string") 
         {
@@ -1855,7 +1886,11 @@ var blockstrap_functions = {
             styleSheet.setAttribute(key, attributes[key]);
         }
         var head = document.getElementsByTagName("head")[0];
-        head.appendChild(styleSheet);  
+        head.appendChild(styleSheet); 
+        if(store === true)
+        {
+            localStorage.setItem('nw_inc_css_'+id, JSON.stringify(attributes));
+        }
     },
     include: function(blockstrap, start, files, callback, dependency)
     {
