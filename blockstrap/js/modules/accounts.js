@@ -603,6 +603,7 @@
                         $.each(obj.txs, function(key, tx)
                         {
                             new_txs.push(tx);
+                            account.txs['txid_'+tx.txid] = tx;
                         });
                     }
                     new_txs.sort(function(a,b) 
@@ -612,7 +613,10 @@
                 }
                 if(index >= account_length)
                 {
-                    if(callback) callback(new_txs.slice(0, new_tx_count));
+                    $.fn.blockstrap.data.save('accounts', account.id, account, function()
+                    {
+                        if(callback) callback(new_txs.slice(0, new_tx_count));
+                    });
                 }
                 else
                 {
