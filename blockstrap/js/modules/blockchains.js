@@ -178,7 +178,16 @@
         var fee = $.fn.blockstrap.settings.blockchains[blockchain].fee * 100000000;
         $.fn.blockstrap.api.balance(from_address, blockchain, function(balance)
         {
-            if(balance - fee >= to_amount)
+            if(
+                blockchain != $.fn.blockstrap.blockchains.which(to_address)
+                || blockchain != $.fn.blockstrap.blockchains.which(from_address)
+            ){
+                $.fn.blockstrap.core.loader('close');
+                var content = 'Incompatible addresses. Please ensure you are sending to and from the same blockchain.';
+                $.fn.blockstrap.core.modal('Warning', content);
+                return false;
+            }
+            else if(balance - fee >= to_amount)
             {
                 $.fn.blockstrap.api.unspents(keys.pub, blockchain, function(unspents)
                 {
