@@ -531,8 +531,6 @@
                             account.blockchain.code, 
                             function(transactions)
                         {
-                            console.log('transactions count', blockstrap_functions.array_length(transactions));
-                            console.log('transactions', transactions);
                             if(!$.isPlainObject(account.txs)) account.txs = {};
                             if($.isArray(transactions))
                             {
