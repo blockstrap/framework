@@ -526,9 +526,13 @@
                         account.tx_count = results.tx_count;
                         account.ts = now;
 
-
-                        $.fn.blockstrap.api.transactions(account.address, account.blockchain.code, function(transactions)
+                        $.fn.blockstrap.api.transactions(
+                            account.address, 
+                            account.blockchain.code, 
+                            function(transactions)
                         {
+                            console.log('transactions count', blockstrap_functions.array_length(transactions));
+                            console.log('transactions', transactions);
                             if(!$.isPlainObject(account.txs)) account.txs = {};
                             if($.isArray(transactions))
                             {
@@ -542,7 +546,7 @@
                                 if(callback) callback(account);
                                 else return account;
                             });
-                        });
+                        }, false, false, account.tx_count);
                     }
                     else
                     {

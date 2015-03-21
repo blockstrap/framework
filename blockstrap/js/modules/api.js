@@ -668,14 +668,19 @@
         }, 'GET', false, blockchain, 'transaction');
     }
     
-    api.transactions = function(address, blockchain, callback, service, return_raw)
+    api.transactions = function(address, blockchain, callback, service, return_raw, count)
     {
         var original_service = api_service;
         if(service && service !== api_service)
         {
             api_service = service;
         }
-        api.request(api.url('transactions', address, blockchain), function(results)
+        var api_url = api.url('transactions', address, blockchain);
+        if(typeof count != 'undefined' && parseInt(count) > 0)
+        {
+            api_url+= '&records='+count;
+        }
+        api.request(api_url, function(results)
         {
             if(return_raw && callback)
             {
