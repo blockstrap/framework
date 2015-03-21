@@ -508,7 +508,7 @@
             if(ts + cache_time < now)
             {
                 var current_balance = account.balance;
-                var current_tx_count = account.tx_count;
+                var current_tx_count = blockstrap_functions.array_length(account.txs);
                 $.fn.blockstrap.api.address(account.address, account.blockchain.code, function(results)
                 {
                     if(
@@ -573,7 +573,7 @@
         if($.isArray(accounts))
         {
             var account = accounts[index];
-            var current_tx_count = account.tx_count;
+            var current_tx_count = blockstrap_functions.array_length(account.txs);
             index++;
             $.fn.blockstrap.accounts.update(account, function(obj)
             {
