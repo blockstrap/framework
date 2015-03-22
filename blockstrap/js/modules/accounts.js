@@ -495,8 +495,10 @@
         return transactions;
     }
     
-    accounts.update = function(account, callback, force_refresh)
+    accounts.update = function(account, callback, force_refresh, skip)
     {
+        if(typeof skip == 'undefined') skip = 0;
+        else skip = parseInt(skip);
         if($.isPlainObject(account))
         {
             var ts = 0;
@@ -539,12 +541,21 @@
                                     account.txs['txid_'+transaction.txid] = transaction;
                                 });
                             }
-                            $.fn.blockstrap.data.save('accounts', account.id, account, function(updated_account)
+                            if(blockstrap_functions.array_length(account.txs) < account.tx_count)
                             {
-                                if(callback) callback(account);
-                                else return account;
-                            });
-                        }, false, false, account.tx_count);
+                                // Paginate?
+                                skip = blockstrap_functions.array_length(account.txs);
+                                accounts.update(account, callback, force_refresh, skip);
+                            }
+                            else
+                            {
+                                $.fn.blockstrap.data.save('accounts', account.id, account, function(updated_account)
+                                {
+                                    if(callback) callback(account);
+                                    else return account;
+                                });
+                            }
+                        }, false, false, account.tx_count, skip);
                     }
                     else
                     {

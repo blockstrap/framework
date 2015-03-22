@@ -668,7 +668,7 @@
         }, 'GET', false, blockchain, 'transaction');
     }
     
-    api.transactions = function(address, blockchain, callback, service, return_raw, count)
+    api.transactions = function(address, blockchain, callback, service, return_raw, count, skip)
     {
         var original_service = api_service;
         if(service && service !== api_service)
@@ -679,6 +679,10 @@
         if(typeof count != 'undefined' && parseInt(count) > 0)
         {
             api_url+= '&records='+count;
+        }
+        if(typeof skip != 'undefined' && parseInt(skip) > 0)
+        {
+            api_url+= '&skip='+skip;
         }
         api.request(api_url, function(results)
         {
