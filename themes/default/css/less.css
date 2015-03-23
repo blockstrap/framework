@@ -7321,6 +7321,10 @@ FUNKY SIDEBARS ON MOBILE
 BOOTSTRAP BREAKPOINTS
 
 */
+body .blockstrap-wrapper .btn i.fa span {
+    display: none;
+    font-family: sans-serif;
+}
 html .blockstrap-wrapper,
 body .blockstrap-wrapper {
   /*
@@ -7435,6 +7439,15 @@ body .blockstrap-wrapper {
     width: 100%;
     margin: 0 0 5px;
     outline: 0;
+  }
+  html .blockstrap-wrapper .btn i.fa:before,
+  body .blockstrap-wrapper .btn i.fa:before {
+      content: "";
+  }
+  html .blockstrap-wrapper .btn i.fa span,
+  body .blockstrap-wrapper .btn i.fa span {
+    display: inline-block;
+      
   }
   html .blockstrap-wrapper form .actions .btn-split.pull-right,
   body .blockstrap-wrapper form .actions .btn-split.pull-right,

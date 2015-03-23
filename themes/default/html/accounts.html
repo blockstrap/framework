@@ -41,7 +41,7 @@
                         </th>
                         <th>
                             <div class="cell">
-                                
+                                Actions
                             </div>
                         </th>
                     </tr>
@@ -86,13 +86,19 @@
                                        class="btn btn-success btn-xs btn-access"
                                        data-collection="accounts"
                                        data-key="{{id}}"
-                                    >Access Keys</a>
+                                       title="Access Keys"
+                                    >
+                                    <i class="fa fa-key"><span>Access Keys</span></i>
+                                    </a>
                                     <a 
                                        href="#" 
                                        class="btn btn-primary btn-xs btn-refresh"
                                        data-collection="accounts"
                                        data-key="{{id}}"
-                                    >Refresh</a>
+                                       title="Update Account"
+                                    >
+                                    <i class="fa fa-refresh"><span>Update Account</span></i>
+                                    </a>
                                     <a 
                                        href="#" 
                                        class="btn btn-danger btn-xs btn-remove"
@@ -100,7 +106,10 @@
                                        data-element="table-row-{{id}}"
                                        data-key="{{id}}"
                                        data-confirm="{{password}}"
-                                    >Remove</a>
+                                       title="Remove Account"
+                                    >
+                                    <i class="fa fa-times"><span>Remove Account</span></i>
+                                    </a>
                                 </div>
                             </td>
                         </tr>
