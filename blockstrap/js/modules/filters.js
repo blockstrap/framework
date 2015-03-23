@@ -259,7 +259,23 @@
                 var intro = value + ' ' + $.fn.blockstrap.settings.blockchains[txc].blockchain;
                 var html = '<a href="' + base + '?txid=' + tx.txid +'#transaction">' + intro + '</a>';
                 
-                address = '<a href="' +base+ '?key='+tx.acc+'#address">' + tx.acc + '</a>';
+                var this_account = false;
+                $.each(localStorage, function(k, v)
+                {
+                    var values = v;
+                    if(blockstrap_functions.json(values))
+                    {
+                        values = $.parseJSON(values);
+                    }
+                    if(
+                        typeof values.address != 'undefined'
+                        && values.address == tx.acc
+                    )
+                    {
+                        this_account = values;
+                    }
+                });
+                address = '<a href="' +base+ '?key='+tx.acc+'#address">' + this_account.name + '</a>';
                 html+= ' '+verb+' ' + address;
                 
                 items.push({
