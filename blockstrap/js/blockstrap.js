@@ -48,7 +48,11 @@ var blockstrap_core = function()
         // IN-ESCAPABLE INCLUDES
         $.fn.blockstrap.defaults = function()
         {
-            if($.fn.blockstrap.settings.cascade === true)
+            if(typeof $.fn.blockstrap.settings.install === 'undefined')
+            {
+                $.fn.blockstrap.settings.install = true;
+            }
+            if($.fn.blockstrap.settings.cascade === true && $.fn.blockstrap.settings.install != false)
             {
                 var defaults = {
                     dependencies: [
@@ -1601,6 +1605,11 @@ var blockstrap_core = function()
             if(settings.skip_config) skip = true;
             if(force_skip === true) skip = true
             
+            if(typeof $.fn.blockstrap.settings.install === 'undefined')
+            {
+                $.fn.blockstrap.settings.install = true;
+            }
+            
             // THEN GET CONFIG FILE
             $.fn.blockstrap.core.get('themes/config', 'json', function(results)
             {
@@ -1638,6 +1647,12 @@ var blockstrap_core = function()
                             var modules = $.fn.blockstrap.settings.modules;
                             var bootstrap = $.fn.blockstrap.settings.bootstrap;
                             var plugins = $.fn.blockstrap.settings.plugins;
+                            
+                            if($.fn.blockstrap.settings.install === false)
+                            {
+                                dependencies = false;
+                                modules = false;
+                            }
 
                             // UPDATE CORE IF REQUIRED
                             $bs.update(bs.settings.v, function(saved_version, this_version, refresh)
@@ -1770,18 +1785,43 @@ var blockstrap_core = function()
                                                 }
                                                 else
                                                 {
-                                                    if($.isArray(plugins))
+                                                    $.fn.blockstrap.snippets = {};
+                                                    if($.isArray(bootstrap))
                                                     {
-                                                        // FINISH WITH PLUGINS
-                                                        $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
-                                                        bs.core.plugins(0, plugins, function()
+                                                        // INCLUDE BOOTSTRAP COMPONENTS
+                                                        $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(bootstrap)+' Bootstrap Snippets');
+                                                        bs.core.bootstrap(0, bootstrap, function()
                                                         {
-                                                            bs.core.loaded(); 
-                                                        });
+                                                            if($.isArray(plugins))
+                                                            {
+                                                                // FINISH WITH PLUGINS
+                                                                $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
+                                                                bs.core.plugins(0, plugins, function()
+                                                                {
+                                                                    bs.core.loaded(); 
+                                                                });
+                                                            }
+                                                            else
+                                                            {
+                                                                bs.core.loaded();
+                                                            }
+                                                        })
                                                     }
                                                     else
                                                     {
-                                                        bs.core.loaded();
+                                                        if($.isArray(plugins))
+                                                        {
+                                                            // FINISH WITH PLUGINS
+                                                            $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
+                                                            bs.core.plugins(0, plugins, function()
+                                                            {
+                                                                bs.core.loaded(); 
+                                                            });
+                                                        }
+                                                        else
+                                                        {
+                                                            bs.core.loaded();
+                                                        }
                                                     }
                                                 }
                                             }
@@ -2261,7 +2301,11 @@ var blockstrap_functions = {
     }
 };
 var blockstrap_js_scripts;
+/*
+// Removing this allowed manually inserted modules and dependencies to work in manual.html
 window.onload = function()
 {
     blockstrap_functions.initialize();
 }
+*/
+blockstrap_functions.initialize();

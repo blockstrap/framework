@@ -8,6 +8,7 @@
     "less": false,
     "test": false,
     "refresh": false,
+    "install": true,
     "cascade": true,
     "html_base": "html/",
     "data_base": "data/",
