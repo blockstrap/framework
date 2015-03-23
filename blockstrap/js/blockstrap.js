@@ -55,7 +55,6 @@ var blockstrap_core = function()
             if($.fn.blockstrap.settings.install === false)
             {
                 $.fn.blockstrap.settings.storage = false;
-                $.fn.blockstrap.settings.refresh = true;
             }
             if($.fn.blockstrap.settings.cascade === true && $.fn.blockstrap.settings.install != false)
             {
@@ -1855,6 +1854,14 @@ var blockstrap_core = function()
                 cache = bs.settings.cache;
                 if(cache.config === false) store = false;
             }
+            if(typeof $.fn.blockstrap.settings.install === 'undefined')
+            {
+                $.fn.blockstrap.settings.install = true;
+            }
+            if($.fn.blockstrap.settings.install === false)
+            {
+                config = false;
+            }
             if(!config || refresh === true || store === false)
             {
                 $.ajax({
@@ -1929,7 +1936,6 @@ var blockstrap_functions = {
         } 
         catch(e) 
         {
-            console.log('e', e);
             if(callback) callback(false);
             else return false;
         }
@@ -2012,7 +2018,6 @@ var blockstrap_functions = {
         
         $('.bs.installing').attr('data-loading-content','Now Installing ' + (start + 1) + ' of  '+blockstrap_functions.array_length(files)+' ' + include_type);
         
-        console.log('install', install);
         if(install === false)
         {
             callback();
