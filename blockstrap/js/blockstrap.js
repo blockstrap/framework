@@ -941,6 +941,14 @@ var blockstrap_core = function()
                 }
                 return $.fn.blockstrap.settings.page;
             },
+            patch: function(version, callback)
+            {
+                var file = $.fn.blockstrap.settings.core_base+'patches/'+version+'/patch-'+version+'.js';
+                $.getScript(file, function(patch_js)
+                {
+                    $.fn.blockstrap.patches['patch'+version].init(callback)
+                });
+            },
             plugins: function(index, plugins, callback)
             {
                 var bs = $.fn.blockstrap;
@@ -1544,57 +1552,30 @@ var blockstrap_core = function()
                 if(typeof this_version == 'undefined') this_version = 1;
                 if(typeof refresh == 'undefined') refresh = false;
                 // TODO: Now need to implement patches!
-                // But first...
-                // Quick fix to prevent immediate problems...
-                // Check Accounts
-                var accounts = new Array();
-                var contacts = new Array();
-                if(typeof localStorage != 'undefined')
+                if(/^[0-9\.]+$/.test(saved_version) && /^[0-9\.]+$/.test(this_version)) 
                 {
-                    $.each(localStorage, function(k, v)
+                    var current_version_array = this_version.split('.');
+                    var stored_version_array = saved_version.split('.');
+                    if(
+                        $.isArray(stored_version_array)
+                        && $.isArray(current_version_array)
+                        && blockstrap_functions.array_length(current_version_array) > 3
+                        && blockstrap_functions.array_length(stored_version_array) > 3
+                        && stored_version_array[0] < 1
+                        && stored_version_array[1] < 5
+                    )
                     {
-                        if(k.substring(0, 12) == "nw_accounts_") 
-                        {
-                            var account = $.parseJSON(v);
-                            if(typeof account.currency != 'undefined')
-                            {
-                                account.blockchain = account.currency;
-                                delete account.currency;
-                                // Now need to update TXS
-                                if($.isPlainObject(account.txs) && $bs.array_length(account.txs) > 0)
-                                {
-                                    $.each(account.txs, function(txk, txv)
-                                    {
-                                        if(typeof txv.currency != 'undefined')
-                                        {
-                                            account.txs[txk].blockchain = account.txs[txk].currency;
-                                            delete account.txs[txk].currency;
-                                        }
-                                    });
-                                }
-                                localStorage.setItem(k, JSON.stringify(account));
-                            }
-                            accounts.push(account);
-                        }
-                        else if(k.substring(0, 12) == "nw_contacts_") 
-                        {
-                            var contact = $.parseJSON(v);
-                            if(typeof contact.currencies != 'undefined')
-                            {
-                                var bc = contact.currencies;
-                                delete contact.currencies;
-                                contact.blockchains = {
-                                    code: bc.code,
-                                    blockchain: bc.currency,
-                                    addresses: bc.addresses
-                                }
-                                localStorage.setItem(k, JSON.stringify(contact));
-                            }
-                            contacts.push(contact);
-                        }
-                    });
+                        $.fn.blockstrap.core.patch('0501', callback);
+                    }
+                    else
+                    {
+                        callback();
+                    }
                 }
-                callback();
+                else
+                {
+                    callback();
+                }
             }
         };        
 
@@ -1604,6 +1585,7 @@ var blockstrap_core = function()
             // MERGE DEFAULT AND PLUGIN OPTIONS
             var settings = $.extend({}, defaults, options);
             $.fn.blockstrap.plugins = {};
+            $.fn.blockstrap.patches = {};
             
             var skip = false;
             if(settings.skip_config) skip = true;
