@@ -52,6 +52,11 @@ var blockstrap_core = function()
             {
                 $.fn.blockstrap.settings.install = true;
             }
+            if($.fn.blockstrap.settings.install === false)
+            {
+                $.fn.blockstrap.settings.storage = false;
+                $.fn.blockstrap.settings.refresh = true;
+            }
             if($.fn.blockstrap.settings.cascade === true && $.fn.blockstrap.settings.install != false)
             {
                 var defaults = {
@@ -1924,6 +1929,7 @@ var blockstrap_functions = {
         } 
         catch(e) 
         {
+            console.log('e', e);
             if(callback) callback(false);
             else return false;
         }
@@ -1996,6 +2002,7 @@ var blockstrap_functions = {
         var refresh = blockstrap_functions.vars('refresh');
         var cache = blockstrap.settings.cache;
         var limit = files.length;
+        var install = blockstrap.settings.install;
         
         if(!dependency) dependency = false;
         if(!start) start = 0;
@@ -2005,7 +2012,12 @@ var blockstrap_functions = {
         
         $('.bs.installing').attr('data-loading-content','Now Installing ' + (start + 1) + ' of  '+blockstrap_functions.array_length(files)+' ' + include_type);
         
-        if($.isArray(files) && files[start])
+        console.log('install', install);
+        if(install === false)
+        {
+            callback();
+        }
+        else if($.isArray(files) && files[start])
         {
             var js = '';
             var file_name = files[start];
