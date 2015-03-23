@@ -149,14 +149,14 @@
         }
         if(
             wallet 
-            && wallet.wallet_blockchain
+            && wallet.wallet_currency
             && wallet.wallet_name 
             && wallet.wallet_password 
             && !wallet.cancel
         )
         {
             $.fn.blockstrap.accounts.new(
-                wallet.wallet_blockchain, 
+                wallet.wallet_currency, 
                 wallet.wallet_name,
                 wallet.wallet_password,
                 wallet,

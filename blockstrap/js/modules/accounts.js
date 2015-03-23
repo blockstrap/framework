@@ -495,10 +495,10 @@
         return transactions;
     }
     
-    accounts.update = function(account, callback, force_refresh, skip)
+    accounts.update = function(account, callback, force_refresh, page)
     {
-        if(typeof skip == 'undefined') skip = 0;
-        else skip = parseInt(skip);
+        if(typeof page == 'undefined') page = 0;
+        else page = parseInt(page);
         if($.isPlainObject(account))
         {
             var ts = 0;
@@ -544,8 +544,8 @@
                             if(blockstrap_functions.array_length(account.txs) < account.tx_count)
                             {
                                 // Paginate?
-                                skip = blockstrap_functions.array_length(account.txs);
-                                accounts.update(account, callback, force_refresh, skip);
+                                page++;
+                                accounts.update(account, callback, force_refresh, page);
                             }
                             else
                             {
@@ -555,7 +555,7 @@
                                     else return account;
                                 });
                             }
-                        }, false, false, account.tx_count, skip);
+                        }, false, false, 25, (page * 25));
                     }
                     else
                     {
