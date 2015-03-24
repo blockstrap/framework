@@ -94,7 +94,7 @@
         {
             api_service = service;
         }
-        if($.isArray(hashes))
+        else if($.isArray(hashes))
         {
             var delimiter = '&addresses=';
             var map = api.map(blockchain);
@@ -959,16 +959,19 @@
             typeof apis[blockchain] == 'undefined' 
             || typeof apis[blockchain][api_service] == 'undefined'
             || typeof apis[blockchain][api_service].functions.to[action] == 'undefined'    
+            || apis[blockchain][api_service].functions.to[action] == ""
             )
             &&
             (
             typeof apis['defaults'] == 'undefined' 
             || typeof apis['defaults'][api_service] == 'undefined'
             || typeof apis['defaults'][api_service].functions.to[action] == 'undefined'  
+            || apis['defaults'][api_service].functions.to[action] == ""
             || typeof $.fn.blockstrap.settings.blockchains[blockchain].apis[api_service] == 'undefined'
             )
             )
         ){
+            if(action == 'addresses') key = 'multiple-addresses';
             var text = '<p class="'+key+blockchain+action+'">Please note that the selected API "<strong>'+api_service+'</strong>" used for "<strong>'+key+'</strong>" is either not mapped to the "<strong>'+blockchain+'</strong>" blockchain or does not support the required "<strong>'+action+'</strong>" function.</p>';
             if(
                 $('#default-modal').find('h4.modal-title').text() != 'API Warning'
