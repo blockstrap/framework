@@ -514,6 +514,22 @@
                 $.fn.blockstrap.api.address(account.address, account.blockchain.code, function(results)
                 {
                     if(
+                        results.tx_count > 50
+                        && $.fn.blockstrap.settings.api_service == 'sochain'
+                    ){
+                        $.fn.blockstrap.core.modal('Warning', 'The sochain API Service does not support TX pagination and has a hard limit of 50 transactions, which will cause problems with this ('+results.address+') address.');
+                        if(callback) callback(false);
+                        else return false;
+                    }
+                    else if(
+                        results.tx_count > 200
+                        && $.fn.blockstrap.settings.api_service == 'blockr'
+                    ){
+                        $.fn.blockstrap.core.modal('Warning', 'The blockr API Service does not support TX pagination and has a hard limit of 200 transactions, which will cause problems with this ('+results.address+') address.');
+                        if(callback) callback(false);
+                        else return false;
+                    }
+                    else if(
                         (
                         results.tx_count 
                         && results.tx_count > current_tx_count

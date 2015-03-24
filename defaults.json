@@ -18,7 +18,7 @@
     "module_base": "js/modules/",
     "page_base": "index",
     "slug_base": "dashboard",
-    "api_service": "sochain",
+    "api_service": "blockstrap",
     "base_url": "",
     "content_id": "main-content",
     "navigation_id": "navigation",
@@ -269,7 +269,6 @@
             "blockchain": "Bitcoin Testnet",
             "lib": "bitcointestnet",
             "apis": {
-                "helloblock": "https://mainnet.helloblock.io/v1/",
                 "blockstrap": "https://api.blockstrap.com/v0/btct/",
                 "sochain": "https://chain.so/api/v2/",
                 "blockr": "http://tbtc.blockr.io/api/v1/"
@@ -280,10 +279,8 @@
             "blockchain": "Litecoin Testnet",
             "lib": "litecointestnet",
             "apis": {
-                "helloblock": "https://mainnet.helloblock.io/v1/",
                 "blockstrap": "https://api.blockstrap.com/v0/ltct/",
-                "sochain": "https://chain.so/api/v2/",
-                "blockr": "http://ltc.blockr.io/api/v1/"
+                "sochain": "https://chain.so/api/v2/"
             },
             "fee": 0.001
         },
@@ -293,8 +290,7 @@
             "apis": {
                 "helloblock": "https://mainnet.helloblock.io/v1/",
                 "blockstrap": "https://api.blockstrap.com/v0/dogt/",
-                "sochain": "https://chain.so/api/v2/",
-                "blockr": "http://dgc.blockr.io/api/v1/"
+                "sochain": "https://chain.so/api/v2/"
             },
             "fee": 1
         },
@@ -327,7 +323,6 @@
             "blockchain": "Litecoin",
             "lib": "litecoin",
             "apis": {
-                "helloblock": "https://mainnet.helloblock.io/v1/",
                 "blockstrap": "https://api.blockstrap.com/v0/ltc/",
                 "sochain": "https://chain.so/api/v2/",
                 "blockr": "http://ltc.blockr.io/api/v1/"
@@ -338,7 +333,6 @@
             "blockchain": "Dogecoin",
             "lib": "dogecoin",
             "apis": {
-                "helloblock": "https://mainnet.helloblock.io/v1/",
                 "blockstrap": "https://api.blockstrap.com/v0/doge/",
                 "sochain": "https://chain.so/api/v2/",
                 "blockr": "http://dgc.blockr.io/api/v1/"
@@ -367,7 +361,8 @@
                         "market": "market/stats/",
                         "relay": "transaction/relay/",
                         "relay_param": "txn_hex",
-                        "unspents": "address/unspents/$call?showtxnio=1"
+                        "unspents": "address/unspents/$call?showtxnio=1",
+                        "tx_pagination": "records, skip"
                     },
                     "from": {
                         "address": {
@@ -527,11 +522,12 @@
                         "address": "addresses/",
                         "addresses": "addresses?addresses=",
                         "transaction": "transactions/",
-                        "transactions": "addresses/$call/transactions?limit=100",
+                        "transactions": "addresses/$call/transactions?limit=25",
                         "block": "blocks/",
                         "relay": "transactions/",
                         "relay_param": "rawTxHex",
-                        "unspents": "addresses/$call/unspents?limit=100"
+                        "unspents": "addresses/$call/unspents?limit=25",
+                        "tx_pagination": "limit, offset"
                     },
                     "from": {
                         "address": {

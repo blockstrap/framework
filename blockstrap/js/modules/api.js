@@ -758,15 +758,55 @@
         var api_url = api.url('transactions', address, blockchain);
         
         // Hack for BS API Pagination
-        if(typeof count != 'undefined' && parseInt(count) > 0 && api_service == 'blockstrap')
+        if(typeof count != 'undefined' && parseInt(count) > 0 )
         {
-            api_url+= '&records='+count;
+            if(
+                typeof $.fn.blockstrap.settings.apis.defaults[api_service] == 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][api_service] != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][api_service].functions != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][api_service].functions.to != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][api_service].functions.to.tx_pagination != 'undefined'
+            ){
+                var key_array = $.fn.blockstrap.settings.apis[blockchain][api_service].functions.to.tx_pagination.split(', ');
+                var key = key_array[0];
+                api_url+= '&'+key+'='+count;
+            }
+            else if(
+                typeof $.fn.blockstrap.settings.apis.defaults[api_service] != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis.defaults[api_service].functions != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis.defaults[api_service].functions.to != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis.defaults[api_service].functions.to.tx_pagination != 'undefined'
+            ){
+                var key_array = $.fn.blockstrap.settings.apis.defaults[api_service].functions.to.tx_pagination.split(', ');
+                var key = key_array[0];
+                api_url+= '&'+key+'='+count;
+            }
         }
-        if(typeof skip != 'undefined' && parseInt(skip) > 0 && api_service == 'blockstrap')
+        if(typeof count != 'undefined' && parseInt(skip) > 0 )
         {
-            api_url+= '&skip='+skip;
+            if(
+                typeof $.fn.blockstrap.settings.apis.defaults[api_service] == 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][api_service] != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][api_service].functions != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][api_service].functions.to != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][api_service].functions.to.tx_pagination != 'undefined'
+            ){
+                var key_array = $.fn.blockstrap.settings.apis[blockchain][api_service].functions.to.tx_pagination.split(', ');
+                var key = key_array[1];
+                api_url+= '&'+key+'='+skip;
+            }
+            else if(
+                typeof $.fn.blockstrap.settings.apis.defaults[api_service] != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis.defaults[api_service].functions != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis.defaults[api_service].functions.to != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis.defaults[api_service].functions.to.tx_pagination != 'undefined'
+            ){
+                var key_array = $.fn.blockstrap.settings.apis.defaults[api_service].functions.to.tx_pagination.split(', ');
+                var key = key_array[1];
+                api_url+= '&'+key+'='+skip;
+            }
         }
-        
+            
         if(api_url)
         {
             api.request(api_url, function(results)
@@ -912,43 +952,58 @@
         var url = false;
         if(!blockchain) blockchain = 'btc';
         if(
+            blockchain != 'multi'
+            &&
+            (
+            (
+            typeof apis[blockchain] == 'undefined' 
+            || typeof apis[blockchain][api_service] == 'undefined'
+            || typeof apis[blockchain][api_service].functions.to[action] == 'undefined'    
+            )
+            &&
+            (
             typeof apis['defaults'] == 'undefined' 
             || typeof apis['defaults'][api_service] == 'undefined'
+            || typeof apis['defaults'][api_service].functions.to[action] == 'undefined'  
+            || typeof $.fn.blockstrap.settings.blockchains[blockchain].apis[api_service] == 'undefined'
+            )
+            )
         ){
+            var text = '<p class="'+key+blockchain+action+'">Please note that the selected API "<strong>'+api_service+'</strong>" used for "<strong>'+key+'</strong>" is either not mapped to the "<strong>'+blockchain+'</strong>" blockchain or does not support the required "<strong>'+action+'</strong>" function.</p>';
             if(
-                typeof apis[blockchain] == 'undefined' 
-                || typeof apis[blockchain][api_service] == 'undefined'
-                || typeof apis[blockchain][api_service].functions.to[action] == 'undefined'
+                $('#default-modal').find('h4.modal-title').text() != 'API Warning'
+                && $('#default-modal').find('.modal-body').find('.'+key+blockchain+action).length < 1
             ){
-                var text = '<p class="'+key+blockchain+action+'">Please note that the selected API "<strong>'+api_service+'</strong>" used for "<strong>'+key+'</strong>" is either not mapped to the "<strong>'+blockchain+'</strong>" blockchain or does not support the required "<strong>'+action+'</strong>" function.</p>';
-                if(
-                    $('#default-modal').find('h4.modal-title').text() != 'API Warning'
-                    && $('#default-modal').find('.modal-body').find('.'+key+blockchain+action).length < 1
-                ){
-                    $.fn.blockstrap.core.modal('API Warning', text);
-                    return false;
-                }
-                else if(
-                    $('#default-modal').find('h4.modal-title').text() == 'API Warning'
-                    && $('#default-modal').find('.modal-body').find('.'+key+blockchain+action).length < 1
-                ){
-                    var current_text = $('#default-modal').find('.modal-body').html();
-                    $.fn.blockstrap.core.modal('API Warning', current_text+text);
-                    return false;
-                }
-                else
-                {
-                    return false;
-                }
+                $.fn.blockstrap.core.modal('API Warning', text);
+                return false;
+            }
+            else if(
+                $('#default-modal').find('h4.modal-title').text() == 'API Warning'
+                && $('#default-modal').find('.modal-body').find('.'+key+blockchain+action).length < 1
+            ){
+                var current_text = $('#default-modal').find('.modal-body').html();
+                $.fn.blockstrap.core.modal('API Warning', current_text+text);
+                return false;
             }
             else
             {
-                url = blockchains[blockchain].apis[api_service] + apis[blockchain][api_service].functions.to[action] + key;
-                if(apis[blockchain][api_service].functions.to[action].indexOf("$call") > -1)
-                {
-                    var call = apis[blockchain][api_service].functions.to[action].replace("$call", key);
-                    url = blockchains[blockchain].apis[api_service] + call;
-                }
+                return false;
+            }
+        }
+        else if(
+            blockchain != 'multi'
+            &&
+            (
+            typeof apis[blockchain] != 'undefined' 
+            && typeof apis[blockchain][api_service] != 'undefined'
+            && typeof apis[blockchain][api_service].functions.to[action] != 'undefined'
+            )
+        ){
+            url = blockchains[blockchain].apis[api_service] + apis[blockchain][api_service].functions.to[action] + key;
+            if(apis[blockchain][api_service].functions.to[action].indexOf("$call") > -1)
+            {
+                var call = apis[blockchain][api_service].functions.to[action].replace("$call", key);
+                url = blockchains[blockchain].apis[api_service] + call;
             }
         }
         else

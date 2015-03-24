@@ -712,7 +712,7 @@
                                 "id": "contact_blockchain",
                                 "css": "bs-blockchain-select",
                                 "label": {
-                                    "text": "Address Blockchain",
+                                    "text": "Blockchain",
                                     "css": "col-xs-3"
                                 },
                                 "attributes": [
