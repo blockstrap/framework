@@ -513,7 +513,10 @@ var blockstrap_core = function()
                         {
                             if(typeof v.private == 'undefined')
                             {
-                                $(select).append('<option value="'+blockchain+'">'+v.blockchain+'</option>');
+                                if(typeof v.apis[$.fn.blockstrap.settings.api_service] != 'undefined')
+                                {
+                                    $(select).append('<option value="'+blockchain+'">'+v.blockchain+'</option>');
+                                }
                             }
                         });
                     }
