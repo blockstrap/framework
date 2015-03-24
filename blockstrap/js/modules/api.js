@@ -819,9 +819,26 @@
                 || typeof apis[blockchain][api_service] == 'undefined'
                 || typeof apis[blockchain][api_service].functions.to[action] == 'undefined'
             ){
-                var text = '<p>Please note that the selected API "<strong>'+api_service+'</strong>" used for "<strong>'+key+'</strong>" is either not mapped to the "<strong>'+blockchain+'</strong>" blockchain or does not support the required "<strong>'+action+'</strong>" function.</p>';
-                $.fn.blockstrap.core.modal('API Warning', text);
-                return false;
+                var text = '<p class="'+key+blockchain+action+'">Please note that the selected API "<strong>'+api_service+'</strong>" used for "<strong>'+key+'</strong>" is either not mapped to the "<strong>'+blockchain+'</strong>" blockchain or does not support the required "<strong>'+action+'</strong>" function.</p>';
+                if(
+                    $('#default-modal').find('h4.modal-title').text() != 'API Warning'
+                    && $('#default-modal').find('.modal-body').find('.'+key+blockchain+action).length < 1
+                ){
+                    $.fn.blockstrap.core.modal('API Warning', text);
+                    return false;
+                }
+                else if(
+                    $('#default-modal').find('h4.modal-title').text() == 'API Warning'
+                    && $('#default-modal').find('.modal-body').find('.'+key+blockchain+action).length < 1
+                ){
+                    var current_text = $('#default-modal').find('.modal-body').html();
+                    $.fn.blockstrap.core.modal('API Warning', current_text+text);
+                    return false;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
