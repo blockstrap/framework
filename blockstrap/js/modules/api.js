@@ -246,6 +246,10 @@
         {
             if(return_raw && callback)
             {
+                if(api_service !== original_service)
+                {
+                    api_service = original_service;
+                }
                 callback(results);
             }
             else
@@ -676,11 +680,13 @@
             api_service = service;
         }
         var api_url = api.url('transactions', address, blockchain);
-        if(typeof count != 'undefined' && parseInt(count) > 0)
+        
+        // Hack for BS API Pagination
+        if(typeof count != 'undefined' && parseInt(count) > 0 && api_service == 'blockstrap')
         {
             api_url+= '&records='+count;
         }
-        if(typeof skip != 'undefined' && parseInt(skip) > 0)
+        if(typeof skip != 'undefined' && parseInt(skip) > 0 && api_service == 'blockstrap')
         {
             api_url+= '&skip='+skip;
         }
@@ -813,6 +819,8 @@
                 || typeof apis[blockchain][api_service] == 'undefined'
                 || typeof apis[blockchain][api_service].functions.to[action] == 'undefined'
             ){
+                var text = '<p>Please note that the selected API "<strong>'+api_service+'</strong>" used for "<strong>'+key+'</strong>" is either not mapped to the "<strong>'+blockchain+'</strong>" blockchain or does not support the required "<strong>'+action+'</strong>" function.</p>';
+                $.fn.blockstrap.core.modal('API Warning', text);
                 return false;
             }
             else
