@@ -1823,7 +1823,6 @@ var blockstrap_core = function()
                 }
             }, skip, false);
         }                     
-        
         if(typeof blockstrap_defaults == 'undefined')
         {
             var bs = $.fn.blockstrap;
@@ -1882,6 +1881,8 @@ var blockstrap_core = function()
         {
             blockstrap_functions.check(blockstrap_defaults, function()
             {
+                $.fn.blockstrap.settings = blockstrap_defaults;
+                $.fn.blockstrap.settings.vars = blockstrap_functions.vars();
                 plugin(false, false, blockstrap_defaults); 
             });
         }
