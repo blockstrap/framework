@@ -20,6 +20,7 @@
     "slug_base": "dashboard",
     "api_service": "blockstrap",
     "base_url": "",
+    "app_id": "framework",
     "content_id": "main-content",
     "navigation_id": "navigation",
     "mobile_nav_id": "mobile-footer",

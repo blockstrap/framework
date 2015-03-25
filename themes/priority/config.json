@@ -5,6 +5,7 @@
     "security": "9d2caf7f21ee0a0a679b2d15c79d165f",
     "content_id": "issues",
     "slug_base": "index",
+    "app_id": "prioritizer",
     "modules": [
         "blockstrap/js/modules/data",
         "blockstrap/js/modules/api",

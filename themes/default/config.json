@@ -1,5 +1,6 @@
 {
     "theme": "default",
+    "app_id": "wallet",
     "plugins": [
         "markets"
     ]

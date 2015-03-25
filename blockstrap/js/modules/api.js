@@ -1028,7 +1028,22 @@
             {
                 url+='?api_key='+api_key;
             }
-        }   
+        }
+        var app_id = 'framework';
+        if(typeof $.fn.blockstrap.settings.app_id != 'undefined')
+        {
+            app_id = $.fn.blockstrap.settings.app_id;
+        }
+        else
+        {
+            app_id = $.fn.blockstrap.settings.id;
+        }
+        if(api_service == 'blockstrap')
+        {
+            app_id+= '_v'+blockstrap_functions.slug($.fn.blockstrap.settings.v);
+            if(action == 'stats' || action == 'addresses') url+= '?app_id='+app_id;
+            else url+= '&app_id='+app_id;
+        }
         return url;
     }
     
