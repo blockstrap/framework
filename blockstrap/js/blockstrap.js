@@ -1625,40 +1625,120 @@ var blockstrap_core = function()
                             
                             $.fn.blockstrap.defaults();
                             
-                            if(store)
+                            // ONE LAST SECRET CONFIG THAT CAN OVER-RIDE EVERTYHING AND IS NOT STORED IN REPO
+                            // THE EXACT LOCATION OF THIS FILE CAN ULTIMATELY BE DEFINED BY PREVIOUS CONFIG FILES
+                            var secret_config = 'secret';
+                            $.fn.blockstrap.core.get(secret_config, 'json', function(results)
                             {
-                                localStorage.setItem('nw_inc_config', JSON.stringify($.fn.blockstrap.settings));
-                            }
-
-                            var bs = $.fn.blockstrap;
-                            var $bs = blockstrap_functions;
-                            var dependencies = $.fn.blockstrap.settings.dependencies;
-                            var modules = $.fn.blockstrap.settings.modules;
-                            var bootstrap = $.fn.blockstrap.settings.bootstrap;
-                            var plugins = $.fn.blockstrap.settings.plugins;
-                            
-                            if($.fn.blockstrap.settings.install === false)
-                            {
-                                dependencies = false;
-                                modules = false;
-                            }
-
-                            // UPDATE CORE IF REQUIRED
-                            $bs.update(bs.settings.v, function(saved_version, this_version, refresh)
-                            {
-                                bs.core.upgrade(saved_version, this_version, refresh, function()
+                                if($.isPlainObject(results))
                                 {
-                                    // USE LESS.css ...?
-                                    bs.core.less(function()
+                                    $.fn.blockstrap.settings = $.extend(
+                                        {}, 
+                                        $.fn.blockstrap.settings, 
+                                        results
+                                    );
+                                }
+                                    
+                                if(store)
+                                {
+                                    localStorage.setItem('nw_inc_config', JSON.stringify($.fn.blockstrap.settings));
+                                }
+
+                                var bs = $.fn.blockstrap;
+                                var $bs = blockstrap_functions;
+                                var dependencies = $.fn.blockstrap.settings.dependencies;
+                                var modules = $.fn.blockstrap.settings.modules;
+                                var bootstrap = $.fn.blockstrap.settings.bootstrap;
+                                var plugins = $.fn.blockstrap.settings.plugins;
+
+                                if($.fn.blockstrap.settings.install === false)
+                                {
+                                    dependencies = false;
+                                    modules = false;
+                                }
+
+                                // UPDATE CORE IF REQUIRED
+                                $bs.update(bs.settings.v, function(saved_version, this_version, refresh)
+                                {
+                                    bs.core.upgrade(saved_version, this_version, refresh, function()
                                     {
-                                        // INSERT CSS
-                                        bs.core.css(function()
+                                        // USE LESS.css ...?
+                                        bs.core.less(function()
                                         {
-                                            if($.isArray(dependencies))
+                                            // INSERT CSS
+                                            bs.core.css(function()
                                             {
-                                                // INCLUDE JS DEPENDENCIES
-                                                $('.bs.installing').attr('data-loading-content','Now Installing 1 of '+$bs.array_length(dependencies)+' Dependencies');
-                                                $bs.include(bs, 0, dependencies, function()
+                                                if($.isArray(dependencies))
+                                                {
+                                                    // INCLUDE JS DEPENDENCIES
+                                                    $('.bs.installing').attr('data-loading-content','Now Installing 1 of '+$bs.array_length(dependencies)+' Dependencies');
+                                                    $bs.include(bs, 0, dependencies, function()
+                                                    {
+                                                        if($.isArray(modules))
+                                                        {
+                                                            // INCLUDE JS MODULES
+                                                            $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(modules)+' Modules');
+                                                            $bs.include(bs, 0, modules, function()
+                                                            {
+                                                                $.fn.blockstrap.snippets = {}; 
+                                                                if($.isArray(bootstrap))
+                                                                {
+                                                                    // INCLUDE BOOTSTRAP COMPONENTS
+                                                                    $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(bootstrap)+' Bootstrap Snippets');
+                                                                    bs.core.bootstrap(0, bootstrap, function()
+                                                                    {
+                                                                        if($.isArray(plugins))
+                                                                        {
+                                                                            // FINISH WITH PLUGINS
+                                                                            $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
+                                                                            bs.core.plugins(0, plugins, function()
+                                                                            {
+                                                                                bs.core.loaded(); 
+                                                                            });
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            bs.core.loaded(); 
+                                                                        }
+                                                                    })
+                                                                }
+                                                                else
+                                                                {
+                                                                    if($.isArray(plugins))
+                                                                    {
+                                                                        // FINISH WITH PLUGINS
+                                                                        $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
+                                                                        bs.core.plugins(0, plugins, function()
+                                                                        {
+                                                                            bs.core.loaded(); 
+                                                                        });
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        bs.core.loaded();
+                                                                    }
+                                                                }
+                                                            });
+                                                        }
+                                                        else
+                                                        {
+                                                            if($.isArray(plugins))
+                                                            {
+                                                                // FINISH WITH PLUGINS
+                                                                $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
+                                                                bs.core.plugins(0, plugins, function()
+                                                                {
+                                                                    bs.core.loaded(); 
+                                                                });
+                                                            }
+                                                            else
+                                                            {
+                                                                bs.core.loaded();
+                                                            }
+                                                        }
+                                                    }, true);
+                                                }
+                                                else
                                                 {
                                                     if($.isArray(modules))
                                                     {
@@ -1666,7 +1746,7 @@ var blockstrap_core = function()
                                                         $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(modules)+' Modules');
                                                         $bs.include(bs, 0, modules, function()
                                                         {
-                                                            $.fn.blockstrap.snippets = {}; 
+                                                            $.fn.blockstrap.snippets = {};
                                                             if($.isArray(bootstrap))
                                                             {
                                                                 // INCLUDE BOOTSTRAP COMPONENTS
@@ -1684,7 +1764,7 @@ var blockstrap_core = function()
                                                                     }
                                                                     else
                                                                     {
-                                                                        bs.core.loaded(); 
+                                                                        bs.core.loaded();
                                                                     }
                                                                 })
                                                             }
@@ -1707,30 +1787,6 @@ var blockstrap_core = function()
                                                         });
                                                     }
                                                     else
-                                                    {
-                                                        if($.isArray(plugins))
-                                                        {
-                                                            // FINISH WITH PLUGINS
-                                                            $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
-                                                            bs.core.plugins(0, plugins, function()
-                                                            {
-                                                                bs.core.loaded(); 
-                                                            });
-                                                        }
-                                                        else
-                                                        {
-                                                            bs.core.loaded();
-                                                        }
-                                                    }
-                                                }, true);
-                                            }
-                                            else
-                                            {
-                                                if($.isArray(modules))
-                                                {
-                                                    // INCLUDE JS MODULES
-                                                    $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(modules)+' Modules');
-                                                    $bs.include(bs, 0, modules, function()
                                                     {
                                                         $.fn.blockstrap.snippets = {};
                                                         if($.isArray(bootstrap))
@@ -1770,54 +1826,13 @@ var blockstrap_core = function()
                                                                 bs.core.loaded();
                                                             }
                                                         }
-                                                    });
-                                                }
-                                                else
-                                                {
-                                                    $.fn.blockstrap.snippets = {};
-                                                    if($.isArray(bootstrap))
-                                                    {
-                                                        // INCLUDE BOOTSTRAP COMPONENTS
-                                                        $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(bootstrap)+' Bootstrap Snippets');
-                                                        bs.core.bootstrap(0, bootstrap, function()
-                                                        {
-                                                            if($.isArray(plugins))
-                                                            {
-                                                                // FINISH WITH PLUGINS
-                                                                $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
-                                                                bs.core.plugins(0, plugins, function()
-                                                                {
-                                                                    bs.core.loaded(); 
-                                                                });
-                                                            }
-                                                            else
-                                                            {
-                                                                bs.core.loaded();
-                                                            }
-                                                        })
-                                                    }
-                                                    else
-                                                    {
-                                                        if($.isArray(plugins))
-                                                        {
-                                                            // FINISH WITH PLUGINS
-                                                            $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
-                                                            bs.core.plugins(0, plugins, function()
-                                                            {
-                                                                bs.core.loaded(); 
-                                                            });
-                                                        }
-                                                        else
-                                                        {
-                                                            bs.core.loaded();
-                                                        }
                                                     }
                                                 }
-                                            }
+                                            });
                                         });
                                     });
                                 });
-                            });
+                            }, skip, false);
                         }
                     }, skip, false);
                 }

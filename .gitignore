@@ -1,6 +1,8 @@
 nbproject/
 git/
 
+secret.json
+
 *.swp
 *.log
 
