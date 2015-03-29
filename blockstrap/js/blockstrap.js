@@ -1853,11 +1853,12 @@ var blockstrap_core = function()
                 cache = bs.settings.cache;
                 if(cache.config === false) store = false;
             }
-            if(typeof $.fn.blockstrap.settings.install == 'undefined')
+            $.fn.blockstrap.settings.install = true;
+            if(typeof $.fn.blockstrap.settings.install != 'undefined' && $.fn.blockstrap.settings.install == false)
             {
-                $.fn.blockstrap.settings.install = true;
+                $.fn.blockstrap.settings.install = false;
             }
-            else if($.fn.blockstrap.settings.install == false)
+            if($.fn.blockstrap.settings.install == false)
             {
                 config = false;
             }
