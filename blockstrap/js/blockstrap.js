@@ -1853,7 +1853,7 @@ var blockstrap_core = function()
                 cache = bs.settings.cache;
                 if(cache.config === false) store = false;
             }
-            if(typeof bs.settings.install === 'undefined')
+            if(typeof bs.settings.install == 'undefined')
             {
                 $.fn.blockstrap.settings.install = true;
             }
