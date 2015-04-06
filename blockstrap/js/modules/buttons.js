@@ -11,8 +11,6 @@
 (function($) 
 {
     var buttons = {};
-    var page_cache_time = $.fn.blockstrap.settings.cache.pages;
-    var pages_cached = {};
     
     window.onpopstate = function(event) 
     {
@@ -438,6 +436,13 @@
                 });
             }
         });
+    }
+    
+    buttons.hidden_toggler = function(button, e)
+    {
+        e.preventDefault();
+        var id = $(button).attr('data-id');
+        $('#'+id).toggle();
     }
     
     buttons.import = function(button, e)

@@ -31,6 +31,7 @@ var blockstrap_core = function()
         var test_results = '';
         var bs_hooks = {};
         var bs_vars = {};
+        var full_results = {};
         
         // PREVENT DUPLICATES
         $.fn.blockstrap = function(options)
@@ -54,7 +55,7 @@ var blockstrap_core = function()
             }
             if($.fn.blockstrap.settings.install === false)
             {
-                $.fn.blockstrap.settings.storage = false;
+                $.fn.blockstrap.settings.cache = false;
             }
             if($.fn.blockstrap.settings.cascade === true && $.fn.blockstrap.settings.install != false)
             {
@@ -690,7 +691,7 @@ var blockstrap_core = function()
                         }
                         else
                         {
-                            if($.isPlainObject(bs.accounts))
+                            if(typeof bs.accounts != 'undefined' && $.isPlainObject(bs.accounts))
                             {
                                 setInterval(function()
                                 {
@@ -1381,10 +1382,20 @@ var blockstrap_core = function()
                     }
                 });
             },
-            test_results: function(expected, given, index, total, title)
+            test_results: function(expected, given, index, total, title, api_service, chain_count, chain_total)
             {
                 var details = '';
                 var passed = true;
+                if(typeof full_results[api_service] == 'undefined')
+                {
+                    full_results[api_service] = {};
+                    full_results[api_service].passed = 0;
+                    full_results[api_service].failed = 0;
+                    full_results[api_service].blockchains = 0;
+                    full_results[api_service].addresses = false;
+                    full_results[api_service].markets = false;
+                    full_results[api_service].paginate = false;
+                }
                 if($.isPlainObject(expected) || $.isArray(expected))
                 {
                     var ex = expected;
@@ -1426,38 +1437,144 @@ var blockstrap_core = function()
                     });
                     if(passed === true)
                     {
+                        full_results[api_service].passed++;
                         test_results+= '<hr />';
                         test_results+= '<p class="break-word text-success left-aligned">';
-                        test_results+= title;
+                        test_results+= '<strong class="black">API Request using '+api_service+':</strong><br />'+title;
                         test_results+= ': <strong>PASSED</strong></p>';
                     }
                     else
                     {
+                        full_results[api_service].failed++;
                         test_results+= '<hr />';
                         test_results+= '<p class="break-word text-danger left-aligned">';
-                        test_results+= title;
+                        test_results+= '<strong class="black">API Request using '+api_service+':</strong><br />'+title;
                         test_results+= ': <strong>FAILED</strong>'+details+'</p>';
                     }
-                    if(index >= total)
-                    {
-                        $.fn.blockstrap.core.modal('Test Results', test_results);
+                    if(index >= total && chain_count >= chain_total)
+                    {   
+                        if($('#default-modal').find('.test-results').length < 1)
+                        {
+                            $.each(bs.settings.blockchains, function(blockchain, values)
+                            {
+                                if(blockchain != 'multi')
+                                {
+                                    $.each(values.apis, function(provider, url)
+                                    {
+                                        if(typeof full_results[provider] != 'undefined')
+                                        {
+                                            full_results[provider].blockchains++;
+                                            var api_addresses = $.fn.blockstrap.api.settings(
+                                                blockchain, 
+                                                provider, 
+                                                'to', 
+                                                'addresses'
+                                            );
+                                            if(
+                                                typeof api_addresses != 'undefined'
+                                                && api_addresses
+                                            ){
+                                                full_results[provider].addresses = true;
+                                            }
+                                            var api_markets = $.fn.blockstrap.api.settings(
+                                                'multi', 
+                                                provider, 
+                                                'to', 
+                                                'market'
+                                            );
+                                            if(
+                                                typeof api_markets != 'undefined'
+                                                && api_markets
+                                            ){
+                                                full_results[provider].markets = true;
+                                            }
+                                            var api_paginate = $.fn.blockstrap.api.settings(
+                                                blockchain, 
+                                                provider, 
+                                                'to', 
+                                                'tx_pagination'
+                                            );
+                                            if(
+                                                typeof api_paginate != 'undefined'
+                                                && api_paginate
+                                            ){
+                                                full_results[provider].paginate = true;
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                            test_results = $.fn.blockstrap.core.test_results_table(full_results) + '<a href="#" class="btn-hidden_toggler btn btn-success btn-block" data-id="full-results">FULL RESULTS</a><div style="display: none" id="full-results">' + test_results + '</div>';
+                            $.fn.blockstrap.core.modal('Test Results', test_results);
+                        }
+                        
                     }
                 }
-                else
-                {
-                    if(index >= total)
-                    {
-                        $.fn.blockstrap.core.modal('Test Results', test_results);
-                    }
-                }
+            },
+            test_results_table: function(results)
+            {
+                var html = '';
+                var headers = ['API Provider', 'Passed', 'Failed', 'Chains', 'Addresses', 'Markets', 'Paginate'];
+                html+= '<table class="table table-striped test-results">';
+                    html+= '<thead>';
+                        html+= '<tr>';
+                            $.each(headers, function(k, title)
+                            {
+                                html+= '<th>'+title+'</th>';
+                            });
+                        html+= '</tr>';
+                    html+= '</thead>';
+                    html+= '<tbody>';
+                        $.each(results, function(provider, these_results)
+                        {
+                            html+= '<tr>';
+                                html+= '<td>'+provider+'</td>';
+                                html+= '<td>'+these_results.passed+'</td>';
+                                html+= '<td>'+these_results.failed+'</td>';
+                                html+= '<td>'+these_results.blockchains+'</td>';
+                                html+= '<td>';
+                                    if(these_results.addresses === true)
+                                    {
+                                        html+= 'YES';   
+                                    }
+                                    else
+                                    {
+                                        html+= 'NO';
+                                    }
+                                html+= '</td>';
+                                html+= '<td>';
+                                    if(these_results.markets === true)
+                                    {
+                                        html+= 'YES';   
+                                    }
+                                    else
+                                    {
+                                        html+= 'NO';
+                                    }
+                                html+= '</td>';
+                                html+= '<td>';
+                                    if(these_results.paginate === true)
+                                    {
+                                        html+= 'YES';   
+                                    }
+                                    else
+                                    {
+                                        html+= 'NO';
+                                    }
+                                html+= '</td>';
+                            html+= '</tr>';
+                        });
+                    html+= '</tbody>';
+                html+= '</table>';
+                return html;
             },
             tests: function(run)
             {
                 if(!run) run = false;
                 var bs = $.fn.blockstrap;
-                var test_count = 7;
-                var this_count = 0;
                 var set = false;
+                var chain_count = 0;
+                var chain_total = 0;
                 if(typeof bs.settings.tests !== 'undefined')
                 {
                     set = bs.settings.tests.api;
@@ -1466,84 +1583,88 @@ var blockstrap_core = function()
                 {
                     run = false;
                 }
-                if(run)
-                {
-                    bs.api.address(set.address.request, 'btc', function(results)
+                if(
+                    run 
+                    && typeof bs.settings.blockchains != 'undefined' 
+                    && typeof bs.settings.blockchains.btc != 'undefined' 
+                    && typeof bs.settings.blockchains.btc.apis != 'undefined'
+                ){
+                    chain_total = blockstrap_functions.array_length(bs.settings.blockchains.btc.apis);
+                    $.each(bs.settings.blockchains.btc.apis, function(api_service, api_url)
                     {
-                        this_count++;
-                        bs.core.test_results(
-                            set.address.results, 
-                            results, 
-                            this_count, 
-                            test_count,
-                            'api.address('+set.address.request+', btc)'
-                        );
-                    });
-                    bs.api.addresses(set.addresses.request, 'btc', function(results)
-                    {
-                        this_count++;
-                        bs.core.test_results(
-                            set.addresses.results, 
-                            results, 
-                            this_count, 
-                            test_count,
-                            'api.addresses('+set.addresses.request+', btc)'
-                        );
-                    });
-                    bs.api.block(set.block.request, 'btc', function(results)
-                    {
-                        this_count++;
-                        bs.core.test_results(
-                            set.block.results, 
-                            results, 
-                            this_count, 
-                            test_count,
-                            'api.block('+set.block.request+', btc)'
-                        );
-                    });
-                    bs.api.relay(set.relay.request, 'btc', function(results)
-                    {
-                        this_count++;
-                        bs.core.test_results(
-                            set.relay.results, 
-                            results, 
-                            this_count, 
-                            test_count,
-                            'api.relay('+set.relay.request+', btc)'
-                        );
-                    });
-                    bs.api.transaction(set.transaction.request, 'btc', function(results)
-                    {
-                        this_count++;
-                        bs.core.test_results(
-                            set.transaction.results, 
-                            results, 
-                            this_count, 
-                            test_count,
-                            'api.transaction('+set.transaction.request+', btc)'
-                        );
-                    });
-                    bs.api.transactions(set.transactions.request, 'btc', function(results)
-                    {
-                        this_count++;
-                        bs.core.test_results(
-                            set.transactions.results, 
-                            results, 
-                            this_count, 
-                            test_count,
-                            'api.transactions('+set.transactions.request+', btc)'
-                        );
-                    });
-                    bs.api.unspents(set.unspents.request, 'btc', function(results)
-                    {
-                        this_count++;
-                        bs.core.test_results(
-                            set.unspents.results, 
-                            results, 
-                            this_count, 
-                            test_count,
-                            'api.unspents('+set.unspents.request+', btc)'
-                        );
+                        var this_count = 0;
+                        var test_count = '5';
+                        chain_count++;
+                        bs.api.address(set.address.request, 'btc', function(results)
+                        {
+                            this_count++;
+                            bs.core.test_results(
+                                set.address.results, 
+                                results, 
+                                this_count, 
+                                test_count,
+                                'api.address('+set.address.request+', btc)',
+                                api_service,
+                                chain_count,
+                                chain_total
+                            );
+                        }, api_service);
+                        bs.api.block(set.block.request, 'btc', function(results)
+                        {
+                            this_count++;
+                            bs.core.test_results(
+                                set.block.results, 
+                                results, 
+                                this_count, 
+                                test_count,
+                                'api.block('+set.block.request+', btc)',
+                                api_service,
+                                chain_count,
+                                chain_total
+                            );
+                        }, api_service);
+                        bs.api.transaction(set.transaction.request, 'btc', function(results)
+                        {
+                            this_count++;
+                            bs.core.test_results(
+                                set.transaction.results, 
+                                results, 
+                                this_count, 
+                                test_count,
+                                'api.transaction('+set.transaction.request+', btc)',
+                                api_service,
+                                chain_count,
+                                chain_total
+                            );
+                        }, api_service);
+                        bs.api.transactions(set.transactions.request, 'btc', function(results)
+                        {
+                            this_count++;
+                            bs.core.test_results(
+                                set.transactions.results, 
+                                results, 
+                                this_count, 
+                                test_count,
+                                'api.transactions('+set.transactions.request+', btc)',
+                                api_service,
+                                chain_count,
+                                chain_total
+                            );
+                        }, api_service);
+                        bs.api.unspents(set.unspents.request, 'btc', function(results)
+                        {
+                            this_count++;
+                            bs.core.test_results(
+                                set.unspents.results, 
+                                results, 
+                                this_count, 
+                                test_count,
+                                'api.unspents('+set.unspents.request+', btc)',
+                                api_service,
+                                chain_count,
+                                chain_total
+                            );
+                        }, 0, api_service);
                     });
                 }
             },
@@ -1837,7 +1958,8 @@ var blockstrap_core = function()
                     }, skip, false);
                 }
             }, skip, false);
-        }                     
+        }
+        
         if(typeof blockstrap_defaults == 'undefined')
         {
             var bs = $.fn.blockstrap;
@@ -1848,12 +1970,12 @@ var blockstrap_core = function()
             var refresh = blockstrap_functions.vars('refresh');
             var store = true;
             var cache = false;
-            if(typeof bs.settings != 'undefined' && bs.settings)
+            if(typeof bs.settings != 'undefined' && bs.settings && typeof bs.settings.cache != 'undefined')
             {
                 cache = bs.settings.cache;
                 if(cache.config === false) store = false;
             }
-            if(typeof bs.settings.install == 'undefined')
+            if(typeof bs.settings.install === 'undefined')
             {
                 $.fn.blockstrap.settings.install = true;
             }

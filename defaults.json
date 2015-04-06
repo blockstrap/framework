@@ -76,6 +76,7 @@
         "classes": [
             "access", 
             "edit", 
+            "hidden_toggler",
             "login", 
             "logout", 
             "page",
@@ -225,11 +226,9 @@
     },
     "cache": {
         "api": {
-            "address": 60000,
             "timeout": 60000,
             "markets": 60000
         },
-        "pages": 60000,
         "accounts": 60000,
         "dependencies": true,
         "modules": true,
@@ -289,7 +288,6 @@
             "blockchain": "Dogecoin Testnet",
             "lib": "dogecointestnet",
             "apis": {
-                "helloblock": "https://mainnet.helloblock.io/v1/",
                 "blockstrap": "https://api.blockstrap.com/v0/dogt/",
                 "sochain": "https://chain.so/api/v2/"
             },
@@ -443,7 +441,6 @@
                 "functions": {
                     "to": {
                         "address": "address/info/",
-                        "addresses": "address/info/",
                         "block": "block/info/",
                         "relay": "tx/push/",
                         "relay_param": "hex",

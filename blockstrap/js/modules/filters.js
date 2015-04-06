@@ -160,7 +160,12 @@
             else return data;
         }
         else return data;
-    }   
+    } 
+    
+    filters.settings = function(blockstrap, data)
+    {
+        return blockstrap.settings;
+    }
     
     filters.setup = function(blockstrap, data)
     {

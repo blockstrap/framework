@@ -8,6 +8,16 @@
 <link rel='shortcut icon' href='favicon.ico'>
     
 <style>
+html, body {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
 .bs.installing:before,
 .bs.loading:before {
     content: "";
@@ -40,26 +50,55 @@
     margin: -100px 0 0 -150px;
     z-index: 99999999;
 }
+.bs-widget {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    float: left;
+}
+.bs-widget p.intro {
+    display: block;
+    position: relative;
+    top: 50%;
+    margin-top: -15px;
+    text-align: center;
+}
 </style>
 
-<!-- INCLUDE ONE CORE JAVASCRIPT FILE -->
+<!-- INCLUDE REQUIRED DEPENDENCIES MANUALLY -->
+<script src="blockstrap/js/dependencies/jquery.min.js"></script>
+<script src="blockstrap/js/dependencies/bootstrap.min.js"></script>
+<script src="blockstrap/js/dependencies/bitcoinjs-lib.js"></script>
+<script src="blockstrap/js/dependencies/mustache.js"></script>
     
+<!-- INCLUDE REQUIRED THEME DEPENDENCIES MANUALLY -->
+<script src="themes/default/js/dependencies/steps.js"></script>
+    
+<!-- INCLUDE BS FRAMEWORK -->
 <script src="blockstrap/js/blockstrap.js"></script>
+<!-- PLEASE NOTE YOU CAN NOW SET INSTALL TO FALSE IN OPTIONS -->
     
-<!-- ALL OTHER JS AND CSS FILES INCLUDED AUTOMAGICALLY -->
+<!-- INCLUDE REQUIRED MODULES MANUALLY -->
+<script src="blockstrap/js/modules/api.js"></script>
+<script src="blockstrap/js/modules/buttons.js"></script>
+<script src="blockstrap/js/modules/filters.js"></script>
+<script src="blockstrap/js/modules/templates.js"></script>
 
 </head>
 <body>
 
-<!-- SPECIFICALLY TESTING DATA ATTRIBUTES -->
+<!-- BLOCKSTRAP API -->
 <div 
      id="blockstrap"
+     class="bs-widget"
      data-test="true"
      data-refresh="true"
-     data-less="true"
+     data-install="false"
      data-page_base="tests"
      data-api_service="blockstrap"
-     data-plugins="[markets, tests]"
+     data-plugins="false"
+     data-skip_config="true"
      data-loading-content="Installing / Loading Required Files"
 ></div>
 

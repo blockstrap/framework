@@ -683,6 +683,47 @@
         return defaults;
     }
     
+    api.settings = function(chain, provider, direction, key)
+    {
+        var result = false;
+        var bs = $.fn.blockstrap.settings;
+        if(
+            typeof chain != 'undefined'
+            && typeof provider != 'undefined'
+            && typeof direction != 'undefined'
+            && typeof key != 'undefined'
+        ){
+            if(
+                typeof bs.apis.defaults[provider] != 'undefined'
+                && typeof bs.apis.defaults[provider].functions != 'undefined'
+                && typeof bs.apis.defaults[provider].functions[direction] != 'undefined'
+                && typeof bs.apis.defaults[provider].functions[direction][key] != 'undefined'
+            ){
+                return bs.apis.defaults[provider].functions[direction][key];
+            }
+            else
+            {
+                if(
+                    typeof bs.apis[chain] != 'undefined'
+                    && typeof bs.apis[chain][provider] != 'undefined'
+                    && typeof bs.apis[chain][provider].functions != 'undefined'
+                    && typeof bs.apis[chain][provider].functions[direction] != 'undefined'
+                    && typeof bs.apis[chain][provider].functions[direction][key] != 'undefined'
+                ){
+                    return bs.apis[chain][provider].functions[direction][key];
+                }
+                else
+                {
+                    return result;
+                }
+            }
+        }
+        else
+        {
+            return result;
+        }
+    }
+    
     api.transaction = function(txid, blockchain, callback, service, return_raw)
     {
         var original_service = api_service;
@@ -1041,8 +1082,28 @@
         if(api_service == 'blockstrap')
         {
             app_id+= '_v'+blockstrap_functions.slug($.fn.blockstrap.settings.v);
-            if(action == 'stats' || action == 'addresses') url+= '?app_id='+app_id;
-            else url+= '&app_id='+app_id;
+            if(action == 'stats' || action == 'addresses')
+            {
+                if(url.indexOf("?") > -1)
+                {
+                    url+= '&app_id='+app_id;
+                }
+                else
+                {
+                    url+= '?app_id='+app_id;
+                }
+            }
+            else
+            {
+                if(url.indexOf("?") > -1)
+                {
+                    url+= '&app_id='+app_id;
+                }
+                else
+                {
+                    url+= '?app_id='+app_id;
+                }
+            }
         }
         return url;
     }

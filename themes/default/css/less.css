@@ -33,6 +33,8 @@ section,
 summary {
   display: block;
 }
+.black { color: black; }
+#full-results p { text-align: center !important; }
 audio,
 canvas,
 progress,

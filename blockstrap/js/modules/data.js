@@ -12,16 +12,6 @@
 {
     var data = {};
     
-    if(localStorage)
-    {
-        $.fn.blockstrap.settings.info.storage = {
-            local: {
-                used: '' + ((JSON.stringify(localStorage).length * 2) / 1000000) + ' MB',
-                remaining: '' + ((2490000 - (JSON.stringify(localStorage).length * 2)) / 1000000) + ' MB'
-            }
-        };
-    }
-    
     data.find = function(collection, key, callback)
     {
         if(localStorage && localStorage.getItem(data.item(collection, key)))
