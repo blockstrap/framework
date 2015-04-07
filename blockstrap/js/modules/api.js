@@ -1050,8 +1050,20 @@
                 url = blockchains[blockchain].apis[api_service] + call;
             }
         }
+        else if( blockchain != 'multi')
+        {
+            url = blockchains[blockchain].apis[api_service] + apis['defaults'][api_service].functions.to[action] + key;
+            if(apis['defaults'][api_service].functions.to[action].indexOf("$call") > -1)
+            {
+                var call = apis['defaults'][api_service].functions.to[action].replace("$call", key);
+                url = blockchains[blockchain].apis[api_service] + call;
+            }
+        }
         else
         {
+            api_service = 'blockstrap';
+            blockchains = $.fn.blockstrap.settings.blockchains;
+            apis = $.fn.blockstrap.settings.apis;
             url = blockchains[blockchain].apis[api_service] + apis['defaults'][api_service].functions.to[action] + key;
             if(apis['defaults'][api_service].functions.to[action].indexOf("$call") > -1)
             {

@@ -2264,8 +2264,6 @@ var blockstrap_functions = {
                         }
                         if(store === true)
                         {
-                            console.log(file_name);
-                            console.log(js);
                             localStorage.setItem('nw_js_'+file_name, js);
                         }   
                         start++;
