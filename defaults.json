@@ -487,7 +487,7 @@
                             "time": "[time_utc, utctoepoch]",
                             "input": "",
                             "output": "",
-                            "value": "[amount, float]",
+                            "value": "",
                             "fees": "[fee, float]"
                         },
                         "transactions": {
@@ -498,7 +498,7 @@
                             "time": "[time_utc, utc_to_epoch]",
                             "input": "",
                             "output": "",
-                            "value": "[amount, float]",
+                            "value": "",
                             "fees": "[fee, float]"
                         },
                         "unspents": {
@@ -553,7 +553,7 @@
                             "time": "blockTime",
                             "input": "totalInputsValue",
                             "output": "totalOutputsValue",
-                            "value": "estimatedTxValue",
+                            "value": "[totalOutputsValue, -, fees, int]",
                             "fees": "fees"
                         },
                         "transactions": {

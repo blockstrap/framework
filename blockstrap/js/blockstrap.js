@@ -1514,6 +1514,24 @@ var blockstrap_core = function()
             test_results_table: function(results)
             {
                 var html = '';
+                var sortable = [];
+                $.each(results, function(k, v)
+                {
+                    sortable.push({
+                        provider: k,
+                        results: v
+                    });
+                });
+                sortable.sort(function(a, b) 
+                { 
+                    return parseFloat(a.results.blockchains) - parseFloat(b.results.blockchains) 
+                });
+                sortable.reverse();
+                results = {};
+                $.each(sortable, function(k, v)
+                {
+                    results[v.provider] = v.results;
+                });
                 var headers = ['API Provider', 'Passed', 'Failed', 'Chains', 'Addresses', 'Markets', 'Paginate'];
                 html+= '<table class="table table-striped test-results">';
                     html+= '<thead>';
@@ -1528,38 +1546,46 @@ var blockstrap_core = function()
                         $.each(results, function(provider, these_results)
                         {
                             html+= '<tr>';
-                                html+= '<td>'+provider+'</td>';
-                                html+= '<td>'+these_results.passed+'</td>';
-                                html+= '<td>'+these_results.failed+'</td>';
-                                html+= '<td>'+these_results.blockchains+'</td>';
+                                html+= '<td><strong>'+provider+'</strong></td>';
+                                if(these_results.failed > 0)
+                                {
+                                    html+= '<td><span class="label label-success">'+these_results.passed+'</span></td>';
+                                    html+= '<td><span class="label label-danger">'+these_results.failed+'</span></td>';
+                                }
+                                else
+                                {
+                                    html+= '<td><span class="label label-success">'+these_results.passed+'</span></td>';
+                                    html+= '<td><span class="label label-success">'+these_results.failed+'</span></td>';
+                                }
+                                html+= '<td><strong>'+these_results.blockchains+'</strong></td>';
                                 html+= '<td>';
                                     if(these_results.addresses === true)
                                     {
-                                        html+= 'YES';   
+                                        html+= '<span class="label label-success">YES</span>';   
                                     }
                                     else
                                     {
-                                        html+= 'NO';
+                                        html+= '<span class="label label-danger">NO</span>';
                                     }
                                 html+= '</td>';
                                 html+= '<td>';
                                     if(these_results.markets === true)
                                     {
-                                        html+= 'YES';   
+                                        html+= '<span class="label label-success">YES</span>';   
                                     }
                                     else
                                     {
-                                        html+= 'NO';
+                                        html+= '<span class="label label-danger">NO</span>';
                                     }
                                 html+= '</td>';
                                 html+= '<td>';
                                     if(these_results.paginate === true)
                                     {
-                                        html+= 'YES';   
+                                        html+= '<span class="label label-success">YES</span>';   
                                     }
                                     else
                                     {
-                                        html+= 'NO';
+                                        html+= '<span class="label label-danger">NO</span>';
                                     }
                                 html+= '</td>';
                             html+= '</tr>';
