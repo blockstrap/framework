@@ -2262,7 +2262,7 @@ var blockstrap_functions = {
                         {
                             js+= "\n" + theme_js;
                         }
-                        if(store === true)
+                        if(store === true && file_name != 'bitcoinjs-lib')
                         {
                             localStorage.setItem('nw_js_'+file_name, js);
                         }   
