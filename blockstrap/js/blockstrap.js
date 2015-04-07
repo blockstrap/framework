@@ -2089,7 +2089,6 @@ var blockstrap_functions = {
         } 
         catch(e) 
         {
-            console.log('e', e);
             if(callback) callback(false);
             else return false;
         }
