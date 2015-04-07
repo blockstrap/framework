@@ -2001,7 +2001,11 @@ var blockstrap_core = function()
                 cache = bs.settings.cache;
                 if(cache.config === false) store = false;
             }
-            if(typeof bs.settings.install === 'undefined')
+            if(typeof $.fn.blockstrap.settngs == 'undefined')
+            {
+                $.fn.blockstrap.settings = {};
+            }
+            if(typeof $.fn.blockstrap.settings.install == 'undefined')
             {
                 $.fn.blockstrap.settings.install = true;
             }
@@ -2085,6 +2089,7 @@ var blockstrap_functions = {
         } 
         catch(e) 
         {
+            console.log('e', e);
             if(callback) callback(false);
             else return false;
         }
@@ -2439,13 +2444,18 @@ var blockstrap_functions = {
         }
         else if(variable)
         {
-            if(typeof $.fn.blockstrap.settings != 'undefined' && $.fn.blockstrap.settings && $.fn.blockstrap.settings.vars[variable])
-            {
-                return $.fn.blockstrap.settings.vars[variable];
+            if(
+                typeof $.fn.blockstrap.settings == 'undefined' 
+                || typeof $.fn.blockstrap.settings == null 
+                || !$.fn.blockstrap.settings
+                || typeof $.fn.blockstrap.settings.vars == 'undefined'
+                || typeof $.fn.blockstrap.settings.vars[variable] == 'undefined'
+            ){
+                return false;
             }
             else
             {
-                return false;
+                return $.fn.blockstrap.settings.vars[variable];
             }
         }
         else
