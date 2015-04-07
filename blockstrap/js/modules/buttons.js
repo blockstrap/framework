@@ -463,6 +463,15 @@
                                     placeholder: "Enter the JSON export data you would like to import"
                                 }
                             ]
+                        },
+                        {
+                            css: "hidden",
+                            inputs: [
+                                {
+                                    id: "import_file",
+                                    type: "file"
+                                }
+                            ]
                         }
                     ],
                     buttons: {
@@ -493,13 +502,15 @@
                 }
             ]
         });
-        var content = '<p>Import data specifically exported via the backup functionality of this wallet.</p>' + form;
+        var content = '<p>Import data specifically exported via the backup functionality of this wallet. Either click copy and paste and manually insert the information in the textarea then click submit, or click to import a file instead.</p>' + form;
         $.fn.blockstrap.core.modal(title, content);
     }
     
     buttons.import_file = function(button, e)
     {
         e.preventDefault();
+        var bs = $.fn.blockstrap;
+        $(bs.element).find('input#import_file').trigger('click');
     }
     
     buttons.login = function(button, e)

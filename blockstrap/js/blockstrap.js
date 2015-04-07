@@ -484,6 +484,14 @@ var blockstrap_core = function()
                     var year = $(this).parent().find('.bs-dob-year').val();
                     $(field).val(day + '_' + month + '_' + year);
                 });
+                $($.fn.blockstrap.element).on('change', 'input#import_file', function(i)
+                {
+                    $.fn.blockstrap.core.txt(this, function(txt)
+                    {
+                        $($.fn.blockstrap.element).find('textarea#import-data').val(txt);
+                        $($.fn.blockstrap.element).find('button#submit-import').trigger('click');
+                    });
+                });
                 $($.fn.blockstrap.element).on('change', '#access-account', function(i)
                 {
                     var value = $(this).val();
@@ -1692,6 +1700,19 @@ var blockstrap_core = function()
                             );
                         }, 0, api_service);
                     });
+                }
+            },
+            txt: function(input, callback)
+            {
+                if(input.files && input.files[0]) 
+                {
+                    var reader = new FileReader();
+                    reader.onload = function(e) 
+                    {
+                        var image = e.target.result;
+                        callback(image);
+                    };       
+                    reader.readAsText(input.files[0]);
                 }
             },
             upgrade: function(saved_version, this_version, refresh, callback)
