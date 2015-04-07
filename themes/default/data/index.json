@@ -300,7 +300,8 @@
                         {
                             "areas": {
                                 "id": "data",
-                                "css": "data-backup"
+                                "css": "data-backup",
+                                "style": "display: none;"
                             }
                         }
                     ],
@@ -327,6 +328,17 @@
                                     {
                                         "key": "data-form-id",
                                         "value": "backup"
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "copy-salts",
+                                "css": "btn-default pull-right btn-hidden_toggler",
+                                "text": "Copy & Paste",
+                                "attributes": [
+                                    {
+                                        "key": "data-id",
+                                        "value": "data"
                                     }
                                 ]
                             }
