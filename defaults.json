@@ -93,6 +93,7 @@
             "create-contact",
             "create-credentials",
             "edit-object",
+            "import-file",
             "more-security",
             "send-money",
             "set-credentials",

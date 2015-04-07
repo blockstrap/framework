@@ -459,6 +459,7 @@
                             areas: [
                                 {
                                     id: "import-data",
+                                    style: "display: none;",
                                     placeholder: "Enter the JSON export data you would like to import"
                                 }
                             ]
@@ -468,9 +469,24 @@
                         forms: [
                             {
                                 type: "submit",
-                                css: "btn-primary pull-right",
+                                css: "btn-primary pull-right btn-hidden_toggler",
                                 id: "submit-import",
-                                text: "Import"
+                                text: "Submit"
+                            },
+                            {
+                                css: "btn-default pull-right btn-hidden_toggler",
+                                text: "Copy & Paste",
+                                attributes: [
+                                    {
+                                        key: "data-id",
+                                        value: "import-data"
+                                    }
+                                ]
+                            },
+                            {
+                                css: "btn-primary pull-right",
+                                id: "import-file",
+                                text: "Import File"
                             }
                         ]
                     }
@@ -479,6 +495,11 @@
         });
         var content = '<p>Import data specifically exported via the backup functionality of this wallet.</p>' + form;
         $.fn.blockstrap.core.modal(title, content);
+    }
+    
+    buttons.import_file = function(button, e)
+    {
+        e.preventDefault();
     }
     
     buttons.login = function(button, e)
