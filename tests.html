@@ -74,16 +74,17 @@ html, body {
 
 <!-- BLOCKSTRAP API -->
 <div 
-     id="blockstrap"
-     class="bs-widget"
+     id="blockstrap-tests"
+     class="bs-widget bs loading"
      data-test="true"
      data-refresh="true"
      data-install="false"
      data-page_base="tests"
      data-api_service="blockstrap"
      data-plugins="false"
+     data-bootstrap="[modals]"
      data-skip_config="true"
-     data-loading-content="Installing / Loading Required Files"
+     data-loading-content="TESTING ALL SUPPORTED APIs - PLEASE WAIT WHILST WE GET THE RESULTS"
 ></div>
     
 <!-- INCLUDE REQUIRED DEPENDENCIES MANUALLY -->
@@ -105,6 +106,13 @@ html, body {
 <script src="blockstrap/js/modules/buttons.js"></script>
 <script src="blockstrap/js/modules/filters.js"></script>
 <script src="blockstrap/js/modules/templates.js"></script>
+    
+<script>
+$(document).ready(function()
+{
+    $('#blockstrap-tests').blockstrap();
+});
+</script>
 
 </body>
 </html>

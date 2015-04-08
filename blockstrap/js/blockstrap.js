@@ -162,14 +162,15 @@ var blockstrap_core = function()
                 var $bs = blockstrap_functions;
                 var key = bootstrap[index];
                 var url = bs.settings.core_base + 'html/bootstrap/' + key;
-                
+
                 $('.bs.installing').attr('data-loading-content','Now Installing ' + (index + 1) + ' of  '+blockstrap_functions.array_length(bootstrap)+' Bootstrap Snippets');
-                
+
                 var store = false;
                 var refresh = blockstrap_functions.vars('refresh');
                 var snippet = localStorage.getItem('nw_boot_'+key);
                 var cache = $.fn.blockstrap.settings.cache;
                 if(cache.bootstrap === true) store = true;
+
                 if(snippet && store && refresh !== true)
                 {
                     bs.core.boot(bootstrap, key, snippet, index, callback);
