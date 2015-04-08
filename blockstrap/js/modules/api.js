@@ -992,6 +992,10 @@
     {
         var url = false;
         if(!blockchain) blockchain = 'btc';
+        if(apis == 'undefined')
+        {
+            apis = $.fn.blockstrap.settings.apis;
+        }
         if(
             blockchain != 'multi'
             &&
