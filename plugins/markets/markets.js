@@ -49,13 +49,13 @@
     $($.fn.blockstrap.element).on('click', '.btn-markets', function(e)
     {
         e.preventDefault();
-        markets.update(function()
+        markets.updates(function()
         {
             $.fn.blockstrap.core.refresh(function()
             {
                 
             }, $.fn.blockstrap.core.page())
-        });
+        }, true);
     });
     
     markets.filter = function(data)
@@ -170,7 +170,7 @@
         }
     }
     
-    markets.updates = function(callback)
+    markets.updates = function(callback, force_refresh)
     {
         $('.bs.installing').attr('data-loading-content','Now Fetching Market Conditions');
         
@@ -183,6 +183,12 @@
         var ts = 0;
         var cache_time = 60000;
         var now = new Date().getTime();
+        
+        if(typeof force_refresh != 'undefined' && force_refresh != false)
+        {
+            refresh = true;
+        }
+        
         if(
             $.fn.blockstrap.settings
             && $.fn.blockstrap.settings.cache
