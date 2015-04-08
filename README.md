@@ -10,10 +10,12 @@ The Blockstrap Framework is a component of the Blockstrap Stack. It provides a f
 However, please note that the default [wallet]() application included with [core]() allows you to choose which API to use, it does not provide different lists of supported blockchains based on the support of that API. By default, it shows support for six blockchains, but only two of the supported API services provide support for all six chains. Those blockchains supported by [Blockchains.io](http://blockchains.io) and [SoChain](http://chain.so) are:
 
 * [Bitcoin](http://blockchains.io/btc/blocks/)
-* [Litecoin](http://blockchains.io/ltc/blocks/)
+* [DashPay](http://blockchains.io/dash/blocks/)
 * [Dogecoin](http://blockchains.io/doge/blocks/)
+* [Litecoin](http://blockchains.io/ltc/blocks/)
 * [Bitcoin Testnet](http://blockchains.io/btct/blocks/)
 * [Litecoin Testnet](http://blockchains.io/ltct/blocks/)
+* [DashPay Testnet](http://blockchains.io/dast/blocks/)
 * [Dogecoin Testnet](http://blockchains.io/dogt/blocks/)
 
 The Framework has been developed with modularity and flexibility as the focal point of each technical decision. Currently providing a choice of 11 interchangable modules, features can be easily extended, included, replaced or removed depending on the need of each application.
