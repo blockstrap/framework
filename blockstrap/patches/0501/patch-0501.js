@@ -16,6 +16,7 @@
     {
         var accounts = new Array();
         var contacts = new Array();
+        var $bs = blockstrap_functions;
         if(typeof localStorage != 'undefined')
         {
             $.each(localStorage, function(k, v)
