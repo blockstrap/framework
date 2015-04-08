@@ -24,9 +24,9 @@ These [modules](modules/) include:
 
 * [Accounts](http://docs.blockstrap.com/en/framework/modules/accounts/)
 * [API](http://docs.blockstrap.com/en/framework/modules/api/)
+* [Blockchains](http://docs.blockstrap.com/en/framework/modules/blockchains/)
 * [Buttons](http://docs.blockstrap.com/en/framework/modules/buttons/)
 * [Contacts](http://docs.blockstrap.com/en/framework/modules/contacts/)
-* [Blockchains](http://docs.blockstrap.com/en/framework/modules/blockchains/)
 * [Data](http://docs.blockstrap.com/en/framework/modules/data/)
 * [Filters](http://docs.blockstrap.com/en/framework/modules/filters/)
 * [Forms](http://docs.blockstrap.com/en/framework/modules/forms/)
