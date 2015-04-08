@@ -38,6 +38,6 @@ When combined, they form our default deterministic wallet:
 
 ![Wallet Screen-Shot](https://raw.githubusercontent.com/blockstrap/docs/master/_libs/img/docs/applications/wallet/setup.jpg)
 
-A live demo is available for viewing at - [http://demo.blockstrap.com/wallet/v0.4/](http://demo.blockstrap.com/framework/v0.5/).
+A live demo is available for viewing at - [http://demo.blockstrap.com/framework/v0.5/](http://demo.blockstrap.com/framework/v0.5/).
 
 Please see our [documentation](http://docs.blockstrap.com) for more information and instructions on getting started.
