@@ -20,7 +20,7 @@
             "starts": ['L']
         },
         {
-            "code": "drk",
+            "code": "dash",
             "starts": ['X']
         },
         {
@@ -36,7 +36,7 @@
             "starts": ['m, n']
         },
         {
-            "code": "drkt",
+            "code": "dasht",
             "starts": ['y']
         },
         {

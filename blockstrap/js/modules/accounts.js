@@ -304,13 +304,20 @@
     
     accounts.poll = function(wait, callback)
     {
+        var delay = 0;
         var now = new Date().getTime();
-        var delay = $.fn.blockstrap.settings.cache.accounts;
+        if(
+            typeof $.fn.blockstrap.settings.cache != 'undefined'
+            && $.fn.blockstrap.settings.cache
+            && typeof $.fn.blockstrap.settings.cache.accounts != 'undefined'
+        ){
+            delay = $.fn.blockstrap.settings.cache.accounts;
+        }
         var polls = localStorage.getItem('nw_blockstrap_polls');
         if(blockstrap_functions.json(polls)) polls = $.parseJSON(polls);
         if(!$.isPlainObject(polls)) polls = {};
         if(!polls.accounts) polls.accounts = now;
-        if(wait)
+        if(typeof wait != 'undefined' && wait)
         {
             delay = wait;
         }   

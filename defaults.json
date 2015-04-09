@@ -109,7 +109,7 @@
             "name": "Blockstrap Donations",
             "address": "13uXA8zfLjsnrg69f6FcHVRfwBGobYU3bc",
             "blockchain": "btc",
-            "contact_email": "info@neroware.io"
+            "contact_dnk": false
         }
     ],      
     "tests": {
@@ -276,14 +276,13 @@
             },
             "fee": 0.0001
         },
-        "ltct": {
-            "blockchain": "Litecoin Testnet",
-            "lib": "litecointestnet",
+        "dasht": {
+            "blockchain": "DashPay Testnet",
+            "lib": "dashpaytestnet",
             "apis": {
-                "blockstrap": "https://api.blockstrap.com/v0/ltct/",
-                "sochain": "https://chain.so/api/v2/"
+                "blockstrap": "https://api.blockstrap.com/v0/dasht/"
             },
-            "fee": 0.001
+            "fee": 0.0001
         },
         "doget": {
             "blockchain": "Dogecoin Testnet",
@@ -294,13 +293,14 @@
             },
             "fee": 1
         },
-        "drkt": {
-            "blockchain": "Darkcoin Testnet",
-            "lib": "darkcointestnet",
+        "ltct": {
+            "blockchain": "Litecoin Testnet",
+            "lib": "litecointestnet",
             "apis": {
-                "blockstrap": "https://api.blockstrap.com/v0/drkt/"
+                "blockstrap": "https://api.blockstrap.com/v0/ltct/",
+                "sochain": "https://chain.so/api/v2/"
             },
-            "fee": 0.0001
+            "fee": 0.001
         },
         "multi": {
             "private": true,
@@ -319,15 +319,13 @@
             },
             "fee": 0.0001
         },
-        "ltc": {
-            "blockchain": "Litecoin",
-            "lib": "litecoin",
+        "dash": {
+            "blockchain": "DashPay",
+            "lib": "dashpay",
             "apis": {
-                "blockstrap": "https://api.blockstrap.com/v0/ltc/",
-                "sochain": "https://chain.so/api/v2/",
-                "blockr": "http://ltc.blockr.io/api/v1/"
+                "blockstrap": "https://api.blockstrap.com/v0/dash/"
             },
-            "fee": 0.001
+            "fee": 0.0001
         },
         "doge": {
             "blockchain": "Dogecoin",
@@ -339,13 +337,15 @@
             },
             "fee": 1
         },
-        "drk": {
-            "blockchain": "Darkcoin",
-            "lib": "darkcoin",
+        "ltc": {
+            "blockchain": "Litecoin",
+            "lib": "litecoin",
             "apis": {
-                "blockstrap": "https://api.blockstrap.com/v0/drk/"
+                "blockstrap": "https://api.blockstrap.com/v0/ltc/",
+                "sochain": "https://chain.so/api/v2/",
+                "blockr": "http://ltc.blockr.io/api/v1/"
             },
-            "fee": 0.0001
+            "fee": 0.001
         }
     },
     "apis": {
@@ -355,14 +355,16 @@
                     "to": {
                         "address": "address/transactions/",
                         "addresses": "address/ids/",
-                        "transaction": "transaction/id/",
-                        "transactions": "address/transactions/$call?showtxnio=1",
                         "block": "block/height/",
+                        "dnkey": "dnkey/",
+                        "dnkeys": "dnkey/",
                         "market": "market/stats/",
                         "relay": "transaction/relay/",
                         "relay_param": "txn_hex",
-                        "unspents": "address/unspents/$call?showtxnio=1",
-                        "tx_pagination": "records, skip"
+                        "transaction": "transaction/id/",
+                        "transactions": "address/transactions/$call?showtxnio=1",
+                        "tx_pagination": "records, skip",
+                        "unspents": "address/unspents/$call?showtxnio=1"
                     },
                     "from": {
                         "address": {
@@ -390,6 +392,14 @@
                             "next": "[next_block_id, lowercase]",
                             "tx_count": "tx_count",
                             "time": "time"
+                        },
+                        "dnkey": {
+                            "key": "dnkey",
+                            "dnkey": "dnkey"
+                        },
+                        "dnkeys": {
+                            "key": "dnkeys",
+                            "dnkeys": "dnkeys"
                         },
                         "market": {
                             "key": "market",

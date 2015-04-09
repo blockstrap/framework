@@ -251,6 +251,131 @@
         }
     }
     
+    api.dnkey = function(id, blockchain, callback, service, return_raw)
+    {
+        var original_service = api_service;
+        if(service && service !== api_service)
+        {
+            api_service = service;
+        }
+        
+        var api_url = api.url('dnkey', id, blockchain);
+        if(api_url)
+        {
+            api.request(api_url, function(results)
+            {
+                if(return_raw && callback)
+                {
+                    callback(results);
+                }
+                else
+                {
+                    var map = api.map(blockchain);
+                    var dnkeys = {
+                        blockchain: blockchain,
+                        dnkey: false
+                    };
+                    if(results)
+                    {
+                        dnkeys = api.results(dnkeys, results, blockchain, 'dnkey');
+                    }
+                    if(callback) 
+                    {
+                        if(api_service !== original_service)
+                        {
+                            api_service = original_service;
+                        }
+                        callback(dnkeys);
+                    }
+                    else 
+                    {
+                        if(api_service !== original_service)
+                        {
+                            api_service = original_service;
+                        }
+                        return dnkeys;
+                    }
+                }
+            }, 'GET', false, blockchain, 'dnkey');
+        }
+        else if(callback)
+        {
+            callback(false);
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    api.dnkeys = function(id, blockchain, callback, service, return_raw)
+    {
+        var original_service = api_service;
+        if(service && service !== api_service)
+        {
+            api_service = service;
+        }
+        
+        var api_url = api.url('dnkeys', id, blockchain);
+        if(api_url && blockchain == 'multi')
+        {
+            api.request(api_url, function(results)
+            {
+                if(return_raw && callback)
+                {
+                    callback(results);
+                }
+                else
+                {
+                    var map = api.map(blockchain);
+                    var dnkeys = {
+                        blockchain: blockchain,
+                        dnkeys: false
+                    };
+                    if(results)
+                    {
+                        dnkeys = api.results(dnkeys, results, blockchain, 'dnkeys');
+                    }
+                    $.each(dnkeys.dnkeys, function(chain, obj)
+                    {
+                        $.each($.fn.blockstrap.settings.blockchains, function(this_chain, values)
+                        {
+                            if(values.lib == chain)
+                            {
+                                dnkeys.dnkeys[this_chain] = obj;
+                                delete dnkeys.dnkeys[chain];
+                            }   
+                        });
+                    });
+                    if(callback) 
+                    {
+                        if(api_service !== original_service)
+                        {
+                            api_service = original_service;
+                        }
+                        callback(dnkeys);
+                    }
+                    else 
+                    {
+                        if(api_service !== original_service)
+                        {
+                            api_service = original_service;
+                        }
+                        return dnkeys;
+                    }
+                }
+            }, 'GET', false, blockchain, 'dnkeys');
+        }
+        else if(callback)
+        {
+            callback(false);
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
     api.map = function(blockchain)
     {
         if(!blockchain) blockchain = 'btc';
@@ -546,6 +671,15 @@
         var map = api.map(blockchain);
         var bs = $.fn.blockstrap;
         var $bs = blockstrap_functions;
+        
+        if(!$.isPlainObject(results))
+        {
+            var original_results = results;
+            results = {};
+            results[request] = {};
+            results[request][blockchain] = original_results;
+        }
+        
         if(
             defaults && results 
             && blockchain && request 
@@ -675,6 +809,10 @@
                             && typeof results[map.from[request][field_name]] != 'undefined' 
                         ){
                             defaults[field_name] = results[map.from[request][field_name]];
+                        }
+                        else
+                        {
+                            defaults[request] = results;
                         }
                     }
                 }

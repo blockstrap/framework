@@ -26,7 +26,7 @@
                         </th>
                         <th>
                             <div class="cell">
-                                Email
+                                DNKey
                             </div>
                         </th>
                         <th>
@@ -67,14 +67,14 @@
                             </td>
                             <td>
                                 <div class="cell">
-                                    {{#data.contact_email}}
-                                        <a href="mailto:{{data.contact_email}}">
-                                            {{data.contact_email}}
-                                    </a>
-                                    {{/data.contact_email}}
-                                    {{^data.contact_email}}
+                                    {{#data.contact_dnk}}
+                                        <a href="http://api.blockstrap.com/v0/multi/dnkey/{{data.contact_dnk}}?prettyprint=1">
+                                            {{data.contact_dnk}}
+                                        </a>
+                                    {{/data.contact_dnk}}
+                                    {{^data.contact_dnk}}
                                         N / A
-                                    {{/data.contact_email}}
+                                    {{/data.contact_dnk}}
                                 </div>
                             </td>
                             <td>
@@ -82,7 +82,7 @@
                                     
                                     {{#blockchains}}
                                         {{#addresses}}
-                                            <a href="{{urls.root}}?key={{key}}#send" class="btn btn-primary btn-xs">Send</a>
+                                            <a href="{{urls.root}}?key={{key}}#send" class="btn btn-primary btn-xs">Send {{code}}</a>
                                         {{/addresses}}
                                     {{/blockchains}}
                                     

@@ -258,6 +258,27 @@
               }
             });
         }
+        else
+        {
+            if(security)
+            {
+                // UPDATE BALANCES
+                if(blockstrap_functions.array_length(theme.issues) > 0)
+                {
+                    theme.updates();
+                    setInterval(function()
+                    {
+                        $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
+                        {
+                            if(salt)
+                            {
+                                theme.updates();
+                            }
+                        });
+                    }, $.fn.blockstrap.settings.cache.accounts);
+                }
+            }
+        }
     }
     
     theme.updates = function()
@@ -308,84 +329,79 @@
         });
         var address_count = $bs.array_length(addresses);
         var diffs = {};
-        bs.data.find('blockstrap', 'salt', function(salt)
+
+        bs.api.addresses(addresses, 'btc', function(results)
         {
-            if(salt)
+            if($.isArray(results))
             {
-                bs.api.addresses(addresses, 'btc', function(results)
+                $.each(results, function(k, obj)
                 {
-                    if($.isArray(results))
+                    count++;
+                    var this_obj = {};
+                    bs.data.find('issue', obj.address, function(saved_obj)
                     {
-                        $.each(results, function(k, obj)
+                        var tx_count = 0;
+                        if($bs.json(saved_obj)) saved_obj = $.parseJSON(saved_obj);
+                        if(saved_obj.tx_count) tx_count = saved_obj.tx_count;
+                        this_obj.address = obj.address;
+                        this_obj.balance = obj.balance;
+                        this_obj.received = obj.received;
+                        this_obj.tx_count = obj.tx_count;
+                        $.each(theme.issues, function(k, issue)
                         {
-                            count++;
-                            var this_obj = {};
-                            bs.data.find('issue', obj.address, function(saved_obj)
+                            if(issue.address == this_obj.address)
                             {
-                                var tx_count = 0;
-                                if($bs.json(saved_obj)) saved_obj = $.parseJSON(saved_obj);
-                                if(saved_obj.tx_count) tx_count = saved_obj.tx_count;
-                                this_obj.address = obj.address;
-                                this_obj.balance = obj.balance;
-                                this_obj.received = obj.received;
-                                this_obj.tx_count = obj.tx_count;
-                                $.each(theme.issues, function(k, issue)
+                                this_obj.slug = $bs.slug(issue.title);
+                            }
+                        });
+                        obj = this_obj;
+                        if(tx_count < obj.tx_count)
+                        {
+                            txs.push(obj);
+                            diffs['id_'+obj.address] = obj.tx_count - tx_count;
+                        }
+                        balance = balance + obj.balance;
+                        bs.data.save('issue', obj.address, obj, function()
+                        {
+                            bs.data.save('issue', 'balance', balance, function()
+                            {   
+                                if(count >= address_count)
                                 {
-                                    if(issue.address == this_obj.address)
+                                    if($bs.array_length(txs) > 0)
                                     {
-                                        this_obj.slug = $bs.slug(issue.title);
-                                    }
-                                });
-                                obj = this_obj;
-                                if(tx_count < obj.tx_count)
-                                {
-                                    txs.push(obj);
-                                    diffs['id_'+obj.address] = obj.tx_count - tx_count;
-                                }
-                                balance = balance + obj.balance;
-                                bs.data.save('issue', obj.address, obj, function()
-                                {
-                                    bs.data.save('issue', 'balance', balance, function()
-                                    {   
-                                        if(count >= address_count)
+                                        var title = 'Attention';
+                                        $.each(txs, function(key, tx)
                                         {
-                                            if($bs.array_length(txs) > 0)
+                                            bs.api.transactions(
+                                                tx.address, 
+                                                'btc',
+                                                function(transactions)
                                             {
-                                                var title = 'Attention';
-                                                $.each(txs, function(key, tx)
+                                                if($.isArray(transactions))
                                                 {
-                                                    bs.api.transactions(
-                                                        tx.address, 
-                                                        'btc',
-                                                        function(transactions)
+                                                    var trans = transactions.slice(0, diffs['id_'+tx.address]);
+                                                    $.each(
+                                                        trans, 
+                                                        function(k, tran)
                                                     {
-                                                        if($.isArray(transactions))
+                                                        content+= para(tran, tx.address);
+                                                        if(k + 1 >= $bs.array_length(trans) && key + 1 >= $bs.array_length(txs))
                                                         {
-                                                            var trans = transactions.slice(0, diffs['id_'+tx.address]);
-                                                            $.each(
-                                                                trans, 
-                                                                function(k, tran)
+                                                            theme.issues = [];
+                                                            bs.core.refresh(function()
                                                             {
-                                                                content+= para(tran, tx.address);
-                                                                if(k + 1 >= $bs.array_length(trans) && key + 1 >= $bs.array_length(txs))
-                                                                {
-                                                                    theme.issues = [];
-                                                                    bs.core.refresh(function()
-                                                                    {
-                                                                        bs.core.modal(title, content);
-                                                                    }, 'index', false);
-                                                                }
-                                                            });
+                                                                bs.core.modal(title, content);
+                                                            }, 'index', false);
                                                         }
                                                     });
-                                                });
-                                            }
-                                        }
-                                    });
-                                });
+                                                }
+                                            });
+                                        });
+                                    }
+                                }
                             });
                         });
-                    }
+                    });
                 });
             }
         });
@@ -553,7 +569,19 @@
         }
     }
     
+    theme.relayout = function(callback)
+    {
+        $('#issues').isotope('layout', callback);
+    }
+    
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {theme:theme});
+    
+    $.fn.blockstrap.core.add_action(
+        'ready', 
+        'resize_isotope',
+        'theme', 
+        'relayout'
+    );
 })
 (jQuery);

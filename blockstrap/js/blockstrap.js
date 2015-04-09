@@ -645,7 +645,7 @@ var blockstrap_core = function()
                 {
                     // CALLBACK UPON COMPLETION
                     var init_callback = function(nav)
-                    {                  
+                    {       
                         bs.core.modals();
                         bs.core.buttons();
 
@@ -704,6 +704,13 @@ var blockstrap_core = function()
                         {
                             if(typeof bs.accounts != 'undefined' && $.isPlainObject(bs.accounts))
                             {
+                                if(
+                                    typeof bs.settings.cache == 'undefined'
+                                    || bs.settings.cache == false
+                                ){
+                                    bs.settings.cache = {};
+                                    bs.settings.cache.accounts = 60000;
+                                }
                                 setInterval(function()
                                 {
                                     bs.accounts.poll();
@@ -794,15 +801,6 @@ var blockstrap_core = function()
                 }
                 else
                 {
-                    var theme = localStorage.getItem('nw_blockstrap_theme');
-                    if(blockstrap_functions.json(theme)) theme = $.parseJSON(theme);
-                    if(theme != $.fn.blockstrap.settings.theme)
-                    {
-                        localStorage.setItem(
-                            'nw_blockstrap_theme',
-                            JSON.stringify($.fn.blockstrap.settings.theme)
-                        );
-                    }
                     $.fn.blockstrap.core.defaults();
                     $.fn.blockstrap.core.init();
                 }
@@ -2045,7 +2043,7 @@ var blockstrap_core = function()
             var $bs = blockstrap_functions;
             var config = localStorage.getItem('nw_inc_config');
             if(blockstrap_functions.json(config)) config = $.parseJSON(config);
-            $.fn.blockstrap.settings = config;
+            
             var refresh = blockstrap_functions.vars('refresh');
             var store = true;
             var cache = false;
@@ -2066,6 +2064,19 @@ var blockstrap_core = function()
             {
                 config = false;
             }
+            
+            var theme = localStorage.getItem('nw_blockstrap_theme');
+            if(blockstrap_functions.json(theme)) theme = $.parseJSON(theme);
+
+            if(config && $.fn.blockstrap.settings.theme != config.theme)
+            {
+                localStorage.setItem(
+                    'nw_blockstrap_theme',
+                    JSON.stringify(config.theme)
+                );
+                refresh = true;
+            }
+            
             if(!config || refresh === true || store === false)
             {
                 $.ajax({

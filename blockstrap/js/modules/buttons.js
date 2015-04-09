@@ -182,6 +182,7 @@
     buttons.create_contact = function(button, e)
     {
         e.preventDefault();
+        var dnkeys = false;
         var contact = {};
         var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form'));
         $(button).addClass('loading');
@@ -211,14 +212,9 @@
                             contact[$(this).find('input.optional').attr('id')] = value;
                         }
                     }
-                    else if(!value && !$(this).find('select').hasClass('extra-fields'))
+                    else if(value && $(this).find('input').length > 0)
                     {
-                        var label = false;
-                        if($(this).find('label').html()) label = $(this).find('label').html();
-                        if(label) $.fn.blockstrap.core.modal('Error', 'Value for "'+label+'" Required');
-                        else $.fn.blockstrap.core.modal('Error', 'Value Required');
-                        $.fn.blockstrap.core.loader('close');
-                        return false;
+                        contact[$(this).find('input').attr('id')] = value;
                     }
                 }
             });
@@ -246,10 +242,69 @@
                 }
             )
         }
+        else if(
+            contact 
+            && contact.contact_name 
+            && contact.contact_dnk
+        ){
+            var func = 'dnkey';
+            var chain = 'multi';
+            if(contact.contact_blockchain)
+            {
+                chain = contact.contact_blockchain;
+            }
+            if(chain == 'multi')
+            {
+                func = 'dnkeys';
+            }
+            $.fn.blockstrap.api[func](
+                contact.contact_dnk, 
+                chain, 
+                function(results)
+                {
+                    if(chain == 'multi')
+                    {
+                        dnkeys = results.dnkeys;
+                    }
+                    else
+                    {
+                        dnkeys = results.dnkey;
+                    }
+                    if(dnkeys)
+                    {
+                        $.fn.blockstrap.contacts.new(
+                            contact.contact_name, 
+                            dnkeys,
+                            contact.contact_blockchain,
+                            contact,
+                            function(contact)
+                            {
+                                $(button).removeClass('loading');
+                                /* NEED TO RESET THE INDEX HTML AND DATA */
+                                $.fn.blockstrap.templates.render('contacts', function()
+                                {
+                                    $.fn.blockstrap.core.ready();
+                                    $.fn.blockstrap.core.loader('close');
+                                }, $.fn.blockstrap.core.page());
+                            }
+                        )
+                    }
+                    else
+                    {
+                        $.fn.blockstrap.core.loader('close');
+                        $.fn.blockstrap.core.modal('Error', 'No DNKeys associated with this ID.');
+                        $(button).removeClass('loading');
+                        return false;
+                    }
+                }, 
+                'blockstrap'
+            );
+        }
         else
         {
             $.fn.blockstrap.core.loader('close');
             $.fn.blockstrap.core.modal('Error', 'Missing contact requirements');
+            $(button).removeClass('loading');
             return false;
         }
     }
@@ -270,9 +325,9 @@
         if(blockstrap_functions.json(obj)) obj = $.parseJSON(obj);
         if($.isPlainObject(obj))
         {
-            var email = 'N / A';
+            var dnk = false;
             var title = 'Edit Contact Details';
-            if(obj.data.contact_email) email = obj.data.contact_email;
+            if(obj.data.contact_dnk) dnk = obj.data.contact_dnk;
             var contact_fields = [
                 {
                     inputs: {
@@ -290,13 +345,13 @@
                 },
                 {
                     inputs: {
-                        id: "email",
+                        id: "dnk",
                         label: {
-                            text: "Email",
+                            text: "DNKey ID",
                             css: "col-xs-3"
                         },
-                        type: "",
-                        value: email,
+                        type: "text",
+                        value: dnk,
                         wrapper: {
                             css: "col-xs-9"
                         }
@@ -393,9 +448,9 @@
             var input = $(this).find('input');
             var value = $(input).val();
             var id = $(input).attr('id');
-            if(id.indexOf('email') > -1)
+            if(id.indexOf('dnk') > -1)
             {
-                obj.data.contact_email = value;
+                obj.data.contact_dnk = value;
             }
             else if(id.indexOf('name') > -1)
             {
@@ -1345,13 +1400,13 @@
                                 {
                                     value = address.key;
                                     text = contact.name +': '+ blockchain.blockchain;
+                                    if(value && text)
+                                    {
+                                        options+= '<option value="' + value + '">' + text + '</option>';
+                                    }
                                 });
                             }
                         });
-                    }
-                    if(value && text)
-                    {
-                        options+= '<option value="' + value + '">' + text + '</option>';
                     }
                 });
                 if(options)

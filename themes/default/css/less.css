@@ -7099,6 +7099,9 @@ FORMS
 .blockstrap-wrapper form .actions .btn.pull-right {
   margin: calc(10px) 0 0 calc(10px);
 }
+.blockstrap-wrapper .padless form .actions .btn.pull-right {
+  margin: 15px 15px 15px 0;
+}
 .blockstrap-wrapper form .bootstrap-switch {
   background: #ffffee;
   border: 1px solid #cccccc;

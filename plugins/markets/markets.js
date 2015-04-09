@@ -173,7 +173,7 @@
     markets.updates = function(callback, force_refresh)
     {
         $('.bs.installing').attr('data-loading-content','Now Fetching Market Conditions');
-        
+     
         var saved_conditions = localStorage.getItem('nw_market_conditions');
         if(blockstrap_functions.json(saved_conditions))
         {

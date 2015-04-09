@@ -3716,7 +3716,7 @@
                     feePerKb: 1e4,
                     estimateFee: estimateFee("bitcointestnet")
                 },
-                darkcoin: {
+                dashpay: {
                     magicPrefix: "Darkcoin Signed Message:\n",
                     bip32: {
                         "public": 76067358,
@@ -3727,9 +3727,9 @@
                     wif: 204, // DONE
                     dustThreshold: 546,
                     feePerKb: 1e4,
-                    estimateFee: estimateFee("darkcoin")
+                    estimateFee: estimateFee("dashpay")
                 },
-                darkcointestnet: {
+                dashpaytestnet: {
                     magicPrefix: "Darkcoin Signed Message:\n",
                     bip32: {
                         "public": 70617039,
@@ -3740,7 +3740,7 @@
                     wif: 239, // DONE
                     dustThreshold: 546,
                     feePerKb: 1e4,
-                    estimateFee: estimateFee("darkcointestnet")
+                    estimateFee: estimateFee("dashpaytestnet")
                 },
                 dogecoin: {
                     magicPrefix: "Dogecoin Signed Message:\n",
