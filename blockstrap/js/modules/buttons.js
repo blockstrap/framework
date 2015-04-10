@@ -1217,7 +1217,7 @@
                 {
                     $.each(contacts, function(k, v)
                     {
-                        localStorage.setItem('nw_contacts_' + k, JSON.stringify(v));
+                        localStorage.setItem('nw_contacts_' + v.id, JSON.stringify(v));
                     });
                 }
                 if($.isPlainObject(keys))
