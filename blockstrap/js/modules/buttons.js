@@ -233,6 +233,7 @@
                 contact,
                 function(contact)
                 {
+                    $(button).removeClass('loading');
                     /* NEED TO RESET THE INDEX HTML AND DATA */
                     $.fn.blockstrap.templates.render('contacts', function()
                     {
@@ -275,7 +276,7 @@
                         $.fn.blockstrap.contacts.new(
                             contact.contact_name, 
                             dnkeys,
-                            contact.contact_blockchain,
+                            contact.chain,
                             contact,
                             function(contact)
                             {
@@ -291,6 +292,7 @@
                     }
                     else
                     {
+                        $(button).removeClass('loading');
                         $.fn.blockstrap.core.loader('close');
                         $.fn.blockstrap.core.modal('Error', 'No DNKeys associated with this ID.');
                         $(button).removeClass('loading');
@@ -302,6 +304,7 @@
         }
         else
         {
+            $(button).removeClass('loading');
             $.fn.blockstrap.core.loader('close');
             $.fn.blockstrap.core.modal('Error', 'Missing contact requirements');
             $(button).removeClass('loading');

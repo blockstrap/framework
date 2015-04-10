@@ -43,7 +43,7 @@
             if(!$.isPlainObject(address))   
             {
                 addresses = {};
-                addresses[blockchain].address = address;
+                addresses[blockchain] = address;
             }
             if(name && fields)
             {

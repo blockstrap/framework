@@ -247,6 +247,10 @@
     
     blockchains.validate = function(address)
     {
+        if($.isPlainObject(address) && typeof address.address != 'undefined')
+        {
+            address = address.address;
+        }
         try 
         {
             var results = blockchains.check(address);
