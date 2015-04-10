@@ -1,6 +1,6 @@
 /*
  * 
- *  Blockstrap v0.5.0.1
+ *  Blockstrap v0.5.0.2
  *  http://blockstrap.com
  *
  *  Designed, Developed and Maintained by Neuroware.io Inc
@@ -1751,7 +1751,21 @@ var blockstrap_core = function()
                         && stored_version_array[1] < 5
                     )
                     {
-                        $.fn.blockstrap.core.patch('0501', callback);
+                        $.fn.blockstrap.core.patch('0501', function()
+                        {
+                            $.fn.blockstrap.core.patch('0502', callback);
+                        });
+                    }
+                    else if(
+                        $.isArray(stored_version_array)
+                        && $.isArray(current_version_array)
+                        && blockstrap_functions.array_length(current_version_array) > 3
+                        && blockstrap_functions.array_length(stored_version_array) > 3
+                        && stored_version_array[1] == 5
+                        && stored_version_array[2] == 0
+                        && stored_version_array[3] == 1
+                    ){
+                        $.fn.blockstrap.core.patch('0502', callback);
                     }
                     else
                     {

@@ -1,6 +1,6 @@
 /*
  * 
- *  Blockstrap v0.5.0.1
+ *  Blockstrap v0.5.0.2
  *  http://blockstrap.com
  *
  *  Designed, Developed and Maintained by Neuroware.io Inc
@@ -259,7 +259,6 @@
                     css = 'to';
                     verb = 'from';
                 }
-
                 var base = $.fn.blockstrap.settings.base_url;
                 var intro = value + ' ' + $.fn.blockstrap.settings.blockchains[txc].blockchain;
                 var html = '<a href="' + base + '?txid=' + tx.txid +'#transaction">' + intro + '</a>';

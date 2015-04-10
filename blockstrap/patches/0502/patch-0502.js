@@ -10,12 +10,11 @@
 
 (function($) 
 {
-    var patch0501 = {};
+    var patch0502 = {};
     
-    patch0501.init = function(callback)
+    patch0502.init = function(callback)
     {
         var accounts = new Array();
-        var contacts = new Array();
         var $bs = blockstrap_functions;
         if(typeof localStorage != 'undefined')
         {
@@ -23,20 +22,35 @@
             {
                 if(k.substring(0, 12) == "nw_accounts_") 
                 {
+                    var new_chain = {
+                        code: 'dash',
+                        type: 'DashPay',
+                        original: 'drk'
+                    };
                     var account = $.parseJSON(v);
-                    if(typeof account.currency != 'undefined')
+                    if(account.blockchain.code == 'drk' || account.blockchain.code == 'drkt')
                     {
-                        account.blockchain = account.currency;
+                        if(account.blockchain.code == 'drkt')
+                        {
+                            new_chain.code = 'dasht';
+                            new_chain.type = 'DashPay Testnet';
+                            new_chain.original = 'drkt';
+                        }
+                        account.blockchain = new_chain;
                         delete account.currency;
                         // Now need to update TXS
                         if($.isPlainObject(account.txs) && $bs.array_length(account.txs) > 0)
                         {
                             $.each(account.txs, function(txk, txv)
                             {
-                                if(typeof txv.currency != 'undefined')
+                                var new_tx_chain = 'dash';
+                                if(txv.blockchain == 'drk' || txv.blockchain == 'drkt')
                                 {
-                                    account.txs[txk].blockchain = account.txs[txk].currency;
-                                    delete account.txs[txk].currency;
+                                    if(txv.blockchain == 'drkt')
+                                    {
+                                        new_tx_chain = 'dasht';
+                                    }
+                                    account.txs[txk].blockchain = new_tx_chain;
                                 }
                             });
                         }
@@ -44,29 +58,13 @@
                     }
                     accounts.push(account);
                 }
-                else if(k.substring(0, 12) == "nw_contacts_") 
-                {
-                    var contact = $.parseJSON(v);
-                    if(typeof contact.currencies != 'undefined')
-                    {
-                        var bc = contact.currencies;
-                        delete contact.currencies;
-                        contact.blockchains = {
-                            code: bc.code,
-                            blockchain: bc.currency,
-                            addresses: bc.addresses
-                        }
-                        localStorage.setItem(k, JSON.stringify(contact));
-                    }
-                    contacts.push(contact);
-                }
             });
         }
         callback();
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
-    $.extend(true, $.fn.blockstrap.patches, {patch0501:patch0501});
+    $.extend(true, $.fn.blockstrap.patches, {patch0502:patch0502});
     
 })
 (jQuery);

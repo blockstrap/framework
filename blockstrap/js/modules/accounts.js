@@ -1,6 +1,6 @@
 /*
  * 
- *  Blockstrap v0.5.0.1
+ *  Blockstrap v0.5.0.2
  *  http://blockstrap.com
  *
  *  Designed, Developed and Maintained by Neuroware.io Inc
@@ -669,10 +669,19 @@
         $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
         {
             var key = '';
+            var original = false;
             if($.isArray(fields))
             {
+                if(typeof account.blockchain.original != 'undefined')
+                {
+                    original = account.blockchain.original;
+                }
                 $.each(fields, function(k, v)
                 {
+                    if(v.id == 'wallet_currency' && original)
+                    {
+                        v.value = original;
+                    }
                     key_obj = CryptoJS.SHA3(salt+key+v.id+v.value, { outputLength: 512 });
                     key = key_obj.toString();
                 });
