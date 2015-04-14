@@ -43,7 +43,8 @@
             if(!$.isPlainObject(address))   
             {
                 addresses = {};
-                addresses[blockchain] = address;
+                addresses[blockchain] = [];
+                addresses[blockchain].push(address);
             }
             if(name && fields)
             {
@@ -60,9 +61,13 @@
                         var blockchains_to_save = [];
                         $.each(addresses, function(chain, obj)
                         {
-                            var address = obj;
+                            var address = obj[0];
                             var blockchain = chain;
-                            if($.fn.blockstrap.blockchains.which(address) != blockchain)
+                            if(!$.fn.blockstrap.blockchains.supported(blockchain))
+                            {
+                                // NOTHING
+                            }
+                            else if($.fn.blockstrap.blockchains.which(address) != blockchain)
                             {
                                 var which = $.fn.blockstrap.blockchains.which(address);
                                 var blockchains = $.fn.blockstrap.settings.blockchains;

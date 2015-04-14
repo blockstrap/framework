@@ -273,7 +273,7 @@
                     var map = api.map(blockchain);
                     var dnkeys = {
                         blockchain: blockchain,
-                        dnkey: false
+                        dnkeys: false
                     };
                     if(results)
                     {

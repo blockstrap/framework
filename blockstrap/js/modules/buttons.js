@@ -263,14 +263,7 @@
                 chain, 
                 function(results)
                 {
-                    if(chain == 'multi')
-                    {
-                        dnkeys = results.dnkeys;
-                    }
-                    else
-                    {
-                        dnkeys = results.dnkey;
-                    }
+                    dnkeys = results.dnkeys;
                     if(dnkeys)
                     {
                         $.fn.blockstrap.contacts.new(

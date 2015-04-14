@@ -245,6 +245,25 @@
         });
     }
     
+    blockchains.supported = function(blockchain)
+    {
+        if(
+            typeof blockchain != 'undefined'
+            && typeof $.fn.blockstrap.settings.blockchains != 'undefined'
+            && $.isPlainObject($.fn.blockstrap.settings.blockchains)
+        ){
+            if(typeof index == 'undefined') index = 0;
+            var bc_count = 0;
+            var chains = $.fn.blockstrap.settings.blockchains;
+            if(typeof chains[blockchain] != 'undefined') return true;
+            else return false;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
     blockchains.validate = function(address)
     {
         if($.isPlainObject(address) && typeof address.address != 'undefined')

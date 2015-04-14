@@ -394,11 +394,11 @@
                             "time": "time"
                         },
                         "dnkey": {
-                            "key": "dnkey",
-                            "dnkey": "dnkey"
+                            "key": "",
+                            "dnkeys": "dnkeys"
                         },
                         "dnkeys": {
-                            "key": "dnkeys",
+                            "key": "",
                             "dnkeys": "dnkeys"
                         },
                         "market": {
