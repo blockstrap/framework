@@ -65,6 +65,22 @@
         return address.charAt(0);
     }
     
+    blockchains.decode = function(script_pub_key)
+    {
+        var str = '';
+        var op_return = bitcoin.Script.fromHex(script_pub_key).toASM();
+        var op_array = op_return.split('OP_RETURN ');
+        if(blockstrap_functions.array_length(op_array) == 2)
+        {
+            var hex = op_array[1];
+            for (var i = 0; i < hex.length; i += 2)
+            {
+                str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+            }
+        }
+        return str;
+    }
+    
     blockchains.key = function(code)
     {
         var bs = $.fn.blockstrap;
@@ -108,7 +124,7 @@
         return keys;
     }
     
-    blockchains.raw = function(return_to, privkey, inputs, outputs, this_fee, amount_to_send)
+    blockchains.raw = function(return_to, privkey, inputs, outputs, this_fee, amount_to_send, data)
     {
         tx = new bitcoin.Transaction();
         
@@ -143,6 +159,18 @@
         {
             tx.addOutput(o.address, o.value)
         });
+        if(typeof data == 'string')
+        {
+            var msg = 'http://demo.blockstrap.com';
+            var op = Crypto.util.base64ToBytes(btoa(msg));
+            var op_out = bitcoin.Script.fromHex(op).toBuffer();
+            var op_return = bitcoin.Script.fromChunks(
+            [
+                bitcoin.opcodes.OP_RETURN,
+                op_out
+            ]);
+            tx.addOutput(op_return, 0);
+        }
         if(balance >= (total + fee))
         {
             var change = balance - (total + fee);
@@ -170,7 +198,8 @@
         from_address, 
         keys, 
         callback, 
-        blockchain
+        blockchain,
+        data
     ){
         var available_balance = 0;
         var private_key = keys.priv;
@@ -214,7 +243,8 @@
                             inputs, 
                             outputs, 
                             fee, 
-                            to_amount
+                            to_amount,
+                            data
                         );
                         $.fn.blockstrap.api.relay(raw_transaction, blockchain, function(tx)
                         {
