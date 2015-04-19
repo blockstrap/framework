@@ -161,8 +161,7 @@
         });
         if(typeof data == 'string')
         {
-            var msg = 'http://demo.blockstrap.com';
-            var op = Crypto.util.base64ToBytes(btoa(msg));
+            var op = Crypto.util.base64ToBytes(btoa(data));
             var op_out = bitcoin.Script.fromHex(op).toBuffer();
             var op_return = bitcoin.Script.fromChunks(
             [

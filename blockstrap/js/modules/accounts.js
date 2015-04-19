@@ -64,6 +64,23 @@
                 });
             })
         }
+        if(is_tx === true)
+        {
+            fields.push({
+                inputs: {
+                    id: 'msg',
+                    type: 'text',
+                    label: {
+                        css: 'col-xs-3',
+                        text: 'OP_Return'
+                    },
+                    wrapper: {
+                        css: 'col-xs-9'
+                    },
+                    placeholder: 'Optional Message to Encode on Chain'
+                }
+            });
+        }
         var options = {
             css: 'form-horizontal',
             objects: [
