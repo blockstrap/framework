@@ -1290,9 +1290,9 @@
                         ){
                             op_limit = blockchain_settings[blockchain].op_limit;
                         }
-                        var m = encodeURIComponent('OP_RETURN '+value).match(/%[89ABab]/g);
+                        var m = encodeURIComponent(value).match(/%[89ABab]/g);
                         var value_len = value.length + (m ? m.length : 0);
-                        if(value_len < op_limit)
+                        if(value_len < (op_limit - 1))
                         {
                             op_return_data = value;
                         }

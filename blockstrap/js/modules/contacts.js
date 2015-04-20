@@ -70,12 +70,15 @@
                             else if($.fn.blockstrap.blockchains.which(address) != blockchain)
                             {
                                 var which = $.fn.blockstrap.blockchains.which(address);
-                                var blockchains = $.fn.blockstrap.settings.blockchains;
-                                var blockchain_name = blockchains[which].blockchain;
-                                var blockchain_selected = blockchains[blockchain].blockchain;
-                                $.fn.blockstrap.core.loader('close');
-                                $.fn.blockstrap.core.modal('Warning', 'This address does not match the blockchain you selected. You selected '+blockchain_name+' but the address you entered appears to be for '+blockchain_selected+'. This is not 100% accurate, and could be an internal problem.');
-                                return false;
+                                if(which)
+                                {
+                                    var blockchains = $.fn.blockstrap.settings.blockchains;
+                                    var blockchain_name = blockchains[which].blockchain;
+                                    var blockchain_selected = blockchains[blockchain].blockchain;
+                                    $.fn.blockstrap.core.loader('close');
+                                    $.fn.blockstrap.core.modal('Warning', 'This address does not match the blockchain you selected. You selected '+blockchain_name+' but the address you entered appears to be for '+blockchain_selected+'. This is not 100% accurate, and could be an internal problem.');
+                                    return false;
+                                }
                             }
                             else
                             {
