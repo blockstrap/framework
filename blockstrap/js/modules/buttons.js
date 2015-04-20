@@ -1277,7 +1277,7 @@
                     {
                         var m = encodeURIComponent(value).match(/%[89ABab]/g);
                         var value_len = value.length + (m ? m.length : 0);
-                        if(value_len < 40)
+                        if(value_len < 60)
                         {
                             op_return_data = value;
                         }
