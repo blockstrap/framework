@@ -274,7 +274,9 @@
                 "sochain": "https://chain.so/api/v2/",
                 "blockr": "http://tbtc.blockr.io/api/v1/"
             },
-            "fee": 0.0001
+            "fee": 0.0001,
+            "op_return": true,
+            "op_limit": 80
         },
         "dasht": {
             "blockchain": "DashPay Testnet",
@@ -282,7 +284,9 @@
             "apis": {
                 "blockstrap": "https://api.blockstrap.com/v0/dasht/"
             },
-            "fee": 0.0001
+            "fee": 0.0001,
+            "op_return": true,
+            "op_limit": 80
         },
         "doget": {
             "blockchain": "Dogecoin Testnet",
@@ -291,7 +295,9 @@
                 "blockstrap": "https://api.blockstrap.com/v0/dogt/",
                 "sochain": "https://chain.so/api/v2/"
             },
-            "fee": 1
+            "fee": 1,
+            "op_return": true,
+            "op_limit": 80
         },
         "ltct": {
             "blockchain": "Litecoin Testnet",
@@ -300,7 +306,9 @@
                 "blockstrap": "https://api.blockstrap.com/v0/ltct/",
                 "sochain": "https://chain.so/api/v2/"
             },
-            "fee": 0.001
+            "fee": 0.001,
+            "op_return": true,
+            "op_limit": 80
         },
         "multi": {
             "private": true,
@@ -317,7 +325,9 @@
                 "sochain": "https://chain.so/api/v2/",
                 "blockr": "http://btc.blockr.io/api/v1/"
             },
-            "fee": 0.0001
+            "fee": 0.0001,
+            "op_return": true,
+            "op_limit": 80
         },
         "dash": {
             "blockchain": "DashPay",
@@ -325,7 +335,9 @@
             "apis": {
                 "blockstrap": "https://api.blockstrap.com/v0/dash/"
             },
-            "fee": 0.0001
+            "fee": 0.0001,
+            "op_return": true,
+            "op_limit": 80
         },
         "doge": {
             "blockchain": "Dogecoin",
@@ -335,7 +347,9 @@
                 "sochain": "https://chain.so/api/v2/",
                 "blockr": "http://dgc.blockr.io/api/v1/"
             },
-            "fee": 1
+            "fee": 1,
+            "op_return": true,
+            "op_limit": 80
         },
         "ltc": {
             "blockchain": "Litecoin",
@@ -345,7 +359,9 @@
                 "sochain": "https://chain.so/api/v2/",
                 "blockr": "http://ltc.blockr.io/api/v1/"
             },
-            "fee": 0.001
+            "fee": 0.001,
+            "op_return": true,
+            "op_limit": 80
         }
     },
     "apis": {

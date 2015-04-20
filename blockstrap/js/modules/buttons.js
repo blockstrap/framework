@@ -1266,6 +1266,14 @@
                     var input = $(this).find('input');
                     var value = $(input).val();
                     var id = $(input).attr('id');
+                    var use_op_return = false;
+                    var blockchain_settings = $.fn.blockstrap.settings.blockchains;
+                    if(
+                        typeof blockchain_settings[blockchain] != 'undefined'
+                        && blockchain_settings[blockchain].op_return === true
+                    ){
+                        use_op_return = true;
+                    }
                     if(id != 'msg')
                     {
                         fields.push({
@@ -1273,11 +1281,18 @@
                             value: value
                         });
                     }
-                    else
+                    else if(use_op_return === true)
                     {
-                        var m = encodeURIComponent(value).match(/%[89ABab]/g);
+                        var op_limit = 0;
+                        if(
+                            typeof blockchain_settings[blockchain] != 'undefined'
+                            && typeof blockchain_settings[blockchain].op_limit != 'undefined'
+                        ){
+                            op_limit = blockchain_settings[blockchain].op_limit;
+                        }
+                        var m = encodeURIComponent('OP_RETURN '+value).match(/%[89ABab]/g);
                         var value_len = value.length + (m ? m.length : 0);
-                        if(value_len < 60)
+                        if(value_len < op_limit)
                         {
                             op_return_data = value;
                         }
@@ -1285,6 +1300,10 @@
                         {
                             op_return_data = null;
                         }
+                    }
+                    else if(value)
+                    {
+                        op_return_data = null;
                     }
                 });
                 $.fn.blockstrap.accounts.verify(account, fields, function(verified, keys)
@@ -1325,7 +1344,7 @@
                         if(op_return_data == null)
                         {
                             var title = 'Warning';
-                            var content = 'Message to long!';
+                            var content = 'Message too long!';
                             $.fn.blockstrap.core.modal(title, content);
                             $.fn.blockstrap.core.loader('close');
                         }
