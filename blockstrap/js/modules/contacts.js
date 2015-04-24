@@ -59,6 +59,7 @@
                     else 
                     {
                         var blockchains_to_save = [];
+                        console.log('addresses', addresses);
                         $.each(addresses, function(chain, obj)
                         {
                             var address = obj[0];

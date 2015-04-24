@@ -2459,12 +2459,19 @@ var blockstrap_functions = {
     },
     slug: function(slug)
     {
-        var name = slug.replace(/ /g, '_');
-        name = name.replace(/-/g, '_');
-        name = name.replace(/'/g, '');
-        name = name.replace(/"/g, '');
-        name = name.replace(/#/g, '');
-        return name.toLowerCase();
+        if(typeof slug != 'undefined')
+        {
+            var name = slug.replace(/ /g, '_');
+            name = name.replace(/-/g, '_');
+            name = name.replace(/'/g, '');
+            name = name.replace(/"/g, '');
+            name = name.replace(/#/g, '');
+            return name.toLowerCase();
+        }
+        else
+        {
+            return false;
+        }
     },
     unslug: function(slug)
     {
