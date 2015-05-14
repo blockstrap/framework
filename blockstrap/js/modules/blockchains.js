@@ -124,17 +124,24 @@
         return keys;
     }
     
-    blockchains.raw = function(return_to, privkey, inputs, outputs, this_fee, amount_to_send, data)
+    blockchains.raw = function(return_to, privkey, inputs, outputs, this_fee, amount_to_send, data, sign_tx)
     {
         tx = new bitcoin.Transaction();
+        
+        if(typeof sign_tx == 'undefined') sign_tx = true;
         
         var fee = 0;
         var balance = 0;
         var total = 0;
         var input_index = 0;
-        var key = bitcoin.ECKey.fromWIF(privkey);
+        var key = false;
         var inputs_to_sign = [];
         var debug = false;
+        
+        if(privkey)
+        {
+            key = bitcoin.ECKey.fromWIF(privkey);
+        }
         
         if(this_fee) fee = this_fee;
         if(amount_to_send) total = amount_to_send;
@@ -167,7 +174,7 @@
                 tx.addOutput(return_to, change);
             }
         }
-        if(typeof data == 'string')
+        if(typeof data == 'string' && data)
         {
             var op = Crypto.util.base64ToBytes(btoa(data));
             var op_out = bitcoin.Script.fromHex(op).toBuffer();
@@ -177,16 +184,16 @@
                 op_out
             ]);
             tx.addOutput(op_return, 0);
+            // TODO - REMOVE THIS FLAKEY BIT...?
+            if(tx.outs[1].value === 0) tx.outs[1].type = "nulldata";
+            else if(tx.outs[2].value === 0) tx.outs[2].type = "nulldata";
         }
         $.each(inputs_to_sign, function(k)
         {
-            tx.sign(k, key);
+            if(sign_tx) tx.sign(k, key);
         });
-        var raw = tx.toHex();
         
-        // TODO - REMOVE THIS FLAKEY BIT...?
-        if(tx.outs[1].value === 0) tx.outs[1].type = "nulldata";
-        else if(tx.outs[2].value === 0) tx.outs[2].type = "nulldata";
+        var raw = tx.toHex();
         
         if(debug)
         {

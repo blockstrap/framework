@@ -498,7 +498,7 @@
             type: type,
             dataType: 'JSON',
             data: data,
-            async: false,
+            async: true,
             headers: headers,
             success: function(results)
             {

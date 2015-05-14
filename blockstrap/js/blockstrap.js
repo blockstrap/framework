@@ -584,7 +584,7 @@ var blockstrap_core = function()
                     store = false;
                 }
                 if(refresh === true) cached = false;
-                if(!saved_file || refresh === true || store === false)
+                if(!saved_file || refresh === true || store === false || skip === true)
                 {
                     if(typeof cache == 'undefined') cache = true;
                     if(typeof skip == 'undefined' || !skip)
@@ -593,6 +593,7 @@ var blockstrap_core = function()
                             url: file + '.' + extension,
                             dataType: extension,
                             cache: cached,
+                            async: true,
                             success: function(results)
                             {
                                 if(store === true)
@@ -1818,12 +1819,15 @@ var blockstrap_core = function()
                     $.fn.blockstrap.core.get('themes/'+current_theme+'/config', 'json', function(results)
                     {
                         if($.isPlainObject(results))
-                        {
-                            $.fn.blockstrap.settings = $.extend(
+                        {   
+                            
+                            var set = $.extend(
                                 {}, 
                                 $.fn.blockstrap.settings, 
                                 results
                             );
+                            
+                            $.fn.blockstrap.settings = set;
                             
                             $.fn.blockstrap.defaults();
                             
@@ -2097,6 +2101,7 @@ var blockstrap_core = function()
                     url: 'defaults.json',
                     dataType: 'json',
                     cache: false,
+                    async: true,
                     success: function(defaults)
                     {
                         // CONSTRUCT PLUGIN AFTER
@@ -2459,7 +2464,7 @@ var blockstrap_functions = {
     },
     slug: function(slug)
     {
-        if(typeof slug != 'undefined')
+        if(slug != 'undefined' && slug)
         {
             var name = slug.replace(/ /g, '_');
             name = name.replace(/-/g, '_');
