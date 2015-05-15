@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<title>Blockstrap Widgets</title>
+<link rel='shortcut icon' href='favicon.ico'>
+<link href="themes/default/css/less.css" rel="stylesheet">
+<link href="blockstrap/css/widgets-page.css" rel="stylesheet">
+<link href="blockstrap/css/widgets.css" rel="stylesheet">
+    
+</head>
+<body>
+
+<div class="container">
+    <h3>Blockstrap Widgets</h3>
+</div>
+    
+<div class="container">
+    <div class="row widgets">
+        <div class="col-sm-4">
+            <hr>
+            <span class="alert alert-warning alert-block">
+                <strong>DONATION BUTTONS</strong>
+            </span>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="small">
+                        <a href="#" 
+                           class="btn btn-block btn-success btn-donate"
+                           data-chain="doget"
+                           data-address="naj1CrvX2kBXa7uDJMRfiUAnWD5ZFvGS54"
+                           data-loading="Fetching"
+                           data-label="Donation via Blockstrap Widget"
+                           data-amount="0.123"
+                           data-group="donate"
+                           data-balance="true"
+                           data-txs="true"
+                           data-qr="true"
+                           data-bip="true"
+                           data-inject="false"
+                        >Donate</a>
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p class="small">Requires the<br /><code>btn-donate</code> class</p>
+                </div>
+                <p class="clearfix">
+                    <hr>
+                    <span class="badge">Balance: <strong class="donate-balance-naj1CrvX2kBXa7uDJMRfiUAnWD5ZFvGS54">0.00000000</strong> | Donations: <strong class="donate-txs-naj1CrvX2kBXa7uDJMRfiUAnWD5ZFvGS54">0</strong></span>
+                </p>
+                <hr>
+                <p>The only required options here are <code>address</code> and <code>chain</code> - which should be added to the HTML data-attribute as follows:</p>
+                <hr>
+                <pre><code>&lt;a href="#" data-address="naj1CrvX2kBXa7uDJMRfiUAnWD5ZFvGS54" data-chain="doget"&gt;Donate&lt;/a&gt;</code></pre>
+                <hr>
+                <span class="alert alert-success alert-block">Other HTML Data-Attribute Options:</span>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <p><strong><code>data-qr</code> default is set to <code>true</code></strong></p>
+                        <p class="small">Displaying QR Codes requires the <code>qrcode.js</code> dependency.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <p><strong><code>data-bip</code> default is set to <code>true</code></strong></p>
+                        <p class="small">Would you like to display Desktop QT Link?</p>
+                    </li>
+                    <li class="list-group-item">
+                        <p><strong><code>data-amount</code> default is set to <code>0</code></strong></p>
+                        <p class="small">Include defined amount in BIP Link and Modal Header?</p>
+                    </li>
+                    <li class="list-group-item">
+                        <p><strong><code>data-inject</code> default is set to <code>true</code></strong></p>
+                        <p class="small">Attempt to auto-inject modal HTML?</p>
+                    </li>
+                    <li class="list-group-item">
+                        <p><strong><code>data-group</code> default is set to <code>false</code></strong></p>
+                        <p class="small">If updating text we use this as the class and add the dynamic text to an element with the following class, as follows (and seen above):</p> 
+                        <pre><code>&lt;span class="dontate-txs-naj1CrvX2kBXa7uDJMRfiUAnWD5ZFvGS54"&gt;0&lt;/span&gt;</code></pre>
+                    </li>
+                    <li class="list-group-item">
+                        <p><strong><code>data-balance</code> default is set to <code>false</code></strong></p>
+                        <p class="small">Update balances based on group class and address.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <p><strong><code>data-txs</code> default is set to <code>false</code></strong></p>
+                        <p class="small">Update TX counts based on group class and address.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <p><strong><code>data-loading</code> default is set to <code>false</code></strong></p>
+                        <p class="small">This is the text to display prior to fetching dynamic content and will use the content within the HTML if nothing specific has been set.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <p><strong><code>data-label</code> default is set to <code>false</code></strong></p>
+                        <p class="small">This allows you to add a label to Desktop QT links.</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <hr>
+            <span class="alert alert-warning alert-block">
+                <strong>GENERATION BUTTONS</strong>
+            </span>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="small">
+                        <a href="#" class="btn btn-block btn-warning btn-generate">Generate Keys</a>
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p class="small">Requires the<br /><code>btn-generate</code> class</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <hr>
+            <span class="alert alert-warning alert-block">
+                <strong>MESSAGING BUTTONS</strong>
+            </span>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="small">
+                        <a href="#" class="btn btn-block btn-primary btn-message">Message</a>
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p class="small">Requires the<br /><code>btn-message</code> class</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+    
+<div id="default-modal" class="modal fade" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button data-dismiss="modal" class="close" type="button">
+                    <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body no-footer"></div>
+        </div>
+    </div>
+</div>
+    
+<!-- INCLUDE REQUIRED DEPENDENCIES MANUALLY -->
+<script src="blockstrap/js/dependencies/jquery.min.js"></script>
+<script src="blockstrap/js/dependencies/bootstrap.min.js"></script>
+<script src="blockstrap/js/dependencies/crypto.js"></script>
+<script src="blockstrap/js/dependencies/sha3.js"></script>
+<script src="blockstrap/js/dependencies/bitcoinjs-lib.js"></script>
+<script src="blockstrap/js/dependencies/qrcode.js"></script>
+    
+<!-- INCLUDE BS FRAMEWORK -->
+<script src="blockstrap/js/widget.options.js"></script>
+<script src="blockstrap/js/blockstrap.js"></script>
+<!-- PLEASE NOTE YOU CAN NOW SET INSTALL TO FALSE IN OPTIONS -->
+    
+<!-- INCLUDE REQUIRED MODULES MANUALLY -->
+<script src="blockstrap/js/modules/api.js"></script>
+<script src="blockstrap/js/modules/blockchains.js"></script>
+<script src="blockstrap/js/modules/widgets.js"></script>
+        
+<script>
+$(document).ready(function()
+{
+    $.fn.blockstrap.widgets.init();
+});
+</script>
+
+</body>
+</html>

@@ -2136,8 +2136,13 @@ var blockstrap_core = function()
             $.fn.blockstrap.settings = blockstrap_defaults;
             blockstrap_functions.check(blockstrap_defaults, function()
             {
+                var element = false;
                 $.fn.blockstrap.settings.vars = blockstrap_functions.vars();
-                plugin(false, false, blockstrap_defaults); 
+                if($('#'+$.fn.blockstrap.settings.id).length > 0)
+                {
+                    element = $('#'+$.fn.blockstrap.settings.id);
+                }
+                plugin(element, false, blockstrap_defaults); 
             });
         }
     })

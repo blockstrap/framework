@@ -1,0 +1,31 @@
+/*
+
+BUTTONS
+
+*/
+.btn-donate:before {
+    content: "";
+    display: inline-block;
+    position: relative;
+}
+
+/*
+
+QR CODE
+
+*/
+.qr-wrapper {
+    display: block;
+    position: relative;
+    padding: 10px;
+    background: #FFFFEE;
+    border: 1px solid #CCC;
+    margin: 5px 0;
+}
+
+.qr-wrapper img {
+    display: inline-block;
+    position: relative;
+    padding: 5px;
+    background: #FFF;
+}

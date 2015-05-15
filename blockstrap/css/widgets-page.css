@@ -1,0 +1,43 @@
+/*
+
+RESETS
+
+*/
+html, body {
+    background: #F2F2F2;
+    font-family: sans-serif;
+    font-size: 14px;
+}
+body {
+    padding: 30px 0;
+    text-align: center;
+}
+.modal-header {
+    background: #EEE;
+    border-radius: 4px 4px 0 0;
+}
+.modal-backdrop.fade.in {
+    background: #000;
+    display: block;
+}
+.alert-block {
+    display: block;
+    position: relative;
+    width: 100%;
+    padding: 10px;
+}
+.row.widgets pre {
+    background: #FFF;
+    color: #757575;
+}
+.row.widgets pre {
+    background: #FFF;
+}
+.row.widgets pre:hover {
+    background: #FFFFEE;
+    color: #000;
+}
+.row.widgets ul.list-group li:nth-child(even)
+{
+    background: #F8F8F8;
+}
