@@ -14,7 +14,7 @@
 <body>
 
 <div class="container">
-    <h3>Blockstrap Widgets</h3>
+    <h3>Blockstrap Self-Hosted Blockchain Widget Factory</h3>
 </div>
     
 <div class="container">
@@ -27,8 +27,10 @@
             <div class="row">
                 <div class="col-md-6">
                     <p class="small">
+                        
+                        <!-- DONATION BUTTON -->
                         <a href="#" 
-                           class="btn btn-block btn-success btn-donate"
+                           class="btn btn-block btn-success bs-donate"
                            data-chain="doget"
                            data-address="naj1CrvX2kBXa7uDJMRfiUAnWD5ZFvGS54"
                            data-loading="Fetching"
@@ -41,19 +43,27 @@
                            data-bip="true"
                            data-inject="false"
                         >Donate</a>
+                        
                     </p>
                 </div>
                 <div class="col-md-6">
-                    <p class="small">Requires the<br /><code>btn-donate</code> class</p>
+                    <p class="small">Add the <code>bs-donate</code> class to any element to activate widget</p>
                 </div>
                 <p class="clearfix">
                     <hr>
                     <span class="badge">Balance: <strong class="donate-balance-naj1CrvX2kBXa7uDJMRfiUAnWD5ZFvGS54">0.00000000</strong> | Donations: <strong class="donate-txs-naj1CrvX2kBXa7uDJMRfiUAnWD5ZFvGS54">0</strong></span>
                 </p>
                 <hr>
-                <p>The only required options here are <code>address</code> and <code>chain</code> - which should be added to the HTML data-attribute as follows:</p>
+                <p>The only required options here are <code>address</code> and <code>chain</code> - which should be added to the HTML data-attributes as follows:</p>
                 <hr>
-                <pre><code>&lt;a href="#" data-address="naj1CrvX2kBXa7uDJMRfiUAnWD5ZFvGS54" data-chain="doget"&gt;Donate&lt;/a&gt;</code></pre>
+                <pre style="text-align: left;">&lt;a 
+                
+    href="#" 
+    class="bs-donate" 
+    data-address="naj1C...vGS54" 
+    data-chain="doget"
+    
+&gt;Donate&lt;/a&gt;</code></pre>
                 <hr>
                 <span class="alert alert-success alert-block">Other HTML Data-Attribute Options:</span>
                 <ul class="list-group">
@@ -105,27 +115,110 @@
             <div class="row">
                 <div class="col-md-6">
                     <p class="small">
-                        <a href="#" class="btn btn-block btn-warning btn-generate">Generate Keys</a>
+                        
+                        <!-- GENERATE BUTTON -->
+                        <a 
+                            href="#" 
+                            class="btn btn-block btn-warning bs-generate"
+                            data-salt="my-unique-application-salt"
+                            data-chain="doget"
+                            data-random="true"
+                            data-deterministic="true"
+                            data-callback="bs_default_generate_callback"
+                            data-print="true"
+                            data-save="true"
+                            data-more="true"
+                            data-check="true"
+                        >Generate Keys</a>
+                        
                     </p>
                 </div>
                 <div class="col-md-6">
-                    <p class="small">Requires the<br /><code>btn-generate</code> class</p>
+                    <p class="small">Add <code>bs-generate</code> class to any element to activate widget</p>
                 </div>
             </div>
+            <p class="clearfix"></p><br>
+            <p>The only required options here are <code>salt</code> and <code>chain</code> - which should be added to the data-attributes as follows:</p>
+            <span class="alert alert-danger alert-block"><strong>WARNING</strong><br>Failure to use unique salts could leave these keys and any coins they control vulnerable to brute force</span>
+            <pre style="text-align: left;">&lt;a 
+
+    href="#" 
+    class="bs-generate" 
+    data-salt="your-unique-app-salt" 
+    data-chain="btc"
+
+&gt;Generate Keys&lt;/a&gt;</code></pre>
+            <hr>
+            <span class="alert alert-success alert-block">Other HTML Data-Attribute Options:</span>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <p><strong><code>data-random</code> default is set to <code>true</code></strong></p>
+                    <p class="small">Allow random salt generation</p>
+                </li>
+                <li class="list-group-item">
+                    <p><strong><code>data-deterministic</code> default is set to <code>true</code></strong></p>
+                    <p class="small">Allow deterministic salt generation</p>
+                </li>
+                <li class="list-group-item">
+                    <p><strong><code>data-callback</code> default is set to <code>true</code></strong></p>
+                    <p class="small">This allows you to control what happens once the <code>keys</code> have been generated. By default it calls the <code>bs_default_generate_callback</code> function, which creates a modal window containing the key pair.</p>
+                </li>
+                <li class="list-group-item">
+                    <p><strong><code>data-print</code> default is set to <code>true</code></strong></p>
+                    <p class="small">If using the default callback, show the print keys button?</p>
+                </li>
+                <li class="list-group-item">
+                    <p><strong><code>data-save</code> default is set to <code>true</code></strong></p>
+                    <p class="small">If using the default callback, show the save keys button?</p>
+                </li>
+            </ul>
+            <hr>
+            <span class="alert alert-warning alert-block"><strong>ACCESS SAVED ACCOUNTS</strong></span>
+            <div class="row">
+                <div class="col-md-6">
+                    <p>
+                        
+                        <!-- ACCOUNTS MODAL -->
+                        <a href="#" 
+                           class="btn btn-success btn-block bs-accounts-modal"
+                           data-all="false"
+                           data-salt="my-unique-application-salt"
+                        >View Accounts</a>
+                    
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p class="small">Add <code>bs-accounts-modal</code> class to element to activate</p>
+                </div>
+            </div>
+            <p class="clearfix"></p><br>
+            <p>This widget does not have any required options, but can utilize the following if set to HTML data attributes:</p>
+            <hr>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <p><strong><code>data-all</code> default is set to <code>false</code></strong></p>
+                    <p class="small">If set to true it will show all Blockstrap accounts rather than just accounts created by widgets.</p>
+                </li>
+            </ul>
         </div>
         <div class="col-sm-4">
             <hr>
             <span class="alert alert-warning alert-block">
-                <strong>MESSAGING BUTTONS</strong>
+                <strong>PAYMENT BUTTONS</strong>
             </span>
             <div class="row">
                 <div class="col-md-6">
                     <p class="small">
-                        <a href="#" class="btn btn-block btn-primary btn-message">Message</a>
+                        
+                        <!-- PAYMENT REQUEST -->
+                        <a href="#" 
+                           class="btn btn-block btn-primary bs-request"
+                        >Payment Request</a>
+                        
                     </p>
                 </div>
                 <div class="col-md-6">
-                    <p class="small">Requires the<br /><code>btn-message</code> class</p>
+                    <p class="small">Add the <code>bs-request</code> class to any element to activate widget</p>
                 </div>
             </div>
         </div>
@@ -154,6 +247,7 @@
 <script src="blockstrap/js/dependencies/sha3.js"></script>
 <script src="blockstrap/js/dependencies/bitcoinjs-lib.js"></script>
 <script src="blockstrap/js/dependencies/qrcode.js"></script>
+<script src="blockstrap/js/dependencies/mustache.js"></script>
     
 <!-- INCLUDE BS FRAMEWORK -->
 <script src="blockstrap/js/widget.options.js"></script>
@@ -162,6 +256,9 @@
     
 <!-- INCLUDE REQUIRED MODULES MANUALLY -->
 <script src="blockstrap/js/modules/api.js"></script>
+<script src="blockstrap/js/modules/accounts.js"></script>
+<script src="blockstrap/js/modules/data.js"></script>
+<script src="blockstrap/js/modules/html.js"></script>
 <script src="blockstrap/js/modules/blockchains.js"></script>
 <script src="blockstrap/js/modules/widgets.js"></script>
         

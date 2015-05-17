@@ -504,9 +504,9 @@ var blockstrap_core = function()
                         // DEFINITELY NOT CORE MATERIAL
                         // DIRTY HACK FOR ADAMS DEMO
                         var modal = $(this).parent().parent().parent().parent().parent().parent().parent();
-                        var title = $(modal).find('.modal-title').html();
+                        var title = $(modal).find('.modal-title').text();
                         var contents = $(modal).find('.modal-body').html();
-                        $.fn.blockstrap.core.print(title + contents);
+                        $.fn.blockstrap.core.print(title, contents);
                     }
                     else if(value === 'access')
                     {
@@ -845,12 +845,16 @@ var blockstrap_core = function()
                 }
                     
             },
-            modal: function(title, content, id)
+            modal: function(title, content, id, callback)
             {
                 var selector = $('#default-modal');
                 if(id) selector = $('#'+id);
                 if(title) $(selector).find('.modal-title').html(title);
                 if(content) $(selector).find('.modal-body').html(content);
+                $(selector).on('show.bs.modal', function()
+                {
+                    if(callback) callback();
+                });
                 $(selector).modal('show');
             },
             modals: function(action)
@@ -1032,11 +1036,11 @@ var blockstrap_core = function()
                     }
                 }
             },
-            print: function(contents)
+            print: function(title, contents)
             {
-                var mywindow = window.open('', 'my div', 'height=500,width=400');
-                mywindow.document.write('<html><head><title>my div</title>');
-                mywindow.document.write('<style>.btn { display: none; }</style>');
+                var mywindow = window.open('', title, 'height=500,width=400');
+                mywindow.document.write('<html><head><title>'+title+'</title>');
+                mywindow.document.write('<style>.btn, .dont-print { display: none; }</style>');
                 mywindow.document.write('</head><body >');
                 mywindow.document.write(contents);
                 mywindow.document.write('</body></html>');
@@ -1252,7 +1256,6 @@ var blockstrap_core = function()
                                     }
                                 });
                             }
-
                             salt = CryptoJS.SHA3(salt+k+blockstrap_functions.slug(v), { outputLength: 512 });
                             if(count >= key_count && callback)
                             {

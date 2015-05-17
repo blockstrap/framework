@@ -270,12 +270,19 @@
                                     key_obj = CryptoJS.SHA3(salt+key+k+v, { outputLength: 512 });
                                     key = key_obj.toString();
                                 });
-                            };
+                            }
+                            else if(keys)
+                            {
+                                key = keys;
+                            }
                             var address_keys = $.fn.blockstrap.blockchains.keys(key, blockchain);
                             var address = address_keys.pub;
                             var pw_obj = CryptoJS.SHA3(salt+password, { outputLength: 512 });
                             var pw = pw_obj.toString();
                             var blockchain_name =  $.fn.blockstrap.settings.blockchains[blockchain].blockchain;
+                            
+                            if(keys == key) keys = false;
+                            
                             var account = {
                                 id: slug,
                                 blockchain: {
@@ -297,6 +304,7 @@
                                 var this_account = $.fn.blockstrap.accounts.get(slug);
                                 $.fn.blockstrap.accounts.update(this_account, function(account)
                                 {
+                                    if(!account && $.isPlainObject(this_account)) account = this_account;
                                     callback(account);
                                 });
                             });
@@ -413,6 +421,7 @@
     {
         if(localStorage)
         {
+            console.log('element', element);
             var item = localStorage.getItem('nw_' + collection + '_' + key);
             if(item && blockstrap_functions.json(item))
             {
@@ -531,6 +540,7 @@
             if(account.ts) ts = account.ts;
             if(blockstrap_functions.vars('refresh')) ts = 0;
             if(force_refresh) ts = 0;
+            if(typeof cache_time == 'undefined') cache_time = 0;
             if(ts + cache_time < now)
             {
                 var current_balance = account.balance;
