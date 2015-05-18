@@ -10,7 +10,8 @@
 
 (function($) 
 {
-    var widgets = {};    
+    var widgets = {};   
+    var polls = {};
 
     widgets.accounts = function()
     {
@@ -291,11 +292,17 @@
                         contents+= '<p><hr><strong>'+obj.name+'</strong> ('+blockchain+')<br>'+buttons+'</p>';
                         contents+= '<p class="small"><strong>Address</strong>: '+obj.address+'</p><br>';
                         contents+= '<div class="row">';
-                        contents+= '<div class="col-sm-6"><p><strong>TXs</strong>: '+obj.tx_count+'</p></div>';
-                        contents+= '<div class="col-sm-6"><p><strong>Balance</strong>: '+parseFloat(obj.balance / 100000000).toFixed(8)+'</p></div>';
+                        contents+= '<div class="col-sm-6"><p><strong>TXs</strong>: <span class="bs-txs">'+obj.tx_count+'</span></p></div>';
+                        contents+= '<div class="col-sm-6"><p><strong>Balance</strong>: <span class="bs-balance">'+parseFloat(obj.balance / 100000000).toFixed(8)+'</span></p></div>';
                         contents+= '</div>';
                         contents+= '</div>';
-                        $.fn.blockstrap.accounts.update(obj);
+                        widgets.update('accounts', obj, function()
+                        {
+                            widgets.poll(60, 'acc_' + blockstrap_functions.slug(obj.name), function()
+                            {
+                                widgets.update('accounts', obj);
+                            }, true);
+                        });
                     }
                 });
             }
@@ -804,6 +811,18 @@
         });
     }
     
+    widgets.poll = function(seconds_delay, id, fn, clear)
+    {
+        if(typeof seconds_delay == 'undefined' || seconds_delay < 1) seconds_delay = 30;
+        if(typeof clear != 'undefined' && clear == true)
+        {
+            clearInterval(polls[id]);
+        }
+        polls[id] = setInterval(function() {
+            fn();
+        }, seconds_delay * 1000); // 60 * 1000 milsec
+    }
+    
     widgets.qr = function(obj, content)
     {
         if(obj && contnt)
@@ -849,6 +868,75 @@
             var id = $(button).attr('data-id');
             $('#'+id).toggle(350);
         });
+    }
+    
+    widgets.update = function(type, account, callback, page)
+    {
+        if(typeof page == 'undefined') page = 0;
+        else page = parseInt(page);
+        if(typeof account.address != 'undefined')
+        {
+            var now = new Date().getTime();
+            var current_balance = account.balance;
+            var current_tx_count = blockstrap_functions.array_length(account.txs);
+            $.fn.blockstrap.api.address(account.address, account.blockchain.code, function(results)
+            {
+                if(
+                    (
+                    results.tx_count 
+                    && results.tx_count > current_tx_count
+                    )
+                    ||
+                    (
+                    results.balance 
+                    && results.balance != current_balance
+                    )
+                ){
+                    account.balance = results.balance;
+                    account.tx_count = results.tx_count;
+                    account.ts = now;
+
+                    $.fn.blockstrap.api.transactions(
+                        account.address, 
+                        account.blockchain.code, 
+                        function(transactions)
+                    {
+                        if(!$.isPlainObject(account.txs)) account.txs = {};
+                        if($.isArray(transactions))
+                        {
+                            $.each(transactions, function(k, transaction)
+                            {
+                                account.txs['txid_'+transaction.txid] = transaction;
+                            });
+                        }
+                        if(blockstrap_functions.array_length(account.txs) < account.tx_count)
+                        {
+                            // Paginate?
+                            page++;
+                            widgets.update(type, account, callback, page);
+                        }
+                        else
+                        {
+                            $.fn.blockstrap.data.save('accounts', account.id, account, function(updated_account)
+                            {
+                                var name = updated_account.name;
+                                var id = blockstrap_functions.slug(name);
+                                var wrapper = $('#wrapper-'+id);
+                                $(wrapper).find('.bs-balance').text(parseFloat(updated_account.balance / 100000000).toFixed(8));
+                                $(wrapper).find('.bs-txs').text(updated_account.tx_count);
+                                if(callback) callback(account);
+                                else return account;
+                            });
+                        }
+                    }, false, false, 25, (page * 25));
+                }
+                else
+                {
+                    if(callback) callback(false);
+                    else return false;
+                }
+            });
+        }
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
