@@ -1013,3 +1013,8 @@ function bs_default_generate_callback(keys, chain, object_salt, seed, button, pr
         $(button).removeClass('loading');
     });
 }
+function bs_default_payment_callback()
+{
+    var bs = $.fn.blockstrap;
+    alert('called back');
+}

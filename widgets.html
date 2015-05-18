@@ -211,8 +211,15 @@
                     <p class="small">
                         
                         <!-- PAYMENT REQUEST -->
-                        <a href="#" 
-                           class="btn btn-block btn-primary bs-request"
+                        <a  href="#" 
+                            class="btn btn-block btn-primary bs-request"
+                            data-salt="your-unique-app-salt" 
+                            data-currency="sgd"
+                            data-chains="btc, ltc, doget"
+                            data-amount="1"
+                            data-addresses="1GjHvbkCyYpy3uaNPvHsxe2EptH2RxEvMt, LbGtaXcsPDQpU6pA8k3sTDmCaG5qFUPAhP, ncq5H5EdCwmGVtQtquk2TKyXDTNApoDpwq"
+                            data-amounts=""
+                            data-callback="bs_default_payment_callback"
                         >Payment Request</a>
                         
                     </p>
@@ -221,6 +228,55 @@
                     <p class="small">Add the <code>bs-request</code> class to any element to activate widget</p>
                 </div>
             </div>
+            <p class="clearfix"></p><br>
+            <p>Required options here include <code>currency</code>, <code>chains</code>, </code><code>amount</code>, <code>addresses</code> and <code>salt</code> - all of which should be added to the HTML data-attributes as follows:</p>
+            <br>
+            <pre style="text-align: left;">&lt;a 
+
+    href="#" 
+    class="bs-request" 
+    data-salt="your-unique-app-salt" 
+    data-currency="sgd"
+    data-chains="btc, ltc, doget"
+    data-amount="1"
+    data-addresses="1G..Mt, Lb..hP, nc..wq"
+
+&gt;Request Payment&lt;/a&gt;</code></pre>
+            <hr>
+            <p class="small">We provide support for <strong>165</strong> currencies, where the corresponding <code>amount</code> is converted and presented via a choice of <code>chains</code>. Deterministic payment addresses are created whilst waiting for specific transactions that are then routed to the corresponding <code>addresses</code>. Please note that the <code>chains</code> and <code>addresses</code> values should be comma separated arrays that follow the same order.</p>
+            <hr>
+            <span class="alert alert-success alert-block">Other HTML Data-Attribute Options:</span>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <p><strong><code>data-amounts</code> default is set to <code>0</code></strong></p>
+                    <p class="small">If <code>currency</code> is set to false or is unsupported this comma separated array can be used in the same order as the <code>chains</code> to provide crypto-only payment requests.</p>
+                    <p class="small">If set to <code>0</code> and required due to invalid currency, twice the mining fee of the chain will be requested.</p>
+                </li>
+                <li class="list-group-item">
+                    <p><strong><code>data-callback</code> default is set to <code>true</code></strong></p>
+                    <p class="small">This allows you to control what happens once the payment has been routed correctly. By default it calls the <code>bs_default_payment_callback</code> function, which generates a modal with information about the transaction.</p>
+                </li>
+                <li class="list-group-item">
+                    <p><strong><code>data-qr</code> default is set to <code>true</code></strong></p>
+                    <p class="small">Displaying QR Codes requires the <code>qrcode.js</code> dependency.</p>
+                </li>
+                <li class="list-group-item">
+                    <p><strong><code>data-bip</code> default is set to <code>true</code></strong></p>
+                    <p class="small">Would you like to display Desktop QT Link?</p>
+                </li>
+                <li class="list-group-item">
+                    <p><strong><code>data-qrbip</code> default is set to <code>false</code></strong></p>
+                    <p class="small">Should the QR be a BIP QT Link?</p>
+                </li>
+                <li class="list-group-item">
+                    <p><strong><code>data-bipqr</code> default is set to <code>true</code></strong></p>
+                    <p class="small">Should the BIP QT Link be a QR?</p>
+                </li>
+                <li class="list-group-item">
+                    <p><strong><code>data-poll</code> default is set to <code>60</code></strong></p>
+                    <p class="small">How many seconds between polls?</p>
+                </li>
+            </ul>
         </div>
     </div>
     </div>
