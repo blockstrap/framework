@@ -73,3 +73,13 @@ form.bs-new-account .btn-primary.pull-right {
 #setup-deterministic-salt input {
     margin: 5px 0;
 }
+form.bs-widget-options .row .col-sm-4, 
+form.bs-widget-options .row .col-sm-7 {
+    padding-right: 0;
+}
+form.bs-widget-options .row .col-sm-3 {
+    padding: 0 2px;
+}
+form.bs-widget-options .row .col-sm-5 {
+    padding-left: 0;
+}

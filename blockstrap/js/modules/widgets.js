@@ -800,6 +800,7 @@
         widgets.donations();
         widgets.generations();
         widgets.modals();
+        widgets.options();
         widgets.payments();
         widgets.toggles();
     }
@@ -809,6 +810,36 @@
         $('body').on('hide.bs.modal', '.modal', function()
         {
             $('.loading').removeClass('loading');
+        });
+    }
+    
+    widgets.options = function()
+    {
+        $('body').on('submit', 'form.bs-widget-options', function(e)
+        {
+            e.preventDefault();
+            var form = this;
+            var id = $(form).attr('data-id');
+            var button = $('#'+id);
+            var type = $(form).attr('data-type');
+            if(type == 'generate')
+            {
+                var salt = $(form).find('input[name="salt"]').val();
+                var chain = $(form).find('select[name="chain"]').val();
+                $(button).attr('data-chain', chain);
+                if(salt) $(button).attr('data-salt', salt);
+                $(button).trigger('click');
+            }
+            else if(type == 'request')
+            {
+                var salt = $(form).find('input[name="salt"]').val();
+                var currency = $(form).find('select[name="currency"]').val();
+                var amount = parseFloat($(form).find('input[name="amount"]').val());
+                $(button).attr('data-currency', currency);
+                if(salt) $(button).attr('data-salt', salt);
+                if(amount) $(button).attr('data-amount', amount);
+                $(button).trigger('click').addClass('loading');
+            }
         });
     }
     

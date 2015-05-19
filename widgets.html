@@ -119,6 +119,7 @@
                         <!-- GENERATE BUTTON -->
                         <a 
                             href="#" 
+                            id="demo-generate"
                             class="btn btn-block btn-warning bs-generate"
                             data-salt="my-unique-application-salt"
                             data-chain="doget"
@@ -137,7 +138,31 @@
                     <p class="small">Add <code>bs-generate</code> class to any element to activate widget</p>
                 </div>
             </div>
-            <p class="clearfix"></p><br>
+            
+            <hr>
+            <form class="bs-widget-options" data-id="demo-generate" data-type="generate">
+                <p class="small">(change the demo parameters below)</p>
+                <input type="text" name="salt" class="form-control" placeholder="Add your own custom salt here" autocomplete="off" />
+                <div class="row">
+                    <div class="col-sm-7">
+                        <select name="chain" class="form-control" autocomplete="off">
+                            <option value="btc">Bitcoin</option>
+                            <option value="dash">DashPay</option>
+                            <option value="doge">Dogecoin</option>
+                            <option value="ltc">Litecoin</option>
+                            <option value="btct">Bitcoin Testnet</option>
+                            <option value="dasht">DashPay Testnet</option>
+                            <option value="doget" selected="selected">Dogecoin Testnet</option>
+                            <option value="ltct">Litecoin Testnet</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-5">
+                        <button type="submit" class="btn btn-info btn-block">Change</button>
+                    </div>
+                </div>
+            </form>
+            <hr>
+            
             <p>The only required options here are <code>salt</code> and <code>chain</code> - which should be added to the data-attributes as follows:</p>
             <span class="alert alert-danger alert-block"><strong>WARNING</strong><br>Failure to use unique salts could leave these keys and any coins they control vulnerable to brute force</span>
             <pre style="text-align: left;">&lt;a 
@@ -212,6 +237,7 @@
                         
                         <!-- PAYMENT REQUEST -->
                         <a  href="#" 
+                            id="demo-request"
                             class="btn btn-block btn-primary bs-request"
                             data-salt="your-unique-app-salt" 
                             data-currency="sgd"
@@ -229,7 +255,32 @@
                     <p class="small">Add the <code>bs-request</code> class to any element to activate widget</p>
                 </div>
             </div>
-            <p class="clearfix"></p><br>
+            
+            <hr>
+            <form class="bs-widget-options" data-id="demo-request" data-type="request">
+                <p class="small">(change the demo parameters below)</p>
+                <input type="text" name="salt" class="form-control" placeholder="Add your own custom salt here" autocomplete="off" />
+                <div class="row">
+                    <div class="col-sm-4">
+                        <select name="currency" class="form-control" autocomplete="off">
+                            <option value="sgd">SGD</option>
+                            <option value="usd">USD</option>
+                            <option value="gbp">GBP</option>
+                            <option value="xau">Gold</option>
+                            <option value="jpy">Yen</option>
+                            <option value="usd">165+</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" name="amount" class="form-control" placeholder="Amount" value="0.01" autocomplete="off" />
+                    </div>
+                    <div class="col-sm-5">
+                        <button type="submit" class="btn btn-info btn-block">Change</button>
+                    </div>
+                </div>
+            </form>
+            <hr>
+            
             <p>Required options here include <code>currency</code>, <code>chains</code>, </code><code>amount</code>, <code>addresses</code> and <code>salt</code> - all of which should be added to the HTML data-attributes as follows:</p>
             <br>
             <pre style="text-align: left;">&lt;a 
