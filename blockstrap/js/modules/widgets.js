@@ -799,8 +799,17 @@
         widgets.addresses();
         widgets.donations();
         widgets.generations();
+        widgets.modals();
         widgets.payments();
         widgets.toggles();
+    }
+    
+    widgets.modals = function()
+    {
+        $('body').on('hide.bs.modal', '.modal', function()
+        {
+            $('.loading').removeClass('loading');
+        });
     }
     
     widgets.payments = function()
@@ -861,6 +870,7 @@
     
     widgets.request = function(button, e)
     {
+        $(button).addClass('loading');
         e.preventDefault();
         var poll = 0;
         var bs = $.fn.blockstrap;
@@ -909,10 +919,10 @@
                     var one_ltc = markets.ltc.fiat_now;
                     var one_dash = markets.dash.fiat_now;
                     var one_doge = markets.doge.fiat_now;
-                    costs.btc = parseFloat(amount / one_btc) * 100000000;
-                    costs.ltc = parseFloat(amount / one_ltc) * 100000000;
-                    costs.doge = parseFloat(amount / one_doge) * 100000000;
-                    costs.dash = parseFloat(amount / one_dash) * 100000000;
+                    costs.btc = parseInt(parseFloat(amount / one_btc) * 100000000).toFixed(8);
+                    costs.ltc = parseInt(parseFloat(amount / one_ltc) * 100000000).toFixed(8);
+                    costs.doge = parseInt(parseFloat(amount / one_doge) * 100000000).toFixed(8);
+                    costs.dash = parseInt(parseFloat(amount / one_dash) * 100000000).toFixed(8);
                     $.each(chain_array, function(k, chain)
                     {
                         var ts = Date.now();
@@ -933,7 +943,7 @@
                             blockchain: blockchain,
                             address: keys.pub,
                             key: keys.priv,
-                            cost: parseInt(costs[cost_chain]) + parseInt(fee),
+                            cost: parseInt(costs[cost_chain]),
                             fee: fee,
                             url: bs.settings.blockchains[cost_chain].lib + ':' + keys.pub + '?amount=' + display_cost + '&label=' + title,
                             display_cost: display_cost,
@@ -978,7 +988,7 @@
                                         fee,
                                         total - fee,
                                         JSON.stringify({
-                                            cost: parseInt(costs[cost_chain]) + parseInt(fee)
+                                            cost: parseInt(costs[cost_chain])
                                         })
                                     );
 
@@ -1024,7 +1034,8 @@
                         }, true, false);
                     });
                     var amount_to_send = currency.toUpperCase() + ' ' + amount;
-                    var contents = '<p><span class="alert alert-warning alert-block">Please make payment for <strong>'+amount_to_send+'</strong> to either of the addresses below:</span></p>';
+                    var contents = '<p><span class="alert alert-danger alert-block">PLEASE NOTE THAT THIS PAYMENT ADDRESS IS ONLY VALID FOR THIS SESSION. DO NOT CLOSE THIS UNTIL WE DISPLAY PAYMENT CONFIRMATION</span></p>';
+                    contents+= '<p><span class="alert alert-warning alert-block">Please make payment for <strong>'+amount_to_send+'</strong> to either of the addresses below:</span></p>';
                     contents+= '<div class="row">';
                     $.each(blockchains, function(k, blockchain)
                     {
@@ -1044,6 +1055,7 @@
                         contents+= '</div>';
                     });
                     contents+= '</div>';
+                    contents+= '<hr><p class="small">No private keys are stored anywhere. Everything is generated deterministically specifically for and addresses are only checked and re-routed as and when this window is open.</p>';
                     modal_title = title;
                     bs.core.modal(modal_title, contents);
                     widgets.qr();
@@ -1247,7 +1259,11 @@ function bs_default_payment_callback(tx, chain)
     }
     var title = 'Thank you for your payment';
     var contents = '<span class="alert alert-danger alert-block">Unfortunately, you did not send the full amount!</span>';
-    if(collected >= cost)
+    if(collected == cost)
+    {
+        contents = '<span class="alert alert-success alert-block">Thank you for sending the exact amount!</span>';
+    }
+    else if(collected > cost)
     {
         contents = '<span class="alert alert-success alert-block">Thank you for sending the full amount!</span>';
     }
