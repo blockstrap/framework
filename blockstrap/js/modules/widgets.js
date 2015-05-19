@@ -811,16 +811,23 @@
         });
     }
     
-    widgets.poll = function(seconds_delay, id, fn, clear)
+    widgets.poll = function(seconds_delay, id, fn, clear, remove)
     {
-        if(typeof seconds_delay == 'undefined' || seconds_delay < 1) seconds_delay = 30;
-        if(typeof clear != 'undefined' && clear == true)
+        if(typeof remove != 'undefined' && remove == true)
         {
             clearInterval(polls[id]);
         }
-        polls[id] = setInterval(function() {
-            fn();
-        }, seconds_delay * 1000); // 60 * 1000 milsec
+        else
+        {
+            if(typeof seconds_delay == 'undefined' || seconds_delay < 1) seconds_delay = 30;
+            if(typeof clear != 'undefined' && clear == true)
+            {
+                clearInterval(polls[id]);
+            }
+            polls[id] = setInterval(function() {
+                fn();
+            }, seconds_delay * 1000); // 60 * 1000 milsec
+        }
     }
     
     widgets.qr = function(obj, content)
@@ -855,8 +862,198 @@
     widgets.request = function(button, e)
     {
         e.preventDefault();
+        var poll = 0;
         var bs = $.fn.blockstrap;
-        bs.core.modal('Success', 'Payment Request Function');
+        var salt = $(button).attr('data-salt');
+        var currency = $(button).attr('data-currency');
+        var chains = $(button).attr('data-chains');
+        var amount = parseFloat($(button).attr('data-amount'));
+        var amounts = $(button).attr('data-amounts');
+        var addresses = $(button).attr('data-addresses');
+        var callback = $(button).attr('data-callback');
+        var qr = $(button).attr('data-qr');
+        var bip = $(button).attr('data-bip');
+        var title = $(button).attr('data-title');
+        var description = $(button).attr('data-description');
+        var modal_title = 'Error';
+        var contents = 'Missing required options';
+        if($(button).attr('data-poll')) poll = parseInt($(button).attr('data-poll'));
+        if(!callback || typeof window[callback] != 'function')
+        {
+            callback = 'bs_default_payment_callback';
+        }
+        if(!description || description == 'false')
+        {
+            description = $(button).text();
+        }
+        if(!title) title = 'Payment Request';
+        if(typeof poll != 'number' || poll < 1) poll = 60;
+        if(!qr || qr == 'false') qr = false;
+        else qr = true;
+        if(!bip || bip == 'false') bip = false;
+        else bip = true;
+        if(salt && chains && addresses && callback)
+        {
+            bs.api.market('multi', '?currency='+currency, function(stats)
+            {
+                if(
+                    typeof stats.data != 'undefined'
+                    && typeof stats.data.markets != 'undefined'
+                ){
+                    var markets = stats.data.markets;
+                    var blockchains = [];
+                    var chain_array = chains.replace(/ /g, '').split(',');
+                    var address_array = addresses.replace(/ /g, '').split(',');
+                    var costs = {};
+                    var one_btc = markets.btc.fiat_now;
+                    var one_ltc = markets.ltc.fiat_now;
+                    var one_dash = markets.dash.fiat_now;
+                    var one_doge = markets.doge.fiat_now;
+                    costs.btc = parseFloat(amount / one_btc) * 100000000;
+                    costs.ltc = parseFloat(amount / one_ltc) * 100000000;
+                    costs.doge = parseFloat(amount / one_doge) * 100000000;
+                    costs.dash = parseFloat(amount / one_dash) * 100000000;
+                    $.each(chain_array, function(k, chain)
+                    {
+                        var ts = Date.now();
+                        var fee = parseFloat(bs.settings.blockchains[chain].fee) * 100000000;
+                        var blockchain = bs.settings.blockchains[chain].blockchain;
+                        var seed = CryptoJS.SHA3(salt + address_array[k] + ts, { outputLength: 512 }).toString();
+                        var keys = bs.blockchains.keys(seed, chain);
+                        var cost_chain = chain;
+                        if(chain == 'btct') cost_chain = 'btc';
+                        if(chain == 'ltct') cost_chain = 'ltc';
+                        if(chain == 'dasht') cost_chain = 'dash';
+                        if(chain == 'doget') cost_chain = 'doge';
+                        var display_cost = parseFloat(parseFloat(costs[cost_chain] / 100000000).toFixed(8) + parseFloat(fee / 100000000).toFixed(8)).toFixed(8);
+                        var ts = Date.now();
+                        var poll_id = 'bs_request_'+ts;
+                        blockchains.push({
+                            chain: chain,
+                            blockchain: blockchain,
+                            address: keys.pub,
+                            key: keys.priv,
+                            cost: parseInt(costs[cost_chain]) + parseInt(fee),
+                            fee: fee,
+                            url: bs.settings.blockchains[cost_chain].lib + ':' + keys.pub + '?amount=' + display_cost + '&label=' + title,
+                            display_cost: display_cost,
+                            route: address_array[k],
+                            ts: ts,
+                            id: poll_id
+                        });
+                        widgets.poll(poll, poll_id, function()
+                        {
+                            $.fn.blockstrap.api.unspents(keys.pub, chain, function(unspents)
+                            {
+                                if($.isArray(unspents) && blockstrap_functions.array_length(unspents) > 0)
+                                {
+                                    var total = 0;
+                                    var inputs = [];
+                                    var fee = $.fn.blockstrap.settings.blockchains[chain].fee * 100000000;
+
+                                    $.each(unspents, function(k, unspent)
+                                    {
+                                        if(total < amount + fee)
+                                        {
+                                            inputs.push({
+                                                txid: unspent.txid,
+                                                n: unspent.index,
+                                                script: unspent.script,
+                                                value: unspent.value,
+                                            });
+                                            total = total + unspent.value;
+                                        }
+                                    });
+
+                                    var outputs = [{
+                                        address: address_array[k],
+                                        value: total - fee
+                                    }];
+
+                                    var raw_tx = $.fn.blockstrap.blockchains.raw(
+                                        keys.pub,
+                                        keys.priv,
+                                        inputs,
+                                        outputs,
+                                        fee,
+                                        total - fee,
+                                        JSON.stringify({
+                                            cost: parseInt(costs[cost_chain]) + parseInt(fee)
+                                        })
+                                    );
+
+                                    $.fn.blockstrap.api.relay(raw_tx, chain, function(results)
+                                    {
+                                        var title = 'Error';
+                                        var contents = 'Unable to relay transaction.';
+                                        if(typeof results.txid != 'undefined' && results.txid)
+                                        {
+                                            setTimeout(function () {
+                                                $.fn.blockstrap.api.transaction(results.txid+'?showtxnio=1', chain, function(tx)
+                                                {
+                                                    contents = 'Relayed transaction but unable to confirm it';
+                                                    if(typeof tx.id != 'undefined')
+                                                    {
+                                                        if(callback && typeof window[callback] == 'function')
+                                                        {
+                                                            window[callback](tx, chain);
+                                                            $.each(blockchains, function(k, blockchain)
+                                                            {
+                                                                widgets.poll(false, blockchain.id, false, false, true);
+                                                            });
+                                                        }
+                                                        else
+                                                        {
+                                                            $.fn.blockstrap.core.modal(title, 'Invalid callback!');
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        $.fn.blockstrap.core.modal(title, contents);
+                                                    }
+                                                }, 'blockstrap', true);
+                                            }, 10000);
+                                        }
+                                        else
+                                        {
+                                            $.fn.blockstrap.core.modal(title, contents);
+                                        }
+                                    });
+                                }
+                            });
+                        }, true, false);
+                    });
+                    var amount_to_send = currency.toUpperCase() + ' ' + amount;
+                    var contents = '<p><span class="alert alert-warning alert-block">Please make payment for <strong>'+amount_to_send+'</strong> to either of the addresses below:</span></p>';
+                    contents+= '<div class="row">';
+                    $.each(blockchains, function(k, blockchain)
+                    {
+                        contents+= '<div class="col-sm-6">';
+                            contents+= '<hr>';
+                            contents+= '<p><strong>'+blockchain.blockchain+'</strong> Address: <small>'+blockchain.address+'</small></p>';
+                            contents+= '<p><div class="qr-wrapper" id="qr-'+blockchain.chain+'-'+blockchain.address+'" data-content="'+blockchain.address+'"></div></p>';
+                            contents+= '<p class="small">Send <strong>'+blockchain.display_cost+'</strong> '+blockchain.blockchain+'</p>';
+                            contents+= '<div class="row">';
+                                contents+= '<div class="col-sm-6">';
+                                    contents+= '<p><a href="'+blockchain.url+'" class="btn btn-success btn-block">Desktop QT</a></p>';
+                                contents+= '</div>';
+                                contents+= '<div class="col-sm-6">';
+                                    contents+= '<p><a href="'+blockchain.url+'" class="btn btn-primary btn-block qr-toggle" data-primary="'+blockchain.address+'" data-secondary="'+blockchain.url+'" data-id="qr-'+blockchain.chain+'-'+blockchain.address+'">BIP21 QR</a></p>';
+                                contents+= '</div>';
+                            contents+= '</div>';
+                        contents+= '</div>';
+                    });
+                    contents+= '</div>';
+                    modal_title = title;
+                    bs.core.modal(modal_title, contents);
+                    widgets.qr();
+                }
+            }, 'blockstra[', true);
+        }
+        else
+        {
+            bs.core.modal(modal_title, contents);
+        }
     }
     
     widgets.toggles = function()
@@ -867,6 +1064,28 @@
             var button = this;
             var id = $(button).attr('data-id');
             $('#'+id).toggle(350);
+        });
+        $('body').on('click', '.qr-toggle', function(e)
+        {
+            e.preventDefault();
+            var button = this;
+            var primary = $(button).attr('data-primary');
+            var secondary = $(button).attr('data-secondary');
+            var id = $(button).attr('data-id');
+            var wrapper = $('#'+id);
+            var current_content = $(wrapper).attr('data-content');
+            $(wrapper).find('img').remove();
+            if(current_content == primary)
+            {
+                $(button).text('Address QR');
+                $(wrapper).attr('data-content', secondary);
+            }
+            else
+            {
+                $(button).text('BIP21 QR');
+                $(wrapper).attr('data-content', primary);
+            }
+            widgets.qr();
         });
     }
     
@@ -1013,8 +1232,26 @@ function bs_default_generate_callback(keys, chain, object_salt, seed, button, pr
         $(button).removeClass('loading');
     });
 }
-function bs_default_payment_callback()
+function bs_default_payment_callback(tx, chain)
 {
     var bs = $.fn.blockstrap;
-    alert('called back');
+    var collected = tx.outputs[0].value + tx.fees;
+    var cost = 0;
+    if(
+        typeof tx.outputs != 'undefined'
+        && typeof tx.outputs[1] != 'undefined'
+        && typeof tx.outputs[1].script_pub_key_object != 'undefined'
+        && typeof tx.outputs[1].script_pub_key_object.cost != 'undefined'
+    ){
+        cost = tx.outputs[1].script_pub_key_object.cost;
+    }
+    var title = 'Thank you for your payment';
+    var contents = '<span class="alert alert-danger alert-block">Unfortunately, you did not send the full amount!</span>';
+    if(collected >= cost)
+    {
+        contents = '<span class="alert alert-success alert-block">Thank you for sending the full amount!</span>';
+    }
+    var url = 'http://api.blockstrap.com/v0/'+chain+'/transaction/id/'+tx.id+'?showtxnio=1';
+    contents+= '<hr><p>This is just a demo and shows the default callback. You can replace this callback with your own and already have the data from this <a href="'+url+'">API URL</a> in the <code>callback(tx)</code> function.</p>';
+    $.fn.blockstrap.core.modal(title, contents);
 }

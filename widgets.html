@@ -215,10 +215,11 @@
                             class="btn btn-block btn-primary bs-request"
                             data-salt="your-unique-app-salt" 
                             data-currency="sgd"
-                            data-chains="btc, ltc, doget"
-                            data-amount="1"
-                            data-addresses="1GjHvbkCyYpy3uaNPvHsxe2EptH2RxEvMt, LbGtaXcsPDQpU6pA8k3sTDmCaG5qFUPAhP, ncq5H5EdCwmGVtQtquk2TKyXDTNApoDpwq"
+                            data-chains="btc, ltc, dasht, doget"
+                            data-amount="0.01"
+                            data-addresses="1GjHvbkCyYpy3uaNPvHsxe2EptH2RxEvMt, LbGtaXcsPDQpU6pA8k3sTDmCaG5qFUPAhP, y67MSj12Wm9YJA4291VPpnC8pGS128tH4J, ncq5H5EdCwmGVtQtquk2TKyXDTNApoDpwq"
                             data-amounts=""
+                            data-title="Payment Request"
                             data-callback="bs_default_payment_callback"
                         >Payment Request</a>
                         
@@ -265,16 +266,16 @@
                     <p class="small">Would you like to display Desktop QT Link?</p>
                 </li>
                 <li class="list-group-item">
-                    <p><strong><code>data-qrbip</code> default is set to <code>false</code></strong></p>
-                    <p class="small">Should the QR be a BIP QT Link?</p>
-                </li>
-                <li class="list-group-item">
-                    <p><strong><code>data-bipqr</code> default is set to <code>true</code></strong></p>
-                    <p class="small">Should the BIP QT Link be a QR?</p>
-                </li>
-                <li class="list-group-item">
                     <p><strong><code>data-poll</code> default is set to <code>60</code></strong></p>
                     <p class="small">How many seconds between polls?</p>
+                </li>
+                <li class="list-group-item">
+                    <p><strong><code>data-title</code> default is set to <code>Payment Request</code></strong></p>
+                    <p class="small">The title of the modal window</p>
+                </li>
+                <li class="list-group-item">
+                    <p><strong><code>data-description</code> default is set to <code>false</code></strong></p>
+                    <p class="small">The description given to the payment request, which if set to false will use the text within the button as the description.</p>
                 </li>
             </ul>
         </div>
