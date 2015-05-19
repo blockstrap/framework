@@ -41,3 +41,148 @@ body {
 {
     background: #F8F8F8;
 }
+
+/*
+
+NAVIGATION
+
+*/
+.navbar.navbar-default {
+    height: 75px;
+    border-bottom: 1px dotted #CCC;
+    background: #F7F7F7;
+}
+.navbar .navbar-brand {
+    width: 260px;
+    background: url(../img/bs-logo.png) 11px 16px no-repeat;
+    text-indent: -999em;
+    height: 75px;
+    outline: 0;
+}
+.navbar .navbar-right {
+    margin-right: 3px;
+}
+.navbar .navbar-brand:hover {
+    opacity: 0.75;
+}
+.navbar.navbar-default .navbar-nav > li > a {
+    font-size: 12px;
+    padding: 0;
+    margin: 27px 8px;
+    outline: 0;
+    text-transform: lowercase;
+    color: #00A4E5;
+    background: transparent;
+}
+.navbar.navbar-default .navbar-nav > li.current-menu-item > a,
+.navbar-nav > li > a:hover {
+    color: #666;
+    border-bottom: 1px solid #00A4E5;
+}
+.navbar-default .navbar-nav > .current-menu-item > a, .navbar-default .navbar-nav > .current-menu-item > a:hover, .navbar-default .navbar-nav > .current-menu-item > a:focus {
+    background: transparent;
+}
+.navbar-nav > li > .dropdown-menu {
+    background: #F7F7F7;
+    border-top: 1px solid #F7F7F7;
+    margin-top: -1px;
+    z-index: 999;
+}
+.navbar-nav .dropdown .caret,
+.navbar-nav .dropdown .dropdown-menu {
+    display: none;
+}
+.navbar-nav .dropdown li.header {
+    padding; 5px 20px;
+    margin-top: -1px 0 0;
+    background: #FFF;
+    border-top: 1px dotted #CCC;
+    border-bottom: 1px dotted #CCC;
+}
+.navbar-nav .dropdown li.header a {
+    font-weight: bold;
+    font-size: 14px;
+}
+.navbar-nav .dropdown li:hover a,
+.navbar-nav .dropdown li.current-menu-item.sub a {
+    background: #333;
+    color: #FFF;
+}
+body .navbar.navbar-default .navbar-nav > li.mini-icon,
+body .navbar.navbar-default .navbar-nav > li.mini-icon a {
+    text-decoration: none;
+    border-bottom: none;
+}
+body .navbar.navbar-default .navbar-nav > li.mini-icon a {
+    width: 30px;
+    height: 30px;
+    text-indent: -999em;
+    right: 0;
+    top: -1px;
+    background: url(../img/mini-icons.png) no-repeat;
+}
+body .navbar.navbar-default .navbar-nav > li.mini-icon.twitter {
+    background-position: 0 0;
+}
+body .navbar.navbar-default .navbar-nav > li.mini-icon.twitter a:hover {
+    text-decoration: none;
+    background-position: 0 -60px;
+}
+.navbar .navbar-toggle {
+    margin-top: 18px;
+}
+
+/*
+
+SOCIAL
+
+*/
+.social-links {
+    display: block;
+    position: relative;
+    padding: 1px 0;
+    text-align: center;
+}
+.social-links a {
+    display: inline-block;
+    position: relative;
+    width: 50px;
+    height: 50px;
+    background: url(../img/social.png) no-repeat;
+}
+.social-links a.facebook {
+    background-position: 0 -50px;
+}
+.social-links a.github {
+    background-position: -50px -50px;
+}
+.social-links a.instagram {
+    background-position: -100px -50px;
+}
+.social-links a.rss {
+    background-position: -150px -50px;
+}
+.social-links a.twitter {
+    background-position: -200px -50px;
+}
+.social-links a.reddit {
+    background-position: -250px -50px;
+}
+.social-links a.facebook:hover {
+    background-position: 0 0px;
+}
+.social-links a.github:hover {
+    background-position: -50px -0px;
+}
+.social-links a.instagram:hover {
+    background-position: -100px -0px;
+}
+.social-links a.rss:hover {
+    background-position: -150px -0px;
+}
+.social-links a.twitter:hover {
+    background-position: -200px -0px;
+}
+.social-links a.reddit:hover {
+    background-position: -250px -0px;
+}
