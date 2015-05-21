@@ -4221,7 +4221,8 @@
                     assert(Array.isArray(pubKeys), "Expected Array, got " + pubKeys);
                     assert(pubKeys.length >= m, "Not enough pubKeys provided");
                     var pubKeyBuffers = pubKeys.map(function(pubKey) {
-                        return pubKey.toBuffer()
+                        //return pubKey.toBuffer();
+                        return bitcoin.Script.fromHex(pubKey).toBuffer();
                     });
                     var n = pubKeys.length;
                     return Script.fromChunks([].concat(opcodes.OP_1 - 1 + m, pubKeyBuffers, opcodes.OP_1 - 1 + n, opcodes.OP_CHECKMULTISIG))

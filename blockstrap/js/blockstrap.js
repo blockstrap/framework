@@ -1357,6 +1357,16 @@ var blockstrap_core = function()
                 }
                 return arrayed_string;
             },
+            string_to_hex: function(string)
+            {
+                var hex, i;
+                var result = "";
+                for (i=0; i<string.length; i++) {
+                    hex = string.charCodeAt(i).toString(16);
+                    result += ("000"+hex).slice(-4);
+                }
+                return result;
+            },
             stringed: function(styles)
             {
                 if($.isArray(styles))

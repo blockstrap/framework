@@ -104,22 +104,53 @@
         }
     }
     
-    blockchains.keys = function(secret, blockchain)
+    blockchains.keys = function(secret, blockchain, number_of_keys)
     {
         var keys = {};
-        var hash = bitcoin.crypto.sha256(secret);
+        var is_array = false;
+        var secrets = secret;
         var blockchain_key = blockchains.key(blockchain);
         var blockchain_obj = bitcoin.networks[blockchain_key];
+        if(typeof number_of_keys != 'undefined' && parseInt(number_of_keys) > 1)
+        {
+            keys = [];
+            is_array = true;
+        }
         try
         {
-            var raw_keys = bitcoin.HDNode.fromSeedBuffer(hash, blockchain_obj);
-            keys.pub = raw_keys.pubKey.getAddress(blockchain_obj).toString();
-            keys.priv = raw_keys.privKey.toWIF(blockchain_obj);
+            if(is_array)
+            {
+                for (i = 0; i < parseInt(number_of_keys); i++) 
+                {
+                    var hash = bitcoin.crypto.sha256(secrets);
+                    var raw_keys = bitcoin.HDNode.fromSeedBuffer(hash, blockchain_obj);
+                    keys.push({
+                        pub: raw_keys.pubKey.getAddress(blockchain_obj).toString(),
+                        priv: raw_keys.privKey.toWIF(blockchain_obj)
+                    });
+                    secrets = secrets + raw_keys.privKey.toWIF(blockchain_obj);
+                }
+            }
+            else
+            {
+                keys.pub = raw_keys.pubKey.getAddress(blockchain_obj).toString();
+                keys.priv = raw_keys.privKey.toWIF(blockchain_obj);
+            }
         }
         catch(error)
         {
-            keys.pub = false;
-            keys.priv = false;
+            if(is_array)
+            {
+                keys.push({
+                    pub: false,
+                    priv: false
+                });
+            }
+            else
+            {
+                keys.pub = false;
+                keys.priv = false;
+            }
         }
         return keys;
     }
