@@ -118,12 +118,12 @@
         }
         try
         {
+            var hash = bitcoin.crypto.sha256(secrets);
+            var raw_keys = bitcoin.HDNode.fromSeedBuffer(hash, blockchain_obj);
             if(is_array)
             {
                 for (i = 0; i < parseInt(number_of_keys); i++) 
                 {
-                    var hash = bitcoin.crypto.sha256(secrets);
-                    var raw_keys = bitcoin.HDNode.fromSeedBuffer(hash, blockchain_obj);
                     keys.push({
                         pub: raw_keys.pubKey.getAddress(blockchain_obj).toString(),
                         priv: raw_keys.privKey.toWIF(blockchain_obj)
