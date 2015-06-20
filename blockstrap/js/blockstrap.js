@@ -1,6 +1,6 @@
 /*
  * 
- *  Blockstrap v0.5.0.2
+ *  Blockstrap v0.6.0.0
  *  http://blockstrap.com
  *
  *  Designed, Developed and Maintained by Neuroware.io Inc
@@ -499,6 +499,7 @@ var blockstrap_core = function()
                 {
                     var value = $(this).val();
                     var account_id = $(this).attr('data-account-id');
+                    var chain = $(this).attr('data-chain');
                     if(value === 'print')
                     {
                         // DEFINITELY NOT CORE MATERIAL
@@ -510,17 +511,28 @@ var blockstrap_core = function()
                     }
                     else if(value === 'access')
                     {
-                        $.fn.blockstrap.accounts.access(account_id);
+                        $.fn.blockstrap.accounts.access(account_id, false, chain);
                     }
                 });
                 $($.fn.blockstrap.element).find('.bs-blockchain-select').each(function(i)
                 {
                     var select = $(this);
+                    var hd = false;
+                    var prepend = false;
                     var blockchains = $.fn.blockstrap.settings.blockchains;
+                    if($(select).hasClass('hd')) hd = true;
+                    if($(select).hasClass('prepend')) prepend = true;
                     $(select).html('');
                     if($.isPlainObject(blockchains))
                     {
-                        $(select).append('<option value="">-- Select Blockchain --</option>');
+                        if(prepend === true && hd === true)
+                        {
+                            $(select).append('<option value="hd">-- HD (All Chains) --</option>');
+                        }
+                        else
+                        {
+                            $(select).append('<option value="">-- Select Blockchain --</option>');
+                        }
                         $.each(blockchains, function(blockchain, v)
                         {
                             if(typeof v.private == 'undefined')
@@ -531,6 +543,10 @@ var blockstrap_core = function()
                                 }
                             }
                         });
+                        if(prepend === false && hd === true)
+                        {
+                            $(select).append('<option value="hd">-- HD (All Chains) --</option>');
+                        }
                     }
                 });
                 $($.fn.blockstrap.element).find('.bs-account-select').each(function(i)
@@ -542,14 +558,17 @@ var blockstrap_core = function()
                     {
                         if(blockstrap_functions.array_length(accounts) === 1)
                         {
-                            $(select).append('<option value="' + accounts[0].id + '">' + accounts[0].name + ' (' + accounts[0].blockchain.type + ')</option>');
+                            $(select).append('<option value="' + accounts[0].id + '">' + accounts[0].name + ' (' + accounts[0].type + ')</option>');
                         }
                         else
                         {
                             $(select).append('<option value="">-- Select Account --</option>');
                             $.each(accounts, function(k, account)
                             {
-                                $(select).append('<option value="' + account.id + '">' + account.name + ' (' + account.blockchain.type + ')</option>');
+                                $.each(account.blockchains, function(code, chain)
+                                {
+                                    $(select).append('<option value="' + account.id + '" data-chain="' + code +'">' + account.name + ' (' + chain.type + ')</option>');
+                                });
                             });
                         }
                     }
@@ -719,17 +738,24 @@ var blockstrap_core = function()
                             }
                             if(window.location.hash)
                             {
-                                $.fn.blockstrap.core.refresh(function()
+                                setTimeout(function()
                                 {
-                                    init_callback(window.location.hash.substring(1));
-                                }, $bs.slug(window.location.hash), false);
+                                    $.fn.blockstrap.core.refresh(function()
+                                    {
+                                        init_callback(window.location.hash.substring(1));
+                                    }, $bs.slug(window.location.hash));
+                                }, 1000);
                             }
                             else
                             {
-                                $.fn.blockstrap.templates.render(bs.settings.page_base, function()
+                                // SLOW THINGS DOWN FOR MANUAL INSTALL
+                                setTimeout(function()
                                 {
-                                    init_callback();
-                                }, true);
+                                    $.fn.blockstrap.templates.render(bs.settings.page_base, function()
+                                    {
+                                        init_callback();
+                                    }, true);
+                                }, 1000);
                             }
                             var run_tests = false;
                             var tests = $bs.vars('tests');
@@ -1357,13 +1383,21 @@ var blockstrap_core = function()
                 }
                 return arrayed_string;
             },
-            string_to_hex: function(string)
+            string_to_hex: function(string, pad)
             {
                 var hex, i;
                 var result = "";
-                for (i=0; i<string.length; i++) {
+                for (i=0; i < string.length; i++) 
+                {
                     hex = string.charCodeAt(i).toString(16);
-                    result += ("000"+hex).slice(-4);
+                    if(!pad)
+                    {
+                        result += hex;
+                    }
+                    else
+                    {
+                        result += ("000"+hex).slice(-4);
+                    }
                 }
                 return result;
             },

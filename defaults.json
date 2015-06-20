@@ -1,5 +1,5 @@
 {
-    "v": "0.5.0.2",
+    "v": "0.6.0.0",
     "public": false,
     "security": false,
     "role": "admin",
@@ -107,8 +107,16 @@
     "contacts": [
         {
             "name": "Blockstrap Donations",
-            "address": "13uXA8zfLjsnrg69f6FcHVRfwBGobYU3bc",
-            "blockchain": "btc",
+            "blockchains": {
+                "btc": ["1GjHvbkCyYpy3uaNPvHsxe2EptH2RxEvMt"],
+                "dash": ["Xhp3RfQKVCsqju3VEcHuMwcMPNbLszEGJG"],
+                "doge": ["DJHXpkQGcRydRvocWaeUtZir6c2pXHkUn4"],
+                "ltc": ["LbGtaXcsPDQpU6pA8k3sTDmCaG5qFUPAhP"],
+                "btct": ["miNyrRGBZkyVxw1RoKMLpEagCcftVQJD22"],
+                "dasht": ["y67MSj12Wm9YJA4291VPpnC8pGS128tH4J"],
+                "doget": ["ncq5H5EdCwmGVtQtquk2TKyXDTNApoDpwq"],
+                "ltct": ["moyssLnSTs6EBWDoyRMaXkUKnDmLCSXBte"]
+            },
             "contact_dnk": false
         }
     ],      

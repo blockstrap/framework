@@ -1,6 +1,6 @@
 /*
  * 
- *  Blockstrap v0.5.0.2
+ *  Blockstrap v0.6.0.0
  *  http://blockstrap.com
  *
  *  Designed, Developed and Maintained by Neuroware.io Inc
@@ -27,53 +27,64 @@
     {
         e.preventDefault();
         var account_id = $(button).attr('data-key');
-        $.fn.blockstrap.data.find('accounts', account_id, function(account)
+        var chain = $(button).attr('data-chain');
+        $.fn.blockstrap.data.find('accounts', account_id, function(raw_account)
         {
-            var title = 'Public Key:';
-            if(account.address) title = title + ' ' + account.address;
-            var qr_code = '<p class="qr-holder" data-content="'+account.address+'"></p>';
-            var form = $.fn.blockstrap.forms.process({
-                objects: [
-                    {
-                        css: 'form-horizontal',
-                        fields: [
-                            {
-                                selects: {
-                                    id: 'access-account',
-                                    label: {
-                                        text: 'How to process this...?',
-                                        css: 'col-xs-4'
-                                    },
-                                    wrapper: {
-                                        css: 'col-xs-8'
-                                    },
-                                    values: [
-                                        {
-                                            value: '',
-                                            text: '-- Select an Option --'
+            if(
+                typeof raw_account.blockchains != 'undefined'
+                && typeof raw_account.blockchains[chain] != 'undefined'
+            ){
+                var account = raw_account.blockchains[chain];
+                var title = 'Public Key:';
+                if(account.address) title = title + ' ' + account.address;
+                var qr_code = '<p class="qr-holder" data-content="'+account.address+'"></p>';
+                var form = $.fn.blockstrap.forms.process({
+                    objects: [
+                        {
+                            css: 'form-horizontal',
+                            fields: [
+                                {
+                                    selects: {
+                                        id: 'access-account',
+                                        label: {
+                                            text: 'How to process this...?',
+                                            css: 'col-xs-4'
                                         },
-                                        {
-                                            value: 'print',
-                                            text: 'Print Public Key'
+                                        wrapper: {
+                                            css: 'col-xs-8'
                                         },
-                                        {
-                                            value: 'access',
-                                            text: 'Access Private Key'
-                                        }
-                                    ],
-                                    attributes: [
-                                        {
-                                            key: 'data-account-id',
-                                            value: account_id
-                                        }
-                                    ]
+                                        values: [
+                                            {
+                                                value: '',
+                                                text: '-- Select an Option --'
+                                            },
+                                            {
+                                                value: 'print',
+                                                text: 'Print Public Key'
+                                            },
+                                            {
+                                                value: 'access',
+                                                text: 'Access Private Key'
+                                            }
+                                        ],
+                                        attributes: [
+                                            {
+                                                key: 'data-account-id',
+                                                value: account_id
+                                            },
+                                            {
+                                                key: 'data-chain',
+                                                value: chain
+                                            }
+                                        ]
+                                    }
                                 }
-                            }
-                        ]
-                    }
-                ]
-            });
-            $.fn.blockstrap.core.modal(title, qr_code + form);
+                            ]
+                        }
+                    ]
+                });
+                $.fn.blockstrap.core.modal(title, qr_code + form);
+            }
         });
     }
     
@@ -145,6 +156,7 @@
                 }
             });
         }
+        
         if(
             wallet 
             && wallet.wallet_blockchain
@@ -153,6 +165,19 @@
             && !wallet.cancel
         )
         {
+            
+            // TODO: Re-evaluate this?
+            if(wallet.wallet_blockchain == 'hd')
+            {
+                wallet.wallet_blockchain = [];
+                var chains = $.fn.blockstrap.settings.blockchains;
+                delete chains.multi;
+                $.each(chains, function(chain, obj)
+                {
+                    wallet.wallet_blockchain.push(chain);
+                });
+            }
+            
             $.fn.blockstrap.accounts.new(
                 wallet.wallet_blockchain, 
                 wallet.wallet_name,
@@ -493,7 +518,17 @@
     {
         e.preventDefault();
         var id = $(button).attr('data-id');
-        $('#'+id).toggle();
+        var css = $(button).attr('data-class');
+        var speed = 0;
+        if($(button).attr('data-speed')) speed = parseInt($(button).attr('data-speed'));
+        if(css)
+        {
+            $('.'+css).toggle(speed);
+        }
+        else
+        {
+            $('#'+id).toggle(speed);
+        }
     }
     
     buttons.import = function(button, e)
@@ -653,7 +688,7 @@
                 e.preventDefault();
                 bs.core.get(data_url, 'json', function(data)
                 {
-                    if(data.status)
+                    if(typeof data.status != 'undefined')
                     {
                         buttons.cancel(button, mobile, menu, elements);
                     }
@@ -750,28 +785,31 @@
     {
         e.preventDefault();
         var collection = $(button).attr('data-collection');
+        var chain = $(button).attr('data-chain');
         var key = $(button).attr('data-key');
         if(collection == 'accounts')
         {
             $.fn.blockstrap.core.loader('open');
-            var account = $.fn.blockstrap.accounts.get(key);
+            var account = $.fn.blockstrap.accounts.get(key, true);
             $.fn.blockstrap.accounts.update(account, function()
             {
                 $.fn.blockstrap.core.refresh(function()
                 {
                     $.fn.blockstrap.core.loader('close');
                 }, $.fn.blockstrap.core.page());
-            }, true);
+            }, true, 0, chain);
         }
     }      
     
     buttons.remove = function(button, e)
     {
         e.preventDefault();
+        var chain = '';
         var key = $(button).attr('data-key');
         var element = $(button).attr('data-element');
         var collection = $(button).attr('data-collection');
         var confirm = $(button).attr('data-confirm');
+        if($(button).attr('data-chain')) chain = $(button).attr('data-chain');
         if(confirm)
         {
             var form = $.fn.blockstrap.forms.process({
@@ -808,7 +846,13 @@
                             id: "submit-pw",
                             css: 'btn-success pull-right btn-split',
                             text: 'Confirm',
-                            type: 'submit'
+                            type: 'submit',
+                            attributes: [
+                                {
+                                    key: 'data-chain',
+                                    value: chain
+                                }
+                            ]
                         }
                     ]
                 }
@@ -818,12 +862,12 @@
             $.fn.blockstrap.core.confirm('Confirmation Required', text, function()
             {
                 $($.fn.blockstrap.element).find('#confirm-modal .modal-footer').show();
-                $.fn.blockstrap.accounts.remove(collection, key, element, confirm);
+                $.fn.blockstrap.accounts.remove(collection, key, element, confirm, chain);
             });
         }
         else
         {
-            $.fn.blockstrap.accounts.remove(collection, key, element, false);
+            $.fn.blockstrap.accounts.remove(collection, key, element, false, chain);
         }
     }
     
@@ -903,13 +947,14 @@
         var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form-id'));
         var to = $(form).find('#to').val();
         var from = $(form).find('#from').val();
+        var chain = $(form).find('#from option:selected').attr('data-chain');
         var amount = parseFloat($(form).find('#amount').val()) * 100000000;
         if(!to) $.fn.blockstrap.core.modal('Warning', 'Missing address to send payment to');
         else if(!from) $.fn.blockstrap.core.modal('Warning', 'Missing account to use to send from');
         else if(!amount) $.fn.blockstrap.core.modal('Warning', 'You have not provided the amount you want to send');
         else
         {
-            $.fn.blockstrap.accounts.prepare(to, from, amount);
+            $.fn.blockstrap.accounts.prepare(to, from, amount, chain);
         }
     }
     
@@ -1056,6 +1101,18 @@
                 });
             });
             
+            // TODO: Re-evaluate this?
+            if(wallet.wallet_blockchain == 'hd')
+            {
+                wallet.wallet_blockchain = [];
+                var chains = $.fn.blockstrap.settings.blockchains;
+                delete chains.multi;
+                $.each(chains, function(chain, obj)
+                {
+                    wallet.wallet_blockchain.push(chain);
+                });
+            }
+            
             if(
                 wallet 
                 && wallet.wallet_blockchain
@@ -1079,8 +1136,8 @@
                             {
                                 bs.contacts.new(
                                     contact.name, 
-                                    contact.address,
-                                    contact.blockchain,
+                                    contact.blockchains,
+                                    false,
                                     contact,
                                     function()
                                     {
@@ -1239,14 +1296,22 @@
     {
         e.preventDefault();
         var fields = [];
+        var account = false;
         var op_return_data = false;
         var form_id = $(button).attr('data-form-id');
         var account_id = $(button).attr('data-account-id');
+        var chain = $(button).attr('data-chain');
         var blockchain = $(button).attr('data-to-blockchain');
         var to_address = $(button).attr('data-to-address');
         var to_amount = parseInt($(button).attr('data-to-amount'));
         var form = $('form#'+form_id);
-        var account = $.fn.blockstrap.accounts.get(account_id);
+        var raw_accounts = $.fn.blockstrap.accounts.get(account_id, true);
+        if(
+            typeof raw_accounts.blockchains != 'undefined'
+            && typeof raw_accounts.blockchains[chain] != 'undefined'
+        ){
+            account = raw_accounts.blockchains[chain];
+        }
         var balance = account.balance;
         var fee = $.fn.blockstrap.settings.blockchains[blockchain].fee * 100000000;
         var from_address = account.address;
@@ -1312,17 +1377,18 @@
                     {
                         $.fn.blockstrap.blockchains.send(to_address, to_amount, from_address, keys, function(tx)
                         {
+                            var saved_account = $.fn.blockstrap.accounts.get(account_id, true);
                             if(tx && typeof tx.txid != 'undefined')
                             {
-                                account.ts = new Date().getTime();
-                                account.balance = change;
-                                account.tx_count++;
-                                $.fn.blockstrap.data.save('accounts', account_id, account, function(obj)
+                                saved_account.blockchains[chain].ts = new Date().getTime();
+                                saved_account.blockchains[chain].balance = change;
+                                saved_account.blockchains[chain].tx_count++;
+                                $.fn.blockstrap.data.save('accounts', account_id, saved_account, function(obj)
                                 {
                                     $.fn.blockstrap.core.refresh(function()
                                     {
                                         $.fn.blockstrap.core.modals('close_all');
-                                        var title = 'Sent ' + parseInt(to_amount) / 100000000 + ' Bitcoin to ' + to_address;
+                                        var title = 'Sent ' + parseInt(to_amount) / 100000000 + ' ' + saved_account.blockchains[chain].type + ' to ' + to_address;
                                         var base = $.fn.blockstrap.settings.base_url;
                                         var content = '<p>Transaction ID: ' + tx.txid + '</p><p>You can <a href="' + base + '?txid=' + tx.txid + '#transaction">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchains.io/' + blockchain + '/transaction/' + tx.txid + '">this</a>.</p>';
                                         content+='<p>Please note that a '+(fee / 100000000)+' '+$.fn.blockstrap.settings.blockchains[blockchain].blockchain+' mining fee was also added to the transaction.</p>';
@@ -1349,7 +1415,7 @@
                             $.fn.blockstrap.core.loader('close');
                         }
                     }
-                });
+                }, false, chain, raw_accounts.type);
             });
         }
     } 
@@ -1357,11 +1423,19 @@
     buttons.submit_verification = function(button, e)
     {
         e.preventDefault();
+        var account = false;
         var fields = [];
         var form_id = $(button).attr('data-form-id');
         var account_id = $(button).attr('data-account-id');
+        var chain = $(button).attr('data-chain');
         var form = $('form#'+form_id);
-        var account = $.fn.blockstrap.accounts.get(account_id);
+        var raw_accounts = $.fn.blockstrap.accounts.get(account_id, true);
+        if(
+            typeof raw_accounts.blockchains != 'undefined'
+            && typeof raw_accounts.blockchains[chain] != 'undefined'
+        ){
+            account = raw_accounts.blockchains[chain];
+        }
         $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
         {
             $(form).find('.form-group').each(function(i)
@@ -1397,7 +1471,7 @@
                         });
                     });
                 }
-            });
+            }, false, chain, raw_accounts.type);
         });
     }
     

@@ -7936,3 +7936,22 @@ html body .blockstrap-wrapper #main-content .panel-wrapper.col-md-6.even {
 html body .blockstrap-wrapper #main-content .panel-heading .btn {
     font-family: sans-serif;
 }
+.table p.chains {
+    padding: 7px;
+    background: #F7F7F7;
+}
+.table tr:nth-child(2n+1) p.chains {
+    background: #FFF;
+}
+.table a.btn-hd {
+    margin-top: -23px;
+}
+.blockstrap-wrapper #main-content table.table thead tr th .btn-xs.btn-hd.pull-left, 
+.blockstrap-wrapper table.table thead tr th .btn-xs.btn-hd.pull-left, 
+.blockstrap-wrapper #main-content table.table tbody tr td .btn-xs.btn-hd.pull-left, 
+.blockstrap-wrapper table.table tbody tr td .btn-xs.btn-hd.pull-left {
+    margin-left: 0;
+}
+.table p.totals {
+    margin-bottom: -18px;
+}

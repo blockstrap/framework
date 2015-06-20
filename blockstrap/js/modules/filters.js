@@ -1,6 +1,6 @@
 /*
  * 
- *  Blockstrap v0.5.0.2
+ *  Blockstrap v0.6.0.0
  *  http://blockstrap.com
  *
  *  Designed, Developed and Maintained by Neuroware.io Inc
@@ -22,8 +22,16 @@
                 if(key.substring(0, 12) === 'nw_accounts_')
                 {
                     var this_account = $.parseJSON(account);
-                    this_account.balance = parseInt(this_account.balance) / 100000000;
-                    accounts.push(this_account);
+                    if(typeof this_account.blockchains != 'undefined')
+                    {
+                        var chains = this_account.blockchains;
+                        this_account.blockchains = [];
+                        $.each(chains, function(chain, obj)
+                        {
+                            this_account.blockchains.push(obj);
+                        });
+                        accounts.push(this_account);
+                    }
                 }
             });
         }

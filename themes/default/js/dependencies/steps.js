@@ -578,7 +578,7 @@ var blockstrap_setup_steps = [
                                 {
                                     "selects": {
                                         "id": "wallet_blockchain",
-                                        "css": "bs-blockchain-select",
+                                        "css": "bs-blockchain-select hd prepend",
                                         "label": {
                                             "text": "Blockchain",
                                             "css": "col-sm-3"

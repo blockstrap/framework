@@ -432,7 +432,7 @@
             {
                 "id": "new-account",
                 "title": "New Account",
-                "body": "<p>Some text to introduce the addition of new addresses.</p>",
+                "body": "<p>An account can contain multiple addresses for multiple blockchains, and uses HD functionality by default, allowing you to generate multiple key pairs from a single seed. Alternatively, you could just pick the specific individual blockchain that you need.</p>",
                 "close": "Cancel",
                 "form": {
                     "css": "form-horizontal",
@@ -440,7 +440,7 @@
                         {
                             "selects": {
                                 "id": "wallet_blockchain",
-                                "css": "bs-blockchain-select",
+                                "css": "bs-blockchain-select hd prepend",
                                 "label": {
                                     "text": "Blockchain",
                                     "css": "col-xs-3"

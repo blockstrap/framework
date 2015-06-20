@@ -1,6 +1,6 @@
 /*
  * 
- *  Blockstrap v0.5.0.2
+ *  Blockstrap v0.6.0.0
  *  http://blockstrap.com
  *
  *  Designed, Developed and Maintained by Neuroware.io Inc
@@ -36,7 +36,7 @@
             "starts": ['m, n']
         },
         {
-            "code": "dash",
+            "code": "dasht",
             "starts": ['y']
         },
         {
@@ -104,7 +104,7 @@
         }
     }
     
-    blockchains.keys = function(secret, blockchain, number_of_keys)
+    blockchains.keys = function(secret, blockchain, number_of_keys, indexes)
     {
         var keys = {};
         var is_array = false;
@@ -118,23 +118,35 @@
         }
         try
         {
-            var hash = bitcoin.crypto.sha256(secrets);
-            var raw_keys = bitcoin.HDNode.fromSeedBuffer(hash, blockchain_obj);
             if(is_array)
             {
                 for (i = 0; i < parseInt(number_of_keys); i++) 
                 {
+                    var hash = bitcoin.crypto.sha256(secrets);
+                    var raw_keys = bitcoin.HDNode.fromSeedBuffer(hash, blockchain_obj);
                     keys.push({
                         pub: raw_keys.pubKey.getAddress(blockchain_obj).toString(),
+                        hex: raw_keys.pubKey.toHex(),
                         priv: raw_keys.privKey.toWIF(blockchain_obj)
                     });
-                    secrets = secrets + raw_keys.privKey.toWIF(blockchain_obj);
+                    secrets = CryptoJS.SHA3(secrets + raw_keys.privKey.toWIF(blockchain_obj), { outputLength: 512 }).toString();
                 }
+                return keys;
             }
             else
             {
+                var hash = bitcoin.crypto.sha256(secrets);
+                var raw_keys = bitcoin.HDNode.fromSeedBuffer(hash, blockchain_obj);
+                if(typeof indexes != 'undefined' && $.isArray(indexes))
+                {
+                    $.each(indexes, function(k, index)
+                    {
+                        raw_keys = raw_keys.derive(index);
+                    });
+                }
                 keys.pub = raw_keys.pubKey.getAddress(blockchain_obj).toString();
                 keys.priv = raw_keys.privKey.toWIF(blockchain_obj);
+                return keys;
             }
         }
         catch(error)
@@ -145,19 +157,20 @@
                     pub: false,
                     priv: false
                 });
+                return keys;
             }
             else
             {
                 keys.pub = false;
                 keys.priv = false;
+                return keys;
             }
         }
-        return keys;
     }
     
-    blockchains.raw = function(return_to, privkey, inputs, outputs, this_fee, amount_to_send, data, sign_tx)
+    blockchains.raw = function(return_to, private_keys, inputs, outputs, this_fee, amount_to_send, data, sign_tx, script)
     {
-        tx = new bitcoin.Transaction();
+        tx = new bitcoin.TransactionBuilder();
         
         if(typeof sign_tx == 'undefined') sign_tx = true;
         
@@ -169,9 +182,13 @@
         var inputs_to_sign = [];
         var debug = false;
         
-        if(privkey)
+        if(typeof private_keys == 'string')
         {
-            key = bitcoin.ECKey.fromWIF(privkey);
+            key = bitcoin.ECKey.fromWIF(private_keys);
+        }
+        else if($.isArray(private_keys))
+        {
+            var redeem_script = script;
         }
         
         if(this_fee) fee = this_fee;
@@ -182,7 +199,6 @@
             console.log('inputs', inputs);
             console.log('outputs', outputs);
         }
-
         $.each(inputs, function(i, o)
         {
             if(balance <= (amount_to_send + fee))
@@ -205,6 +221,7 @@
                 tx.addOutput(return_to, change);
             }
         }
+        
         if(typeof data == 'string' && data)
         {
             var op = Crypto.util.base64ToBytes(btoa(data));
@@ -219,12 +236,29 @@
             if(tx.outs[1].value === 0) tx.outs[1].type = "nulldata";
             else if(tx.outs[2].value === 0) tx.outs[2].type = "nulldata";
         }
-        $.each(inputs_to_sign, function(k)
+        else
         {
-            if(sign_tx) tx.sign(k, key);
-        });
-        
-        var raw = tx.toHex();
+            $.each(inputs_to_sign, function(k)
+            {
+                if(sign_tx)
+                {
+                    if($.isArray(private_keys))
+                    {
+                        $.each(private_keys, function(private_key, key)
+                        {
+                            tx.sign(k, bitcoin.ECKey.fromWIF(key), bitcoin.Script.fromHex(redeem_script));
+                        });
+                    }
+                    else
+                    {
+                        tx.sign(k, key);
+                    }
+                }
+            });
+        }
+
+        var built = tx.build();
+        var raw = built.toHex();
         
         if(debug)
         {
@@ -250,8 +284,19 @@
         $.fn.blockstrap.api.balance(from_address, blockchain, function(balance)
         {
             if(
-                blockchain != $.fn.blockstrap.blockchains.which(to_address)
-                || blockchain != $.fn.blockstrap.blockchains.which(from_address)
+                (
+                    blockchain != $.fn.blockstrap.blockchains.which(to_address)
+                    || blockchain != $.fn.blockstrap.blockchains.which(from_address)
+                )
+                &&
+                (
+                    blockchain == 'ltct'
+                    && 
+                    (
+                        $.fn.blockstrap.blockchains.which(to_address) != 'btct'
+                        || $.fn.blockstrap.blockchains.which(from_address) != 'btct'
+                    )
+                )
             ){
                 $.fn.blockstrap.core.loader('close');
                 var content = 'Incompatible addresses. Please ensure you are sending to and from the same blockchain.';
