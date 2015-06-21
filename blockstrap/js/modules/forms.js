@@ -149,6 +149,143 @@
         return $.fn.blockstrap.templates.filter(html);
     }
     
+    forms.switch_addresses = function(form, vars)
+    {
+        if(
+            typeof vars.accountId != 'undefined'
+            && typeof vars.chain != 'undefined'
+        ){
+            var account_id = vars.accountId;
+            var chain = vars.chain;
+            var account = $.fn.blockstrap.accounts.get(account_id, true);
+            // THIS IS FOR FORM TO PROCESS AFTER GETTING KEY ...?
+            if(typeof account.addresses == 'undefined')
+            {
+                account.addresses = [{chains:{}}];
+            }
+            if(typeof account.addresses[0].chains[chain] == 'undefined')
+            {
+                account.addresses[0].chains[chain] = [];
+            }
+            var current_address = account.blockchains[chain].address;
+            account.addresses[0].chains[chain].push(account.blockchains[chain].address);
+            var fields = [];
+            $.each(account.keys, function(k, key)
+            {
+                var input = $(form).find('#'+key);
+                var value = $(input).val();
+                var id = $(input).attr('id');
+                fields.push({
+                    id: id,
+                    value: value
+                });
+            });
+            var this_account = account.blockchains[chain];
+            this_account.id = account.id;
+            this_account.name = account.name;
+            this_account.password = account.password;
+            $.fn.blockstrap.accounts.verify(this_account, fields, function(verified, keys)
+            {
+                var title = 'Error';
+                var contents = 'Password mis-match!';   
+                if(verified === true)
+                {
+                    $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
+                    {
+                        var key = '';
+                        var original = false;
+                        if($.isArray(fields))
+                        {
+                            if(typeof account.original != 'undefined')
+                            {
+                                original = account.original;
+                            }
+                            $.each(fields, function(k, v)
+                            {
+                                if(v.id == 'wallet_blockchain' && type == 'hd')
+                                {
+                                    v.value = [];
+                                    var chains = $.fn.blockstrap.settings.blockchains;
+                                    delete chains.multi;
+                                    $.each(chains, function(chain, obj)
+                                    {
+                                        v.value.push(chain);
+                                    });
+                                }
+
+                                // TODO: Remove this hardcoded hack?
+                                if(v.id == 'wallet_currency' && original)
+                                {
+                                    v.value = original;
+                                }
+                                key_obj = CryptoJS.SHA3(salt+key+v.id+v.value, { outputLength: 512 });
+                                key = key_obj.toString();
+                            });
+                        };
+                        if(key)
+                        {
+                            var keys = $.fn.blockstrap.blockchains.keys(
+                                key+this_account.code, 
+                                this_account.code, 
+                                1
+                            );
+                            if(keys.pub === this_account.address)
+                            {
+                                $.fn.blockstrap.api.balance(
+                                    current_address, 
+                                    chain, 
+                                    function(balance)
+                                    {
+                                        var now = new Date().getTime();
+                                        var fee = $.fn.blockstrap.settings.blockchains[this_account.code].fee;
+                                        var next_key = $.fn.blockstrap.blockchains.keys(
+                                            key+this_account.code, 
+                                            this_account.code, 
+                                            1,
+                                            [blockstrap_functions.array_length(
+                                                account.addresses[0].chains[this_account.code]
+                                            )]
+                                        );
+                                        account.blockchains[this_account.code].address = next_key.pub;
+                                        account.blockchains[this_account.code].balance = 0;
+                                        account.blockchains[this_account.code].tx_count = 0;
+                                        account.blockchains[this_account.code].txs = {};
+                                        account.blockchains[this_account.code].ts = now;
+                                        account.blockchains[this_account.code].display_balance = "0.00000000";
+                                        if(balance > fee)
+                                        {
+                                            console.log('need to transfer funds first!');
+                                        }
+                                        else
+                                        {
+                                            $.fn.blockstrap.data.save('accounts', account.id, account, function()
+                                            {
+                                                $.fn.blockstrap.accounts.update(
+                                                    account, 
+                                                    function(results)
+                                                    {
+                                                        console.log('and then?', results);
+                                                    }, 
+                                                    true, 
+                                                    0, 
+                                                    this_account.code
+                                                );
+                                            });
+                                        }
+                                    }
+                                );
+                            }
+                        }
+                    })
+                }
+                else
+                {
+                    $.fn.blockstrap.core.modal(title, contents);
+                }
+            });
+        }
+    }
+    
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {forms:forms});
 })

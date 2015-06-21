@@ -33,7 +33,6 @@
     contacts.new = function(name, address, blockchain, fields, callback)
     {
         var addresses = address;
-        console.log('address', address);
         if(!$.isPlainObject(address) && !$.fn.blockstrap.blockchains.validate(address))   
         {
             callback();
@@ -68,8 +67,14 @@
                             {
                                 // NOTHING
                             }
-                            else if($.fn.blockstrap.blockchains.which(address) != blockchain)
-                            {
+                            else if(
+                                $.fn.blockstrap.blockchains.which(address) != blockchain
+                                &&
+                                (
+                                    blockchain == 'ltct'
+                                    && $.fn.blockstrap.blockchains.which(address) != 'btct'
+                                )
+                            ){
                                 var which = $.fn.blockstrap.blockchains.which(address);
                                 if(which)
                                 {
@@ -81,8 +86,15 @@
                                     return false;
                                 }
                             }
-                            else
-                            {
+                            else if(
+                                $.fn.blockstrap.blockchains.which(address) == blockchain
+                                ||
+                                (
+                                    $.fn.blockstrap.blockchains.which(address) != blockchain
+                                    && blockchain == 'ltct'
+                                    && $.fn.blockstrap.blockchains.which(address) == 'btc'
+                                )
+                            ){
                                 blockchains_to_save.push({
                                     code: blockchain,
                                     blockchain: $.fn.blockstrap.settings.blockchains[blockchain].blockchain,

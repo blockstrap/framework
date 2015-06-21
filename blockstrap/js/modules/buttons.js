@@ -1022,6 +1022,7 @@
                 }
             });
             var text = '<p>Please confirm removal of this account. You will not be able to use any of the coins on the account unless you can accurately re-create them or first back-up the private key. We hope you understand the risks. Please type the account password below and then press confirm to remove account.</p><p>'+form+'</p>';
+            var text = '<p>Please confirm removal of this account. You will not be able to use any of the coins on the account unless you can accurately re-create them or first back-up the private key. We hope you understand the risks. Please type the account password below and then press confirm to remove account.</p><p>'+form+'</p>';
             $($.fn.blockstrap.element).find('#confirm-modal .modal-footer').hide();
             $.fn.blockstrap.core.confirm('Confirmation Required', text, function()
             {
@@ -1647,6 +1648,101 @@
     buttons.switch = function(button, e)
     {
         e.preventDefault();
+        var account_id = $(button).attr('data-key');
+        var chain = $(button).attr('data-chain');
+        var account = $.fn.blockstrap.accounts.get(account_id, true);
+        var fields = [];
+        if($.isArray(account.keys))
+        {
+            $.each(account.keys, function(k, v)
+            {
+                var group_css = '';   
+                var type = 'text';
+                var key_array = v.split('_');
+                var this_key = key_array[1];
+                var value = account[this_key];
+                // TODO: HARD-CODED FIX THAT SHOULD BE DEALT WITH BY PATCH?
+                if(this_key == 'blockchain' || this_key == 'currency')
+                {
+                    value = account.code;
+                    type = 'hidden';
+                    group_css = 'hidden';
+                }
+                if(this_key == 'password')
+                {
+                    type = 'password';
+                    value = '';
+                }
+                else if(account[this_key])
+                {
+                    type = 'hidden';
+                    group_css = 'hidden';
+                }
+                fields.push({
+                    css: group_css,
+                    inputs: {
+                        id: v,
+                        type: type,
+                        label: {
+                            css: 'col-xs-3',
+                            text: blockstrap_functions.unslug(this_key)
+                        },
+                        wrapper: {
+                            css: 'col-xs-9'
+                        },
+                        value: value
+                    }
+                });
+            })
+        }
+        var contents = '<p>Please verify owenrship before switching addresses:</p>';
+        var form = $.fn.blockstrap.forms.process({
+            id: "switch-addresses",
+            css: "form-horizontal bs",
+            data: [
+                {
+                    key: 'data-function',
+                    value: 'switch_addresses'
+                },
+                {
+                    key: 'data-account-id',
+                    value: account_id
+                },
+                {
+                    key: 'data-chain',
+                    value: chain
+                }
+            ],
+            objects: [
+                {
+                    fields: fields
+                }
+            ],
+            buttons: {
+                forms: [
+                    {
+                        id: 'cancel-verification',
+                        css: 'btn-danger pull-right btn-split',
+                        text: 'Cancel',
+                        type: 'button',
+                        attributes: [
+                            {
+                                key: 'data-dismiss',
+                                value: 'modal'
+                            }
+                        ]
+                    },
+                    {
+                        type: "submit",
+                        id: "switch-address",
+                        css: 'btn-success pull-right btn-split',
+                        text: 'Confirm',
+                        type: 'submit'
+                    }
+                ]
+            }
+        });
+        $.fn.blockstrap.core.modal('Switch Addresses', contents + form);
     }
     
     buttons.toggle = function(button, e)
