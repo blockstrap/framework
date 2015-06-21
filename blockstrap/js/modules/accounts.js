@@ -277,7 +277,7 @@
         }
     }
     
-    accounts.new = function(blockchain, name, password, keys, callback)
+    accounts.new = function(blockchain, name, password, keys, callback, existing_account)
     {
         if(blockchain && name && password && keys && callback && ($.isArray(blockchain) || $.isPlainObject($.fn.blockstrap.settings.blockchains[blockchain])))
         {
@@ -294,7 +294,7 @@
                 {
                     $.fn.blockstrap.data.find('accounts', slug, function(account)
                     {
-                        if(account)
+                        if(account && typeof existing_account == 'undefined')
                         {
                             $.fn.blockstrap.core.loader('close');
                             $.fn.blockstrap.core.modal('Warning', 'This account already exists');
@@ -310,6 +310,10 @@
                                 {
                                     if(!$.isPlainObject(data)) data = {};
                                     data.wallet_question = keys.wallet_question;
+                                }
+                                if(keys.wallet_blockchain)
+                                {
+                                    delete keys.wallet_blockchain;
                                 }
                                 var values = keys;
                                 keys = [];
@@ -327,7 +331,6 @@
                             
                             var blockchains = {};
                             var chains = blockchain;
-                            var addresses = {};
                             var pw_obj = CryptoJS.SHA3(salt+password, { outputLength: 512 });
                             var pw = pw_obj.toString();
                             
@@ -341,8 +344,6 @@
                                 var address_keys = $.fn.blockstrap.blockchains.keys(key+blockchain, blockchain, 1);
                                 var blockchain_name =  $.fn.blockstrap.settings.blockchains[blockchain].blockchain;
                                 var address = address_keys.pub;
-                                addresses[blockchain] = [];
-                                addresses[blockchain].push(address);
                                 blockchains[blockchain] = {
                                     type: blockchain_name,
                                     address: address,
@@ -359,16 +360,26 @@
                             
                             var account = {
                                 id: slug,
-                                type: type,
                                 blockchains: blockchains,
                                 name: name,
                                 password: pw,
                                 keys: keys,
                                 tx_total: 0,
-                                usd_total: "0.00",
-                                addresses: addresses
+                                usd_total: "0.00"
                             };
                             if(data) account.data = data;
+                            
+                            if(typeof existing_account != 'undefined')
+                            {
+                                var merged_chains = $.extend(
+                                    {}, 
+                                    existing_account.blockchains, 
+                                    account.blockchains
+                                );
+                                existing_account.blockchains = merged_chains;
+                                slug = existing_account.id;
+                                account = existing_account;
+                            }
                             $.fn.blockstrap.data.save('accounts', slug, account, function()
                             {
                                 var this_account = $.fn.blockstrap.accounts.get(slug, true);

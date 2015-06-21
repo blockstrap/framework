@@ -588,6 +588,19 @@ var blockstrap_core = function()
                     e.preventDefault();
                     $.fn.blockstrap.core.modal('Warning', 'Search functionality will be available in the next major update');
                 });
+                
+                // START OF BETTER CORE FORMS CLASS...?
+                $($.fn.blockstrap.element).on('submit', 'form.bs', function(e)
+                {
+                    e.preventDefault();
+                    var form = this;
+                    var func = $(this).attr('data-function');
+                    var vars = $(this).data();
+                    if(typeof $.fn.blockstrap.forms[func] == 'function')
+                    {
+                        $.fn.blockstrap.forms[func](form, vars);
+                    }
+                });
             },
             get: function(file, extension, callback, skip, cached)
             {

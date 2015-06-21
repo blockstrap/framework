@@ -654,43 +654,125 @@
         var account_id = $(button).attr('data-id');
         var account = bs.accounts.get(account_id, true);
         var current_chain_count = $bs.array_length(account.blockchains);
+        var default_address = false;
+        var default_chain = false;
         var title = 'Warning';
         var contents = '<p>This account currently has all available blockchains being used.</p>';
         contents+= '<p>If you would like to change an address, please <strong>Switch Keys</strong> using the individual recycle action icons.</p>';
         if(current_chain_count < chain_count)
         {
             title = 'Select New Blockchain';
-            contents = '<p>Please select the blockchain you would like to add to your account:<p>';
+            contents = '<p>Please select the blockchain you would like to add to your account.<p>';
+            contents+= '<p>The password must match the password used to generate this account.<p>';
             var chains_available = [];
-            console.log('chains', chains);
             $.each(chains, function(chain, obj)
             {
-                console.log('account', account);
                 $.each(account.blockchains, function(this_chain, this_obj)
                 {
-                    if(this_chain == chain) delete chains[chain];
+                    if(this_chain == chain) 
+                    {
+                        delete chains[chain];
+                    }
+                    else
+                    {
+                        default_address = this_obj.address;
+                        default_chain = this_chain;
+                    }
                 });
+            });
+            chains_available.push({
+                value: 'all',
+                text: 'All Available Blockchains'
             });
             $.each(chains, function(chain, obj)
             {
-                console.log('obj', obj);
                 chains_available.push({
                     value: chain,
                     text: obj.blockchain
                 });
             });
+            var fields = [
+                {
+                    selects: {
+                        label: {
+                            css: 'col-xs-3',
+                            text: 'Blockchain'
+                        },
+                        id: 'blockchain',
+                        values: chains_available,
+                        wrapper: {
+                            css: 'col-xs-9'
+                        }
+                    }
+                }
+            ];
+            if($.isArray(account.keys))
+            {
+                $.each(account.keys, function(k, v)
+                {
+                    var group_css = '';   
+                    var type = 'text';
+                    var key_array = v.split('_');
+                    var this_key = key_array[1];
+                    var value = account[this_key];
+                    // TODO: HARD-CODED FIX THAT SHOULD BE DEALT WITH BY PATCH?
+                    if(this_key == 'blockchain' || this_key == 'currency')
+                    {
+                        value = account.code;
+                        type = 'hidden';
+                        group_css = 'hidden';
+                    }
+                    if(this_key == 'password')
+                    {
+                        type = 'password';
+                        value = '';
+                    }
+                    else if(account[this_key])
+                    {
+                        type = 'hidden';
+                        group_css = 'hidden';
+                    }
+                    fields.push({
+                        css: group_css,
+                        inputs: {
+                            id: v,
+                            type: type,
+                            label: {
+                                css: 'col-xs-3',
+                                text: blockstrap_functions.unslug(this_key)
+                            },
+                            wrapper: {
+                                css: 'col-xs-9'
+                            },
+                            value: value
+                        }
+                    });
+                })
+            }
             var form = $.fn.blockstrap.forms.process({
+                id: "add-new-blockchain",
+                css: "form-horizontal bs",
+                data: [
+                    {
+                        key: 'data-function',
+                        value: 'add_blockchain'
+                    },
+                    {
+                        key: 'data-account-id',
+                        value: account_id
+                    },
+                    {
+                        key: 'data-default-address',
+                        value: default_address
+                    },
+                    {
+                        key: 'data-default-chain',
+                        value: default_chain
+                    }
+                ],
                 objects: [
                     {
-                        fields: [
-                            {
-                                selects: {
-                                    label: 'Blockchain',
-                                    id: 'blockchain',
-                                    values: chains_available
-                                }
-                            }
-                        ]
+                        fields: fields
                     }
                 ],
                 buttons: {
@@ -712,20 +794,12 @@
                             id: "submit-new-chain",
                             css: 'btn-success pull-right btn-split',
                             text: 'Confirm',
-                            type: 'submit',
-                            attributes: [
-                                {
-                                    key: 'data-account-id',
-                                    value: account_id
-                                }
-                            ]
+                            type: 'submit'
                         }
                     ]
                 }
             });
             bs.core.modal(title, contents + form);
-            console.log($.fn.blockstrap.settings.blockchains);
-            console.log(bs.settings.blockchains);
         }
         else
         {

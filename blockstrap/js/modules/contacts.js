@@ -33,6 +33,7 @@
     contacts.new = function(name, address, blockchain, fields, callback)
     {
         var addresses = address;
+        console.log('address', address);
         if(!$.isPlainObject(address) && !$.fn.blockstrap.blockchains.validate(address))   
         {
             callback();

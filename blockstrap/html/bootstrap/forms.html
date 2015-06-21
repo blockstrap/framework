@@ -1,6 +1,14 @@
 {{#objects}}
 
-{{^fields_only}}<form id="{{id}}" class="{{css}}">{{/fields_only}}
+{{^fields_only}}
+    <form 
+        id="{{id}}" 
+        class="{{css}}"
+        {{#data}} 
+            {{key}}="{{value}}"
+        {{/data}} 
+    >
+{{/fields_only}}
         
         {{#fields}}
             <div class="form-group {{css}}">
