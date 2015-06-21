@@ -7946,6 +7946,11 @@ html body .blockstrap-wrapper #main-content .panel-heading .btn {
 .table a.btn-hd {
     margin-top: -23px;
 }
+.table a.btn-icon {
+    font-size: 16px;
+    line-height: 20px;
+    margin: -10px -10px -10px -4px;
+}
 .blockstrap-wrapper #main-content table.table thead tr th .btn-xs.btn-hd.pull-left, 
 .blockstrap-wrapper table.table thead tr th .btn-xs.btn-hd.pull-left, 
 .blockstrap-wrapper #main-content table.table tbody tr td .btn-xs.btn-hd.pull-left, 

@@ -26,7 +26,7 @@
                         </th>
                         <th>
                             <div class="cell">
-                                Addresses
+                                Current Addresses
                             </div>
                         </th>
                         <th>
@@ -58,7 +58,15 @@
                             </td>
                             <td>
                                 <div class="cell">
-                                    <p><a href="#" class="btn btn-success btn-xs pull-left btn-hd">Add Blockchain</a></p>
+                                    <p>
+                                        <a 
+                                           href="#" 
+                                           class="btn btn-success btn-xs pull-left btn-hd btn-new_chain"
+                                           data-id="{{id}}"
+                                        >
+                                            Add Blockchain
+                                        </a>
+                                    </p>
                                     <hr>
                                     {{#blockchains}}
                                         <p class="chains">{{type}}</p>
@@ -67,10 +75,19 @@
                             </td>
                             <td>
                                 <div class="cell">
-                                    <p><a href="#" class="btn btn-primary btn-xs pull-left btn-hd">Sweep Addresses</a></p>
+                                    <p>
+                                        <a 
+                                           href="#" 
+                                           class="btn btn-primary btn-xs pull-left btn-hd btn-see_all"
+                                        >
+                                            See All Addresses
+                                        </a>
+                                    </p>
                                     <hr>
                                     {{#blockchains}}
-                                        <p class="chains"><a href="?key={{address}}#address">{{address}}</a></p>
+                                        <p class="chains">
+                                            <a href="?key={{address}}#address">{{address}}</a>
+                                        </p>
                                     {{/blockchains}}
                                 </div>
                             </td>
@@ -95,6 +112,7 @@
                             <td>
                                 <div class="cell">
                                     <p>
+    
                                         <a 
                                            href="#" 
                                            class="btn btn-danger btn-xs pull-right btn-hd btn-remove"
@@ -103,7 +121,7 @@
                                            data-key="{{id}}"
                                            data-confirm="{{password}}"
                                            title="Remove Account"
-                                        >Remove</a>
+                                        >Remove All</a>
                                         <a 
                                            href="#" 
                                            class="btn btn-primary btn-xs btn-refresh pull-right"
@@ -117,10 +135,10 @@
                                     </p>
                                     <hr>
                                     {{#blockchains}}
-                                        <p>
+                                        <p class="chains">
                                             <a 
                                                href="#" 
-                                               class="btn btn-success btn-xs btn-access"
+                                               class="btn btn-icon btn-access"
                                                data-collection="accounts"
                                                data-key="{{id}}"
                                                data-chain="{{code}}"
@@ -130,7 +148,16 @@
                                             </a>
                                             <a 
                                                href="#" 
-                                               class="btn btn-primary btn-xs btn-refresh"
+                                               class="btn btn-icon btn-switch"
+                                               data-key="{{id}}"
+                                               data-chain="{{code}}"
+                                               title="Switch Keys"
+                                            >
+                                            <i class="fa fa-recycle"><span>Switch Keys</span></i>
+                                            </a>
+                                            <a 
+                                               href="#" 
+                                               class="btn btn-icon btn-refresh"
                                                data-collection="accounts"
                                                data-key="{{id}}"
                                                data-chain="{{code}}"
@@ -140,13 +167,13 @@
                                             </a>
                                             <a 
                                                href="#" 
-                                               class="btn btn-danger btn-xs btn-remove"
+                                               class="btn btn-icon btn-remove"
                                                data-collection="accounts"
                                                data-element="table-row-{{id}}"
                                                data-key="{{id}}"
                                                data-chain="{{code}}"
                                                data-confirm="{{password}}"
-                                               title="Remove Account"
+                                               title="Remove This Blockchain"
                                             >
                                             <i class="fa fa-times"><span>Remove Account</span></i>
                                             </a>

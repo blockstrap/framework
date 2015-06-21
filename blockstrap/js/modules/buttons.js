@@ -643,6 +643,96 @@
         });
     }
     
+    buttons.new_chain = function(button, e)
+    {
+        e.preventDefault();
+        var bs = $.fn.blockstrap;
+        var $bs = blockstrap_functions;
+        var chains = JSON.parse(JSON.stringify(bs.settings.blockchains));
+        delete chains.multi;
+        var chain_count = $bs.array_length(chains);
+        var account_id = $(button).attr('data-id');
+        var account = bs.accounts.get(account_id, true);
+        var current_chain_count = $bs.array_length(account.blockchains);
+        var title = 'Warning';
+        var contents = '<p>This account currently has all available blockchains being used.</p>';
+        contents+= '<p>If you would like to change an address, please <strong>Switch Keys</strong> using the individual recycle action icons.</p>';
+        if(current_chain_count < chain_count)
+        {
+            title = 'Select New Blockchain';
+            contents = '<p>Please select the blockchain you would like to add to your account:<p>';
+            var chains_available = [];
+            console.log('chains', chains);
+            $.each(chains, function(chain, obj)
+            {
+                console.log('account', account);
+                $.each(account.blockchains, function(this_chain, this_obj)
+                {
+                    if(this_chain == chain) delete chains[chain];
+                });
+            });
+            $.each(chains, function(chain, obj)
+            {
+                console.log('obj', obj);
+                chains_available.push({
+                    value: chain,
+                    text: obj.blockchain
+                });
+            });
+            var form = $.fn.blockstrap.forms.process({
+                objects: [
+                    {
+                        fields: [
+                            {
+                                selects: {
+                                    label: 'Blockchain',
+                                    id: 'blockchain',
+                                    values: chains_available
+                                }
+                            }
+                        ]
+                    }
+                ],
+                buttons: {
+                    forms: [
+                        {
+                            id: 'cancel-verification',
+                            css: 'btn-danger pull-right btn-split',
+                            text: 'Cancel',
+                            type: 'button',
+                            attributes: [
+                                {
+                                    key: 'data-dismiss',
+                                    value: 'modal'
+                                }
+                            ]
+                        },
+                        {
+                            type: "submit",
+                            id: "submit-new-chain",
+                            css: 'btn-success pull-right btn-split',
+                            text: 'Confirm',
+                            type: 'submit',
+                            attributes: [
+                                {
+                                    key: 'data-account-id',
+                                    value: account_id
+                                }
+                            ]
+                        }
+                    ]
+                }
+            });
+            bs.core.modal(title, contents + form);
+            console.log($.fn.blockstrap.settings.blockchains);
+            console.log(bs.settings.blockchains);
+        }
+        else
+        {
+            bs.core.modal(title, contents);
+        }
+    }
+    
     buttons.page = function(button, e)
     {
         var menu = false;
@@ -939,6 +1029,11 @@
         var blob = new Blob([data], {type: 'text/plain;charset=utf-8'});
         saveAs(blob, 'blockstrap-wallet-backup-'+ts+'.txt');
         $.fn.blockstrap.core.modals('close_all');
+    }
+    
+    buttons.see_all = function(button, e)
+    {
+        e.preventDefault();
     }
     
     buttons.send_money = function(button, e)
@@ -1473,6 +1568,11 @@
                 }
             }, false, chain, raw_accounts.type);
         });
+    }
+    
+    buttons.switch = function(button, e)
+    {
+        e.preventDefault();
     }
     
     buttons.toggle = function(button, e)

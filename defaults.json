@@ -86,7 +86,10 @@
             "reset",
             "setup",
             "import",
-            "toggle"
+            "toggle",
+            "switch",
+            "new_chain",
+            "see_all"
         ],
         "ids": [
             "create-account",

@@ -1150,10 +1150,15 @@
             || typeof apis['defaults'][api_service] == 'undefined'
             || typeof apis['defaults'][api_service].functions.to[action] == 'undefined'  
             || apis['defaults'][api_service].functions.to[action] == ""
+            || typeof $.fn.blockstrap.settings.blockchains[blockchain] == 'undefined'
             || typeof $.fn.blockstrap.settings.blockchains[blockchain].apis[api_service] == 'undefined'
             )
             )
         ){
+            // debug
+            console.log('blockchain', blockchain);
+            console.log('api_service', api_service);
+            console.log('$.fn.blockstrap.settings.blockchains', $.fn.blockstrap.settings.blockchains);
             if(action == 'addresses') key = 'multiple-addresses';
             var text = '<p class="'+key+blockchain+action+'">Please note that the selected API "<strong>'+api_service+'</strong>" used for "<strong>'+key+'</strong>" is either not mapped to the "<strong>'+blockchain+'</strong>" blockchain or does not support the required "<strong>'+action+'</strong>" function.</p>';
             if(
