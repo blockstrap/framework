@@ -848,6 +848,7 @@ var blockstrap_core = function()
             loader: function(state)
             {
                 var element = $($.fn.blockstrap.element);
+                $.fn.blockstrap.core.modals('close_all');
                 if(state && state === 'open')
                 {
                     $(element).animate({'opacity': 0}, 350, function()

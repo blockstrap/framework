@@ -632,39 +632,40 @@
         return transactions;
     }
     
-    accounts.update = function(account, callback, force_refresh, page, chain)
+    accounts.update = function(the_account, callback, force_refresh, page, chain)
     {
+        var current_account = JSON.parse(JSON.stringify(the_account));
         if(typeof page == 'undefined') page = 0;
         if(typeof chain == 'undefined') chain = false;
         else page = parseInt(page);
         var usd_rates = $.fn.blockstrap.settings.exchange.usd;
-        if($.isPlainObject(account))
+        if($.isPlainObject(the_account))
         {
             var ts = 0;
             var now = new Date().getTime();
             var cache_time = $.fn.blockstrap.settings.cache.accounts;
-            if(account.ts) ts = account.ts;
+            if(the_account.ts) ts = account.ts;
             if(blockstrap_functions.vars('refresh')) ts = 0;
             if(force_refresh) ts = 0;
             if(typeof cache_time == 'undefined') cache_time = 0;
             if(ts + cache_time < now)
             {
                 var chain_count = 0;
-                var total_chains = blockstrap_functions.array_length(account.blockchains);
+                var total_chains = blockstrap_functions.array_length(current_account.blockchains);
                 
                 if(chain)
                 {
-                    $.each(account.blockchains, function(k, temp_chain)
+                    $.each(current_account.blockchains, function(k, temp_chain)
                     {
                         if(k != chain)
                         {
-                            delete account.blockchains[k];
-                            total_chains = blockstrap_functions.array_length(account.blockchains);
+                            delete current_account.blockchains[k];
+                            total_chains = blockstrap_functions.array_length(current_account.blockchains);
                         }
                     });
                 }
                 
-                $.each(account.blockchains, function(k, chain)
+                $.each(current_account.blockchains, function(k, chain)
                 {
                     var current_balance = chain.balance;
                     var current_tx_count = blockstrap_functions.array_length(chain.txs);
@@ -703,8 +704,8 @@
                             chain.tx_count = results.tx_count;
                             chain.ts = now;
                             
-                            account.tx_total = account.tx_total + (chain.tx_count - current_tx_count);
-                            account.usd_total = parseFloat(parseFloat(account.usd_total) + parseFloat((usd_rates[chain.code] * chain.balance - current_balance) / 100000000)).toFixed(2);
+                            the_account.tx_total = the_account.tx_total + (chain.tx_count - current_tx_count);
+                            the_account.usd_total = parseFloat(parseFloat(the_account.usd_total) + parseFloat((usd_rates[chain.code] * chain.balance - current_balance) / 100000000)).toFixed(2);
 
                             $.fn.blockstrap.api.transactions(
                                 chain.address, 
@@ -721,22 +722,22 @@
                                 }
                                 
                                 // TODO: Update account one by one?
-                                account.blockchains[k] = chain;
+                                the_account.blockchains[k] = chain;
                                 
                                 if(blockstrap_functions.array_length(chain.txs) < chain.tx_count)
                                 {
                                     // Paginate?
                                     page++;
-                                    accounts.update(account, callback, force_refresh, page);
+                                    accounts.update(the_account, callback, force_refresh, page);
                                 }
                                 else
                                 {
                                     if(total_chains <= chain_count)
                                     {
-                                        $.fn.blockstrap.data.save('accounts', account.id, account, function(updated_account)
+                                        $.fn.blockstrap.data.save('accounts', the_account.id, the_account, function(updated_account)
                                         {
-                                            if(callback) callback(account);
-                                            else return account;
+                                            if(callback) callback(the_account);
+                                            else return the_account;
                                         });
                                     }
                                 }
@@ -867,6 +868,17 @@
             if(key)
             {
                 var keys = $.fn.blockstrap.blockchains.keys(key+account.code, account.code, 1);
+                var raw_account = $.fn.blockstrap.accounts.get(account.id, true);
+                if(
+                    typeof raw_account.addresses != 'undefined'
+                    && typeof raw_account.addresses[0] != 'undefined'
+                    && typeof raw_account.addresses[0].chains != 'undefined'
+                    && typeof raw_account.addresses[0].chains[account.code] != 'undefined'
+                ){
+                    var old_addresses = raw_account.addresses[0].chains[account.code];
+                    var index = blockstrap_functions.array_length(old_addresses)
+                    keys = $.fn.blockstrap.blockchains.keys(key+account.code, account.code, 1, [index]);
+                }
                 if(keys.pub === account.address)
                 {
                     if(callback) callback(true, keys);
@@ -874,14 +886,28 @@
                 }
                 else
                 {
-                    $.fn.blockstrap.core.modal('Warning', 'Credentials do not match');
-                    $.fn.blockstrap.core.loader('close');
+                    if(callback) 
+                    {
+                        callback(false, false);
+                    }
+                    else
+                    {
+                        $.fn.blockstrap.core.loader('close');
+                        $.fn.blockstrap.core.modal('Warning', 'Credentials do not match');
+                    }
                 }
             }
             else
             {
-                $.fn.blockstrap.core.modal('Error', 'Unable to construct keys');
-                $.fn.blockstrap.core.loader('close');
+                if(callback)
+                {
+                    callback(false, false);
+                }
+                else
+                {
+                    $.fn.blockstrap.core.loader('close');
+                    $.fn.blockstrap.core.modal('Error', 'Unable to construct keys');
+                }
             }
         });
     }

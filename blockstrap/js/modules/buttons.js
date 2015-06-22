@@ -1584,6 +1584,12 @@
                             $.fn.blockstrap.core.modal(title, content);
                             $.fn.blockstrap.core.loader('close');
                         }
+                        if(!verified)
+                        {
+                            var title = 'Warning';
+                            var contents = 'Unable to verify ownership';
+                            $.fn.blockstrap.core.modal(title, contents);
+                        }
                     }
                 }, false, chain, raw_accounts.type);
             });
@@ -1640,6 +1646,12 @@
                             text: $(this).attr('data-content')
                         });
                     });
+                }
+                else
+                {
+                    var title = 'Warning';
+                    var contents = 'Unable to verify ownership';
+                    $.fn.blockstrap.core.modal(title, contents);
                 }
             }, false, chain, raw_accounts.type);
         });

@@ -157,7 +157,8 @@
         ){
             var account_id = vars.accountId;
             var chain = vars.chain;
-            var account = $.fn.blockstrap.accounts.get(account_id, true);
+            var the_account = $.fn.blockstrap.accounts.get(account_id, true);
+            var account = JSON.parse(JSON.stringify(the_account));
             // THIS IS FOR FORM TO PROCESS AFTER GETTING KEY ...?
             if(typeof account.addresses == 'undefined')
             {
@@ -168,6 +169,7 @@
                 account.addresses[0].chains[chain] = [];
             }
             var current_address = account.blockchains[chain].address;
+            var old_address_count = blockstrap_functions.array_length(account.addresses[0].chains[chain]);
             account.addresses[0].chains[chain].push(account.blockchains[chain].address);
             var fields = [];
             $.each(account.keys, function(k, key)
@@ -190,6 +192,7 @@
                 var contents = 'Password mis-match!';   
                 if(verified === true)
                 {
+                    $.fn.blockstrap.core.loader('open');
                     $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
                     {
                         var key = '';
@@ -223,12 +226,21 @@
                             });
                         };
                         if(key)
-                        {
+                        {   
                             var keys = $.fn.blockstrap.blockchains.keys(
                                 key+this_account.code, 
                                 this_account.code, 
                                 1
                             );
+                            if(old_address_count > 0)
+                            {
+                                keys = $.fn.blockstrap.blockchains.keys(
+                                    key+this_account.code, 
+                                    this_account.code, 
+                                    1,
+                                    [old_address_count]
+                                );
+                            }
                             if(keys.pub === this_account.address)
                             {
                                 $.fn.blockstrap.api.balance(
@@ -254,32 +266,119 @@
                                         account.blockchains[this_account.code].display_balance = "0.00000000";
                                         if(balance > fee)
                                         {
-                                            console.log('need to transfer funds first!');
+                                            $.fn.blockstrap.api.unspents(current_address, chain, function(unspents)
+                                            {
+                                                if($.isArray(unspents) && blockstrap_functions.array_length(unspents) > 0)
+                                                {
+                                                    var total = 0;
+                                                    var inputs = [];
+                                                    var fee = $.fn.blockstrap.settings.blockchains[chain].fee * 100000000;
+
+                                                    $.each(unspents, function(k, unspent)
+                                                    {
+                                                        inputs.push({
+                                                            txid: unspent.txid,
+                                                            n: unspent.index,
+                                                            script: unspent.script,
+                                                            value: unspent.value,
+                                                        });
+                                                        total = total + unspent.value
+                                                    });
+
+                                                    var amount_to_send = total - fee;
+                                                    
+                                                    var outputs = [{
+                                                        address: next_key.pub,
+                                                        value: amount_to_send
+                                                    }];
+
+                                                    var raw_tx = $.fn.blockstrap.blockchains.raw(
+                                                        next_key.pub,
+                                                        keys.priv,
+                                                        inputs,
+                                                        outputs,
+                                                        fee,
+                                                        amount_to_send
+                                                    );
+
+                                                    $.fn.blockstrap.api.relay(raw_tx, chain, function(results)
+                                                    {
+                                                        if(typeof results.txid != 'undefined')
+                                                        {
+                                                            setTimeout(function()
+                                                            { 
+                                                                $.fn.blockstrap.data.save('accounts', account.id, account, function(account)
+                                                                {
+                                                                    $.fn.blockstrap.accounts.update(
+                                                                        account, 
+                                                                        function(results)
+                                                                        {
+                                                                            $.fn.blockstrap.core.refresh(
+                                                                                function()
+                                                                                {
+                                                                                    $.fn.blockstrap.core.loader('close');
+                                                                                }, 
+                                                                                $.fn.blockstrap.core.page()
+                                                                            );
+                                                                        }, 
+                                                                        true, 
+                                                                        0, 
+                                                                        account.code
+                                                                    );
+                                                                });
+                                                            }, 5000);
+                                                        }
+                                                        else
+                                                        {
+                                                            var title = 'Error';
+                                                            var contents = 'Unable to relay raw transaction';
+                                                            $.fn.blockstrap.core.loader('close');
+                                                            $.fn.blockstrap.core.modal(title, contents);
+                                                        }
+                                                    });
+                                                }
+                                            });
                                         }
                                         else
                                         {
-                                            $.fn.blockstrap.data.save('accounts', account.id, account, function()
+                                            $.fn.blockstrap.data.save('accounts', account.id, account, function(account)
                                             {
                                                 $.fn.blockstrap.accounts.update(
                                                     account, 
                                                     function(results)
                                                     {
-                                                        console.log('and then?', results);
+                                                        $.fn.blockstrap.core.refresh(
+                                                            function()
+                                                            {
+                                                                $.fn.blockstrap.core.loader('close');
+                                                            },
+                                                            $.fn.blockstrap.core.page()
+                                                        );
                                                     }, 
                                                     true, 
                                                     0, 
-                                                    this_account.code
+                                                    chain
                                                 );
                                             });
                                         }
                                     }
                                 );
                             }
+                            else
+                            {
+                                var title = 'Warning';
+                                var contents = 'Unable to re-verify ownership';
+                                $.fn.blockstrap.core.loader('close');
+                                $.fn.blockstrap.core.modal(title, contents);
+                            }
                         }
                     })
                 }
                 else
                 {
+                    var title = 'Warning';
+                    var contents = 'Unable to verify ownership';
+                    $.fn.blockstrap.core.loader('close');
                     $.fn.blockstrap.core.modal(title, contents);
                 }
             });
