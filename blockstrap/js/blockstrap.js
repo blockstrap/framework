@@ -408,7 +408,7 @@ var blockstrap_core = function()
             },
             filters: function(page)
             {
-                if(page == 'send' && $('form#payment-form input#from_account').val())
+                if(page == 'send' && $('form#payment-form input#from_account').val() != 'false')
                 {
                     var form = $('#main-content form#payment-form');
                     var from = $(form).find('input#from_account').val();

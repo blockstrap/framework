@@ -31,6 +31,7 @@
     {
         if(!placeholders && !replacements)
         {
+            var amount = '';
             var raw_name = localStorage.getItem('nw_keys_your_name');
             var name = raw_name;
 
@@ -40,7 +41,10 @@
             var key = blockstrap_functions.vars('key');
             var from = blockstrap_functions.vars('from');
             var chain = blockstrap_functions.vars('chain');
-            var amount = parseFloat(parseInt(blockstrap_functions.vars('amount')) / 100000000).toFixed(8);
+            if(parseInt(blockstrap_functions.vars('amount')) > 0)
+            {
+                amount = parseFloat(parseInt(blockstrap_functions.vars('amount')) / 100000000).toFixed(8);
+            }
             var account = false;
             if($.isPlainObject($.fn.blockstrap.accounts))
             {

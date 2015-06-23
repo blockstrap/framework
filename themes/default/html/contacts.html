@@ -80,11 +80,22 @@
                             <td>
                                 <div class="cell">
                                     
-                                    {{#blockchains}}
-                                        {{#addresses}}
-                                            <a href="{{urls.root}}?key={{key}}#send" class="btn btn-primary btn-xs">Send {{code}}</a>
-                                        {{/addresses}}
-                                    {{/blockchains}}
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Pay <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            {{#blockchains}}
+                                                {{#addresses}}
+                                                    <li>
+                                                        <a href="{{urls.root}}?key={{key}}#send">
+                                                            Send {{blockchain}}
+                                                        </a>
+                                                    </li>
+                                                {{/addresses}}
+                                            {{/blockchains}}
+                                        </ul>
+                                    </div>
                                     
                                     <a 
                                        href="#" 
