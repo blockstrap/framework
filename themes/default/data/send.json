@@ -80,7 +80,20 @@
                                         "placeholder": "Total to Send",
                                         "wrapper": {
                                             "css": "col-xs-9"
-                                        }
+                                        },
+                                        "value": "{{vars.amount}}"
+                                    }
+                                },
+                                {
+                                    "hiddens": {
+                                        "id": "from_account",
+                                        "value": "{{vars.from}}"
+                                    }
+                                },
+                                {
+                                    "hiddens": {
+                                        "id": "from_account_chain",
+                                        "value": "{{vars.chain}}"
                                     }
                                 }
                             ],

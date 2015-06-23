@@ -38,6 +38,9 @@
             // ADDRESS INFO
             var add_blockchain = 'Bitcoin';
             var key = blockstrap_functions.vars('key');
+            var from = blockstrap_functions.vars('from');
+            var chain = blockstrap_functions.vars('chain');
+            var amount = parseFloat(parseInt(blockstrap_functions.vars('amount')) / 100000000).toFixed(8);
             var account = false;
             if($.isPlainObject($.fn.blockstrap.accounts))
             {
@@ -87,6 +90,9 @@
                 'user.name',
                 'vars.txid',
                 'vars.key',
+                'vars.from',
+                'vars.chain',
+                'vars.amount',
                 'tx.size',
                 'tx.time',
                 'tx.block',
@@ -101,6 +107,9 @@
                 name,
                 txid,
                 key,
+                from,
+                chain,
+                amount,
                 tx.size + ' (Bytes)',
                 tx.time,
                 tx.block,

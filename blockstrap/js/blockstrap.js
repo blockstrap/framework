@@ -406,6 +406,22 @@ var blockstrap_core = function()
                     return data;
                 }
             },
+            filters: function(page)
+            {
+                if(page == 'send' && $('form#payment-form input#from_account').val())
+                {
+                    var form = $('#main-content form#payment-form');
+                    var from = $(form).find('input#from_account').val();
+                    var select = $(form).find('select#from');
+                    var to = $(form).find('#to');
+                    var amount = $(form).find('#amount');
+                    var input = '<input type="text" readonly="readonly" value="'+from+'" id="'+$(select).attr('id')+'" class="'+$(select).attr('class')+'" />';
+                    $(select).parent().html(input);
+                    $(to).attr('readonly', 'readonly');
+                    $(to).parent().find('.btn-toggle').remove();
+                    $(amount).attr('readonly', 'readonly');
+                }
+            },
             forms: function()
             {
                 // PERHAPS FORMS NEEDS ITS OWN MODULE...?
@@ -1159,8 +1175,10 @@ var blockstrap_core = function()
                 */
                 $.fn.blockstrap.core.table();
                 $.fn.blockstrap.core.forms();
-                $.fn.blockstrap.core.page();
-                $.fn.blockstrap.core.nav($.fn.blockstrap.core.page());
+                
+                var page = $.fn.blockstrap.core.page();
+                $.fn.blockstrap.core.nav(page);
+                $.fn.blockstrap.core.filters(page);
 
                 // TODO: 
                 // Handle inactive modules?

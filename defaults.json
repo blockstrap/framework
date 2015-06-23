@@ -89,7 +89,9 @@
             "toggle",
             "switch",
             "new_chain",
-            "see_all"
+            "see_all",
+            "check_inactive",
+            "check_all_inactive"
         ],
         "ids": [
             "create-account",

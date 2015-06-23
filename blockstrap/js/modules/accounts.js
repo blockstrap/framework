@@ -12,7 +12,7 @@
 {
     var accounts = {};
     
-    accounts.access = function(account_id, tx, chain)
+    accounts.access = function(account_id, tx, chain, standard, from)
     {
         var fields = [];
         var account = accounts.get(account_id, true);
@@ -124,6 +124,14 @@
                             {
                                 key: 'data-chain',
                                 value: chain
+                            },
+                            {
+                                key: 'data-standard',
+                                value: standard
+                            },
+                            {
+                                key: 'data-from',
+                                value: from
                             },
                             {
                                 key: 'data-form-id',
@@ -473,8 +481,10 @@
         }
     }
     
-    accounts.prepare = function(to, account_id, amount, chain)
+    accounts.prepare = function(to, account_id, amount, chain, standard)
     {
+        var from = account_id;
+        if(typeof standard == 'undefined') standard = true;
         if(to && !$.fn.blockstrap.blockchains.validate(to))
         {
             $.fn.blockstrap.core.modal('Warning', to + ' is not a valid address');
@@ -482,6 +492,27 @@
         else if(to && account_id && amount)
         {
             var account = $.fn.blockstrap.accounts.get(account_id, true);
+            if(!standard)
+            {
+                var accounts = $.fn.blockstrap.accounts.get(false, true);
+                $.each(accounts, function(k, acc)
+                {
+                    if(typeof acc.addresses != 'undefined')
+                    {
+                        $.each(acc.addresses[0].chains, function(chain, addresses)
+                        {
+                            $.each(addresses, function(a, address)
+                            {
+                                if(address == account_id)
+                                {
+                                    account = acc;
+                                    account_id = acc.id;
+                                }
+                            });
+                        });
+                    }
+                });
+            }
             if(!account)
             {
                 $.fn.blockstrap.core.modal('Warning', account_id + ' is not a valid account');
@@ -493,7 +524,7 @@
                     from: account_id,
                     amount: amount
                 };
-                $.fn.blockstrap.accounts.access(account_id, tx, chain);
+                $.fn.blockstrap.accounts.access(account_id, tx, chain, standard, from);
             }
         }
     }
@@ -831,8 +862,9 @@
         }
     }
     
-    accounts.verify = function(account, fields, callback, password, chain, type)
+    accounts.verify = function(account, fields, callback, password, chain, type, from)
     {
+        if(typeof from == 'undefined') from = false;
         $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
         {
             var key = '';
@@ -870,6 +902,28 @@
                 var keys = $.fn.blockstrap.blockchains.keys(key+account.code, account.code, 1);
                 var raw_account = $.fn.blockstrap.accounts.get(account.id, true);
                 if(
+                    typeof from != 'undefined'
+                    && typeof raw_account.addresses != 'undefined'
+                    && typeof raw_account.addresses[0] != 'undefined'
+                    && typeof raw_account.addresses[0].chains != 'undefined'
+                    && typeof raw_account.addresses[0].chains[account.code] != 'undefined'
+                ){
+                    $.each(raw_account.addresses[0].chains[account.code], function(k, add)
+                    {
+                        if(add == from)
+                        {
+                            if(k < 1)
+                            {
+                                keys = $.fn.blockstrap.blockchains.keys(key+account.code, account.code, 1);
+                            }
+                            else
+                            {
+                                keys = $.fn.blockstrap.blockchains.keys(key+account.code, account.code, 1, [k - 1]);
+                            }
+                        }
+                    });
+                }
+                else if(
                     typeof raw_account.addresses != 'undefined'
                     && typeof raw_account.addresses[0] != 'undefined'
                     && typeof raw_account.addresses[0].chains != 'undefined'
@@ -879,8 +933,11 @@
                     var index = blockstrap_functions.array_length(old_addresses)
                     keys = $.fn.blockstrap.blockchains.keys(key+account.code, account.code, 1, [index]);
                 }
-                if(keys.pub === account.address)
-                {
+                if(
+                    (keys.pub === account.address && !from)
+                    ||
+                    (from && keys.pub === from)
+                ){
                     if(callback) callback(true, keys);
                     else return true;
                 }

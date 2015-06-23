@@ -100,6 +100,38 @@
         $($.fn.blockstrap.element).find('.activated').removeClass('activated').addClass('active');
     }
     
+    buttons.check_all_inactive = function(button, e)
+    {
+        e.preventDefault();
+        var table = $(button).parent().parent().find('table.table');
+        $(table).find('.btn-check_inactive').each(function(i)
+        {
+            $(this).trigger('click');
+        });
+    }
+    
+    buttons.check_inactive = function(button, e)
+    {
+        e.preventDefault();
+        var bs = $.fn.blockstrap;
+        var id = $(button).attr('data-id');
+        var address = $(button).attr('data-address');
+        var chain = $(button).attr('data-chain');
+        var send_button = $(button).parent().parent().find('.btn-send_inactive');
+        var send_href = $(send_button).attr('href');
+        var wrapper = $(button).parent().parent().find('td.balance');
+        var fee = bs.settings.blockchains[chain].fee * 100000000;
+        $(button).addClass('loading');
+        bs.api.balance(address, chain, function(balance)
+        {
+            $(button).removeClass('loading');
+            var new_href = send_href.replace('[[amount]]', balance - fee);
+            var html = parseFloat(parseInt(balance) / 100000000).toFixed(8);
+            $(send_button).attr('href', new_href);
+            $(wrapper).text(html);
+        });
+    }
+    
     buttons.create_account = function(button, e)
     {
         e.preventDefault();
@@ -1109,22 +1141,69 @@
     buttons.see_all = function(button, e)
     {
         e.preventDefault();
+        var bs = $.fn.blockstrap;
+        var id = $(button).attr('data-id');
+        var account = bs.accounts.get(id, true);
+        var title = 'Warning';
+        var contents = 'You do not have any inactive addresses';
+        if(
+            typeof account.addresses != 'undefined'
+            && $.isArray(account.addresses)
+            && typeof account.addresses[0].chains != 'undefined'
+            && $.isPlainObject(account.addresses[0].chains)
+        ){
+            title = 'Inactive Addresses';
+            contents = '<p>The following addresses belonging to this account are inactive and no longer checked automatically:</p>';
+            contents+= '<table class="table table-striped table-bordered table-hover">';
+            $.each(account.addresses[0].chains, function(chain, addresses)
+            {
+                var current_address = account.blockchains[chain].address
+                var blockchain = bs.settings.blockchains[chain].blockchain;
+                contents+= '<thead>';
+                    contents+= '<tr><th>'+blockchain+' Addresses</th><th>Balance</th><th>Actions</th></tr>';
+                contents+= '</thead>';
+                contents+= '<tbody>';
+                        $.each(addresses, function(key, this_address)
+                        {
+                            contents+= '<tr>';
+                                contents+= '<td><a href="http://api.blockstrap.com/v0/'+chain+'/address/id/'+this_address+'" target="_blank">'+this_address+'</a></td>';
+                                contents+= '<td class="balance">N/A</td>';
+                                contents+= '<td><a href="#" class="btn btn-xs btn-primary pull-right btn-check_inactive" data-id="'+id+'" data-chain="'+chain+'" data-address="'+this_address+'">Check</a><a href="?from='+this_address+'&amount=[[amount]]&chain='+chain+'&key='+current_address+'#send" class="btn btn-xs btn-success pull-right btn-send_inactive" data-id="'+id+'" data-chain="'+chain+'" data-address="'+this_address+'">Send</a></td>';
+                            contents+= '</tr>';
+                        });
+                contents+= '</tbody>';
+            });
+            contents+= '</table>';
+            contents+= '<p><a href="#" class="btn btn-primary btn-check_all_inactive" data-id="'+id+'">check all</a></p>';
+            bs.core.modal(title, contents);
+        }
+        else
+        {
+            bs.core.modal(title, contents);
+        }
     }
     
     buttons.send_money = function(button, e)
     {
         e.preventDefault();
+        var standard = true;
         var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form-id'));
         var to = $(form).find('#to').val();
         var from = $(form).find('#from').val();
+        var from_chain = $(form).find('#from_account_chain').val();
         var chain = $(form).find('#from option:selected').attr('data-chain');
         var amount = parseFloat($(form).find('#amount').val()) * 100000000;
+        if(from_chain && !chain) 
+        {
+            chain = from_chain;
+            standard = false;
+        }
         if(!to) $.fn.blockstrap.core.modal('Warning', 'Missing address to send payment to');
         else if(!from) $.fn.blockstrap.core.modal('Warning', 'Missing account to use to send from');
         else if(!amount) $.fn.blockstrap.core.modal('Warning', 'You have not provided the amount you want to send');
         else
         {
-            $.fn.blockstrap.accounts.prepare(to, from, amount, chain);
+            $.fn.blockstrap.accounts.prepare(to, from, amount, chain, standard);
         }
     }
     
@@ -1469,6 +1548,9 @@
         var account = false;
         var op_return_data = false;
         var form_id = $(button).attr('data-form-id');
+        var standard = $(button).attr('data-standard');
+        var from = $(button).attr('data-from');
+        var from_address = $(button).attr('data-from');
         var account_id = $(button).attr('data-account-id');
         var chain = $(button).attr('data-chain');
         var blockchain = $(button).attr('data-to-blockchain');
@@ -1476,6 +1558,8 @@
         var to_amount = parseInt($(button).attr('data-to-amount'));
         var form = $('form#'+form_id);
         var raw_accounts = $.fn.blockstrap.accounts.get(account_id, true);
+        if(standard == 'false') standard = false;
+        else standard = true;
         if(
             typeof raw_accounts.blockchains != 'undefined'
             && typeof raw_accounts.blockchains[chain] != 'undefined'
@@ -1487,12 +1571,16 @@
         var from_address = account.address;
         var change = balance - (to_amount + fee);
         var current_tx_count = account.tx_count;
-        if(balance < to_amount + fee)
+        if(balance < to_amount + fee && standard)
         {
             $.fn.blockstrap.core.modal('Warning', 'You do not have sufficient funds');
         }
         else
         {
+            if(!standard && from)
+            {
+                from_address = from;
+            }
             $.fn.blockstrap.core.loader('open');
             $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
             {
@@ -1589,9 +1677,10 @@
                             var title = 'Warning';
                             var contents = 'Unable to verify ownership';
                             $.fn.blockstrap.core.modal(title, contents);
+                            $.fn.blockstrap.core.loader('close');
                         }
                     }
-                }, false, chain, raw_accounts.type);
+                }, false, chain, raw_accounts.type, from_address);
             });
         }
     } 
@@ -1603,6 +1692,8 @@
         var fields = [];
         var form_id = $(button).attr('data-form-id');
         var account_id = $(button).attr('data-account-id');
+        var standard = $(button).attr('data-standard');
+        var from_address = $(button).attr('data-from');
         var chain = $(button).attr('data-chain');
         var form = $('form#'+form_id);
         var raw_accounts = $.fn.blockstrap.accounts.get(account_id, true);
@@ -1653,7 +1744,7 @@
                     var contents = 'Unable to verify ownership';
                     $.fn.blockstrap.core.modal(title, contents);
                 }
-            }, false, chain, raw_accounts.type);
+            }, false, chain, raw_accounts.type, from_address);
         });
     }
     
