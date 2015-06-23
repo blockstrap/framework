@@ -219,37 +219,7 @@
                 {
                     $.each(account.txs, function(k, transaction)
                     {
-                        transaction.acc = account.address;
-                        if(transaction.block === null || typeof transaction.block === 'undefined')
-                        {
-                            // Need to update otdated TXs if now in confirmed blocks?
-                            $.fn.blockstrap.api.transactions(
-                                account.address, 
-                                account.blockchain.code, 
-                                function(transactions)
-                                {
-                                    $.each(transactions, function(key, value)
-                                    {
-                                        if(value.txid = transaction.txid)
-                                        {
-                                            transaction.block = value.block;
-                                            transaction.time = value.time;
-                                            account.txs['txid_'+transaction.txid] = transaction;
-                                            $.fn.blockstrap.data.save(
-                                                'accounts', 
-                                                account.id, 
-                                                account, 
-                                                function(updated_account)
-                                                {
-                                                    // No need to inform anyone?
-                                                }
-                                            );
-                                        }
-                                    });
-                                }
-                            );
-                        }
-                        txs.push(transaction);
+                        txs.push(transaction.tx);
                     });
                 }
             });

@@ -359,8 +359,7 @@
                                     tx_count: 0,
                                     balance: 0,
                                     display_balance: "0.00000000",
-                                    ts: 0,
-                                    txs: {}
+                                    ts: 0
                                 };
                             })
                             
@@ -373,7 +372,8 @@
                                 password: pw,
                                 keys: keys,
                                 tx_total: 0,
-                                usd_total: "0.00"
+                                usd_total: "0.00",
+                                txs: []
                             };
                             if(data) account.data = data;
                             
@@ -748,12 +748,27 @@
                                 {
                                     $.each(transactions, function(k, transaction)
                                     {
+                                        var got_tx = false;
                                         chain.txs['txid_'+transaction.txid] = transaction;
+                                        $.each(the_account.txs, function(k, v)
+                                        {
+                                            if(v.txid == transaction.txid) got_tx = true;
+                                        });
+                                        if(!got_tx)
+                                        {
+                                            the_account.txs.push({
+                                                ts: now,
+                                                address: chain.address,
+                                                chain: chain.code,
+                                                tx: transaction,
+                                                txid: transaction.txid
+                                            });
+                                        }
                                     });
                                 }
                                 
                                 // TODO: Update account one by one?
-                                the_account.blockchains[k] = chain;
+                                the_account.blockchains[k] = JSON.parse(JSON.stringify(chain));
                                 
                                 if(blockstrap_functions.array_length(chain.txs) < chain.tx_count)
                                 {
@@ -765,6 +780,7 @@
                                 {
                                     if(total_chains <= chain_count)
                                     {
+                                        delete the_account.blockchains[k].txs;
                                         $.fn.blockstrap.data.save('accounts', the_account.id, the_account, function(updated_account)
                                         {
                                             if(callback) callback(the_account);
