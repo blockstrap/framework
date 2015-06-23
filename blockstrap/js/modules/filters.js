@@ -219,6 +219,7 @@
                 {
                     $.each(account.txs, function(k, transaction)
                     {
+                        transaction.tx.address = transaction.address;
                         txs.push(transaction.tx);
                     });
                 }
@@ -253,14 +254,13 @@
                         values = $.parseJSON(values);
                     }
                     if(
-                        typeof values.address != 'undefined'
-                        && values.address == tx.acc
+                        typeof values.id != 'undefined'
                     )
                     {
-                        this_account = values;
+                        this_account = $.fn.blockstrap.accounts.get(values.id, true);
                     }
                 });
-                address = '<a href="' +base+ '?key='+tx.acc+'#address">' + this_account.name + '</a>';
+                address = '<a href="' +base+ '?key='+tx.address+'#address">' + this_account.name + '</a>';
                 html+= ' '+verb+' ' + address;
                 
                 items.push({
