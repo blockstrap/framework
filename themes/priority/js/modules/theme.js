@@ -404,7 +404,7 @@
                     });
                 });
             }
-        });
+        }, $.fn.blockstrap.core.api('blockstrap'));
     }
     
     // THEME FILTERS

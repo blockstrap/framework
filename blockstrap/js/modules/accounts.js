@@ -705,7 +705,7 @@
                         chain_count++;
                         if(
                             results.tx_count > 50
-                            && $.fn.blockstrap.settings.api_service == 'sochain'
+                            && $.fn.blockstrap.core.api() == 'sochain'
                         ){
                             $.fn.blockstrap.core.modal('Warning', 'The sochain API Service does not support TX pagination and has a hard limit of 50 transactions, which will cause problems with this ('+results.address+') address.');
                             if(callback) callback(false);
@@ -713,7 +713,7 @@
                         }
                         else if(
                             results.tx_count > 200
-                            && $.fn.blockstrap.settings.api_service == 'blockr'
+                            && $.fn.blockstrap.core.api() == 'blockr'
                         ){
                             $.fn.blockstrap.core.modal('Warning', 'The blockr API Service does not support TX pagination and has a hard limit of 200 transactions, which will cause problems with this ('+results.address+') address.');
                             if(callback) callback(false);
@@ -799,7 +799,7 @@
                             }
                         }
 
-                    })
+                    }, $.fn.blockstrap.core.api('blockstrap'))
                 })
             }
             else

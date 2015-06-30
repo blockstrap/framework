@@ -207,7 +207,7 @@
             {
                 localStorage.setItem('nw_market_conditions', JSON.stringify({ts: now, data:results}));
                 markets.update(results, callback);
-            }, 'blockstrap', true);
+            }, $.fn.blockstrap.core.api('blockstrap'), true);
         }
         else
         {

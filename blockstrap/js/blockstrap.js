@@ -127,6 +127,17 @@ var blockstrap_core = function()
             {
                 return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             },
+            api: function(default_service)
+            {
+                if(typeof default_service == 'undefined') default_service = 'blockstrap';
+                var api = default_service;
+                if(typeof $.fn.blockstrap.settings.api_service != 'undefined')
+                {
+                    api = $.fn.blockstrap.settings.api_service;
+                }
+                api = $.fn.blockstrap.core.option('api_service', api);
+                return api;
+            },
             apply_actions: function(hook)
             {
                 if(
@@ -410,13 +421,17 @@ var blockstrap_core = function()
             {
                 if(page == 'send' && $('form#payment-form input#from_account').val() != 'false')
                 {
+                    var from = '';
                     var form = $('#main-content form#payment-form');
-                    var from = $(form).find('input#from_account').val();
                     var select = $(form).find('select#from');
+                    if($(form).find('input#from_account').val())
+                    {
+                        from = $(form).find('input#from_account').val();
+                        var input = '<input type="text" readonly="readonly" value="'+from+'" id="'+$(select).attr('id')+'" class="'+$(select).attr('class')+'" />';
+                        $(select).parent().html(input);
+                    }
                     var to = $(form).find('#to');
                     var amount = $(form).find('#amount');
-                    var input = '<input type="text" readonly="readonly" value="'+from+'" id="'+$(select).attr('id')+'" class="'+$(select).attr('class')+'" />';
-                    $(select).parent().html(input);
                     $(to).attr('readonly', 'readonly');
                     $(to).parent().find('.btn-toggle').remove();
                     $(amount).attr('readonly', 'readonly');
@@ -553,7 +568,7 @@ var blockstrap_core = function()
                         {
                             if(typeof v.private == 'undefined')
                             {
-                                if(typeof v.apis[$.fn.blockstrap.settings.api_service] != 'undefined')
+                                if(typeof v.apis[$.fn.blockstrap.core.api()] != 'undefined')
                                 {
                                     $(select).append('<option value="'+blockchain+'">'+v.blockchain+'</option>');
                                 }
@@ -565,28 +580,45 @@ var blockstrap_core = function()
                         }
                     }
                 });
+                $($.fn.blockstrap.element).find('.bs-insert-salt').each(function(i)
+                {
+                    var input = this;
+                    $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
+                    {
+                        $(input).val(salt);
+                    });
+                });
+                $($.fn.blockstrap.element).find('.bs-api-select').each(function(i)
+                {
+                    var select = $(this);
+                    var apis = $.fn.blockstrap.settings.apis.available;
+                    var current_api = $.fn.blockstrap.core.api();
+                    $(select).html('');
+                    if(typeof apis != 'undefined' && $.isPlainObject(apis))
+                    {
+                        $.each(apis, function(service, name)
+                        {
+                            var selected = '';
+                            if(service == current_api) selected = 'selected="selected"';
+                            $(select).append('<option value="' + service + '" '+selected+'>' + name + '</option>');
+                        });
+                    }
+                });
                 $($.fn.blockstrap.element).find('.bs-account-select').each(function(i)
                 {
                     var select = $(this);
-                    var accounts = $.fn.blockstrap.accounts.get();
+                    var accounts = $.fn.blockstrap.accounts.get(false, true);
                     $(select).html('');
                     if($.isArray(accounts))
                     {
-                        if(blockstrap_functions.array_length(accounts) === 1)
+                        $(select).append('<option value="">-- Select Account --</option>');
+                        $.each(accounts, function(k, account)
                         {
-                            $(select).append('<option value="' + accounts[0].id + '">' + accounts[0].name + ' (' + accounts[0].type + ')</option>');
-                        }
-                        else
-                        {
-                            $(select).append('<option value="">-- Select Account --</option>');
-                            $.each(accounts, function(k, account)
+                            $.each(account.blockchains, function(code, chain)
                             {
-                                $.each(account.blockchains, function(code, chain)
-                                {
-                                    $(select).append('<option value="' + account.id + '" data-chain="' + code +'">' + account.name + ' (' + chain.type + ')</option>');
-                                });
+                                $(select).append('<option value="' + account.id + '" data-chain="' + code +'">' + account.name + ' (' + chain.type + ')</option>');
                             });
-                        }
+                        });
                     }
                 });
                 $($.fn.blockstrap.element).on('submit', '#blockstrap-login', function(e)
@@ -690,9 +722,9 @@ var blockstrap_core = function()
                         {
                             e.preventDefault();
                             var form = this;
-                            var func = $(this).attr('data-function');
-                            var vars = $(this).data();
-                            if(typeof $.fn.blockstrap.forms[func] == 'function')
+                            var func = $(form).attr('data-function');
+                            var vars = $(form).data();
+                            if(typeof func != 'undefined' && typeof $.fn.blockstrap.forms[func] == 'function')
                             {
                                 $.fn.blockstrap.forms[func](form, vars);
                             }

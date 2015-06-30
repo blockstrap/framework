@@ -349,7 +349,7 @@
                         return false;
                     }
                 }, 
-                'blockstrap'
+                $.fn.blockstrap.core.api('blockstrap')
             );
         }
         else
@@ -378,7 +378,7 @@
         if(blockstrap_functions.json(obj)) obj = $.parseJSON(obj);
         if($.isPlainObject(obj))
         {
-            var dnk = false;
+            var dnk = '';
             var title = 'Edit Contact Details';
             if(obj.data.contact_dnk) dnk = obj.data.contact_dnk;
             var contact_fields = [
@@ -430,7 +430,7 @@
                                     inputs: {
                                         id: "blockchains."+k+".addresses."+key+".key",
                                         label: {
-                                            text: blockchain.blockchain + " Address",
+                                            text: blockchain.code.toUpperCase() + " Address",
                                             css: "col-xs-3"
                                         },
                                         type: "text",

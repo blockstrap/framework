@@ -44,6 +44,12 @@
             "text": "Contacts"
         },
         {
+            "id": "settings",
+            "css": "btn-page",
+            "href": "#settings",
+            "text": "Settings"
+        },
+        {
             "id": "docs",
             "css": "",
             "href": "http://docs.blockstrap.com",

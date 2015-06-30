@@ -1052,7 +1052,7 @@
                                                     {
                                                         $.fn.blockstrap.core.modal(title, contents);
                                                     }
-                                                }, 'blockstrap', true);
+                                                }, $.fn.blockstrap.core.api('blockstrap'), true);
                                             }, 10000);
                                         }
                                         else

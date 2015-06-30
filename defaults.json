@@ -378,6 +378,12 @@
         }
     },
     "apis": {
+        "available": {
+            "blockstrap": "Blockstrap",
+            "sochain": "SoChain",
+            "blockr": "Blockr",
+            "helloblock": "HelloBlock"
+        },
         "defaults": {
             "blockstrap": {
                 "functions": {

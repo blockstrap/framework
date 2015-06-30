@@ -1,0 +1,110 @@
+{
+    "settings": {
+        "panels": [
+            {
+                "id": "settings-intro",
+                "css": "col-md-12 ribbon",
+                "body": {
+                    "func": "bootstrap",
+                    "type": "jumbotrons",
+                    "objects": [
+                        {
+                            "title": "Internal Settings",
+                            "intro": "Alter settings that do not conflict with salt creation.",
+                            "html": "Please note that this a new page that is here as a starting point to solve a specific user-focused problem and will be exanded upon further soon."
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "edit-settings",
+                "css": "col-md-12",
+                "body": {
+                    "func": "bootstrap",
+                    "type": "forms",
+                    "objects": [
+                        {
+                            "id": "settings-form",
+                            "css": "bs",
+                            "fields": [
+                                {
+                                    "selects": {
+                                        "id": "api_service",
+                                        "label": {
+                                            "text": "API Service",
+                                            "css": "col-xs-3"
+                                        },
+                                        "css": "bs-api-select",
+                                        "wrapper": {
+                                            "css": "col-xs-9"
+                                        }
+                                    }
+                                },
+                                {
+                                    "inputs": {
+                                        "id": "your_salt",
+                                        "label": {
+                                            "text": "Your Salt",
+                                            "css": "col-xs-3"
+                                        },
+                                        "attributes": [
+                                            {
+                                                "key": "readonly",
+                                                "value": "readonly"
+                                            }
+                                        ],
+                                        "css": "bs-insert-salt",
+                                        "wrapper": {
+                                            "css": "col-xs-9"
+                                        }
+                                    }
+                                },
+                                {
+                                    "inputs": {
+                                        "id": "your_photo",
+                                        "label": {
+                                            "text": "Profile Photo",
+                                            "css": "col-xs-3"
+                                        },
+                                        "type": "file",
+                                        "css": "filestyle",
+                                        "attributes": [
+                                            {
+                                                "key": "data-setup-type",
+                                                "value": "option"
+                                            }
+                                        ],
+                                        "wrapper": {
+                                            "css": "col-xs-9"
+                                        }
+                                    }
+                                },
+                                {
+                                    "hiddens": {
+                                        "id": "pass"
+                                    }
+                                }
+                            ],
+                            "buttons": {
+                                "forms": [
+                                    {
+                                        "type": "submit",
+                                        "id": "save-settings",
+                                        "css": "btn-primary pull-right",
+                                        "text": "Save"
+                                    }
+                                ]
+                            },
+                            "data": [
+                                {
+                                    "key": "data-function",
+                                    "value": "settings_form"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

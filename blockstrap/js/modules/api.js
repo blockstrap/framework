@@ -15,12 +15,8 @@
     var active_requests = {};
     var apis = $.fn.blockstrap.settings.apis;
     var blockchains = $.fn.blockstrap.settings.blockchains;
-    var api_service = $.fn.blockstrap.core.option('api_service', 'blockstrap');
     var api_key = $.fn.blockstrap.core.option('key', false);
-    if($.fn.blockstrap.settings.api_service)
-    {
-        api_service = $.fn.blockstrap.settings.api_service;
-    }
+    var api_service = $.fn.blockstrap.core.api('blockstrap');
     
     if($.fn.blockstrap.settings.cache && $.fn.blockstrap.settings.cache.api && $.fn.blockstrap.settings.cache.api.timeout)
     {
@@ -29,7 +25,7 @@
     
     api.address = function(hash, blockchain, callback, service, return_raw)
     {
-        var original_service = api_service;
+        var original_service = JSON.parse(JSON.stringify(api_service));
         if(service && service !== api_service)
         {
             api_service = service;
@@ -89,7 +85,7 @@
     api.addresses = function(hashes, blockchain, callback, service)
     {
         var hashed_url = '';
-        var original_service = api_service;
+        var original_service = JSON.parse(JSON.stringify(api_service));
         if(service && service !== api_service)
         {
             api_service = service;
@@ -163,7 +159,7 @@
     
     api.balance = function(hash, blockchain, callback, service)
     {
-        var original_service = api_service;
+        var original_service = JSON.parse(JSON.stringify(api_service));
         if(service && service !== api_service)
         {
             api_service = service;
@@ -186,12 +182,12 @@
                 }
                 callback(0);
             }
-        });
+        }, service);
     }
     
     api.block = function(height, blockchain, callback, service, return_raw)
     {
-        var original_service = api_service;
+        var original_service = JSON.parse(JSON.stringify(api_service));
         if(service && service !== api_service)
         {
             api_service = service;
@@ -253,7 +249,7 @@
     
     api.dnkey = function(id, blockchain, callback, service, return_raw)
     {
-        var original_service = api_service;
+        var original_service = JSON.parse(JSON.stringify(api_service));
         if(service && service !== api_service)
         {
             api_service = service;
@@ -310,7 +306,7 @@
     
     api.dnkeys = function(id, blockchain, callback, service, return_raw)
     {
-        var original_service = api_service;
+        var original_service = JSON.parse(JSON.stringify(api_service));
         if(service && service !== api_service)
         {
             api_service = service;
@@ -399,7 +395,7 @@
     
     api.market = function(blockchain, stat, callback, service, return_raw)
     {
-        var original_service = api_service;
+        var original_service = JSON.parse(JSON.stringify(api_service));
         if(service && service !== api_service)
         {
             api_service = service;
@@ -588,7 +584,7 @@
     
     api.relay = function(hash, blockchain, callback, service, return_raw)
     {
-        var original_service = api_service;
+        var original_service = JSON.parse(JSON.stringify(api_service));
         if(service && service !== api_service)
         {
             api_service = service;
@@ -780,7 +776,7 @@
                             else if(parse_type == 'hextohash')
                             {
                                 var address = results[arrayed_result[0]];
-                                var hash = bitcoin.Address.fromBase58(address);
+                                var hash = bitcoin.Address.fromBase58Check(address);
                                 res_01 = hash;
                             }
                             else if(parse_type == 'utctoepoch')
@@ -864,7 +860,7 @@
     
     api.transaction = function(txid, blockchain, callback, service, return_raw)
     {
-        var original_service = api_service;
+        var original_service = JSON.parse(JSON.stringify(api_service));
         if(service && service !== api_service)
         {
             api_service = service;
@@ -929,7 +925,7 @@
     
     api.transactions = function(address, blockchain, callback, service, return_raw, count, skip)
     {
-        var original_service = api_service;
+        var original_service = JSON.parse(JSON.stringify(api_service));
         if(service && service !== api_service)
         {
             api_service = service;
@@ -1054,7 +1050,7 @@
     
     api.unspents = function(address, blockchain, callback, confirms, service, return_raw)
     {
-        var original_service = api_service;
+        var original_service = JSON.parse(JSON.stringify(api_service));
         if(service && service !== api_service)
         {
             api_service = service;
@@ -1204,9 +1200,10 @@
         }
         else
         {
-            api_service = 'blockstrap';
+            api_service = $.fn.blockstrap.core.api('blockstrap');
             blockchains = $.fn.blockstrap.settings.blockchains;
             apis = $.fn.blockstrap.settings.apis;
+            if(blockchain == 'multi') api_service = 'blockstrap';
             url = blockchains[blockchain].apis[api_service] + apis['defaults'][api_service].functions.to[action] + key;
             if(apis['defaults'][api_service].functions.to[action].indexOf("$call") > -1)
             {

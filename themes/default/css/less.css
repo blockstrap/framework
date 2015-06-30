@@ -6168,8 +6168,8 @@ FORMS
   border-top: 1px solid #bbbbbb;
   margin-bottom: -5px;
 }
-.blockstrap-wrapper .panel-body form .form-group .col-sm-9 input,
-.blockstrap-wrapper .panel-body form .form-group .col-sm-9 select {
+.blockstrap-wrapper .panel-body form .form-group .col-sm-9 input.form-control,
+.blockstrap-wrapper .panel-body form .form-group .col-sm-9 select.form-control {
   background: #ffffee;
   border-radius: 4px;
   border: 1px solid #cccccc;

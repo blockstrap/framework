@@ -149,6 +149,64 @@
         return $.fn.blockstrap.templates.filter(html);
     }
     
+    forms.settings_form = function(form, vars)
+    {
+        var avatar = false;
+        var title = 'Success';
+        var contents = 'Your settings have been updated';
+        var api = $(form).find('#api_service').val();
+        if($(form).find('#your_photo').attr('data-img'))
+        {
+            avatar = $(form).find('#your_photo').attr('data-img');
+        }
+        $.fn.blockstrap.data.find('blockstrap', 'options', function(options)
+        {
+            var update_api = false;
+            var store_photo = false;
+            var current_api = options.api_service;
+            var current_photo = options.your_photo;
+            var use_photo_in_salt = options.photo_salt;
+            if(avatar != current_photo && use_photo_in_salt != true && use_photo_in_salt != 'true')
+            {
+                store_photo = true;
+            }
+            if(api != current_api)
+            {
+                update_api = true;
+            }
+            if(avatar == current_photo && api == current_api)
+            {
+                title = 'Warning';
+                contents = 'There is nothing new to update';
+            }
+            else if(avatar != current_photo && !store_photo)
+            {
+                title = 'Warning';
+                contents = 'You cannot update your avatar as it is being used as part of the salting process!';
+            }
+            if(update_api)
+            {
+                options.api_service = api;
+            }
+            if(store_photo)
+            {
+                options.your_photo = avatar;
+                if($($.fn.blockstrap.element).find('#sidebar .avatar').length > 0)
+                {
+                    $($.fn.blockstrap.element).find('#sidebar .avatar').attr('src', avatar);
+                }
+            }
+            if(update_api || store_photo)
+            {
+                $.fn.blockstrap.data.save('blockstrap', 'options', options, function()
+                {
+
+                });
+            }
+            $.fn.blockstrap.core.modal(title, contents);
+        });
+    }
+    
     forms.switch_addresses = function(form, vars)
     {
         if(
