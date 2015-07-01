@@ -486,6 +486,32 @@
         }
     }
     
+    forms.verify_message = function(form, vars)
+    {
+        var address = $(form).find('#address').val();
+        var chain = $(form).find('#chain').val();
+        var signature = $(form).find('#signature').val();
+        var message = $(form).find('#message').val();
+        var title = 'Warning';
+        var contents = 'All four fields required';
+        if(address && chain && message && signature)
+        {
+            var blockchain_key = $.fn.blockstrap.blockchains.key(chain);
+            var blockchain_obj = bitcoin.networks[blockchain_key];
+            var verification = bitcoin.Message.verify(address, signature, message, blockchain_obj);
+            if(verification === true)
+            {
+                title = 'Success';
+                contents = 'The signature matches the address';
+            }
+            else
+            {
+                contents = 'The signature does not match the address and (or) message';
+            }
+        }
+        $.fn.blockstrap.core.modal(title, contents);
+    }
+    
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {forms:forms});
 })

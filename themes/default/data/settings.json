@@ -11,7 +11,14 @@
                         {
                             "title": "Internal Settings",
                             "intro": "Alter settings that do not conflict with salt creation.",
-                            "html": "Please note that this a new page that is here as a starting point to solve a specific user-focused problem and will be exanded upon further soon."
+                            "html": "Please note that this a new page that is here as a starting point to solve a specific user-focused problem and will be exanded upon further soon.",
+                            "buttons": [
+                                {
+                                    "href": "#",
+                                    "css": "btn-primary btn-verify",
+                                    "text": "Verify Message"
+                                }
+                            ]
                         }
                     ]
                 }

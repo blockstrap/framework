@@ -2034,6 +2034,103 @@
         }
     }
     
+    buttons.verify = function(button, e)
+    {
+        e.preventDefault();
+        var title = 'Verify Signed Message';
+        var contents = '<p>Use this form to verify a signed message:</p>';
+        var chains_available = [];
+        $.each($.fn.blockstrap.settings.blockchains, function(chain, blockchain)
+        {
+            if(chain != 'multi')
+            {
+                chains_available.push({
+                    value: chain,
+                    text: blockchain.blockchain
+                });
+            }
+        });
+        var form = $.fn.blockstrap.forms.process({
+            id: "verify-messages",
+            css: "form-horizontal bs",
+            data: [
+                {
+                    key: 'data-function',
+                    value: 'verify_message'
+                }
+            ],
+            objects: [
+                {
+                    fields: [
+                        {
+                            inputs: {
+                                id: 'address',
+                                type: 'text',
+                                label: {
+                                    css: 'col-xs-3',
+                                    text: 'Address'
+                                },
+                                wrapper: {
+                                    css: 'col-xs-9'
+                                }
+                            }
+                        },
+                        {
+                            selects: {
+                                id: 'chain',
+                                type: 'text',
+                                label: {
+                                    css: 'col-xs-3',
+                                    text: 'Blockchain'
+                                },
+                                wrapper: {
+                                    css: 'col-xs-9'
+                                },
+                                values: chains_available
+                            }
+                        },
+                        {
+                            areas: {
+                                id: 'signature',
+                                placeholder: 'Signed signature to verify'
+                            }
+                        },
+                        {
+                            areas: {
+                                id: 'message',
+                                placeholder: 'Message used to generate signature'
+                            }
+                        }
+                    ]
+                }
+            ],
+            buttons: {
+                forms: [
+                    {
+                        id: 'cancel-verification',
+                        css: 'btn-danger pull-right btn-split',
+                        text: 'Cancel',
+                        type: 'button',
+                        attributes: [
+                            {
+                                key: 'data-dismiss',
+                                value: 'modal'
+                            }
+                        ]
+                    },
+                    {
+                        type: "submit",
+                        id: "verify-message",
+                        css: 'btn-success pull-right btn-split',
+                        text: 'Verify',
+                        type: 'submit'
+                    }
+                ]
+            }
+        });
+        $.fn.blockstrap.core.modal('Switch Addresses', contents + form);
+    }
+    
     // MERGE THE NEW FUNCTIONS WITH CORE
     $.extend(true, $.fn.blockstrap, {buttons:buttons});
 })
