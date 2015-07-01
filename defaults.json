@@ -87,6 +87,7 @@
             "setup",
             "import",
             "toggle",
+            "sign",
             "switch",
             "new_chain",
             "see_all",

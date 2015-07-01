@@ -207,6 +207,49 @@
         });
     }
     
+    forms.sign_message = function(form, vars)
+    {
+        if(
+            typeof vars.accountId != 'undefined'
+            && typeof vars.chain != 'undefined'
+        ){
+            var account_id = vars.accountId;
+            var chain = vars.chain;
+            var message = $(form).find('#message').val();
+            var account = $.fn.blockstrap.accounts.get(account_id, true);
+            var this_account = account.blockchains[chain];
+            var blockchain_key = $.fn.blockstrap.blockchains.key(chain);
+            var blockchain_obj = bitcoin.networks[blockchain_key];
+            var fields = [];
+            $.each(account.keys, function(k, key)
+            {
+                var input = $(form).find('#'+key);
+                var value = $(input).val();
+                var id = $(input).attr('id');
+                fields.push({
+                    id: id,
+                    value: value
+                });
+            });
+            this_account.id = account.id;
+            this_account.name = account.name;
+            this_account.password = account.password;
+            $.fn.blockstrap.accounts.verify(this_account, fields, function(verified, keys, raw_keys)
+            {
+                var title = 'Error';
+                var contents = 'Credentials mis-match!';
+                if(verified === true)
+                {
+                    var signature = bitcoin.Message.sign(raw_keys.privKey, message, blockchain_obj);
+                    var msg = signature.toString('base64');
+                    title = 'Success';
+                    contents = '<p>Successfully encrypted message as follows:</p><p>'+msg+'</p>';
+                }
+                $.fn.blockstrap.core.modal(title, contents);
+            });
+        }
+    }
+    
     forms.switch_addresses = function(form, vars)
     {
         if(

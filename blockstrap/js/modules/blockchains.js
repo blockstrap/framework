@@ -104,13 +104,14 @@
         }
     }
     
-    blockchains.keys = function(secret, blockchain, number_of_keys, indexes)
+    blockchains.keys = function(secret, blockchain, number_of_keys, indexes, raw)
     {
         var keys = {};
         var is_array = false;
         var secrets = secret;
         var blockchain_key = blockchains.key(blockchain);
         var blockchain_obj = bitcoin.networks[blockchain_key];
+        if(typeof raw == 'undefined') raw = false;
         if(typeof number_of_keys != 'undefined' && parseInt(number_of_keys) > 1)
         {
             keys = [];
@@ -131,6 +132,7 @@
                     });
                     secrets = CryptoJS.SHA3(secrets + raw_keys.privKey.toWIF(blockchain_obj), { outputLength: 512 }).toString();
                 }
+                if(raw) keys.raw = raw_keys;
                 return keys;
             }
             else
@@ -146,6 +148,7 @@
                 }
                 keys.pub = raw_keys.pubKey.getAddress(blockchain_obj).toString();
                 keys.priv = raw_keys.privKey.toWIF(blockchain_obj);
+                if(raw) keys.raw = raw_keys;
                 return keys;
             }
         }
@@ -157,12 +160,14 @@
                     pub: false,
                     priv: false
                 });
+                if(raw) keys.raw = false;
                 return keys;
             }
             else
             {
                 keys.pub = false;
                 keys.priv = false;
+                if(raw) keys.raw = false;
                 return keys;
             }
         }

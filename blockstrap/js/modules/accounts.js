@@ -915,7 +915,8 @@
             };
             if(key)
             {
-                var keys = $.fn.blockstrap.blockchains.keys(key+account.code, account.code, 1);
+                var raw_keys = $.fn.blockstrap.blockchains.keys(key+account.code, account.code, 1, false, true);
+                var keys = raw_keys;
                 var raw_account = $.fn.blockstrap.accounts.get(account.id, true);
                 if(
                     typeof from != 'undefined'
@@ -954,14 +955,14 @@
                     ||
                     (from && keys.pub === from)
                 ){
-                    if(callback) callback(true, keys);
+                    if(callback) callback(true, keys, raw_keys.raw);
                     else return true;
                 }
                 else
                 {
                     if(callback) 
                     {
-                        callback(false, false);
+                        callback(false, false, false);
                     }
                     else
                     {
@@ -974,7 +975,7 @@
             {
                 if(callback)
                 {
-                    callback(false, false);
+                    callback(false, false, false);
                 }
                 else
                 {
