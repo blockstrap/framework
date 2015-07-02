@@ -93,7 +93,8 @@
             "new_chain",
             "see_all",
             "check_inactive",
-            "check_all_inactive"
+            "check_all_inactive",
+            "add_contact_address"
         ],
         "ids": [
             "create-account",

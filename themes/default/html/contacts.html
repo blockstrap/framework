@@ -58,6 +58,11 @@
                                     {{#blockchains}}
                                         {{#addresses}}
                                             <p>
+                                                <a 
+                                                   class="btn btn-xs btn-primary" 
+                                                   href="{{urls.root}}?key={{key}}#send"
+                                                   style="ffloat: left; margin: -7px 5px -5px 0"
+                                                >Send</a> 
                                                 {{blockchain}}: 
                                                 <a href="?key={{key}}#address">{{key}}</a>
                                             </p>
@@ -80,40 +85,41 @@
                             <td>
                                 <div class="cell">
                                     
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Pay <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            {{#blockchains}}
-                                                {{#addresses}}
-                                                    <li>
-                                                        <a href="{{urls.root}}?key={{key}}#send">
-                                                            Send {{blockchain}}
-                                                        </a>
-                                                    </li>
-                                                {{/addresses}}
-                                            {{/blockchains}}
-                                        </ul>
-                                    </div>
-                                    
                                     <a 
                                        href="#" 
-                                       class="btn btn-default btn-xs btn-edit"
+                                       class="btn btn-icon btn-edit"
                                        data-collection="contacts"
                                        data-parent="contacts"
                                        data-element="table-row-{{id}}"
                                        data-key="{{id}}"
-                                    >Edit</a>
+                                       title="Edit Contact"
+                                    >
+                                    <i class="fa fa-edit"><span>Edit Contact</span></i>
+                                    </a>
                                     
                                     <a 
                                        href="#" 
-                                       class="btn btn-danger btn-xs btn-remove"
+                                       class="btn btn-icon btn-add_contact_address"
                                        data-collection="contacts"
                                        data-parent="contacts"
                                        data-element="table-row-{{id}}"
                                        data-key="{{id}}"
-                                    >Remove</a>
+                                       title="Add Blockchain"
+                                    >
+                                    <i class="fa fa-plus-circle"><span>Add Blockchain</span></i>
+                                    </a>
+                                    
+                                    <a 
+                                       href="#" 
+                                       class="btn btn-icon btn-remove"
+                                       data-collection="contacts"
+                                       data-parent="contacts"
+                                       data-element="table-row-{{id}}"
+                                       data-key="{{id}}"
+                                       title="Remove Contact"
+                                    >
+                                    <i class="fa fa-times"><span>Remove Contact</span></i>
+                                    </a>
                                 </div>
                             </td>
                         </tr>

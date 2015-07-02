@@ -88,6 +88,82 @@
         });
     }
     
+    buttons.add_contact_address = function(button, e)
+    {
+        e.preventDefault();
+        var id = $(button).attr('data-key');
+        var contact = $.fn.blockstrap.contacts.get(id);
+        var current_blockchains = JSON.parse(JSON.stringify(contact.blockchains));
+        var current_blockchain_count = blockstrap_functions.array_length(current_blockchains);
+        var available_blockchains = JSON.parse(JSON.stringify($.fn.blockstrap.settings.blockchains));
+        delete available_blockchains.multi;
+        var available_blockchain_count = blockstrap_functions.array_length(available_blockchains);
+        var title = 'Warning';
+        var contents = '<p>You already have all available blockchains.</p><p>Please edit the contact if you wish to specify a new address for a particular blockchain.</p>';
+        if(current_blockchain_count < available_blockchain_count)
+        {
+            title = 'Add New Blockchain';
+            contents = '<p>Please use the form below to add a new blockchain for this contact:</p>';
+            var fields = [];
+            $.each(available_blockchains, function(chain, blockchain)
+            {
+                var add_this_chain = true;
+                $.each(current_blockchains, function(k, this_chain)
+                {
+                    if(this_chain.code == chain) add_this_chain = false;
+                });
+                if(add_this_chain === true)
+                {
+                    fields.push({
+                        inputs: {
+                            id: chain + "_address",
+                            label: {
+                                text: chain.toUpperCase() + " Address",
+                                css: "col-xs-3"
+                            },
+                            type: "text",
+                            wrapper: {
+                                css: "col-xs-9"
+                            }
+                        }
+                    });
+                }
+            });
+            var form = $.fn.blockstrap.forms.process({
+                objects: [
+                    {
+                        id: "add-contacts-blockchain",
+                        css: "form-horizontal bs",
+                        data: [
+                            {
+                                key: 'data-function',
+                                value: 'add_blockchain_contact'
+                            },
+                            {
+                                key: 'data-contact-id',
+                                value: id
+                            }
+                        ],
+                        fields: fields,
+                        buttons: {
+                            forms: [
+                                {
+                                    css: "btn-success pull-right",
+                                    text: "Add"
+                                }
+                            ]
+                        }
+                    }
+                ]               
+            });
+            $.fn.blockstrap.core.modal(title, contents + form);
+        }
+        else
+        {
+            $.fn.blockstrap.core.modal(title, contents);
+        }
+    }
+    
     buttons.cancel = function(button, mobile, menu, elements)
     {
         if(mobile && !menu) $(elements).css({'opacity':1});
@@ -1391,7 +1467,8 @@
                                     function()
                                     {
                                         // And then?
-                                    }
+                                    },
+                                    true // TODO: FIX THIS DIRTY HACK !!!
                                 );
                             });
                         }

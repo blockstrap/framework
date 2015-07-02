@@ -108,6 +108,56 @@
         }
     }
     
+    forms.add_blockchain_contact = function(form, vars)
+    {
+        if(
+            typeof vars.contactId != 'undefined'
+        ){
+            var contact_id = vars.contactId;
+            var contact = $.fn.blockstrap.contacts.get(contact_id);
+            var current_blockchains = JSON.parse(JSON.stringify(contact.blockchains));
+            var current_blockchain_count = blockstrap_functions.array_length(JSON.parse(JSON.stringify(contact.blockchains)));
+            var new_blockchains = current_blockchains;
+            $(form).find('input').each(function(i)
+            {
+                var id = $(this).attr('id');
+                var meta = id.split('_');
+                var chain = meta[0];
+                var address = $(this).val();
+                var which = $.fn.blockstrap.blockchains.which(address);
+                if(chain && address && which && (chain == which || (chain == 'ltct' && which == 'btct')))
+                {
+                    $.fn.blockstrap.core.loader('open');
+                    new_blockchains.push({
+                        blockchain: $.fn.blockstrap.settings.blockchains[chain].blockchain,
+                        code: chain,
+                        addresses: [
+                            {
+                                key: address
+                            }
+                        ]
+                    });
+                }
+                else if(chain && address && which && which != chain)
+                {
+                    $.fn.blockstrap.core.modal('Warning', 'Address does not match blockchain');
+                }
+            });
+            if(blockstrap_functions.array_length(new_blockchains) > current_blockchain_count)
+            {
+                contact.blockchains = new_blockchains;
+                $.fn.blockstrap.data.save('contacts', contact_id, contact, function()
+                {
+                    $.fn.blockstrap.core.refresh(function()
+                    {
+                        $.fn.blockstrap.core.loader('close');
+                        $.fn.blockstrap.core.modal('Success', 'Contact Updated');
+                    }, $.fn.blockstrap.core.page());
+                });
+            }
+        }
+    }
+    
     forms.get = function(callback)
     {
         if($.fn.blockstrap.snippets.forms)

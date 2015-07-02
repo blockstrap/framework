@@ -27,16 +27,22 @@
                 }
             });
         }
-        return contacts;
+        if(id) return contacts[0];
+        else return contacts;
     }
     
-    contacts.new = function(name, address, blockchain, fields, callback)
+    contacts.new = function(name, address, blockchain, fields, callback, ignore_errors)
     {
+        if(typeof ignore_errors == 'undefined') ignore_errors = false;
+        else ignore_errors = true;
         var addresses = address;
         if(!$.isPlainObject(address) && !$.fn.blockstrap.blockchains.validate(address))   
         {
             callback();
-            $.fn.blockstrap.core.modal('Error', 'This is not a valid address!');
+            if(!ignore_errors)
+            {
+                $.fn.blockstrap.core.modal('Error', 'This is not a valid address!');
+            }
         }
         else
         {
@@ -54,7 +60,10 @@
                     if(contact)
                     {
                         $.fn.blockstrap.core.loader('close');
-                        $.fn.blockstrap.core.modal('Warning', 'This contact already exists');
+                        if(!ignore_errors)
+                        {
+                            $.fn.blockstrap.core.modal('Warning', 'This contact already exists');
+                        }
                     }
                     else 
                     {
@@ -82,7 +91,10 @@
                                     var blockchain_name = blockchains[which].blockchain;
                                     var blockchain_selected = blockchains[blockchain].blockchain;
                                     $.fn.blockstrap.core.loader('close');
-                                    $.fn.blockstrap.core.modal('Warning', 'This address does not match the blockchain you selected. You selected '+blockchain_name+' but the address you entered appears to be for '+blockchain_selected+'. This is not 100% accurate, and could be an internal problem.');
+                                    if(!ignore_errors)
+                                    {
+                                        $.fn.blockstrap.core.modal('Warning', 'This address does not match the blockchain you selected. You selected '+blockchain_name+' but the address you entered appears to be for '+blockchain_selected+'. This is not 100% accurate, and could be an internal problem.');
+                                    }
                                     return false;
                                 }
                             }
@@ -92,7 +104,7 @@
                                 (
                                     $.fn.blockstrap.blockchains.which(address) != blockchain
                                     && blockchain == 'ltct'
-                                    && $.fn.blockstrap.blockchains.which(address) == 'btc'
+                                    && $.fn.blockstrap.blockchains.which(address) == 'btct'
                                 )
                             ){
                                 blockchains_to_save.push({
