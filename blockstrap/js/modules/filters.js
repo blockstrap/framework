@@ -129,11 +129,11 @@
             {
                 $.each(accounts, function(k, account)
                 {
-                    if($.isPlainObject(account.txs) && blockstrap_functions.array_length(account.txs) > 0)
+                    if($.isArray(account.txs) && blockstrap_functions.array_length(account.txs) > 0)
                     {
                         $.each(account.txs, function(key, tx)
                         {
-                            if(tx.time && tx.time > latest) latest = tx.time;
+                            if(tx.tx && tx.tx.time && tx.tx.time > latest) latest = tx.tx.time;
                         });
                     };
                 });
