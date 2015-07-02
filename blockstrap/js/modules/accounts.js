@@ -568,17 +568,49 @@
                     }
                     else
                     {
-                        localStorage.removeItem('nw_' + collection + '_' + key);
-                    
-                        $($.fn.blockstrap.element).find('#' + element).hide(350, function()
+                        if(chain && collection == 'contacts')
                         {
-                            var this_element = $(this);
-                            $(this_element).remove();
-                            $.fn.blockstrap.core.refresh(function()
+                            var new_chains = [];
+                            var chain_key = 0;
+                            $.each(item_object.blockchains, function(k, c)
                             {
-                                $.fn.blockstrap.core.loader('close');
-                            }, $.fn.blockstrap.core.page());
-                        })
+                                if(c.code == chain)
+                                {
+                                    chain_key = k;
+                                }
+                                else
+                                {
+                                    new_chains.push(c);
+                                }
+                            });
+                            item_object.blockchains = new_chains;
+                            $.fn.blockstrap.data.save('contacts', key, item_object, function()
+                            {
+                                $($.fn.blockstrap.element).find('#' + element).find('td:eq(1)').find('.cell p:eq('+chain_key+')').hide(350, function()
+                                {
+                                    var this_element = $(this);
+                                    $(this_element).remove();
+                                    $.fn.blockstrap.core.refresh(function()
+                                    {
+                                        $.fn.blockstrap.core.loader('close');
+                                    }, $.fn.blockstrap.core.page());
+                                })
+                            });
+                        }
+                        else
+                        {
+                            localStorage.removeItem('nw_' + collection + '_' + key);
+
+                            $($.fn.blockstrap.element).find('#' + element).hide(350, function()
+                            {
+                                var this_element = $(this);
+                                $(this_element).remove();
+                                $.fn.blockstrap.core.refresh(function()
+                                {
+                                    $.fn.blockstrap.core.loader('close');
+                                }, $.fn.blockstrap.core.page());
+                            })
+                        }
                     }
                 }
                 else

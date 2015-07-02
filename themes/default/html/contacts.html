@@ -61,10 +61,23 @@
                                                 <a 
                                                    class="btn btn-xs btn-primary" 
                                                    href="{{urls.root}}?key={{key}}#send"
-                                                   style="ffloat: left; margin: -7px 5px -5px 0"
+                                                   style="float: left; margin: -3px 5px -3px 0"
                                                 >Send</a> 
                                                 {{blockchain}}: 
-                                                <a href="?key={{key}}#address">{{key}}</a>
+                                                <a href="?key={{key}}#address">{{key}}</a> 
+                                                <a 
+                                                   href="#" 
+                                                   class="btn btn-icon btn-remove"
+                                                   data-collection="contacts"
+                                                   data-parent="contacts"
+                                                   data-element="table-row-{{id}}"
+                                                   data-key="{{id}}"
+                                                   data-chain="{{code}}"
+                                                   title="Remove Blockchain"
+                                                   style="float: right; margin: -10px 0 -4px"
+                                                >
+                                                <i class="fa fa-times"><span>Remove Blockchain</span></i>
+                                                </a>
                                             </p>
                                         {{/addresses}}
                                     {{/blockchains}}

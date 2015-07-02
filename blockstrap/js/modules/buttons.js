@@ -570,8 +570,7 @@
         var collection = $(button).attr('data-collection');
         var form_id = $(button).attr('data-form-id');
         var form = $($.fn.blockstrap.element).find('form#' + form_id);
-        var obj = localStorage.getItem('nw_' + collection + '_' + key);
-        if(blockstrap_functions.json(obj)) obj = $.parseJSON(obj);
+        var obj = JSON.parse(localStorage.getItem('nw_' + collection + '_' + key));
         $(form).find('.form-group').each(function(i)
         {
             var input = $(this).find('input');
@@ -590,13 +589,27 @@
             {
                 var ids = id.split('.');
                 var address = value;
-                if($.fn.blockstrap.blockchains.validate(address))
-                {
+                if(
+                    $.fn.blockstrap.blockchains.validate(address)
+                    && 
+                    (
+                        $.fn.blockstrap.blockchains.which(address) == obj[ids[0]][ids[1]].code
+                        ||
+                        (
+                            $.fn.blockstrap.blockchains.which(address) == 'btct'
+                            && obj[ids[0]][ids[1]].code == 'ltct'
+                        )
+                    )
+                ){
                     obj[ids[0]][ids[1]][ids[2]][ids[3]].key = address;
                 }
                 else
                 {
-                    $.fn.blockstrap.core.modal('Warning', 'Not a valid address');
+                    if(address != obj[ids[0]][ids[1]][ids[2]][ids[3]].key)
+                    {
+                        $.fn.blockstrap.core.modal('Warning', 'Not a valid address');
+                        return false;
+                    }
                 }
             }
             else
@@ -615,7 +628,7 @@
                 {
                     $.fn.blockstrap.core.refresh(function()
                     {
-                        $.fn.blockstrap.core.modal('Success', 'Edit Saved');
+                        $.fn.blockstrap.core.modal('Success', 'Edits Saved');
                     }, $.fn.blockstrap.core.page());
                 });
             }
