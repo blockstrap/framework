@@ -875,15 +875,14 @@
                 {
                     var new_tx_count = old_tx_count;
                 }
-                if(obj.tx_count > current_tx_count)
+                if(blockstrap_functions.array_length(obj.txs) > current_tx_count)
                 {
-                    new_tx_count = obj.tx_count - current_tx_count;
-                    if($.isPlainObject(obj.txs))
+                    new_tx_count = blockstrap_functions.array_length(obj.txs) - current_tx_count;
+                    if($.isArray(obj.txs))
                     {
                         $.each(obj.txs, function(key, tx)
                         {
-                            new_txs.push(tx);
-                            account.txs['txid_'+tx.txid] = tx;
+                            new_txs.push(tx.tx);
                         });
                     }
                     new_txs.sort(function(a,b) 
@@ -893,10 +892,7 @@
                 }
                 if(index >= account_length)
                 {
-                    $.fn.blockstrap.data.save('accounts', account.id, account, function()
-                    {
-                        if(callback) callback(new_txs.slice(0, new_tx_count));
-                    });
+                    if(callback) callback(new_txs.slice(0, new_tx_count));
                 }
                 else
                 {
