@@ -308,6 +308,7 @@
         ){
             var account_id = vars.accountId;
             var chain = vars.chain;
+            var transfer = $(form).find('#transfer-funds').val();
             var the_account = $.fn.blockstrap.accounts.get(account_id, true);
             var account = JSON.parse(JSON.stringify(the_account));
             // THIS IS FOR FORM TO PROCESS AFTER GETTING KEY ...?
@@ -415,7 +416,7 @@
                                         account.blockchains[this_account.code].txs = {};
                                         account.blockchains[this_account.code].ts = now;
                                         account.blockchains[this_account.code].display_balance = "0.00000000";
-                                        if(balance > fee)
+                                        if(balance > fee && transfer != 'no')
                                         {
                                             $.fn.blockstrap.api.unspents(current_address, chain, function(unspents)
                                             {

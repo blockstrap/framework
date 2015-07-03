@@ -1728,21 +1728,22 @@
                             var saved_account = $.fn.blockstrap.accounts.get(account_id, true);
                             if(tx && typeof tx.txid != 'undefined')
                             {
-                                saved_account.blockchains[chain].ts = new Date().getTime();
-                                saved_account.blockchains[chain].balance = change;
-                                saved_account.blockchains[chain].tx_count++;
-                                $.fn.blockstrap.data.save('accounts', account_id, saved_account, function(obj)
+                                setTimeout(function()
                                 {
-                                    $.fn.blockstrap.core.refresh(function()
+                                    $.fn.blockstrap.accounts.update(saved_account, function()
                                     {
-                                        $.fn.blockstrap.core.modals('close_all');
-                                        var title = 'Sent ' + parseInt(to_amount) / 100000000 + ' ' + saved_account.blockchains[chain].type + ' to ' + to_address;
-                                        var base = $.fn.blockstrap.settings.base_url;
-                                        var content = '<p>Transaction ID: ' + tx.txid + '</p><p>You can <a href="' + base + '?txid=' + tx.txid + '#transaction">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchains.io/' + blockchain + '/transaction/' + tx.txid + '">this</a>.</p>';
-                                        content+='<p>Please note that a '+(fee / 100000000)+' '+$.fn.blockstrap.settings.blockchains[blockchain].blockchain+' mining fee was also added to the transaction.</p>';
-                                        $.fn.blockstrap.core.modal(title, content);
-                                    }, blockstrap_functions.slug(window.location.hash));
-                                });
+                                        $.fn.blockstrap.core.refresh(function()
+                                        {
+                                            $.fn.blockstrap.core.modals('close_all');
+                                            $.fn.blockstrap.core.loader('close');
+                                            var title = 'Sent ' + parseInt(to_amount) / 100000000 + ' ' + saved_account.blockchains[chain].type + ' to ' + to_address;
+                                            var base = $.fn.blockstrap.settings.base_url;
+                                            var content = '<p>Transaction ID: ' + tx.txid + '</p><p>You can <a href="' + base + '?txid=' + tx.txid + '#transaction">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchains.io/' + blockchain + '/transaction/' + tx.txid + '">this</a>.</p>';
+                                            content+='<p>Please note that a '+(fee / 100000000)+' '+$.fn.blockstrap.settings.blockchains[blockchain].blockchain+' mining fee was also added to the transaction.</p>';
+                                            $.fn.blockstrap.core.modal(title, content);
+                                        }, $.fn.blockstrap.core.page());
+                                    });
+                                }, 6000);
                             }
                             else
                             {
@@ -1994,6 +1995,28 @@
                 });
             })
         }
+        fields.push({
+            selects: {
+                id: 'transfer-funds',
+                label: {
+                    css: 'col-xs-3',
+                    text: 'Transfer Funds'
+                },
+                wrapper: {
+                    css: 'col-xs-9'
+                },
+                values: [
+                    {
+                        value: 'yes',
+                        text: 'Transfer to Next Address'
+                    },
+                    {
+                        value: 'no',
+                        text: 'Do not transfer funds'
+                    }
+                ]
+            }
+        });
         var contents = '<p>Please verify owenrship before switching addresses:</p>';
         var form = $.fn.blockstrap.forms.process({
             id: "switch-addresses",

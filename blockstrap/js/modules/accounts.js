@@ -946,27 +946,32 @@
                 var raw_keys = $.fn.blockstrap.blockchains.keys(key+account.code, account.code, 1, false, true);
                 var keys = raw_keys;
                 var raw_account = $.fn.blockstrap.accounts.get(account.id, true);
+                var old_addresses = raw_account.addresses[0].chains[account.code];
+                var index = blockstrap_functions.array_length(old_addresses);
                 if(
                     typeof from != 'undefined'
+                    && from
                     && typeof raw_account.addresses != 'undefined'
                     && typeof raw_account.addresses[0] != 'undefined'
                     && typeof raw_account.addresses[0].chains != 'undefined'
                     && typeof raw_account.addresses[0].chains[account.code] != 'undefined'
                 ){
+                    var must_be_latest = true;
                     $.each(raw_account.addresses[0].chains[account.code], function(k, add)
                     {
                         if(add == from)
                         {
-                            if(k < 1)
+                            must_be_latest = false;
+                            if(k > 0)
                             {
-                                keys = $.fn.blockstrap.blockchains.keys(key+account.code, account.code, 1);
-                            }
-                            else
-                            {
-                                keys = $.fn.blockstrap.blockchains.keys(key+account.code, account.code, 1, [k - 1]);
+                                keys = $.fn.blockstrap.blockchains.keys(key+account.code, account.code, 1, [k]);
                             }
                         }
                     });
+                    if(must_be_latest === true)
+                    {
+                        keys = $.fn.blockstrap.blockchains.keys(key+account.code, account.code, 1, [index]);
+                    }
                 }
                 else if(
                     typeof raw_account.addresses != 'undefined'
@@ -974,8 +979,6 @@
                     && typeof raw_account.addresses[0].chains != 'undefined'
                     && typeof raw_account.addresses[0].chains[account.code] != 'undefined'
                 ){
-                    var old_addresses = raw_account.addresses[0].chains[account.code];
-                    var index = blockstrap_functions.array_length(old_addresses)
                     keys = $.fn.blockstrap.blockchains.keys(key+account.code, account.code, 1, [index]);
                 }
                 if(
