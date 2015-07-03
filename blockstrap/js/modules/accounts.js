@@ -226,7 +226,7 @@
         }
     }
     
-    accounts.get = function(id, raw)
+    accounts.get = function(id, raw, get_widgets)
     {
         var accounts = false;
         var usd_rates = 0;
@@ -238,29 +238,34 @@
         }
         if(typeof raw == 'undefined') raw = false;
         else raw = true;
+        if(typeof get_widgets == 'undefined') get_widgets = false;
+        else get_widgets = true;
         if(localStorage)
         {
             if(id && localStorage.getItem('nw_accounts_'+id))
             {
                 var this_account = localStorage.getItem('nw_accounts_'+id);
                 if(blockstrap_functions.json(this_account)) this_account = $.parseJSON(this_account);
-                var tx_total = 0;
-                var usd_total = 0;
-                $.each(this_account.blockchains, function(chain, obj)
+                if((typeof this_account.keys != 'undefined' && this_account.keys) || get_widgets)
                 {
-                    if(typeof usd_rates[chain] == 'undefined') usd_rates[chain] = 0;
-                    usd_total = usd_total + (usd_rates[chain] * this_account.blockchains[chain].balance);
-                    this_account.usd_total = usd_total;
-                    tx_total = tx_total + this_account.blockchains[chain].tx_count;
-                    this_account.tx_total = tx_total;
-                    this_account.blockchains[chain].id = this_account.id;
-                    this_account.blockchains[chain].name = this_account.name;
-                    this_account.blockchains[chain].display_balance = parseFloat(this_account.blockchains[chain].balance / 100000000).toFixed(8);
-                });
-                this_account.usd_total = parseFloat(this_account.usd_total / 100000000).toFixed(2);
-                this_account = $.fn.blockstrap.core.apply_filters('accounts_get', this_account);
-                if(raw) return this_account;
-                else return this_account.blockchains;
+                    var tx_total = 0;
+                    var usd_total = 0;
+                    $.each(this_account.blockchains, function(chain, obj)
+                    {
+                        if(typeof usd_rates[chain] == 'undefined') usd_rates[chain] = 0;
+                        usd_total = usd_total + (usd_rates[chain] * this_account.blockchains[chain].balance);
+                        this_account.usd_total = usd_total;
+                        tx_total = tx_total + this_account.blockchains[chain].tx_count;
+                        this_account.tx_total = tx_total;
+                        this_account.blockchains[chain].id = this_account.id;
+                        this_account.blockchains[chain].name = this_account.name;
+                        this_account.blockchains[chain].display_balance = parseFloat(this_account.blockchains[chain].balance / 100000000).toFixed(8);
+                    });
+                    this_account.usd_total = parseFloat(this_account.usd_total / 100000000).toFixed(2);
+                    this_account = $.fn.blockstrap.core.apply_filters('accounts_get', this_account);
+                    if(raw) return this_account;
+                    else return this_account.blockchains;
+                }
             }
             else
             {
@@ -272,19 +277,22 @@
                         var usd_total = 0;
                         if(!$.isArray(accounts)) accounts = [];
                         if(blockstrap_functions.json(account)) account = $.parseJSON(account);
-                        $.each(account.blockchains, function(chain, obj)
+                        if((typeof account.keys != 'undefined' && account.keys) || get_widgets)
                         {
-                            if(typeof usd_rates[chain] == 'undefined') usd_rates[chain] = 0;
-                            usd_total = usd_total + (usd_rates[chain] * account.blockchains[chain].balance);
-                            account.usd_total = usd_total;
-                            tx_total = tx_total + account.blockchains[chain].tx_count;
-                            account.tx_total = tx_total;
-                            account.blockchains[chain].id = account.id;
-                            account.blockchains[chain].name = account.name;
-                            account.blockchains[chain].display_balance = parseFloat(account.blockchains[chain].balance / 100000000).toFixed(8);
-                        });
-                        account.usd_total = parseFloat(account.usd_total / 100000000).toFixed(2);
-                        accounts.push(account);
+                            $.each(account.blockchains, function(chain, obj)
+                            {
+                                if(typeof usd_rates[chain] == 'undefined') usd_rates[chain] = 0;
+                                usd_total = usd_total + (usd_rates[chain] * account.blockchains[chain].balance);
+                                account.usd_total = usd_total;
+                                tx_total = tx_total + account.blockchains[chain].tx_count;
+                                account.tx_total = tx_total;
+                                account.blockchains[chain].id = account.id;
+                                account.blockchains[chain].name = account.name;
+                                account.blockchains[chain].display_balance = parseFloat(account.blockchains[chain].balance / 100000000).toFixed(8);
+                            });
+                            account.usd_total = parseFloat(account.usd_total / 100000000).toFixed(2);
+                            accounts.push(account);
+                        }
                     }
                 });
             }
@@ -398,7 +406,7 @@
                             }
                             $.fn.blockstrap.data.save('accounts', slug, account, function()
                             {
-                                var this_account = $.fn.blockstrap.accounts.get(slug, true);
+                                var this_account = $.fn.blockstrap.accounts.get(slug, true, true);
                                 $.fn.blockstrap.accounts.update(this_account, function(account)
                                 {
                                     if(!account && $.isPlainObject(this_account)) account = this_account;

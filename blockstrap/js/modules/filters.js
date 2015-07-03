@@ -22,17 +22,20 @@
                 if(key.substring(0, 12) === 'nw_accounts_')
                 {
                     var this_account = $.parseJSON(account);
-                    if(typeof this_account.id != 'undefined')
+                    if(typeof this_account.keys != 'undefined' && this_account.keys)
                     {
-                        var account = $.fn.blockstrap.accounts.get(this_account.id, true);
-                        account.blockchains = [];
-                        if(typeof this_account.blockchains != 'undefined')
+                        if(typeof this_account.id != 'undefined')
                         {
-                            $.each(this_account.blockchains, function(chain, obj)
+                            var account = $.fn.blockstrap.accounts.get(this_account.id, true);
+                            account.blockchains = [];
+                            if(typeof this_account.blockchains != 'undefined')
                             {
-                                account.blockchains.push(obj);
-                            });
-                            accounts.push(account);
+                                $.each(this_account.blockchains, function(chain, obj)
+                                {
+                                    account.blockchains.push(obj);
+                                });
+                                accounts.push(account);
+                            }
                         }
                     }
                 }
