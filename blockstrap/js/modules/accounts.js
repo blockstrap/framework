@@ -229,7 +229,13 @@
     accounts.get = function(id, raw)
     {
         var accounts = false;
-        var usd_rates = $.fn.blockstrap.settings.exchange.usd;
+        var usd_rates = 0;
+        if(
+            typeof $.fn.blockstrap.settings.exchange != 'undefined'
+            && typeof $.fn.blockstrap.settings.exchange.usd != 'undefined'
+        ){ 
+            usd_rates = $.fn.blockstrap.settings.exchange.usd;
+        }
         if(typeof raw == 'undefined') raw = false;
         else raw = true;
         if(localStorage)
@@ -706,7 +712,13 @@
         if(typeof page == 'undefined') page = 0;
         if(typeof chain == 'undefined') chain = false;
         else page = parseInt(page);
-        var usd_rates = $.fn.blockstrap.settings.exchange.usd;
+        var usd_rates = 0;
+        if(
+            typeof $.fn.blockstrap.settings.exchange != 'undefined'
+            && typeof $.fn.blockstrap.settings.exchange.usd != 'undefined'
+        ){ 
+            usd_rates = $.fn.blockstrap.settings.exchange.usd;
+        }
         if($.isPlainObject(the_account))
         {
             var ts = 0;

@@ -267,41 +267,44 @@
             var title = 'Error';
             var default_contents = 'You do not have any accouunts saved in localStorage yet.';
             var contents = default_contents;
-            var accounts = $.fn.blockstrap.accounts.get();
+            var accounts = $.fn.blockstrap.accounts.get(false, true);
             
             if(all && all == 'true') all = true;
             else all = false;
             
             if($.isArray(accounts))
             {
-                $.each(accounts, function(k, obj)
+                $.each(accounts, function(k, account)
                 {
-                    if(typeof obj.keys != 'undefined' && (obj.keys == false || all == true))
+                    if(typeof account.keys != 'undefined' && (account.keys == false || all == true))
                     {
                         if(contents == default_contents)
                         {
                             contents = '<p>These are the accounts currently stored within your browser:</p>';
                             title = 'Current Accounts';
                         }
-                        var blockchain = $.fn.blockstrap.settings.blockchains[obj.blockchain.code].blockchain;
-                        var key_button = '<a href="#" class="btn btn-primary bs-account-key btn-xs" data-name="'+obj.name+'" data-address="'+obj.address+'" data-chain="'+obj.blockchain.code+'" data-salt="'+app_salt+'">Keys</a>';
-                        var send_button = '<a href="#" class="btn btn-success bs-account-send btn-xs" data-name="'+obj.name+'" data-address="'+obj.address+'" data-chain="'+obj.blockchain.code+'" data-salt="'+app_salt+'">Send</a>';
-                        var remove_button = '<a href="#" class="btn btn-danger bs-account-remove btn-xs" data-id="'+blockstrap_functions.slug(obj.name)+'">Remove</a>';
-                        var buttons = key_button + ' ' + send_button + ' ' + remove_button;
-                        contents+= '<div id="wrapper-'+blockstrap_functions.slug(obj.name)+'">';
-                        contents+= '<p><hr><strong>'+obj.name+'</strong> ('+blockchain+')<br>'+buttons+'</p>';
-                        contents+= '<p class="small"><strong>Address</strong>: '+obj.address+'</p><br>';
-                        contents+= '<div class="row">';
-                        contents+= '<div class="col-sm-6"><p><strong>TXs</strong>: <span class="bs-txs">'+obj.tx_count+'</span></p></div>';
-                        contents+= '<div class="col-sm-6"><p><strong>Balance</strong>: <span class="bs-balance">'+parseFloat(obj.balance / 100000000).toFixed(8)+'</span></p></div>';
-                        contents+= '</div>';
-                        contents+= '</div>';
-                        widgets.update('accounts', obj, function()
+                        $.each(account.blockchains, function(chain, obj)
                         {
-                            widgets.poll(60, 'acc_' + blockstrap_functions.slug(obj.name), function()
+                            var blockchain = $.fn.blockstrap.settings.blockchains[chain].blockchain;
+                            var key_button = '<a href="#" class="btn btn-primary bs-account-key btn-xs" data-name="'+obj.name+'" data-address="'+obj.address+'" data-chain="'+chain+'" data-salt="'+app_salt+'">Keys</a>';
+                            var send_button = '<a href="#" class="btn btn-success bs-account-send btn-xs" data-name="'+obj.name+'" data-address="'+obj.address+'" data-chain="'+chain+'" data-salt="'+app_salt+'">Send</a>';
+                            var remove_button = '<a href="#" class="btn btn-danger bs-account-remove btn-xs" data-id="'+blockstrap_functions.slug(obj.name)+'">Remove</a>';
+                            var buttons = key_button + ' ' + send_button + ' ' + remove_button;
+                            contents+= '<div id="wrapper-'+blockstrap_functions.slug(obj.name)+'">';
+                            contents+= '<p><hr><strong>'+obj.name+'</strong> ('+blockchain+')<br>'+buttons+'</p>';
+                            contents+= '<p class="small"><strong>Address</strong>: '+obj.address+'</p><br>';
+                            contents+= '<div class="row">';
+                            contents+= '<div class="col-sm-6"><p><strong>TXs</strong>: <span class="bs-txs">'+obj.tx_count+'</span></p></div>';
+                            contents+= '<div class="col-sm-6"><p><strong>Balance</strong>: <span class="bs-balance">'+parseFloat(obj.balance / 100000000).toFixed(8)+'</span></p></div>';
+                            contents+= '</div>';
+                            contents+= '</div>';
+                            widgets.update('accounts', account, function()
                             {
-                                widgets.update('accounts', obj);
-                            }, true);
+                                widgets.poll(60, 'acc_' + blockstrap_functions.slug(obj.name), function()
+                                {
+                                    widgets.update('accounts', account, false, 0, chain);
+                                }, true);
+                            }, 0, chain);
                         });
                     }
                 });
@@ -1086,7 +1089,7 @@
                         contents+= '</div>';
                     });
                     contents+= '</div>';
-                    contents+= '<hr><p class="small">No private keys are stored anywhere. Everything is generated deterministically specifically for and addresses are only checked and re-routed as and when this window is open.</p>';
+                    contents+= '<hr><p class="small">No private keys are stored anywhere. Everything is generated deterministically specifically for this payment request, so the addresses are only checked and re-routed as and when this window is open.</p>';
                     modal_title = title;
                     bs.core.modal(modal_title, contents);
                     widgets.qr();
@@ -1132,16 +1135,18 @@
         });
     }
     
-    widgets.update = function(type, account, callback, page)
+    widgets.update = function(type, acc, callback, page, chain)
     {
         if(typeof page == 'undefined') page = 0;
         else page = parseInt(page);
+        var this_account = JSON.parse(JSON.stringify(acc));
+        var account = this_account.blockchains[chain];
         if(typeof account.address != 'undefined')
         {
             var now = new Date().getTime();
             var current_balance = account.balance;
             var current_tx_count = blockstrap_functions.array_length(account.txs);
-            $.fn.blockstrap.api.address(account.address, account.blockchain.code, function(results)
+            $.fn.blockstrap.api.address(account.address, account.code, function(results)
             {
                 if(
                     (
@@ -1160,7 +1165,7 @@
 
                     $.fn.blockstrap.api.transactions(
                         account.address, 
-                        account.blockchain.code, 
+                        account.code, 
                         function(transactions)
                     {
                         if(!$.isPlainObject(account.txs)) account.txs = {};
@@ -1168,26 +1173,40 @@
                         {
                             $.each(transactions, function(k, transaction)
                             {
-                                account.txs['txid_'+transaction.txid] = transaction;
+                                var got_tx = false;
+                                $.each(this_account.txs, function(k, v)
+                                {
+                                    if(v.txid == transaction.txid) got_tx = true;
+                                });
+                                if(!got_tx)
+                                {
+                                    this_account.txs.push({
+                                        ts: now,
+                                        address: account.address,
+                                        chain: account.code,
+                                        tx: transaction,
+                                        txid: transaction.txid
+                                    });
+                                }
                             });
                         }
                         if(blockstrap_functions.array_length(account.txs) < account.tx_count)
                         {
                             // Paginate?
                             page++;
-                            widgets.update(type, account, callback, page);
+                            widgets.update(type, account, callback, page, chain);
                         }
                         else
                         {
-                            $.fn.blockstrap.data.save('accounts', account.id, account, function(updated_account)
+                            $.fn.blockstrap.data.save('accounts', account.id, this_account, function(updated_account)
                             {
                                 var name = updated_account.name;
                                 var id = blockstrap_functions.slug(name);
                                 var wrapper = $('#wrapper-'+id);
                                 $(wrapper).find('.bs-balance').text(parseFloat(updated_account.balance / 100000000).toFixed(8));
                                 $(wrapper).find('.bs-txs').text(updated_account.tx_count);
-                                if(callback) callback(account);
-                                else return account;
+                                if(callback) callback(updated_account);
+                                else return updated_account;
                             });
                         }
                     }, false, false, 25, (page * 25));
