@@ -27,8 +27,8 @@
                 }
             });
         }
-        if(id) return contacts[0];
-        else return contacts;
+        if(id) return $.fn.blockstrap.core.apply_filters('contacts_get', contacts[0]);
+        else return $.fn.blockstrap.core.apply_filters('contacts_get', contacts);
     }
     
     contacts.new = function(name, address, blockchain, fields, callback, ignore_errors)
@@ -38,11 +38,14 @@
         var addresses = address;
         if(!$.isPlainObject(address) && !$.fn.blockstrap.blockchains.validate(address))   
         {
-            callback();
             if(!ignore_errors)
             {
                 $.fn.blockstrap.core.modal('Error', 'This is not a valid address!');
             }
+            $.fn.blockstrap.core.apply_actions('contacts_new', function()
+            {
+                callback();
+            });
         }
         else
         {
@@ -141,7 +144,10 @@
                         };
                         $.fn.blockstrap.data.save('contacts', id, contact, function()
                         {
-                            callback(contact);
+                            $.fn.blockstrap.core.apply_actions('contacts_new', function()
+                            {
+                                callback(contact);
+                            }, contact);
                         });
                     }
                 });

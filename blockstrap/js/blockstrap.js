@@ -127,6 +127,21 @@ var blockstrap_core = function()
             {
                 return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             },
+            add_filter: function(hook, key, bs_module, bs_function, vars)
+            {
+                if(typeof bs_hooks[hook] == 'undefined') bs_hooks[hook] = {};
+                if(typeof bs_vars[hook] == 'undefined') bs_vars[hook] = {};
+                if(bs_module.indexOf(".") > -1)
+                {
+                    var bs_module_array = bs_module.split('.');
+                    bs_hooks[hook][key] = $.fn.blockstrap[bs_module_array[0]][bs_module_array[1]][bs_function];
+                }
+                else
+                {
+                    bs_hooks[hook][key] = $.fn.blockstrap[bs_module][bs_function];
+                }
+                bs_vars[hook][key] = vars;
+            },
             api: function(default_service)
             {
                 if(typeof default_service == 'undefined') default_service = 'blockstrap';
@@ -138,7 +153,7 @@ var blockstrap_core = function()
                 api = $.fn.blockstrap.core.option('api_service', api);
                 return api;
             },
-            apply_actions: function(hook)
+            apply_actions: function(hook, callback, options)
             {
                 if(
                     typeof bs_hooks[hook] != 'undefined' 
@@ -146,9 +161,27 @@ var blockstrap_core = function()
                 ){
                     $.each(bs_hooks[hook], function(key, func)
                     {
-                        func(bs_vars[hook][key]);
+                        func(bs_vars[hook][key], callback, options);
                     });
                 }
+                else if(typeof callback == 'function')
+                {
+                    callback();
+                }
+            },
+            apply_filters: function(hook, defaults, options)
+            {
+                var results = defaults;
+                if(
+                    typeof bs_hooks[hook] != 'undefined' 
+                    && $.isPlainObject(bs_hooks[hook])
+                ){
+                    $.each(bs_hooks[hook], function(key, func)
+                    {
+                        results = func(bs_vars[hook][key], options);
+                    });
+                }
+                return results;
             },
             boot: function(bootstrap, key, html, index, callback)
             {
@@ -707,123 +740,128 @@ var blockstrap_core = function()
                 var bs = $.fn.blockstrap;
                 var $bs = blockstrap_functions;
                 
-                bs.core.apply_actions('init');
-                
-                $.fn.blockstrap.core.publicize(function()
+                bs.core.apply_actions('init', function()
                 {
-                    // CALLBACK UPON COMPLETION
-                    var init_callback = function(nav)
-                    {       
-                        bs.core.modals();
-                        bs.core.buttons();
-                        
-                        // START OF BETTER CORE FORMS CLASS...?
-                        $($.fn.blockstrap.element).on('submit', 'form.bs', function(e)
-                        {
-                            e.preventDefault();
-                            var form = this;
-                            var func = $(form).attr('data-function');
-                            var vars = $(form).data();
-                            if(typeof func != 'undefined' && typeof $.fn.blockstrap.forms[func] == 'function')
+                    $.fn.blockstrap.core.publicize(function()
+                    {
+                        // CALLBACK UPON COMPLETION
+                        var init_callback = function(nav)
+                        {       
+                            bs.core.modals();
+                            bs.core.buttons();
+
+                            // START OF BETTER CORE FORMS CLASS...?
+                            $($.fn.blockstrap.element).on('submit', 'form.bs', function(e)
                             {
-                                $.fn.blockstrap.forms[func](form, vars);
-                            }
-                        });
-
-                        if($.isPlainObject(bs.styles))
-                        {
-                            bs.styles.set();
-                        }
-
-                        if(nav)
-                        {
-                            bs.core.nav(nav);
-                        }
-
-                        bs.core.loader('close');
-
-                        if($(bs.element).length > 0)
-                        {
-                            // SMOOTHER FADE-IN
-                            $(bs.element).animate({'opacity':1}, 600, function()
-                            {
-                                bs.core.apply_actions('init_callback');
-                                $(window).resize(function(e)
+                                e.preventDefault();
+                                var form = this;
+                                var func = $(form).attr('data-function');
+                                var vars = $(form).data();
+                                if(typeof func != 'undefined' && typeof $.fn.blockstrap.forms[func] == 'function')
                                 {
-                                    bs.core.resize();
-                                })
-                            });
-                        }
-                        else
-                        {
-                            bs.core.apply_actions('init_callback');
-                            $(window).resize(function(e)
-                            {
-                                bs.core.resize();
-                            })
-                        }   
-                    }
-                                               
-                    // RESET IF REQUIRED
-                    if($bs.vars('reset') === true)
-                    {
-                        bs.core.reset(true);
-                    }
-                    else if(!init_bs)
-                    {
-                        init_bs = true;
-                        // CHECK FOR LOGIN STATUS
-                        if(!bs.security.logged_in())
-                        {
-                            var url = '../../../blockstrap/html/bootstrap/login';
-                            bs.templates.render(url, function()
-                            {
-                                init_callback();
-                            });
-                        }
-                        else
-                        {
-                            if(typeof bs.accounts != 'undefined' && $.isPlainObject(bs.accounts))
-                            {
-                                if(
-                                    typeof bs.settings.cache == 'undefined'
-                                    || bs.settings.cache == false
-                                ){
-                                    bs.settings.cache = {};
-                                    bs.settings.cache.accounts = 60000;
+                                    $.fn.blockstrap.forms[func](form, vars);
                                 }
-                                setInterval(function()
-                                {
-                                    bs.accounts.poll();
-                                }, bs.settings.cache.accounts);
-                            }
-                            if(window.location.hash)
+                            });
+
+                            if($.isPlainObject(bs.styles))
                             {
-                                setTimeout(function()
+                                bs.styles.set();
+                            }
+
+                            if(nav)
+                            {
+                                bs.core.nav(nav);
+                            }
+
+                            bs.core.loader('close');
+
+                            if($(bs.element).length > 0)
+                            {
+                                // SMOOTHER FADE-IN
+                                $(bs.element).animate({'opacity':1}, 600, function()
                                 {
-                                    $.fn.blockstrap.core.refresh(function()
+                                    bs.core.apply_actions('init_callback', function()
                                     {
-                                        init_callback(window.location.hash.substring(1));
-                                    }, $bs.slug(window.location.hash));
-                                }, 1000);
+                                        $(window).resize(function(e)
+                                        {
+                                            bs.core.resize();
+                                        })
+                                    });
+                                });
                             }
                             else
                             {
-                                // SLOW THINGS DOWN FOR MANUAL INSTALL
-                                setTimeout(function()
+                                bs.core.apply_actions('init_callback', function()
                                 {
-                                    $.fn.blockstrap.templates.render(bs.settings.page_base, function()
+                                    $(window).resize(function(e)
                                     {
-                                        init_callback();
-                                    }, true);
-                                }, 1000);
-                            }
-                            var run_tests = false;
-                            var tests = $bs.vars('tests');
-                            if(tests || bs.settings.test === true) run_tests = true;
-                            bs.core.tests(run_tests);
+                                        bs.core.resize();
+                                    })
+                                });
+                            }   
                         }
-                    } 
+
+                        // RESET IF REQUIRED
+                        if($bs.vars('reset') === true)
+                        {
+                            bs.core.reset(true);
+                        }
+                        else if(!init_bs)
+                        {
+                            init_bs = true;
+                            // CHECK FOR LOGIN STATUS
+                            if(!bs.security.logged_in())
+                            {
+                                var url = '../../../blockstrap/html/bootstrap/login';
+                                bs.templates.render(url, function()
+                                {
+                                    init_callback();
+                                });
+                            }
+                            else
+                            {
+                                if(typeof bs.accounts != 'undefined' && $.isPlainObject(bs.accounts))
+                                {
+                                    if(
+                                        typeof bs.settings.cache == 'undefined'
+                                        || bs.settings.cache == false
+                                    ){
+                                        bs.settings.cache = {};
+                                        bs.settings.cache.accounts = 60000;
+                                    }
+                                    setInterval(function()
+                                    {
+                                        bs.accounts.poll();
+                                    }, bs.settings.cache.accounts);
+                                }
+                                if(window.location.hash)
+                                {
+                                    setTimeout(function()
+                                    {
+                                        $.fn.blockstrap.core.refresh(function()
+                                        {
+                                            init_callback(window.location.hash.substring(1));
+                                        }, $bs.slug(window.location.hash));
+                                    }, 1000);
+                                }
+                                else
+                                {
+                                    // SLOW THINGS DOWN FOR MANUAL INSTALL
+                                    setTimeout(function()
+                                    {
+                                        $.fn.blockstrap.templates.render(bs.settings.page_base, function()
+                                        {
+                                            init_callback();
+                                        }, true);
+                                    }, 1000);
+                                }
+                                var run_tests = false;
+                                var tests = $bs.vars('tests');
+                                if(tests || bs.settings.test === true) run_tests = true;
+                                bs.core.tests(run_tests);
+                            }
+                        } 
+                    });
                 });
             },
             less: function(callback)

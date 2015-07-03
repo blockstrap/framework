@@ -37,7 +37,10 @@
             {
                 if(return_raw && callback)
                 {
-                    callback(results);
+                    $.fn.blockstrap.core.apply_actions('api_address', function()
+                    {
+                        callback(results);
+                    }, results);
                 }
                 else
                 {
@@ -59,7 +62,10 @@
                         {
                             api_service = original_service;
                         }
-                        callback(address);
+                        $.fn.blockstrap.core.apply_actions('api_address', function()
+                        {
+                            callback(address);
+                        }, address);
                     }
                     else 
                     {
@@ -74,7 +80,10 @@
         }
         else if(callback)
         {
-            callback(false);
+            $.fn.blockstrap.core.apply_actions('api_address', function()
+            {
+                callback(false);
+            });
         }
         else
         {
@@ -130,7 +139,10 @@
                         {
                             api_service = original_service;
                         }
-                        callback(addresses);
+                        $.fn.blockstrap.core.apply_actions('api_addresses', function()
+                        {
+                            callback(addresses);
+                        }, addresses);
                     }
                     else 
                     {
@@ -144,7 +156,10 @@
             }
             else if(callback)
             {
-                callback(false);
+                $.fn.blockstrap.core.apply_actions('api_addresses', function()
+                {
+                    callback(false);
+                });
             }
             else
             {
@@ -172,7 +187,10 @@
                 {
                     api_service = original_service;
                 }
-                callback(address.balance);
+                $.fn.blockstrap.core.apply_actions('api_balance', function()
+                {
+                    callback(address.balance);
+                }, address.balance);
             }
             else 
             {
@@ -180,7 +198,10 @@
                 {
                     api_service = original_service;
                 }
-                callback(0);
+                $.fn.blockstrap.core.apply_actions('api_balance', function()
+                {
+                    callback(0);
+                });
             }
         }, service);
     }
@@ -200,7 +221,10 @@
             {
                 if(return_raw && callback)
                 {
-                    callback(results);
+                    $.fn.blockstrap.core.apply_actions('api_block', function()
+                    {
+                        callback(results);
+                    }, results);
                 }
                 else
                 {
@@ -224,7 +248,10 @@
                         {
                             api_service = original_service;
                         }
-                        callback(block);
+                        $.fn.blockstrap.core.apply_actions('api_block', function()
+                        {
+                            callback(block);
+                        }, block);
                     }
                     else 
                     {
@@ -239,7 +266,10 @@
         }
         else if(callback)
         {
-            callback(false);
+            $.fn.blockstrap.core.apply_actions('api_block', function()
+            {
+                callback(false);
+            });
         }
         else
         {
@@ -262,7 +292,10 @@
             {
                 if(return_raw && callback)
                 {
-                    callback(results);
+                    $.fn.blockstrap.core.apply_actions('api_dnkey', function()
+                    {
+                        callback(results);
+                    }, results);
                 }
                 else
                 {
@@ -281,7 +314,10 @@
                         {
                             api_service = original_service;
                         }
-                        callback(dnkeys);
+                        $.fn.blockstrap.core.apply_actions('api_dnkey', function()
+                        {
+                            callback(dnkeys);
+                        }, dnkeys);
                     }
                     else 
                     {
@@ -296,7 +332,10 @@
         }
         else if(callback)
         {
-            callback(false);
+            $.fn.blockstrap.core.apply_actions('api_dnkey', function()
+            {
+                callback(false);
+            });
         }
         else
         {
@@ -319,7 +358,10 @@
             {
                 if(return_raw && callback)
                 {
-                    callback(results);
+                    $.fn.blockstrap.core.apply_actions('api_dnkeys', function()
+                    {
+                        callback(results);
+                    }, results);
                 }
                 else
                 {
@@ -349,7 +391,10 @@
                         {
                             api_service = original_service;
                         }
-                        callback(dnkeys);
+                        $.fn.blockstrap.core.apply_actions('api_dnkeys', function()
+                        {
+                            callback(dnkeys);
+                        }, dnkeys);
                     }
                     else 
                     {
@@ -364,7 +409,10 @@
         }
         else if(callback)
         {
-            callback(false);
+            $.fn.blockstrap.core.apply_actions('api_dnkeys', function()
+            {
+                callback(false);
+            });
         }
         else
         {
@@ -412,7 +460,10 @@
                     {
                         api_service = original_service;
                     }
-                    callback(results);
+                    $.fn.blockstrap.core.apply_actions('api_market', function()
+                    {
+                        callback(results);
+                    }, results);
                 }
                 else
                 {
@@ -435,7 +486,10 @@
                         {
                             api_service = original_service;
                         }
-                        callback(market);
+                        $.fn.blockstrap.core.apply_actions('api_market', function()
+                        {
+                            callback(market);
+                        }, market);
                     }
                     else 
                     {
@@ -450,7 +504,10 @@
         }
         else if(callback)
         {
-            callback(false);
+            $.fn.blockstrap.core.apply_actions('api_market', function()
+            {
+                callback(false);
+            });
         }
         else
         {
@@ -600,7 +657,10 @@
             {
                 if(return_raw && callback)
                 {
-                    callback(results);
+                    $.fn.blockstrap.core.apply_actions('api_relay', function()
+                    {
+                        callback(results);
+                    }, results);
                 }
                 else
                 {
@@ -638,7 +698,10 @@
                         {
                             api_service = original_service;
                         }
-                        callback(tx);
+                        $.fn.blockstrap.core.apply_actions('api_relay', function()
+                        {
+                            callback(tx);
+                        }, tx);
                     }
                     else 
                     {
@@ -653,7 +716,10 @@
         }
         else if(callback)
         {
-            callback(false);
+            $.fn.blockstrap.core.apply_actions('api_relay', function()
+            {
+                callback(false);
+            });
         }
         else
         {
@@ -873,7 +939,10 @@
             {
                 if(return_raw && callback)
                 {
-                    callback(results);
+                    $.fn.blockstrap.core.apply_actions('api_transaction', function()
+                    {
+                        callback(results);
+                    }, results)
                 }
                 else
                 {
@@ -900,7 +969,10 @@
                         {
                             api_service = original_service;
                         }
-                        callback(transaction);
+                        $.fn.blockstrap.core.apply_actions('api_transaction', function()
+                        {
+                            callback(transaction);
+                        }, transaction);
                     }
                     else 
                     {
@@ -915,7 +987,10 @@
         }
         else if(callback)
         {
-            callback(false);
+            $.fn.blockstrap.core.apply_actions('api_transaction', function()
+            {
+                callback(false);
+            });
         }
         else
         {
@@ -988,7 +1063,10 @@
             {
                 if(return_raw && callback)
                 {
-                    callback(results);
+                    $.fn.blockstrap.core.apply_actions('api_transactions', function()
+                    {
+                        callback(results);
+                    }, results);
                 }
                 else
                 {
@@ -1025,7 +1103,10 @@
                         {
                             api_service = original_service;
                         }
-                        callback(transactions);
+                        $.fn.blockstrap.core.apply_actions('api_transactions', function()
+                        {
+                            callback(transactions);
+                        }, transactions);
                     }
                     else 
                     {
@@ -1040,7 +1121,10 @@
         }
         else if(callback)
         {
-            callback(false);
+            $.fn.blockstrap.core.apply_actions('api_transactions', function()
+            {
+                callback(false);
+            });
         }
         else
         {
@@ -1064,7 +1148,10 @@
             {
                 if(return_raw && callback)
                 {
-                    callback(results);
+                    $.fn.blockstrap.core.apply_actions('api_unspents', function()
+                    {
+                        callback(results);
+                    }, results);
                 }
                 else
                 {
@@ -1099,7 +1186,10 @@
                         {
                             api_service = original_service;
                         }
-                        callback(unspents);
+                        $.fn.blockstrap.core.apply_actions('api_unspents', function()
+                        {
+                            callback(unspents);
+                        }, unspents);
                     }
                     else 
                     {
@@ -1114,7 +1204,10 @@
         }
         else if(callback)
         {
-            callback(false);
+            $.fn.blockstrap.core.apply_actions('api_unspents', function()
+            {
+                callback(false);
+            });
         }
         else
         {

@@ -172,6 +172,7 @@
     
     markets.updates = function(callback, force_refresh)
     {
+        if(typeof callback != 'function' && typeof force_refresh == 'function') callback = force_refresh;
         $('.bs.installing').attr('data-loading-content','Now Fetching Market Conditions');
      
         var saved_conditions = localStorage.getItem('nw_market_conditions');
@@ -205,8 +206,15 @@
         {
             $.fn.blockstrap.api.market('multi', '', function(results)
             {
-                localStorage.setItem('nw_market_conditions', JSON.stringify({ts: now, data:results}));
-                markets.update(results, callback);
+                if(results)
+                {
+                    localStorage.setItem('nw_market_conditions', JSON.stringify({ts: now, data:results}));
+                    markets.update(results, callback);
+                }
+                else
+                {
+                    markets.update(saved_conditions.data, callback);
+                }
             }, $.fn.blockstrap.core.api('blockstrap'), true);
         }
         else

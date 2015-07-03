@@ -252,6 +252,7 @@
                     this_account.blockchains[chain].display_balance = parseFloat(this_account.blockchains[chain].balance / 100000000).toFixed(8);
                 });
                 this_account.usd_total = parseFloat(this_account.usd_total / 100000000).toFixed(2);
+                this_account = $.fn.blockstrap.core.apply_filters('accounts_get', this_account);
                 if(raw) return this_account;
                 else return this_account.blockchains;
             }
@@ -281,6 +282,7 @@
                     }
                 });
             }
+            accounts = $.fn.blockstrap.core.apply_filters('accounts_get', accounts);
             return accounts;
         }
     }
@@ -394,7 +396,10 @@
                                 $.fn.blockstrap.accounts.update(this_account, function(account)
                                 {
                                     if(!account && $.isPlainObject(this_account)) account = this_account;
-                                    callback(account);
+                                    $.fn.blockstrap.core.apply_actions('accounts_new', function()
+                                    {
+                                        callback(account);
+                                    }, account);
                                 });
                             });
                         }

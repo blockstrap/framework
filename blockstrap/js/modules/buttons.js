@@ -2241,7 +2241,7 @@
                 ]
             }
         });
-        $.fn.blockstrap.core.modal('Switch Addresses', contents + form);
+        $.fn.blockstrap.core.modal('Verify a Signed Message', contents + form);
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
