@@ -30,6 +30,7 @@
         {
             api_service = service;
         }
+        api_service = api.service(api_service, blockchain);
         var api_url = api.url('address', hash, blockchain);
         if(api_url)
         {
@@ -99,7 +100,8 @@
         {
             api_service = service;
         }
-        else if($.isArray(hashes))
+        api_service = api.service(api_service, blockchain);
+        if($.isArray(hashes))
         {
             var delimiter = '&addresses=';
             var map = api.map(blockchain);
@@ -179,6 +181,7 @@
         {
             api_service = service;
         }
+        api_service = api.service(api_service, blockchain);
         api.address(hash, blockchain, function(address)
         {
             if(address && address.balance) 
@@ -213,7 +216,7 @@
         {
             api_service = service;
         }
-        
+        api_service = api.service(api_service, blockchain);
         var api_url = api.url('block', height, blockchain);
         if(api_url)
         {
@@ -284,7 +287,7 @@
         {
             api_service = service;
         }
-        
+        api_service = api.service(api_service, blockchain);
         var api_url = api.url('dnkey', id, blockchain);
         if(api_url)
         {
@@ -350,7 +353,7 @@
         {
             api_service = service;
         }
-        
+        api_service = api.service(api_service, blockchain);
         var api_url = api.url('dnkeys', id, blockchain);
         if(api_url && blockchain == 'multi')
         {
@@ -448,7 +451,7 @@
         {
             api_service = service;
         }
-        
+        api_service = api.service(api_service, blockchain);
         var api_url = api.url('market', stat, blockchain);
         if(api_url)
         {
@@ -646,6 +649,7 @@
         {
             api_service = service;
         }
+        api_service = api.service(api_service, blockchain);
         var request_data = {};
         var map = api.map(blockchain);
         request_data[map.to.relay_param] = hash;
@@ -883,6 +887,13 @@
         return defaults;
     }
     
+    api.service = function(api_service, chain)
+    {
+        var bs = $.fn.blockstrap;
+        if(typeof bs.settings.blockchains[chain].api != 'undefined')return bs.settings.blockchains[chain].api;
+        else return api_service;
+    }
+    
     api.settings = function(chain, provider, direction, key)
     {
         var result = false;
@@ -931,7 +942,7 @@
         {
             api_service = service;
         }
-        
+        api_service = api.service(api_service, blockchain);
         var api_url = api.url('transaction', txid, blockchain);
         if(api_url)
         {
@@ -1005,6 +1016,7 @@
         {
             api_service = service;
         }
+        api_service = api.service(api_service, blockchain);
         var api_url = api.url('transactions', address, blockchain);
         
         // Hack for BS API Pagination
@@ -1139,6 +1151,7 @@
         {
             api_service = service;
         }
+        api_service = api.service(api_service, blockchain);
         if(!confirms) confirms = 0;
         
         var api_url = api.url('unspents', address, blockchain);
