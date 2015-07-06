@@ -30,7 +30,11 @@
         var chain = $(button).attr('data-chain');
         $.fn.blockstrap.data.find('accounts', account_id, function(raw_account)
         {
-            if(
+            if(chain == 'all' && typeof raw_account.blockchains != 'undefined')
+            {
+                $.fn.blockstrap.accounts.access(account_id, false, 'all');
+            }
+            else if(
                 typeof raw_account.blockchains != 'undefined'
                 && typeof raw_account.blockchains[chain] != 'undefined'
             ){
@@ -1788,11 +1792,21 @@
         var chain = $(button).attr('data-chain');
         var form = $('form#'+form_id);
         var raw_accounts = $.fn.blockstrap.accounts.get(account_id, true);
+        var account_chains = JSON.parse(JSON.stringify(raw_accounts.blockchains));
         if(
             typeof raw_accounts.blockchains != 'undefined'
             && typeof raw_accounts.blockchains[chain] != 'undefined'
         ){
             account = raw_accounts.blockchains[chain];
+        }
+        else if(
+            chain == 'all'
+            && typeof raw_accounts.blockchains != 'undefined'
+        ){
+            $.each(account_chains, function(chain, blockchain)
+            {
+                if(chain != 'multi') account = account_chains[chain];
+            });
         }
         $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
         {
@@ -1806,14 +1820,33 @@
                     value: value
                 });
             });
-            $.fn.blockstrap.accounts.verify(account, fields, function(verified, keys)
+            $.fn.blockstrap.accounts.verify(account, fields, function(verified, keys, raw, seed)
             {
-                if(verified === true)
+                var private_key = keys.priv;
+                var address = keys.pub;
+                var title = 'Private Key for '+address;
+                if(verified === true && chain == 'all' && seed)
                 {
-                    var private_key = keys.priv;
-                    var address = keys.pub;
-                    var title = 'Private Key for '+address;
-                    var intro = '<p style="word-wrap: break-word;">'+private_key+'</p>';
+                    title = 'Master Seed used for '+account.name;
+                    contents = '<p><strong>The master seed for this account:</strong></p>';
+                    contents+= '<pre><code>'+seed+'</code></pre>';
+                    contents+= '<p>All of the private keys that are only ever generated inline for this account at the moment they are needed use the following master-seed and are <a href="https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki" target="_blank">BIP32</a> compliant. However, please note that we add the blockchain shortcode to the end of the seed for each blockchain, as follows:</p>';
+                    $.each(account_chains, function(chain, blockchain)
+                    {
+                        var these_keys = $.fn.blockstrap.blockchains.keys(seed+chain, chain, 1, false, true);
+                        var this_public_key = these_keys.pub;
+                        var this_private_key = these_keys.priv;
+                        var extended_private_key = these_keys.raw.toString();
+                        var public_keys = these_keys.raw.neutered();
+                        var extended_public_key = public_keys.toString();
+                        contents+= '<hr><span class="alert alert-info alert-block"><strong>' + $.fn.blockstrap.settings.blockchains[chain].blockchain + '</strong></span><pre><code><small>var '+chain+'_keys = bitcoinjslib.bitcoin.HDNode.fromSeedBuffer('+seed+chain+', networks[' + $.fn.blockstrap.settings.blockchains[chain].lib + '])</small></code></pre><span class="alert alert-success alert-block"><strong>Public Key</strong>: ' + this_public_key + '<br /><strong>Private Key</strong>: ' + this_private_key + '</span><span class="alert alert-warning alert-block"><pre><code><strong>Extended Public Key</strong>:<br />'+ extended_public_key +'<br /><br /><strong>Extended Private Key</strong>:<br />'+ extended_private_key +'</code></pre></span>';
+                    });
+                    contents+= '<hr><span class="alert alert-danger alert-block">Please note that if you use the <strong>switch address</strong> functionality available by clicking the recycle icon button from the actions column on the accounts table we then use the BIP32 HD <strong>dervived</strong> method to generate new addresses based upon the number of old addresses stored within the account. This can be (as is done manually) by the wallet when using the switch functionality, but can also be done externally by third-parties using the <strong>extended keys</strong> listed above</span>';
+                    $.fn.blockstrap.core.modal(title, contents);
+                }
+                else if(verified === true)
+                {
+                    var intro = '<span class="alert alert-info alert-block">'+private_key+'<br /><span class="small">(QR code below)</span></span>';
                     var qr_code = '<p class="qr-holder" data-content="'+private_key+'"></p>';
                     var print = '<p style="text-align: center"><a href="#" class="btn btn-danger btn-print" data-print-id="default-modal" data-print-class="modal-body" data-print-title="Private Key for '+address+'">PRINT THIS KEY</a></p>';
                     $.fn.blockstrap.core.modal(title, intro + qr_code + print);
@@ -1835,7 +1868,7 @@
                     var contents = 'Unable to verify ownership';
                     $.fn.blockstrap.core.modal(title, contents);
                 }
-            }, false, chain, raw_accounts.type, from_address);
+            }, false, chain, raw_accounts.type, from_address, true);
         });
     }
     

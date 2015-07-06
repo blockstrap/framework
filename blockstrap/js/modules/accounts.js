@@ -16,6 +16,7 @@
     {
         var fields = [];
         var account = accounts.get(account_id, true);
+        var account_chains = JSON.parse(JSON.stringify(account.blockchains));
         var is_tx = false;
         if($.isPlainObject(tx) && tx.to && tx.from && tx.amount)
         {
@@ -27,6 +28,16 @@
             && typeof account.blockchains[chain] != 'undefined'
         ){
             account = account.blockchains[chain];
+            account.keys = keys;
+        }
+        else if(
+            chain == 'all'
+            && typeof account.blockchains != 'undefined'
+        ){
+            $.each(account_chains, function(chain, blockchain)
+            {
+                if(chain != 'multi') account = account_chains[chain];
+            });
             account.keys = keys;
         }
         if($.isArray(account.keys))
@@ -931,9 +942,11 @@
         }
     }
     
-    accounts.verify = function(account, fields, callback, password, chain, type, from)
+    accounts.verify = function(account, fields, callback, password, chain, type, from, show_seed)
     {
         if(typeof from == 'undefined') from = false;
+        if(typeof show_seed == 'undefined') show_seed = false;
+        else show_seed = true;
         $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
         {
             var key = '';
@@ -1011,14 +1024,16 @@
                     ||
                     (from && keys.pub === from)
                 ){
-                    if(callback) callback(true, keys, raw_keys.raw);
+                    var seed = false;
+                    if(show_seed === true) seed = key;
+                    if(callback) callback(true, keys, raw_keys.raw, seed);
                     else return true;
                 }
                 else
                 {
                     if(callback) 
                     {
-                        callback(false, false, false);
+                        callback(false, false, false, false);
                     }
                     else
                     {
@@ -1031,7 +1046,7 @@
             {
                 if(callback)
                 {
-                    callback(false, false, false);
+                    callback(false, false, false, false);
                 }
                 else
                 {

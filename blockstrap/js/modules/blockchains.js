@@ -238,29 +238,26 @@
             ]);
             tx.addOutput(op_return, 0);
             // TODO - REMOVE THIS FLAKEY BIT...?
-            if(tx.outs[1].value === 0) tx.outs[1].type = "nulldata";
-            else if(tx.outs[2].value === 0) tx.outs[2].type = "nulldata";
+            if(tx.tx.outs[1].value === 0) tx.tx.outs[1].type = "nulldata";
+            else if(tx.tx.outs[2].value === 0) tx.tx.outs[2].type = "nulldata";
         }
-        else
+        $.each(inputs_to_sign, function(k)
         {
-            $.each(inputs_to_sign, function(k)
+            if(sign_tx)
             {
-                if(sign_tx)
+                if($.isArray(private_keys))
                 {
-                    if($.isArray(private_keys))
+                    $.each(private_keys, function(private_key, key)
                     {
-                        $.each(private_keys, function(private_key, key)
-                        {
-                            tx.sign(k, bitcoin.ECKey.fromWIF(key), bitcoin.Script.fromHex(redeem_script));
-                        });
-                    }
-                    else
-                    {
-                        tx.sign(k, key);
-                    }
+                        tx.sign(k, bitcoin.ECKey.fromWIF(key), bitcoin.Script.fromHex(redeem_script));
+                    });
                 }
-            });
-        }
+                else
+                {
+                    tx.sign(k, key);
+                }
+            }
+        });
 
         var built = tx.build();
         var raw = built.toHex();

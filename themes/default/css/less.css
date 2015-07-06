@@ -7960,3 +7960,15 @@ html body .blockstrap-wrapper #main-content .panel-heading .btn {
 .table p.totals {
     margin-bottom: -18px;
 }
+.alert-block {
+    display: block;
+    position: relative;
+    width: 100%;
+    text-align: center;
+}
+.alert-block pre,
+.alert-block pre code {
+    background: transparent;
+    text-align: center;
+    border: none;
+}

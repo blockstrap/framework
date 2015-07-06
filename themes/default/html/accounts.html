@@ -116,11 +116,10 @@
                             </td>
                             <td>
                                 <div class="cell">
-                                    <p>
-    
+                                    <p style="margin: -5px 0 -29px 0;">
                                         <a 
                                            href="#" 
-                                           class="btn btn-danger btn-xs pull-right btn-hd btn-remove"
+                                           class="btn btn-danger btn-xs pull-right btn-remove"
                                            data-collection="accounts"
                                            data-element="table-row-{{id}}"
                                            data-key="{{id}}"
@@ -133,9 +132,18 @@
                                            data-collection="accounts"
                                            data-key="{{id}}"
                                            title="Update All Blockchains within Account"
-                                           style="margin:-23px 0 0;"
                                         >
                                             <i class="fa fa-refresh"><span>Update Account</span></i>
+                                        </a>
+                                        <a
+                                            href="#" 
+                                            class="btn btn-success btn-xs btn-access"
+                                            data-collection="accounts"
+                                            data-key="{{id}}"
+                                            data-chain="all"
+                                            title="Access Master Seed & Extended Keys"
+                                        >
+                                        <i class="fa fa-key"><span>Access Master Seed &amp; Extended Keys</span></i>
                                         </a>
                                     </p>
                                     <hr>
