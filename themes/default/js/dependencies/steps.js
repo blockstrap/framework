@@ -155,7 +155,7 @@ var blockstrap_setup_steps = [
                                             "text": "Your Password",
                                             "css": "col-sm-3"
                                         },
-                                        "type": "password",
+                                        "type": "pass",
                                         "placeholder": "This cannot be changed later",
                                         "value": "",
                                         "wrapper": {
@@ -176,7 +176,7 @@ var blockstrap_setup_steps = [
                                             "text": "Repeat Password",
                                             "css": "col-sm-3"
                                         },
-                                        "type": "password",
+                                        "type": "pass",
                                         "placeholder": "Confirm your password again",
                                         "value": "",
                                         "css": "ignore",
@@ -622,7 +622,7 @@ var blockstrap_setup_steps = [
                                             "css": "col-sm-3"
                                         },
                                         "placeholder": "This should be unique to this individual wallet",
-                                        "type": "password",
+                                        "type": "pass",
                                         "wrapper": {
                                             "css": "col-sm-9"
                                         },
@@ -642,7 +642,7 @@ var blockstrap_setup_steps = [
                                             "css": "col-sm-3"
                                         },
                                         "placeholder": "Please enter your password again",
-                                        "type": "password",
+                                        "type": "pass",
                                         "wrapper": {
                                             "css": "col-sm-9"
                                         },
@@ -744,7 +744,7 @@ var blockstrap_setup_steps = [
                                             "css": "col-sm-3"
                                         },
                                         "placeholder": "Enter the answer to your custom question",
-                                        "type": "password",
+                                        "type": "pass",
                                         "wrapper": {
                                             "css": "col-sm-9"
                                         },
@@ -765,7 +765,7 @@ var blockstrap_setup_steps = [
                                             "css": "col-sm-3"
                                         },
                                         "placeholder": "Better to be safe than sorry",
-                                        "type": "password",
+                                        "type": "pass",
                                         "wrapper": {
                                             "css": "col-sm-9"
                                         },

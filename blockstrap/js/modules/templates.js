@@ -169,7 +169,7 @@
         var html_url = bs.settings.theme_base + bs.settings.theme + '/' + bs.settings.html_base + slug;
         bs.core.get(data_url, 'json', function(data)
         {
-            if(typeof data.status == 'undefined' || data.status != 404)
+            if(typeof data.status == 'undefined' || (data.status != 404 && data.status != 0))
             {
                 template_data = $.extend({}, template_data, data);
                 var filtered_data = $.fn.blockstrap.core.filter(template_data);

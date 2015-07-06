@@ -981,10 +981,14 @@
             };
             if(key)
             {
+                var old_addresses = false;
                 var raw_keys = $.fn.blockstrap.blockchains.keys(key+account.code, account.code, 1, false, true);
                 var keys = raw_keys;
                 var raw_account = $.fn.blockstrap.accounts.get(account.id, true);
-                var old_addresses = raw_account.addresses[0].chains[account.code];
+                if(blockstrap_functions.array_length(raw_account.addresses) > 0)
+                {
+                    old_addresses = raw_account.addresses[0].chains[account.code];
+                }
                 var index = blockstrap_functions.array_length(old_addresses);
                 if(
                     typeof from != 'undefined'

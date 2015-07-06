@@ -663,6 +663,39 @@ var blockstrap_core = function()
                 {
                     e.preventDefault();
                     $(this).find('button[type="submit"]').trigger('click');
+                });                
+                $($.fn.blockstrap.element).find('form').each(function(i)
+                {
+                    var form = $(this);
+                    $(form).find('input[type="pass"]:eq(0)').before('<input type="text" tabindex="-2" style="display: none;" id="temp_un" /><input type="password" tabindex="-1" style="display: none;" id="temp_pw" />');
+                    $(form).find('input[type="pass"]').on('focus', function()
+                    {
+                        $(this).attr('type', 'password');
+                        $(form).find('input#temp_un').remove();
+                        $(form).find('input#temp_pw').remove();
+                    });
+                    if($(this).find('[type="submit"]').length < 1)
+                    {
+                        $(form).find('input').keypress(function(e) 
+                        {
+                            // Enter pressed?
+                            if(e.which == 10 || e.which == 13) 
+                            {
+                                if(
+                                    $(form).attr('id') == 'blockstrap-setup-step1-left'
+                                    || $(form).attr('id') == 'blockstrap-setup-step1-right'
+                                    || $(form).attr('id') == 'blockstrap-setup-step2-left'
+                                    || $(form).attr('id') == 'blockstrap-setup-step2-right'
+                                ){
+                                    $($.fn.blockstrap.element).find('#next-step').trigger('click');
+                                }
+                                else
+                                {
+                                    $(form).submit();
+                                }
+                            }
+                        });
+                    }
                 });
                 $($.fn.blockstrap.element).on('submit', '#search-form', function(e)
                 {
@@ -704,10 +737,6 @@ var blockstrap_core = function()
                             },
                             error: function(results)
                             {
-                                if(store === true)
-                                {
-                                    localStorage.setItem('nw_inc_file_'+file+'_'+extension, JSON.stringify(results));
-                                }
                                 if(callback) callback(results, file, extension);
                             }
                         });
@@ -836,24 +865,29 @@ var blockstrap_core = function()
                                 }
                                 if(window.location.hash)
                                 {
+                                    // TODO: WHY SLOW THINGS DOWN
+                                    // NEED TO WAIT FOR MARKET STATS?
+                                    // MANUAL INSTALL NEEDS TIME FOR INCLUDES TOO?
                                     setTimeout(function()
                                     {
                                         $.fn.blockstrap.core.refresh(function()
                                         {
                                             init_callback(window.location.hash.substring(1));
                                         }, $bs.slug(window.location.hash));
-                                    }, 1000);
+                                    }, 3000);
                                 }
                                 else
                                 {
-                                    // SLOW THINGS DOWN FOR MANUAL INSTALL
+                                    // TODO: WHY SLOW THINGS DOWN
+                                    // NEED TO WAIT FOR MARKET STATS?
+                                    // MANUAL INSTALL NEEDS TIME FOR INCLUDES TOO?
                                     setTimeout(function()
                                     {
-                                        $.fn.blockstrap.templates.render(bs.settings.page_base, function()
+                                        $.fn.blockstrap.core.refresh(function()
                                         {
                                             init_callback();
-                                        }, true);
-                                    }, 1000);
+                                        }, bs.settings.page_base);
+                                    }, 3000);
                                 }
                                 var run_tests = false;
                                 var tests = $bs.vars('tests');
@@ -979,7 +1013,12 @@ var blockstrap_core = function()
                 if(content) $(selector).find('.modal-body').html(content);
                 $(selector).on('show.bs.modal', function()
                 {
+                    $(selector).find('input[type="password"]').val('');
                     if(callback) callback();
+                });
+                $(selector).on('shown.bs.modal', function()
+                {
+                    $(selector).find('input[type="password"]').val('');
                 });
                 $(selector).modal('show');
             },
