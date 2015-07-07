@@ -671,8 +671,11 @@ var blockstrap_core = function()
                     $(form).find('input[type="pass"]').on('focus', function()
                     {
                         $(this).attr('type', 'password');
-                        $(form).find('input#temp_un').remove();
-                        $(form).find('input#temp_pw').remove();
+                        setTimeout(function()
+                        {
+                            $(form).find('input#temp_un').remove();
+                            $(form).find('input#temp_pw').remove();
+                        }, 1000);
                     });
                     if($(this).find('[type="submit"]').length < 1)
                     {

@@ -216,6 +216,7 @@
     {
         e.preventDefault();
         var wallet = {};
+        var options = {};
         var form = $($.fn.blockstrap.element).find('form#'+$(button).attr('data-form'));
         $.fn.blockstrap.core.loader('open');
         if($(form).length > 0)
@@ -223,6 +224,7 @@
             $(form).find('.form-group').each(function(i)
             {
                 var value = $(this).find('input').val();
+                var setup_type = $(this).find('input').attr('data-setup-type');
                 if($(this).find('input').hasClass('ignore'))
                 {
                     var repeat_id = $(this).find('input').attr('data-repeat-id');
@@ -232,6 +234,21 @@
                         $.fn.blockstrap.core.modal('Warning', 'Repeating Mismatch');
                         continue_salting = false;
                         wallet.cancel = true;
+                    }
+                }
+                else if(setup_type === 'option')
+                {
+                    if($(this).find('input').attr('id'))
+                    {
+                        if($(this).find('input').attr('id') == 'wallet_question')
+                        {
+                            $(this).find('input').attr('id', $(this).find('input').attr('id')+'_'+blockstrap_functions.slug($(form).find('input#wallet_name').val()));
+                        }
+                        options[$(this).find('input').attr('id')] = value;
+                    }
+                    else
+                    {
+                        options[$(this).find('select').attr('id')] = value;
                     }
                 }
                 else if(value) 
@@ -277,6 +294,15 @@
             && !wallet.cancel
         )
         {
+            
+            $.fn.blockstrap.data.find('blockstrap', 'options', function(current_options)
+            {
+                var merged_options = $.extend({}, current_options, options);
+                $.fn.blockstrap.data.save('blockstrap', 'options', merged_options, function()
+                {
+
+                });
+            });
             
             // TODO: Re-evaluate this?
             if(wallet.wallet_blockchain == 'hd')
@@ -1315,19 +1341,21 @@
         var html_url = 'themes/' + bs.settings.theme + '/' + bs.settings.html_base + bs.settings.page_base;
         
         $(button).addClass('loading');
-        
         if($.isArray(forms))
         {
             var wallet = false;
             var modules = {};
             var options = {};
             var continue_salting = true;
+            var errors = [];
             
             bs.core.loader('open');
             
             $.each(forms, function(form_index, form_id)
             {
                 var form = $('form#'+form_id);
+                $(form).find('#temp_un').remove();
+                $(form).find('#temp_pw').remove();
                 if($(form).length > 0)
                 {
                     $(form).find('.form-group').each(function(i)
@@ -1343,10 +1371,11 @@
                             else
                             {
                                 var label = false;
+                                var error = 'Value Required';
                                 if($(this).find('label').html()) label = $(this).find('label').html();
-                                if(label) bs.core.modal('Error', 'Value for "'+label+'" Required');
-                                else bs.core.modal('Error', 'Value Required');
+                                if(label) error = 'Value for "'+label+'" Required';
                                 continue_salting = false;
+                                errors.push(error);
                             }
                         }
                         else
@@ -1382,7 +1411,7 @@
                                 var repeat_val = $('#'+repeat_id).val();
                                 if(repeat_val && repeat_val != value)
                                 {
-                                    bs.core.modal('Warning', 'Repeating Mismatch');
+                                    errors.push('Repeating Password Mismatch');
                                     continue_salting = false;
                                     wallet.cancel = true;
                                 }
@@ -1395,6 +1424,10 @@
                             {
                                 if($(this).find('input').attr('id'))
                                 {
+                                    if($(this).find('input').attr('id') == 'wallet_question')
+                                    {
+                                        $(this).find('input').attr('id', $(this).find('input').attr('id')+'_'+blockstrap_functions.slug($(form).find('input#wallet_name').val()));
+                                    }
                                     options[$(this).find('input').attr('id')] = value;
                                 }
                                 else
@@ -1562,6 +1595,17 @@
             else
             {
                 bs.core.loader('close');
+                $(button).removeClass('loading');
+                var title = 'Error';
+                var contents = '';
+                if(blockstrap_functions.array_length(errors) > 0)
+                {
+                    $.each(errors, function(k, error)
+                    {
+                        contents+= '<p>'+error+'</p>';
+                    });
+                    bs.core.modal(title, contents);
+                }
             }
         }
     }
@@ -1683,44 +1727,47 @@
                     var input = $(this).find('input');
                     var value = $(input).val();
                     var id = $(input).attr('id');
-                    var use_op_return = false;
-                    var blockchain_settings = $.fn.blockstrap.settings.blockchains;
-                    if(
-                        typeof blockchain_settings[blockchain] != 'undefined'
-                        && blockchain_settings[blockchain].op_return === true
-                    ){
-                        use_op_return = true;
-                    }
-                    if(id != 'msg')
+                    if(!$(input).hasClass('ignore'))
                     {
-                        fields.push({
-                            id: id,
-                            value: value
-                        });
-                    }
-                    else if(use_op_return === true)
-                    {
-                        var op_limit = 0;
+                        var use_op_return = false;
+                        var blockchain_settings = $.fn.blockstrap.settings.blockchains;
                         if(
                             typeof blockchain_settings[blockchain] != 'undefined'
-                            && typeof blockchain_settings[blockchain].op_limit != 'undefined'
+                            && blockchain_settings[blockchain].op_return === true
                         ){
-                            op_limit = blockchain_settings[blockchain].op_limit;
+                            use_op_return = true;
                         }
-                        var m = encodeURIComponent(value).match(/%[89ABab]/g);
-                        var value_len = value.length + (m ? m.length : 0);
-                        if(value_len < (op_limit - 1))
+                        if(id != 'msg')
                         {
-                            op_return_data = value;
+                            fields.push({
+                                id: id,
+                                value: value
+                            });
                         }
-                        else
+                        else if(use_op_return === true)
+                        {
+                            var op_limit = 0;
+                            if(
+                                typeof blockchain_settings[blockchain] != 'undefined'
+                                && typeof blockchain_settings[blockchain].op_limit != 'undefined'
+                            ){
+                                op_limit = blockchain_settings[blockchain].op_limit;
+                            }
+                            var m = encodeURIComponent(value).match(/%[89ABab]/g);
+                            var value_len = value.length + (m ? m.length : 0);
+                            if(value_len < (op_limit - 1))
+                            {
+                                op_return_data = value;
+                            }
+                            else
+                            {
+                                op_return_data = null;
+                            }
+                        }
+                        else if(value)
                         {
                             op_return_data = null;
                         }
-                    }
-                    else if(value)
-                    {
-                        op_return_data = null;
                     }
                 });
                 $.fn.blockstrap.accounts.verify(account, fields, function(verified, keys)
@@ -1815,10 +1862,13 @@
                 var input = $(this).find('input');
                 var value = $(input).val();
                 var id = $(input).attr('id');
-                fields.push({
-                    id: id,
-                    value: value
-                });
+                if(!$(input).hasClass('ignore'))
+                {
+                    fields.push({
+                        id: id,
+                        value: value
+                    });
+                }
             });
             $.fn.blockstrap.accounts.verify(account, fields, function(verified, keys, raw, seed)
             {

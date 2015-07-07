@@ -23,12 +23,14 @@
             is_tx = true;
         }
         var keys = account.keys;
+        var data = account.data;
         if(
             typeof account.blockchains != 'undefined'
             && typeof account.blockchains[chain] != 'undefined'
         ){
             account = account.blockchains[chain];
             account.keys = keys;
+            account.data = data;
         }
         else if(
             chain == 'all'
@@ -39,6 +41,7 @@
                 if(chain != 'multi') account = account_chains[chain];
             });
             account.keys = keys;
+            account.data = data;
         }
         if($.isArray(account.keys))
         {
@@ -49,6 +52,8 @@
                 var key_array = v.split('_');
                 var this_key = key_array[1];
                 var value = account[this_key];
+                var label = blockstrap_functions.unslug(this_key);
+                var attributes = false;
                 // TODO: HARD-CODED FIX THAT SHOULD BE DEALT WITH BY PATCH?
                 if(this_key == 'blockchain' || this_key == 'currency')
                 {
@@ -66,6 +71,41 @@
                     type = 'hidden';
                     group_css = 'hidden';
                 }
+                else if(typeof account.data != 'undefined' && account.data['wallet_'+this_key])
+                {
+                    value = account.data['wallet_'+this_key];
+                    attributes = [
+                        {
+                            key: "readonly",
+                            value: "readonly"
+                        }
+                    ];
+                }
+                else if($.fn.blockstrap.core.option('wallet_question_'+blockstrap_functions.slug(account.name), false) && this_key == 'answer')
+                {
+                    fields.push({
+                        css: group_css,
+                        inputs: {
+                            id: 'wallet_question',
+                            type: 'text',
+                            label: {
+                                css: 'col-xs-3',
+                                text: 'Question'
+                            },
+                            wrapper: {
+                                css: 'col-xs-9'
+                            },
+                            css: 'ignore',
+                            value: $.fn.blockstrap.core.option('wallet_question_'+blockstrap_functions.slug(account.name), false),
+                            attributes: [
+                                {
+                                    key: 'readonly',
+                                    value: 'readonly'
+                                }
+                            ]
+                        }
+                    });
+                }
                 fields.push({
                     css: group_css,
                     inputs: {
@@ -73,12 +113,13 @@
                         type: type,
                         label: {
                             css: 'col-xs-3',
-                            text: blockstrap_functions.unslug(this_key)
+                            text: label
                         },
                         wrapper: {
                             css: 'col-xs-9'
                         },
-                        value: value
+                        value: value,
+                        attributes: attributes
                     }
                 });
             })

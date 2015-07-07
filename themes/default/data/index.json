@@ -537,6 +537,14 @@
                                         "text": "-- Select Additional Wallet Security --"
                                     },
                                     {
+                                        "value": "wallet_email",
+                                        "text": "Email Address"
+                                    },
+                                    {
+                                        "value": "wallet_tel",
+                                        "text": "Tel Number"
+                                    },
+                                    {
                                         "value": "wallet_pin",
                                         "text": "PIN Number"
                                     }

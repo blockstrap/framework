@@ -267,7 +267,7 @@
             });
             var answer = $.fn.blockstrap.forms.input({
                 id: 'salt_answer',
-                type: 'password',
+                type: 'pass',
                 label: {
                     text: 'The Answer',
                     css: 'col-sm-3',
@@ -284,7 +284,7 @@
             });
             var answer_repeat = $.fn.blockstrap.forms.input({
                 id: 'salt_answer_repeat',
-                type: 'password',
+                type: 'pass',
                 label: {
                     text: 'Repeat Answer',
                     css: 'col-sm-3',
