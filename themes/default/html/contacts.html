@@ -24,14 +24,14 @@
                                 Addresses
                             </div>
                         </th>
-                        <th>
+                        <th class="hide-on-small-screen">
                             <div class="cell">
                                 DNKey
                             </div>
                         </th>
-                        <th>
+                        <th class="hide-on-mobile hide-on-tablets">
                             <div class="cell">
-                                
+                                Actions
                             </div>
                         </th>
                     </tr>
@@ -43,11 +43,74 @@
                         <tr id="table-row-{{id}}">
                             <td>
                                 <div class="cell">
-                                    {{name}}
+                                    <div class="hide-on-mobile">
+                                        <p><strong>{{name}}</strong></p>
+                                    </div>
+                                    <div class="show-on-mobile">
+                                        <h2 style="font-family: pro">{{name}}</h2>
+                                        <a 
+                                           href="#" 
+                                           class="btn btn-icon btn-edit"
+                                           data-collection="contacts"
+                                           data-parent="contacts"
+                                           data-element="table-row-{{id}}"
+                                           data-key="{{id}}"
+                                           title="Edit Contact"
+                                           style="margin:-5px;"
+                                        >
+                                        <i class="fa fa-edit"><span>Edit Contact</span></i>
+                                        </a>
+
+                                        <a 
+                                           href="#" 
+                                           class="btn btn-icon btn-add_contact_address"
+                                           data-collection="contacts"
+                                           data-parent="contacts"
+                                           data-element="table-row-{{id}}"
+                                           data-key="{{id}}"
+                                           title="Add Blockchain"
+                                           style="margin:-5px;"
+                                        >
+                                        <i class="fa fa-plus-circle"><span>Add Blockchain</span></i>
+                                        </a>
+
+                                        <a 
+                                           href="#" 
+                                           class="btn btn-icon btn-remove"
+                                           data-collection="contacts"
+                                           data-parent="contacts"
+                                           data-element="table-row-{{id}}"
+                                           data-key="{{id}}"
+                                           title="Remove Contact"
+                                           style="margin:-5px;"
+                                        >
+                                        <i class="fa fa-times"><span>Remove Contact</span></i>
+                                        </a>
+                                    </div>
                                     <div class="hidden">
+                                    <br />
                                     {{#blockchains}}
                                         {{#addresses}}
-                                            <a href="?key={{key}}#address">{{key}}</a>
+                                            <p style="text-align: left; clar:both;">
+                                                <a 
+                                                   class="btn btn-xs btn-primary" 
+                                                   href="{{urls.root}}?key={{key}}#send"
+                                                   style="margin: -3px 5px -3px 0; float:left;"
+                                                >Send</a> 
+                                                {{blockchain}}: 
+                                                <div class="show-on-mobile"><br /></div>
+                                                <a href="?key={{key}}#address" style="float: left; margin:-20px 0 0;">{{key}}</a>
+                                                <a 
+                                                   href="#" 
+                                                   class="btn btn-xs btn-danger btn-remove"
+                                                   data-collection="contacts"
+                                                   data-parent="contacts"
+                                                   data-element="table-row-{{id}}"
+                                                   data-key="{{id}}"
+                                                   data-chain="{{code}}"
+                                                   style="float: right; margin: -45px 5px 0"
+                                                >Remove</a>
+                                            </p>
                                         {{/addresses}}
                                     {{/blockchains}}
                                     </div>
@@ -83,7 +146,7 @@
                                     {{/blockchains}}
                                 </div>
                             </td>
-                            <td>
+                            <td class="hide-on-small-screen">
                                 <div class="cell">
                                     {{#data.contact_dnk}}
                                         <a href="http://api.blockstrap.com/v0/multi/dnkey/{{data.contact_dnk}}?prettyprint=1">
@@ -95,7 +158,7 @@
                                     {{/data.contact_dnk}}
                                 </div>
                             </td>
-                            <td>
+                            <td class="hide-on-mobile hide-on-tablets">
                                 <div class="cell">
                                     
                                     <a 

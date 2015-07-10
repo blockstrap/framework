@@ -7323,6 +7323,9 @@ FUNKY SIDEBARS ON MOBILE
   html body.blockstrap-open-menu .blockstrap-wrapper #sidebar {
     position: absolute;
   }
+  .blockstrap-wrapper .padless form .actions .btn.pull-right {
+    margin: 0;
+  }
 }
 /*
 
@@ -7447,6 +7450,11 @@ body .blockstrap-wrapper {
     width: 100%;
     margin: 0 0 5px;
     outline: 0;
+  }
+  html .blockstrap-wrapper #contacts table.table .btn,
+  body .blockstrap-wrapper #contacts table.table .btn {
+    width: inherit;
+    margin: inherit;
   }
   html .blockstrap-wrapper form .actions .btn-split.pull-right,
   body .blockstrap-wrapper form .actions .btn-split.pull-right,
@@ -7997,6 +8005,10 @@ html body .blockstrap-wrapper #main-content .panel-heading .btn {
 RESPONSIVE TABLES
 
 */
+#accounts table.table thead tr th:last-child .cell,
+#accounts table.table tbody tr td:last-child .cell {
+    min-width: 160px;
+}
 .dropdown-menu li a.btn-icon {
     display: inline-block;
     width: 20px;
@@ -8034,20 +8046,37 @@ RESPONSIVE TABLES
         display: none;
     }
 }
-@media (max-width: 1110px) {
-    .show-on-tablets {
+@media (max-width: 991px) {
+    #contacts .show-on-tablets {
         display: block !important;
     }
-    .blockstrap-wrapper #main-content table.table tbody tr td.hide-on-tablets:first-child, 
-    .blockstrap-wrapper table.table tbody tr td.hide-on-tablets:first-child, 
-    .blockstrap-wrapper #main-content table.table tbody tr td.hide-on-tablets:last-child, 
-    .blockstrap-wrapper table.table tbody tr td.hide-on-tablets:last-child,
-    .hide-on-tablets {
+    .blockstrap-wrapper #main-content #contacts table.table tbody tr td.hide-on-tablets:first-child, 
+    .blockstrap-wrapper #contacts table.table tbody tr td.hide-on-tablets:first-child, 
+    .blockstrap-wrapper #main-content #contacts table.table tbody tr td.hide-on-tablets:last-child, 
+    .blockstrap-wrapper #contacts table.table tbody tr td.hide-on-tablets:last-child,
+    #contacts .hide-on-tablets {
+        display: none !important;
+    }
+}
+@media (max-width: 1110px) {
+    #accounts .show-on-tablets {
+        display: block !important;
+    }
+    .blockstrap-wrapper #main-content #accounts table.table tbody tr td.hide-on-tablets:first-child, 
+    .blockstrap-wrapper #accounts table.table tbody tr td.hide-on-tablets:first-child, 
+    .blockstrap-wrapper #main-content #accounts table.table tbody tr td.hide-on-tablets:last-child, 
+    .blockstrap-wrapper #accounts table.table tbody tr td.hide-on-tablets:last-child,
+    #accounts .hide-on-tablets {
         display: none !important;
     }
 }
 @media (max-width: 1354px) {
-    .hide-on-small-screen {
+    #accounts .hide-on-small-screen {
+        display: none !important;
+    }
+}
+@media (max-width: 1120px) {
+    #contacts .hide-on-small-screen {
         display: none !important;
     }
 }
