@@ -778,7 +778,7 @@ var blockstrap_core = function()
                     {
                         // CALLBACK UPON COMPLETION
                         var init_callback = function(nav)
-                        {       
+                        {
                             bs.core.modals();
                             bs.core.buttons();
 

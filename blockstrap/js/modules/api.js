@@ -890,7 +890,10 @@
     api.service = function(api_service, chain)
     {
         var bs = $.fn.blockstrap;
-        if(typeof bs.settings.blockchains[chain].api != 'undefined')return bs.settings.blockchains[chain].api;
+        if(typeof bs.settings.blockchains[chain].api != 'undefined')
+        {
+            return bs.settings.blockchains[chain].api;
+        }
         else return api_service;
     }
     
