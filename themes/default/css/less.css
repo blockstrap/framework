@@ -7308,6 +7308,7 @@ REMEMBER TO REMOVE FROM MAIN CSS IF RESET HERE FIRST
   float: right !important;
   margin-left: calc(10px);
 }
+
 /*
 
 FUNKY SIDEBARS ON MOBILE
@@ -7340,19 +7341,6 @@ body .blockstrap-wrapper {
     
     */
   /* POINT OF SEARCH HITTING NAV */
-}
-@media (max-width: 768px) {
-  html .blockstrap-wrapper #main-content .panel-body .jumbotron .actions, 
-  body .blockstrap-wrapper #main-content .panel-body .jumbotron .actions, 
-  html .blockstrap-wrapper .jumbotron .actions, 
-  body .blockstrap-wrapper .jumbotron .actions {
-    display: block;
-    position: relative;
-    width: 100%;
-    padding: 10px 0;
-    margin: 10px 0;
-    text-align: left;
-  }
 }
 @media (min-width: 768px) {
   html .blockstrap-wrapper #search-form #search-term,
@@ -7459,15 +7447,6 @@ body .blockstrap-wrapper {
     width: 100%;
     margin: 0 0 5px;
     outline: 0;
-  }
-  html .blockstrap-wrapper .btn i.fa:before,
-  body .blockstrap-wrapper .btn i.fa:before {
-      content: "";
-  }
-  html .blockstrap-wrapper .btn i.fa span,
-  body .blockstrap-wrapper .btn i.fa span {
-    display: inline-block;
-      
   }
   html .blockstrap-wrapper form .actions .btn-split.pull-right,
   body .blockstrap-wrapper form .actions .btn-split.pull-right,
@@ -7782,6 +7761,17 @@ body .blockstrap-wrapper {
     display: inline !important;
     visibility: visible !important;
   }
+  html .blockstrap-wrapper #main-content .panel-body .jumbotron .actions, 
+  body .blockstrap-wrapper #main-content .panel-body .jumbotron .actions, 
+  html .blockstrap-wrapper .jumbotron .actions, 
+  body .blockstrap-wrapper .jumbotron .actions {
+    display: block;
+    position: relative;
+    width: 100%;
+    padding: 10px 0;
+    margin: 10px 0;
+    text-align: left;
+  }
 }
 @media (min-width: 992px) {
   html .blockstrap-wrapper .collapsable,
@@ -7943,6 +7933,14 @@ body .blockstrap-wrapper {
     text-align: right;
   }
 }
+@media (max-width: 768px) {
+  html .blockstrap-wrapper #main-content .panel-body .jumbotron .actions, 
+  body .blockstrap-wrapper #main-content .panel-body .jumbotron .actions, 
+  html .blockstrap-wrapper .jumbotron .actions, 
+  body .blockstrap-wrapper .jumbotron .actions {
+    text-align: center;
+  }
+}
 
 /* ADD-ONS SINCE LAST LESS IMPORTATION */
 html body .blockstrap-wrapper #navigation a.nav-links.current {
@@ -7991,4 +7989,65 @@ html body .blockstrap-wrapper #main-content .panel-heading .btn {
     background: transparent;
     text-align: center;
     border: none;
+}
+
+
+/* 
+
+RESPONSIVE TABLES
+
+*/
+.dropdown-menu li a.btn-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin: 2px -17px;
+    vertical-align: top;
+    background: transparent !important;
+    position: relative;
+}
+.dropdown-menu li a.btn-icon i.fa {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.hide-on-mobile {
+    display: block;
+}
+.show-on-mobile,
+.show-on-tablets {
+    display: none !important;
+}
+@media (max-width: 991px) {
+    .blockstrap-wrapper #main-content table.table tbody tr td:first-child, 
+    .blockstrap-wrapper table.table tbody tr td:first-child, 
+    .blockstrap-wrapper #main-content table.table tbody tr td:last-child, 
+    .blockstrap-wrapper table.table tbody tr td:last-child {
+        text-align: center;
+    }
+    .show-on-mobile {
+        display: block !important;
+    }
+    .hide-on-mobile {
+        display: none;
+    }
+}
+@media (max-width: 1110px) {
+    .show-on-tablets {
+        display: block !important;
+    }
+    .blockstrap-wrapper #main-content table.table tbody tr td.hide-on-tablets:first-child, 
+    .blockstrap-wrapper table.table tbody tr td.hide-on-tablets:first-child, 
+    .blockstrap-wrapper #main-content table.table tbody tr td.hide-on-tablets:last-child, 
+    .blockstrap-wrapper table.table tbody tr td.hide-on-tablets:last-child,
+    .hide-on-tablets {
+        display: none !important;
+    }
+}
+@media (max-width: 1354px) {
+    .hide-on-small-screen {
+        display: none !important;
+    }
 }

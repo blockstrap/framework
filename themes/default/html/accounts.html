@@ -29,9 +29,9 @@
                                 Current Addresses
                             </div>
                         </th>
-                        <th>
+                        <th class="hide-on-small-screen">
                             <div class="cell">
-                                TX Counts
+                                TXs
                             </div>
                         </th>
                         <th>
@@ -39,7 +39,7 @@
                                 Balances
                             </div>
                         </th>
-                        <th>
+                        <th class="hide-on-tablets">
                             <div class="cell">
                                 Actions
                             </div>
@@ -53,21 +53,258 @@
                         <tr id="table-row-{{id}}">
                             <td>
                                 <div class="cell">
-                                    <p><strong>{{name}}</strong></p>
+                                    <div class="hide-on-mobile">
+                                        <p><strong>{{name}}</strong></p>
+                                    </div>
+                                    <div class="show-on-mobile">
+                                        <h2 style="font-family: pro">{{name}}</h2>
+                                        {{#blockchains}}
+                                        <p class="chains">
+                                            {{type}}:<br />
+                                            <a href="?key={{address}}#address">
+                                                {{address}}
+                                            </a> 
+                                            ({{display_balance}})
+                                        </p>
+                                        {{/blockchains}}
+                                        <br />
+                                        <p>
+                                            <div class="btn-group dropup" style="width: 100%">
+                                                <a href="#" class="btn btn-block btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">actions <span class="caret"></span></a>
+                                                <ul class="dropdown-menu" style="width:100%; min-width: 300px">
+                                                    <li>
+                                                        <a 
+                                                           href="#" 
+                                                           class="btn-new_chain"
+                                                           data-id="{{id}}"
+                                                        >
+                                                            Add Chain
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        {{#addresses}}
+                                                            <a 
+                                                               href="#" 
+                                                               class="btn-see_all"
+                                                               data-id="{{id}}"
+                                                            >
+                                                                Inactive Addresses
+                                                            </a>
+                                                        {{/addresses}}
+                                                    </li>
+                                                    <li>
+                                                        <a 
+                                                           href="#" 
+                                                           class="btn-remove"
+                                                           data-collection="accounts"
+                                                           data-element="table-row-{{id}}"
+                                                           data-key="{{id}}"
+                                                           data-confirm="{{password}}"
+                                                        >Remove All</a>
+                                                    </li>
+                                                    <li>
+                                                        <a 
+                                                           href="#" 
+                                                           class="btn-refresh"
+                                                           data-collection="accounts"
+                                                           data-key="{{id}}"
+                                                        >Update Account</a>
+                                                    </li>
+                                                    <li>
+                                                        <a
+                                                            href="#" 
+                                                            class="btn-access"
+                                                            data-collection="accounts"
+                                                            data-key="{{id}}"
+                                                            data-chain="all"
+                                                        >Master Keys</a>
+                                                    </li>
+                                                    <li role="separator" class="divider"></li>
+                                                    {{#blockchains}}
+                                                        <li>
+                                                            <span style="padding: 0; min-width: 150px; text-align: left; display: inline-block;">{{type}}:</span> 
+                                                            <a 
+                                                               href="#" 
+                                                               class="btn btn-icon btn-access"
+                                                               data-collection="accounts"
+                                                               data-key="{{id}}"
+                                                               data-chain="{{code}}"
+                                                               title="Access Keys"
+                                                            >
+                                                            <i class="fa fa-key"><span>Access Keys</span></i>
+                                                            </a>
+                                                            <a 
+                                                               href="#" 
+                                                               class="btn btn-icon btn-refresh"
+                                                               data-collection="accounts"
+                                                               data-key="{{id}}"
+                                                               data-chain="{{code}}"
+                                                               title="Update This Blockchain"
+                                                            >
+                                                            <i class="fa fa-refresh"><span>Update Blockchain</span></i>
+                                                            </a>
+                                                            <a 
+                                                               href="#" 
+                                                               class="btn btn-icon btn-sign"
+                                                               data-key="{{id}}"
+                                                               data-chain="{{code}}"
+                                                               title="Sign Message"
+                                                            >
+                                                            <i class="fa fa-envelope"><span>Sign Message</span></i>
+                                                            </a>
+                                                            <a 
+                                                               href="#" 
+                                                               class="btn btn-icon btn-switch"
+                                                               data-key="{{id}}"
+                                                               data-chain="{{code}}"
+                                                               title="Switch Keys"
+                                                            >
+                                                            <i class="fa fa-recycle"><span>Switch Keys</span></i>
+                                                            </a>
+                                                            <a 
+                                                               href="#" 
+                                                               class="btn btn-icon btn-remove"
+                                                               data-collection="accounts"
+                                                               data-element="table-row-{{id}}"
+                                                               data-key="{{id}}"
+                                                               data-chain="{{code}}"
+                                                               data-confirm="{{password}}"
+                                                               title="Remove This Blockchain"
+                                                            >
+                                                            <i class="fa fa-times"><span>Remove Account</span></i>
+                                                            </a>
+                                                        </li>
+                                                    {{/blockchains}}
+                                                </ul>
+                                            </div>
+                                        </p>
+                                    </div>
                                 </div>
                             </td>
                             <td>
                                 <div class="cell">
-                                    <p>
+                                    <p class="hide-on-tablets">
                                         <a 
                                            href="#" 
                                            class="btn btn-xs pull-left btn-hd btn-new_chain"
                                            data-id="{{id}}"
                                         >
                                             <i class="fa fa-plus-circle" style="font-size:20px; float: left; margin: 0 5px 0 0;"></i>
-                                            Add Blockchain
+                                            Add Chain
                                         </a>
                                     </p>
+                                    <div class="show-on-tablets">
+                                        <div class="btn-group" style="float:left">
+                                            <a href="#" class="btn btn-success btn-xs pull-left dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin: -23px 0 0">
+                                                actions <span class="caret"></span>
+                                            </a>
+                                            <ul class="dropdown-menu" style="width:100%; min-width: 300px">
+                                                <li>
+                                                    <a 
+                                                       href="#" 
+                                                       class="btn-new_chain"
+                                                       data-id="{{id}}"
+                                                    >
+                                                        Add Chain
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    {{#addresses}}
+                                                        <a 
+                                                           href="#" 
+                                                           class="btn-see_all"
+                                                           data-id="{{id}}"
+                                                        >
+                                                            Inactive Addresses
+                                                        </a>
+                                                    {{/addresses}}
+                                                </li>
+                                                <li>
+                                                    <a 
+                                                       href="#" 
+                                                       class="btn-remove"
+                                                       data-collection="accounts"
+                                                       data-element="table-row-{{id}}"
+                                                       data-key="{{id}}"
+                                                       data-confirm="{{password}}"
+                                                    >Remove All</a>
+                                                </li>
+                                                <li>
+                                                    <a 
+                                                       href="#" 
+                                                       class="btn-refresh"
+                                                       data-collection="accounts"
+                                                       data-key="{{id}}"
+                                                    >Update Account</a>
+                                                </li>
+                                                <li>
+                                                    <a
+                                                        href="#" 
+                                                        class="btn-access"
+                                                        data-collection="accounts"
+                                                        data-key="{{id}}"
+                                                        data-chain="all"
+                                                    >Master Keys</a>
+                                                </li>
+                                                <li role="separator" class="divider"></li>
+                                                {{#blockchains}}
+                                                    <li>
+                                                        <span style="padding: 0 0 0 20px; display: inline-block; min-width: 150px; vertical-align: top;">{{type}}:</span> 
+                                                        <a 
+                                                           href="#" 
+                                                           class="btn btn-icon btn-access"
+                                                           data-collection="accounts"
+                                                           data-key="{{id}}"
+                                                           data-chain="{{code}}"
+                                                           title="Access Keys"
+                                                        >
+                                                        <i class="fa fa-key"><span>Access Keys</span></i>
+                                                        </a>
+                                                        <a 
+                                                           href="#" 
+                                                           class="btn btn-icon btn-refresh"
+                                                           data-collection="accounts"
+                                                           data-key="{{id}}"
+                                                           data-chain="{{code}}"
+                                                           title="Update This Blockchain"
+                                                        >
+                                                        <i class="fa fa-refresh"><span>Update Blockchain</span></i>
+                                                        </a>
+                                                        <a 
+                                                           href="#" 
+                                                           class="btn btn-icon btn-sign"
+                                                           data-key="{{id}}"
+                                                           data-chain="{{code}}"
+                                                           title="Sign Message"
+                                                        >
+                                                        <i class="fa fa-envelope"><span>Sign Message</span></i>
+                                                        </a>
+                                                        <a 
+                                                           href="#" 
+                                                           class="btn btn-icon btn-switch"
+                                                           data-key="{{id}}"
+                                                           data-chain="{{code}}"
+                                                           title="Switch Keys"
+                                                        >
+                                                        <i class="fa fa-recycle"><span>Switch Keys</span></i>
+                                                        </a>
+                                                        <a 
+                                                           href="#" 
+                                                           class="btn btn-icon btn-remove"
+                                                           data-collection="accounts"
+                                                           data-element="table-row-{{id}}"
+                                                           data-key="{{id}}"
+                                                           data-chain="{{code}}"
+                                                           data-confirm="{{password}}"
+                                                           title="Remove This Blockchain"
+                                                        >
+                                                        <i class="fa fa-times"><span>Remove Account</span></i>
+                                                        </a>
+                                                    </li>
+                                                {{/blockchains}}
+                                            </ul>
+                                        </div>
+                                    </div>
                                     <hr>
                                     {{#blockchains}}
                                         <p class="chains">{{type}}</p>
@@ -76,7 +313,7 @@
                             </td>
                             <td>
                                 <div class="cell">
-                                    <p>
+                                    <p class="hide-on-tablets">
                                         {{#addresses}}
                                         <a 
                                            href="#" 
@@ -88,6 +325,7 @@
                                         </a>
                                         {{/addresses}}
                                     </p>
+                                    <p class="show-on-tablets"></p>
                                     <hr>
                                     {{#blockchains}}
                                         <p class="chains">
@@ -96,7 +334,7 @@
                                     {{/blockchains}}
                                 </div>
                             </td>
-                            <td>
+                            <td class="hide-on-small-screen">
                                 <div class="cell">
                                     <p class="totals"><strong>Total:</strong> {{tx_total}}</p>
                                     <hr>
@@ -114,7 +352,7 @@
                                     {{/blockchains}}
                                 </div>
                             </td>
-                            <td>
+                            <td class="hide-on-tablets">
                                 <div class="cell">
                                     <p style="margin: -5px 0 -29px 0;">
                                         <a 
