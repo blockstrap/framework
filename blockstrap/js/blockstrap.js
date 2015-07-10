@@ -769,48 +769,65 @@ var blockstrap_core = function()
             },
             init: function()
             {
-                var bs = $.fn.blockstrap;
-                var $bs = blockstrap_functions;
-                
-                bs.core.apply_actions('init', function()
+                // TODO: WHY SLOW THINGS DOWN
+                // NEED TO WAIT FOR MARKET STATS?
+                // MANUAL INSTALL NEEDS TIME FOR INCLUDES TOO?
+                setTimeout(function()
                 {
-                    $.fn.blockstrap.core.publicize(function()
+                    
+                    var bs = $.fn.blockstrap;
+                    var $bs = blockstrap_functions;
+
+                    bs.core.apply_actions('init', function()
                     {
-                        // CALLBACK UPON COMPLETION
-                        var init_callback = function(nav)
+                        $.fn.blockstrap.core.publicize(function()
                         {
-                            bs.core.modals();
-                            bs.core.buttons();
-
-                            // START OF BETTER CORE FORMS CLASS...?
-                            $($.fn.blockstrap.element).on('submit', 'form.bs', function(e)
+                            // CALLBACK UPON COMPLETION
+                            var init_callback = function(nav)
                             {
-                                e.preventDefault();
-                                var form = this;
-                                var func = $(form).attr('data-function');
-                                var vars = $(form).data();
-                                if(typeof func != 'undefined' && typeof $.fn.blockstrap.forms[func] == 'function')
+                                bs.core.modals();
+                                bs.core.buttons();
+
+                                // START OF BETTER CORE FORMS CLASS...?
+                                $($.fn.blockstrap.element).on('submit', 'form.bs', function(e)
                                 {
-                                    $.fn.blockstrap.forms[func](form, vars);
+                                    e.preventDefault();
+                                    var form = this;
+                                    var func = $(form).attr('data-function');
+                                    var vars = $(form).data();
+                                    if(typeof func != 'undefined' && typeof $.fn.blockstrap.forms[func] == 'function')
+                                    {
+                                        $.fn.blockstrap.forms[func](form, vars);
+                                    }
+                                });
+
+                                if($.isPlainObject(bs.styles))
+                                {
+                                    bs.styles.set();
                                 }
-                            });
 
-                            if($.isPlainObject(bs.styles))
-                            {
-                                bs.styles.set();
-                            }
+                                if(nav)
+                                {
+                                    bs.core.nav(nav);
+                                }
 
-                            if(nav)
-                            {
-                                bs.core.nav(nav);
-                            }
+                                bs.core.loader('close');
 
-                            bs.core.loader('close');
-
-                            if($(bs.element).length > 0)
-                            {
-                                // SMOOTHER FADE-IN
-                                $(bs.element).animate({'opacity':1}, 600, function()
+                                if($(bs.element).length > 0)
+                                {
+                                    // SMOOTHER FADE-IN
+                                    $(bs.element).animate({'opacity':1}, 600, function()
+                                    {
+                                        bs.core.apply_actions('init_callback', function()
+                                        {
+                                            $(window).resize(function(e)
+                                            {
+                                                bs.core.resize();
+                                            })
+                                        });
+                                    });
+                                }
+                                else
                                 {
                                     bs.core.apply_actions('init_callback', function()
                                     {
@@ -819,87 +836,65 @@ var blockstrap_core = function()
                                             bs.core.resize();
                                         })
                                     });
-                                });
+                                }   
                             }
-                            else
-                            {
-                                bs.core.apply_actions('init_callback', function()
-                                {
-                                    $(window).resize(function(e)
-                                    {
-                                        bs.core.resize();
-                                    })
-                                });
-                            }   
-                        }
 
-                        // RESET IF REQUIRED
-                        if($bs.vars('reset') === true)
-                        {
-                            bs.core.reset(true);
-                        }
-                        else if(!init_bs)
-                        {
-                            init_bs = true;
-                            // CHECK FOR LOGIN STATUS
-                            if(!bs.security.logged_in())
+                            // RESET IF REQUIRED
+                            if($bs.vars('reset') === true)
                             {
-                                var url = '../../../blockstrap/html/bootstrap/login';
-                                bs.templates.render(url, function()
-                                {
-                                    init_callback();
-                                });
+                                bs.core.reset(true);
                             }
-                            else
+                            else if(!init_bs)
                             {
-                                if(typeof bs.accounts != 'undefined' && $.isPlainObject(bs.accounts))
+                                init_bs = true;
+                                // CHECK FOR LOGIN STATUS
+                                if(!bs.security.logged_in())
                                 {
-                                    if(
-                                        typeof bs.settings.cache == 'undefined'
-                                        || bs.settings.cache == false
-                                    ){
-                                        bs.settings.cache = {};
-                                        bs.settings.cache.accounts = 60000;
-                                    }
-                                    setInterval(function()
+                                    var url = '../../../blockstrap/html/bootstrap/login';
+                                    bs.templates.render(url, function()
                                     {
-                                        bs.accounts.poll();
-                                    }, bs.settings.cache.accounts);
+                                        init_callback();
+                                    });
                                 }
-                                if(window.location.hash)
+                                else
                                 {
-                                    // TODO: WHY SLOW THINGS DOWN
-                                    // NEED TO WAIT FOR MARKET STATS?
-                                    // MANUAL INSTALL NEEDS TIME FOR INCLUDES TOO?
-                                    setTimeout(function()
+                                    if(typeof bs.accounts != 'undefined' && $.isPlainObject(bs.accounts))
+                                    {
+                                        if(
+                                            typeof bs.settings.cache == 'undefined'
+                                            || bs.settings.cache == false
+                                        ){
+                                            bs.settings.cache = {};
+                                            bs.settings.cache.accounts = 60000;
+                                        }
+                                        setInterval(function()
+                                        {
+                                            bs.accounts.poll();
+                                        }, bs.settings.cache.accounts);
+                                    }
+                                    if(window.location.hash)
                                     {
                                         $.fn.blockstrap.core.refresh(function()
                                         {
                                             init_callback(window.location.hash.substring(1));
                                         }, $bs.slug(window.location.hash));
-                                    }, 3000);
-                                }
-                                else
-                                {
-                                    // TODO: WHY SLOW THINGS DOWN
-                                    // NEED TO WAIT FOR MARKET STATS?
-                                    // MANUAL INSTALL NEEDS TIME FOR INCLUDES TOO?
-                                    setTimeout(function()
+                                    }
+                                    else
                                     {
                                         $.fn.blockstrap.core.refresh(function()
                                         {
                                             init_callback();
                                         }, bs.settings.page_base);
-                                    }, 3000);
+                                    }
+                                    var run_tests = false;
+                                    var tests = $bs.vars('tests');
+                                    if(tests || bs.settings.test === true) run_tests = true;
+                                    bs.core.tests(run_tests);
                                 }
-                                var run_tests = false;
-                                var tests = $bs.vars('tests');
-                                if(tests || bs.settings.test === true) run_tests = true;
-                                bs.core.tests(run_tests);
-                            }
-                        } 
+                            } 
+                        });
                     });
-                });
+                }, 3000);
             },
             less: function(callback)
             {

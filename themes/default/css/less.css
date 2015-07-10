@@ -6288,6 +6288,8 @@ SIDEBAR
   bottom: 0;
   width: 250px;
   position: fixed;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 .blockstrap-wrapper #sidebar .sidebar-wrapper {
   position: fixed;
@@ -6446,10 +6448,10 @@ FOOTER
 */
 .blockstrap-wrapper footer {
   display: block;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
-  right: 0;
+  width: 250px;
   height: 40px;
   line-height: 0;
   font-size: 11px;
@@ -7339,6 +7341,19 @@ body .blockstrap-wrapper {
     */
   /* POINT OF SEARCH HITTING NAV */
 }
+@media (max-width: 768px) {
+  html .blockstrap-wrapper #main-content .panel-body .jumbotron .actions, 
+  body .blockstrap-wrapper #main-content .panel-body .jumbotron .actions, 
+  html .blockstrap-wrapper .jumbotron .actions, 
+  body .blockstrap-wrapper .jumbotron .actions {
+    display: block;
+    position: relative;
+    width: 100%;
+    padding: 10px 0;
+    margin: 10px 0;
+    text-align: left;
+  }
+}
 @media (min-width: 768px) {
   html .blockstrap-wrapper #search-form #search-term,
   body .blockstrap-wrapper #search-form #search-term {
@@ -7601,6 +7616,11 @@ body .blockstrap-wrapper {
     right: 0;
     width: auto;
     z-index: 2;
+  }
+  html .blockstrap-wrapper #sidebar .sidebar-wrapper,
+  body .blockstrap-wrapper #sidebar .sidebar-wrapper {
+      position: absolute;
+      margin: 0 0 0 -60px;
   }
   html .blockstrap-wrapper #sidebar footer,
   body .blockstrap-wrapper #sidebar footer {
