@@ -293,7 +293,7 @@
                     var signature = bitcoin.Message.sign(raw_keys.privKey, message, blockchain_obj);
                     var msg = signature.toString('base64');
                     title = 'Success';
-                    contents = '<p>Successfully encrypted message as follows:</p><p>'+msg+'</p>';
+                    contents = '<p>Successfully encrypted message as follows:</p><pre><code>'+msg+'</code></pre>';
                 }
                 $.fn.blockstrap.core.modal(title, contents);
             });

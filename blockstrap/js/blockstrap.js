@@ -1935,6 +1935,20 @@ var blockstrap_core = function()
                         && blockstrap_functions.array_length(current_version_array) > 3
                         && blockstrap_functions.array_length(stored_version_array) > 3
                         && stored_version_array[0] < 1
+                        && stored_version_array[1] < 6
+                    )
+                    {
+                        $.fn.blockstrap.core.patch('0600', function()
+                        {
+                            
+                        });
+                    }
+                    if(
+                        $.isArray(stored_version_array)
+                        && $.isArray(current_version_array)
+                        && blockstrap_functions.array_length(current_version_array) > 3
+                        && blockstrap_functions.array_length(stored_version_array) > 3
+                        && stored_version_array[0] < 1
                         && stored_version_array[1] < 5
                     )
                     {
