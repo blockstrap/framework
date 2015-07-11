@@ -60,11 +60,11 @@
                                         <h2 style="font-family: pro">{{name}}</h2>
                                         {{#blockchains}}
                                         <p class="chains">
-                                            {{type}}:<br />
+                                            {{type}}: ({{display_balance}})<br />
                                             <a href="?key={{address}}#address">
                                                 {{address}}
                                             </a> 
-                                            ({{display_balance}})
+                                            (TXs: {{tx_count}})
                                         </p>
                                         {{/blockchains}}
                                         <br />
@@ -175,6 +175,7 @@
                                                             </a>
                                                         </li>
                                                     {{/blockchains}}
+                                                    <br />
                                                 </ul>
                                             </div>
                                         </p>
