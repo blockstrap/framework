@@ -28,6 +28,7 @@
         e.preventDefault();
         var account_id = $(button).attr('data-key');
         var chain = $(button).attr('data-chain');
+        var blockchain = $.fn.blockstrap.settings.blockchains[chain].blockchain;
         $.fn.blockstrap.data.find('accounts', account_id, function(raw_account)
         {
             if(chain == 'all' && typeof raw_account.blockchains != 'undefined')
@@ -41,6 +42,7 @@
                 var account = raw_account.blockchains[chain];
                 var title = 'Public Key:';
                 if(account.address) title = title + ' ' + account.address;
+                var intro = '<p>You are trying to access the ' + blockchain + ' blockchain. To see the private key belonging to this address, please use the select box below the QR code and follow the relevant instructions.</p><p>The QR code below is your ' + blockchain + ' Address - ' + account.address + '</p>';
                 var qr_code = '<p class="qr-holder" data-content="'+account.address+'"></p>';
                 var form = $.fn.blockstrap.forms.process({
                     objects: [
@@ -87,7 +89,7 @@
                         }
                     ]
                 });
-                $.fn.blockstrap.core.modal(title, qr_code + form);
+                $.fn.blockstrap.core.modal(title, intro + qr_code + form);
             }
         });
     }
@@ -1927,6 +1929,7 @@
         e.preventDefault();
         var account_id = $(button).attr('data-key');
         var chain = $(button).attr('data-chain');
+        var blockchain = $.fn.blockstrap.settings.blockchains[chain].blockchain;
         var account = $.fn.blockstrap.accounts.get(account_id, true);
         var fields = [];
         if($.isArray(account.keys))
@@ -2025,7 +2028,7 @@
                 ]
             }
         });
-        $.fn.blockstrap.core.modal('Sign Message', contents + form);
+        $.fn.blockstrap.core.modal('Sign Message with '+blockchain, contents + form);
     }
     
     buttons.switch = function(button, e)
@@ -2033,6 +2036,7 @@
         e.preventDefault();
         var account_id = $(button).attr('data-key');
         var chain = $(button).attr('data-chain');
+        var blockchain = $.fn.blockstrap.settings.blockchains[chain].blockchain;
         var account = $.fn.blockstrap.accounts.get(account_id, true);
         var fields = [];
         if($.isArray(account.keys))
@@ -2147,7 +2151,7 @@
                 ]
             }
         });
-        $.fn.blockstrap.core.modal('Switch Addresses', contents + form);
+        $.fn.blockstrap.core.modal('Switch Addresses on '+blockchain, contents + form);
     }
     
     buttons.toggle = function(button, e)
