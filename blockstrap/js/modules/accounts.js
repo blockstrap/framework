@@ -493,7 +493,7 @@
         }
     }
     
-    accounts.poll = function(wait, callback)
+    accounts.poll = function(wait, callback, loop, loop_delay)
     {
         var delay = 0;
         var now = new Date().getTime();
@@ -544,17 +544,38 @@
                     {
                         $.fn.blockstrap.core.modal(title, content);
                         if(callback) callback();
+                        else if(typeof loop != 'undefined' && typeof loop_delay != 'undefined')
+                        {
+                            setTimeout(function()
+                            {
+                                $.fn.blockstrap.accounts.poll(wait, callback, loop, loop_delay);
+                            }, loop_delay);
+                        }
                     }, $.fn.blockstrap.core.page());
                 }
                 else
                 {
                     if(callback) callback();
+                    else if(typeof loop != 'undefined' && typeof loop_delay != 'undefined')
+                    {
+                        setTimeout(function()
+                        {
+                            $.fn.blockstrap.accounts.poll(wait, callback, loop, loop_delay);
+                        }, loop_delay);
+                    }
                 }
             });
         }
         else
         {
             if(callback) callback();
+            else if(typeof loop != 'undefined' && typeof loop_delay != 'undefined')
+            {
+                setTimeout(function()
+                {
+                    $.fn.blockstrap.accounts.poll(wait, callback, loop, loop_delay);
+                }, loop_delay);
+            }
         }
     }
     
