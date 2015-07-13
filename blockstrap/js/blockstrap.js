@@ -2770,6 +2770,7 @@ var blockstrap_functions = {
                 if(value === 'true') value = true;
                 vars[pair[0]] = value;
             }
+            $.fn.blockstrap.settings.vars = vars;
             return vars;
         }
     }

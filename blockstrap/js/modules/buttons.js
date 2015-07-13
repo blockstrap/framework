@@ -17,9 +17,12 @@
         if($.isPlainObject(event.state) && event.state.slug)
         {
             // HARDCODED HACK FOR NOW
+            var bs = $.fn.blockstrap;
             var slug = event.state.slug;
             if(slug == bs.settings.page_base) slug = bs.settings.slug_base;
-            $.fn.blockstrap.core.nav(slug);
+            var nav = $(bs.element).find('#' + bs.settings.navigation_id);
+            bs.core.nav(slug);
+            $.fn.blockstrap.buttons.page($(nav).find('#'+slug));
         }
     }
     
@@ -1002,7 +1005,7 @@
             }
             if($.fn.blockstrap.settings.data_base && $.fn.blockstrap.settings.html_base)
             {
-                e.preventDefault();
+                if(typeof e != 'undefined') e.preventDefault();
                 bs.core.get(data_url, 'json', function(data)
                 {
                     if(typeof data.status != 'undefined')
@@ -1061,6 +1064,36 @@
     {
         $("html, body").animate({ scrollTop: 0 }, 350);
         if(direction == 'up' || menu === true) $.fn.blockstrap.core.loader('close');
+        
+        var url_key = $(button).attr('data-key');
+        var url_value = $(button).attr('data-value');
+        
+        if(history.pushState) 
+        {
+            var refresh = '';
+            if(location.search.indexOf('refresh=true') > -1) refresh = '?refresh=true';
+            var url = $.fn.blockstrap.settings.base_url;
+            var slug_to_add = url + refresh + '#' + slug;
+            if(slug === $.fn.blockstrap.settings.slug_base)
+            {
+                slug_to_add = url + refresh;
+            }
+            if(url_key && url_value)
+            {
+                var new_url = JSON.parse(JSON.stringify(slug_to_add));
+                if(slug_to_add.indexOf("?") > -1)
+                {
+                    new_url = slug_to_add.replace('?', '?' + url_key + '=' + url_value + '&');
+                }
+                else
+                {
+                    new_url = slug_to_add.replace('#', '?' + url_key + '=' + url_value + '#');
+                }
+                slug_to_add = JSON.parse(JSON.stringify(new_url));
+            }
+            history.pushState({slug:slug}, document.getElementsByTagName("title")[0].innerHTML, slug_to_add);
+        }
+        
         $('#'+$.fn.blockstrap.settings.content_id).hide(effect, {direction:direction}, 500);
         var paged_html = $.fn.blockstrap.templates.filter(Mustache.render(content, filtered_data));
         $('#'+$.fn.blockstrap.settings.content_id).html(paged_html).show(effect, {direction:reverse_direction}, 500, function()
@@ -1076,26 +1109,9 @@
         var mnav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.mobile_nav_id);
         $(nav).find('.loading').removeClass('loading');
         $(mnav).find('.loading').removeClass('loading');
-        if(history.pushState) 
-        {
-            var refresh = '';
-            if(location.search.indexOf('refresh=true') > -1) refresh = '?refresh=true';
-            var url = $.fn.blockstrap.settings.base_url;
-            if(slug === $.fn.blockstrap.settings.slug_base)
-            {
-                history.pushState({slug:'index'}, document.getElementsByTagName("title")[0].innerHTML, url + refresh);
-            }
-            else
-            {
-                history.pushState({slug:slug}, document.getElementsByTagName("title")[0].innerHTML, url + refresh + '#'+slug);
-            }
-            $($.fn.blockstrap.element).find('.activated').removeClass('activated');
-            $.fn.blockstrap.core.ready();
-        }
-        else
-        {
-            $.fn.blockstrap.core.ready();
-        }
+        
+        $($.fn.blockstrap.element).find('.activated').removeClass('activated');
+        $.fn.blockstrap.core.ready();
     }
     
     buttons.refresh = function(button, e)

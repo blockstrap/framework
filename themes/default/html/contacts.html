@@ -93,8 +93,10 @@
                                         {{#addresses}}
                                             <p style="text-align: left; clar:both;">
                                                 <a 
-                                                   class="btn btn-xs btn-primary" 
-                                                   href="{{urls.root}}?key={{key}}#send"
+                                                   class="btn btn-xs btn-primary btn-page" 
+                                                   href="#send"
+                                                   data-key="key"
+                                                   data-value="{{key}}"
                                                    style="margin: -3px 5px -3px 0; float:left;"
                                                 >Send</a> 
                                                 {{blockchain}}: 
@@ -122,8 +124,10 @@
                                         {{#addresses}}
                                             <p>
                                                 <a 
-                                                   class="btn btn-xs btn-primary" 
-                                                   href="{{urls.root}}?key={{key}}#send"
+                                                   class="btn btn-xs btn-primary btn-page" 
+                                                   href="#send"
+                                                   data-key="key"
+                                                   data-value="{{key}}"
                                                    style="float: left; margin: -3px 5px -3px 0"
                                                 >Send</a> 
                                                 {{blockchain}}: 

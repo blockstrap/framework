@@ -38,6 +38,7 @@
             if(blockstrap_functions.json(raw_name)) name = $.parseJSON(raw_name);
             // ADDRESS INFO
             var add_blockchain = 'Bitcoin';
+            blockstrap_functions.vars(); // TODO: NEED TO REFRESH THIS :-(
             var key = blockstrap_functions.vars('key');
             var from = blockstrap_functions.vars('from');
             var chain = blockstrap_functions.vars('chain');
@@ -124,6 +125,7 @@
                 parseInt(account.balance) / 100000000 + ' ' + add_blockchain
             ];
         }
+        
         // TODO: FIX HACK PART TWO
         if(placeholders && replacements)
         {
