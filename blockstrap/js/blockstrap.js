@@ -867,6 +867,7 @@ var blockstrap_core = function()
                                             bs.settings.cache = {};
                                             bs.settings.cache.accounts = 60000;
                                         }
+                                        bs.accounts.poll();
                                         setInterval(function()
                                         {
                                             bs.accounts.poll();
