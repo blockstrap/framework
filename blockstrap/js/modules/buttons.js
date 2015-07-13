@@ -1094,8 +1094,7 @@
             history.pushState({slug:slug}, document.getElementsByTagName("title")[0].innerHTML, slug_to_add);
         }
         
-        $('#'+$.fn.blockstrap.settings.content_id).hide(effect, {direction:direction}, 500);
-        setTimeout(function()
+        $('#'+$.fn.blockstrap.settings.content_id).hide(effect, {direction:direction}, 500, function()
         {
             var paged_html = $.fn.blockstrap.templates.filter(Mustache.render(content, filtered_data));
             $('#'+$.fn.blockstrap.settings.content_id).html(paged_html).show(effect, {direction:reverse_direction}, 500, function()
@@ -1114,7 +1113,7 @@
 
             $($.fn.blockstrap.element).find('.activated').removeClass('activated');
             $.fn.blockstrap.core.ready();
-        }, 500);
+        });
     }
     
     buttons.refresh = function(button, e)
