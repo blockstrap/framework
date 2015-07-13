@@ -1095,23 +1095,26 @@
         }
         
         $('#'+$.fn.blockstrap.settings.content_id).hide(effect, {direction:direction}, 500);
-        var paged_html = $.fn.blockstrap.templates.filter(Mustache.render(content, filtered_data));
-        $('#'+$.fn.blockstrap.settings.content_id).html(paged_html).show(effect, {direction:reverse_direction}, 500, function()
+        setTimeout(function()
         {
-            if(mobile && !menu) $(elements).css({'opacity':1});
-            if(menu)
+            var paged_html = $.fn.blockstrap.templates.filter(Mustache.render(content, filtered_data));
+            $('#'+$.fn.blockstrap.settings.content_id).html(paged_html).show(effect, {direction:reverse_direction}, 500, function()
             {
-                if($('#menu-toggle').hasClass('open')) $('#menu-toggle').trigger('click');
-                if($('#sidebar-toggle').hasClass('open')) $('#sidebar-toggle').trigger('click');
-            }
-        });
-        var nav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id);
-        var mnav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.mobile_nav_id);
-        $(nav).find('.loading').removeClass('loading');
-        $(mnav).find('.loading').removeClass('loading');
-        
-        $($.fn.blockstrap.element).find('.activated').removeClass('activated');
-        $.fn.blockstrap.core.ready();
+                if(mobile && !menu) $(elements).css({'opacity':1});
+                if(menu)
+                {
+                    if($('#menu-toggle').hasClass('open')) $('#menu-toggle').trigger('click');
+                    if($('#sidebar-toggle').hasClass('open')) $('#sidebar-toggle').trigger('click');
+                }
+            });
+            var nav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.navigation_id);
+            var mnav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.mobile_nav_id);
+            $(nav).find('.loading').removeClass('loading');
+            $(mnav).find('.loading').removeClass('loading');
+
+            $($.fn.blockstrap.element).find('.activated').removeClass('activated');
+            $.fn.blockstrap.core.ready();
+        }, 500);
     }
     
     buttons.refresh = function(button, e)
