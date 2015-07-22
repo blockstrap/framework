@@ -703,46 +703,103 @@ var blockstrap_core = function()
                 $($.fn.blockstrap.element).on('submit', '#search-form', function(e)
                 {
                     e.preventDefault();
-                    var results = [];
+                    var results = {
+                        accounts: [],
+                        contacts: []
+                    };
                     var bs = $.fn.blockstrap;
                     var form = this;
                     var term = $(form).find('#search-term').val();
                     var title = 'No Results';
                     var contents = 'We were unable to fnd any results matching your search';
                     var accounts = bs.accounts.get();
+                    var contacts = bs.contacts.get();
                     $.each(accounts, function(k, account)
                     {
                         if(
                             account.id.indexOf(term.toLowerCase()) > -1
                         ){
-                            results.push(account);
+                            results.accounts.push(account);
                         }
                         else
                         {
                             var pushed = false;
                             $.each(account.blockchains, function(chain, blockchain)
                             {
-                                if(!pushed && blockchain.address.indexOf(term.toLowerCase()) > -1)
+                                if(!pushed && blockchain.address.indexOf(term) > -1)
                                 {
                                     pushed = true;
-                                    results.push(account);
+                                    results.accounts.push(account);
                                 }
                             });
                         }
                     });
-                    if(blockstrap_functions.array_length(results) > 0)
+                    $.each(contacts, function(k, contact)
                     {
-                        title = 'Results';
-                        contents = '<p>The following accounts match your search:</p>';
-                        $.each(results, function(k, result)
+                        if(
+                            contact.id.indexOf(term.toLowerCase()) > -1
+                        ){
+                            results.contacts.push(contact);
+                        }
+                        else
                         {
-                            contents+= '<p><strong>'+result.name+'</strong>:<br />';
-                            $.each(result.blockchains, function(chain, blockchain)
+                            var pushed = false;
+                            $.each(contact.blockchains, function(key, blockchain)
                             {
-                                contents+= blockchain.type+' Address: '+blockchain.address+'<br />';
+                                if(!pushed && blockchain.addresses[0].key.indexOf(term) > -1)
+                                {
+                                    pushed = true;
+                                    results.contacts.push(contact);
+                                }
                             });
-                            contents+= '</p>';
-                        });
+                        }
+                    });
+                    if(
+                        blockstrap_functions.array_length(results.accounts) > 0
+                        || blockstrap_functions.array_length(results.contacts) > 0
+                    ){
+                        title = 'Results';
+                        contents = '';
+                        if(blockstrap_functions.array_length(results.accounts))
+                        {
+                            contents+= '<p>The following accounts match your search:</p>';
+                            $.each(results.accounts, function(k, result)
+                            {
+                                contents+= '<p><strong>'+result.name+'</strong>:<br />';
+                                $.each(result.blockchains, function(chain, blockchain)
+                                {
+                                    if(blockchain.address.indexOf(term) > -1)
+                                    {
+                                        contents+= blockchain.type+' Address: <code>'+blockchain.address+'</code><br />';
+                                    }
+                                    else
+                                    {
+                                        contents+= blockchain.type+' Address: '+blockchain.address+'<br />';
+                                    }
+                                });
+                                contents+= '</p>';
+                            });
+                        }
+                        if(blockstrap_functions.array_length(results.contacts))
+                        {
+                            contents+= '<p>The following contacts match your search:</p>';
+                            $.each(results.contacts, function(k, result)
+                            {
+                                contents+= '<p><strong>'+result.name+'</strong>:<br />';
+                                $.each(result.blockchains, function(key, blockchain)
+                                {
+                                    if(blockchain.addresses[0].key.indexOf(term) > -1)
+                                    {
+                                        contents+= blockchain.blockchain+' Address: <code>'+blockchain.addresses[0].key+'</code><br />';
+                                    }
+                                    else
+                                    {
+                                        contents+= blockchain.blockchain+' Address: '+blockchain.addresses[0].key+'<br />';
+                                    }
+                                });
+                                contents+= '</p>';
+                            });
+                        }
                     }
                     bs.core.modal(title, contents);
                 });
