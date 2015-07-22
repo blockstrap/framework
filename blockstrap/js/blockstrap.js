@@ -703,7 +703,48 @@ var blockstrap_core = function()
                 $($.fn.blockstrap.element).on('submit', '#search-form', function(e)
                 {
                     e.preventDefault();
-                    $.fn.blockstrap.core.modal('Warning', 'Search functionality will be available in the next major update');
+                    var results = [];
+                    var bs = $.fn.blockstrap;
+                    var form = this;
+                    var term = $(form).find('#search-term').val();
+                    var title = 'No Results';
+                    var contents = 'We were unable to fnd any results matching your search';
+                    var accounts = bs.accounts.get();
+                    $.each(accounts, function(k, account)
+                    {
+                        if(
+                            account.id.indexOf(term.toLowerCase()) > -1
+                        ){
+                            results.push(account);
+                        }
+                        else
+                        {
+                            var pushed = false;
+                            $.each(account.blockchains, function(chain, blockchain)
+                            {
+                                if(!pushed && blockchain.address.indexOf(term.toLowerCase()) > -1)
+                                {
+                                    pushed = true;
+                                    results.push(account);
+                                }
+                            });
+                        }
+                    });
+                    if(blockstrap_functions.array_length(results) > 0)
+                    {
+                        title = 'Results';
+                        contents = '<p>The following accounts match your search:</p>';
+                        $.each(results, function(k, result)
+                        {
+                            contents+= '<p><strong>'+result.name+'</strong>:<br />';
+                            $.each(result.blockchains, function(chain, blockchain)
+                            {
+                                contents+= blockchain.type+' Address: '+blockchain.address+'<br />';
+                            });
+                            contents+= '</p>';
+                        });
+                    }
+                    bs.core.modal(title, contents);
                 });
             },
             get: function(file, extension, callback, skip, cached)
