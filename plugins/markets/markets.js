@@ -139,6 +139,7 @@
                 conditions['marketcap']['value'] = (res.marketcap / 1000000000);
             }
         }
+        
         // NOW NEED TO UPDATE EXCHANGE RATE
         if(
             $.isPlainObject(results) 
@@ -150,16 +151,19 @@
             var blockchains = $.fn.blockstrap.settings.blockchains;
             $.each(blockchains, function(k, v)
             {
-                var rate = $.fn.blockstrap.settings.exchange.usd[k];
-
-                // TODO: REPLACE
-                if(k == 'doget') k = 'dogt';
-                if(
-                    typeof market_info[k] != 'undefined'
-                    && typeof market_info[k].fiat_usd_now != 'undefined'
-                )
+                if(typeof v.blockchain != 'undefined')
                 {
-                    $.fn.blockstrap.settings.exchange.usd[k] = market_info[k].fiat_usd_now;
+                    var rate = $.fn.blockstrap.settings.exchange.usd[k];
+
+                    // TODO: REPLACE
+                    if(k == 'doget') k = 'dogt';
+                    if(
+                        typeof market_info[k] != 'undefined'
+                        && typeof market_info[k].fiat_usd_now != 'undefined'
+                    )
+                    {
+                        $.fn.blockstrap.settings.exchange.usd[k] = market_info[k].fiat_usd_now;
+                    }
                 }
             });
         };

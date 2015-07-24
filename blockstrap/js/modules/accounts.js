@@ -335,7 +335,7 @@
                         var usd_total = 0;
                         if(!$.isArray(accounts)) accounts = [];
                         if(blockstrap_functions.json(account)) account = $.parseJSON(account);
-                        if((typeof account.keys != 'undefined' && account.keys) || get_widgets)
+                        if((typeof account.keys != 'undefined' && account.keys && typeof account.blockchains != 'undefined') || get_widgets)
                         {
                             $.each(account.blockchains, function(chain, obj)
                             {
@@ -831,7 +831,6 @@
                         }
                     });
                 }
-                
                 $.each(current_account.blockchains, function(k, chain)
                 {
                     var current_balance = chain.balance;
@@ -956,7 +955,7 @@
         if(!index) index = 0;
         var accounts = $.fn.blockstrap.accounts.get();
         var account_length = blockstrap_functions.array_length(accounts);
-        if($.isArray(accounts))
+        if($.isArray(accounts) && account_length > 0)
         {
             var account = accounts[index];
             var current_tx_count = blockstrap_functions.array_length(account.txs);

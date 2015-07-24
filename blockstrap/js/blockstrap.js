@@ -875,7 +875,6 @@ var blockstrap_core = function()
                     
                     var bs = $.fn.blockstrap;
                     var $bs = blockstrap_functions;
-
                     bs.core.apply_actions('init', function()
                     {
                         $.fn.blockstrap.core.publicize(function()
@@ -1052,17 +1051,20 @@ var blockstrap_core = function()
                     if(callback) callback();
                 }
             },
-            loaded: function()
+            loaded: function(saved_version, this_version, refresh)
             {
-                if($($.fn.blockstrap.element).length < 1)
+                $.fn.blockstrap.core.upgrade(saved_version, this_version, refresh, function()
                 {
-                    return false;
-                }
-                else
-                {
-                    $.fn.blockstrap.core.defaults();
-                    $.fn.blockstrap.core.init();
-                }
+                    if($($.fn.blockstrap.element).length < 1)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        $.fn.blockstrap.core.defaults();
+                        $.fn.blockstrap.core.init();
+                    }
+                });
             },
             loader: function(state)
             {
@@ -2081,102 +2083,107 @@ var blockstrap_core = function()
             }
         };        
 
+        // TODO - DIRTY DIRTY HACK
+        var is_loaded = false;
+        
         // PLUGIN CONSTRUCTOR
         function plugin(element, options, defaults, store, force_skip)
         {
-            // ACCOUNT FOR ORIGINAL SETTINGS IF THIS IS LOADED MANUALLY FOR SECOND TIME
-            var old_settngs = {};
-            if(typeof $.fn.blockstrap.settings != 'undefined')
+            if(!is_loaded)
             {
-                old_settings = $.fn.blockstrap.settings;
-            }
-            
-            // MERGE DEFAULT AND PLUGIN OPTIONS
-            var settings = $.extend(old_settings, defaults, options);
-            
-            var skip = false;
-            if(settings.skip_config) skip = true;
-            if(force_skip === true) skip = true
-            
-            if(typeof $.fn.blockstrap.settings.install === 'undefined')
-            {
-                $.fn.blockstrap.settings.install = true;
-            }
-            
-            // THEN GET CONFIG FILE
-            $.fn.blockstrap.core.get('themes/config', 'json', function(results)
-            {
-                if($.isPlainObject(results))
+                is_loaded = true;
+                // ACCOUNT FOR ORIGINAL SETTINGS IF THIS IS LOADED MANUALLY FOR SECOND TIME
+                var old_settngs = {};
+                if(typeof $.fn.blockstrap.settings != 'undefined')
                 {
-                    $.fn.blockstrap.settings = $.extend({}, settings, results);
-                    
-                    // MERGE WITH HTML ATTRBUTE OPTIONS
-                    $.fn.blockstrap.core.settings(element);
-                    
-                    if($.fn.blockstrap.settings.skip_config) skip = true;
-                    
-                    // NOW NEED TO GET THEME SPECIFIC OPTIONS AND MERGE WITH THESE
-                    var current_theme = $.fn.blockstrap.settings.theme;
-                    $.fn.blockstrap.core.get('themes/'+current_theme+'/config', 'json', function(results)
+                    old_settings = $.fn.blockstrap.settings;
+                }
+
+                // MERGE DEFAULT AND PLUGIN OPTIONS
+                var settings = $.extend(old_settings, defaults, options);
+
+                var skip = false;
+                if(settings.skip_config) skip = true;
+                if(force_skip === true) skip = true
+
+                if(typeof $.fn.blockstrap.settings.install === 'undefined')
+                {
+                    $.fn.blockstrap.settings.install = true;
+                }
+
+                // THEN GET CONFIG FILE
+                $.fn.blockstrap.core.get('themes/config', 'json', function(results)
+                {
+                    if($.isPlainObject(results))
                     {
-                        if($.isPlainObject(results))
-                        {   
-                            
-                            var set = $.extend(
-                                {}, 
-                                $.fn.blockstrap.settings, 
-                                results
-                            );
-                            
-                            $.fn.blockstrap.settings = set;
-                            
-                            $.fn.blockstrap.defaults();
-                            
-                            // ONE LAST SECRET CONFIG THAT CAN OVER-RIDE EVERTYHING AND IS NOT STORED IN REPO
-                            // THE EXACT LOCATION OF THIS FILE CAN ULTIMATELY BE DEFINED BY PREVIOUS CONFIG FILES
-                            var secret_config = 'secret';
-                            $.fn.blockstrap.core.get(secret_config, 'json', function(results)
-                            {
-                                if($.isPlainObject(results))
+                        $.fn.blockstrap.settings = $.extend({}, settings, results);
+
+                        // MERGE WITH HTML ATTRBUTE OPTIONS
+                        $.fn.blockstrap.core.settings(element);
+
+                        if($.fn.blockstrap.settings.skip_config) skip = true;
+
+                        // NOW NEED TO GET THEME SPECIFIC OPTIONS AND MERGE WITH THESE
+                        var current_theme = $.fn.blockstrap.settings.theme;
+                        $.fn.blockstrap.core.get('themes/'+current_theme+'/config', 'json', function(results)
+                        {
+                            if($.isPlainObject(results))
+                            {   
+
+                                var set = $.extend(
+                                    {}, 
+                                    $.fn.blockstrap.settings, 
+                                    results
+                                );
+
+                                $.fn.blockstrap.settings = set;
+
+                                $.fn.blockstrap.defaults();
+
+                                // ONE LAST SECRET CONFIG THAT CAN OVER-RIDE EVERTYHING AND IS NOT STORED IN REPO
+                                // THE EXACT LOCATION OF THIS FILE CAN ULTIMATELY BE DEFINED BY PREVIOUS CONFIG FILES
+                                var secret_config = 'secret';
+                                $.fn.blockstrap.core.get(secret_config, 'json', function(results)
                                 {
-                                    $.fn.blockstrap.settings = $.extend(
-                                        {}, 
-                                        $.fn.blockstrap.settings, 
-                                        results
-                                    );
-                                }
-                                
-                                if($($.fn.blockstrap.element).length < 1)
-                                {
-                                    // ENSURE THAT ELEMENT EXPECTED IS AVAILABLE
-                                    return false;
-                                }
-                                else
-                                {
-                                    if(store)
+                                    if($.isPlainObject(results))
                                     {
-                                        localStorage.setItem('nw_inc_config', JSON.stringify($.fn.blockstrap.settings));
+                                        $.fn.blockstrap.settings = $.extend(
+                                            {}, 
+                                            $.fn.blockstrap.settings, 
+                                            results
+                                        );
                                     }
 
-                                    var bs = $.fn.blockstrap;
-                                    var $bs = blockstrap_functions;
-                                    var dependencies = $.fn.blockstrap.settings.dependencies;
-                                    var modules = $.fn.blockstrap.settings.modules;
-                                    var bootstrap = $.fn.blockstrap.settings.bootstrap;
-                                    var plugins = $.fn.blockstrap.settings.plugins;
-
-                                    if($.fn.blockstrap.settings.install === false)
+                                    if($($.fn.blockstrap.element).length < 1)
                                     {
-                                        dependencies = false;
-                                        modules = false;
-                                        plugins = false;
+                                        // ENSURE THAT ELEMENT EXPECTED IS AVAILABLE
+                                        return false;
                                     }
-
-                                    // UPDATE CORE IF REQUIRED
-                                    $bs.update(bs.settings.v, function(saved_version, this_version, refresh)
+                                    else
                                     {
-                                        bs.core.upgrade(saved_version, this_version, refresh, function()
+                                        if(store)
                                         {
+                                            localStorage.setItem('nw_inc_config', JSON.stringify($.fn.blockstrap.settings));
+                                        }
+
+                                        var bs = $.fn.blockstrap;
+                                        var $bs = blockstrap_functions;
+                                        var dependencies = $.fn.blockstrap.settings.dependencies;
+                                        var modules = $.fn.blockstrap.settings.modules;
+                                        var bootstrap = $.fn.blockstrap.settings.bootstrap;
+                                        var plugins = $.fn.blockstrap.settings.plugins;
+
+                                        if($.fn.blockstrap.settings.install === false)
+                                        {
+                                            dependencies = false;
+                                            modules = false;
+                                            plugins = false;
+                                        }
+
+                                        // UPDATE CORE IF REQUIRED
+                                        $bs.update(bs.settings.v, function(saved_version, this_version, refresh)
+                                        {
+
                                             // USE LESS.css ...?
                                             bs.core.less(function()
                                             {
@@ -2208,12 +2215,12 @@ var blockstrap_core = function()
                                                                                 $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
                                                                                 bs.core.plugins(0, plugins, function()
                                                                                 {
-                                                                                    bs.core.loaded(); 
+                                                                                    bs.core.loaded(saved_version, this_version, refresh); 
                                                                                 });
                                                                             }
                                                                             else
                                                                             {
-                                                                                bs.core.loaded(); 
+                                                                                bs.core.loaded(saved_version, this_version, refresh); 
                                                                             }
                                                                         })
                                                                     }
@@ -2225,12 +2232,12 @@ var blockstrap_core = function()
                                                                             $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
                                                                             bs.core.plugins(0, plugins, function()
                                                                             {
-                                                                                bs.core.loaded(); 
+                                                                                bs.core.loaded(saved_version, this_version, refresh); 
                                                                             });
                                                                         }
                                                                         else
                                                                         {
-                                                                            bs.core.loaded();
+                                                                            bs.core.loaded(saved_version, this_version, refresh);
                                                                         }
                                                                     }
                                                                 });
@@ -2243,12 +2250,12 @@ var blockstrap_core = function()
                                                                     $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
                                                                     bs.core.plugins(0, plugins, function()
                                                                     {
-                                                                        bs.core.loaded(); 
+                                                                        bs.core.loaded(saved_version, this_version, refresh); 
                                                                     });
                                                                 }
                                                                 else
                                                                 {
-                                                                    bs.core.loaded();
+                                                                    bs.core.loaded(saved_version, this_version, refresh);
                                                                 }
                                                             }
                                                         }, true);
@@ -2274,12 +2281,12 @@ var blockstrap_core = function()
                                                                             $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
                                                                             bs.core.plugins(0, plugins, function()
                                                                             {
-                                                                                bs.core.loaded(); 
+                                                                                bs.core.loaded(saved_version, this_version, refresh); 
                                                                             });
                                                                         }
                                                                         else
                                                                         {
-                                                                            bs.core.loaded();
+                                                                            bs.core.loaded(saved_version, this_version, refresh);
                                                                         }
                                                                     })
                                                                 }
@@ -2291,12 +2298,12 @@ var blockstrap_core = function()
                                                                         $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
                                                                         bs.core.plugins(0, plugins, function()
                                                                         {
-                                                                            bs.core.loaded(); 
+                                                                            bs.core.loaded(saved_version, this_version, refresh); 
                                                                         });
                                                                     }
                                                                     else
                                                                     {
-                                                                        bs.core.loaded();
+                                                                        bs.core.loaded(saved_version, this_version, refresh);
                                                                     }
                                                                 }
                                                             });
@@ -2317,12 +2324,12 @@ var blockstrap_core = function()
                                                                         $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
                                                                         bs.core.plugins(0, plugins, function()
                                                                         {
-                                                                            bs.core.loaded(); 
+                                                                            bs.core.loaded(saved_version, this_version, refresh); 
                                                                         });
                                                                     }
                                                                     else
                                                                     {
-                                                                        bs.core.loaded();
+                                                                        bs.core.loaded(saved_version, this_version, refresh);
                                                                     }
                                                                 })
                                                             }
@@ -2334,12 +2341,12 @@ var blockstrap_core = function()
                                                                     $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(plugins)+' Plugins');
                                                                     bs.core.plugins(0, plugins, function()
                                                                     {
-                                                                        bs.core.loaded(); 
+                                                                        bs.core.loaded(saved_version, this_version, refresh); 
                                                                     });
                                                                 }
                                                                 else
                                                                 {
-                                                                    bs.core.loaded();
+                                                                    bs.core.loaded(saved_version, this_version, refresh);
                                                                 }
                                                             }
                                                         }
@@ -2347,13 +2354,13 @@ var blockstrap_core = function()
                                                 });
                                             });
                                         });
-                                    });
-                                }
-                            }, skip, false);
-                        }
-                    }, skip, false);
-                }
-            }, skip, false);
+                                    }
+                                }, skip, false);
+                            }
+                        }, skip, false);
+                    }
+                }, skip, false);
+            }
         }
         
         if(typeof blockstrap_defaults == 'undefined')
