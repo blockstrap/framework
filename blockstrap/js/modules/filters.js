@@ -247,8 +247,7 @@
                 var base = $.fn.blockstrap.settings.base_url;
                 var intro = value + ' ' + $.fn.blockstrap.settings.blockchains[txc].blockchain;
                 var html = '<a href="' + base + '?txid=' + tx.txid +'#transaction">' + intro + '</a>';
-                
-                var this_account = false;
+                var this_address = tx.address;
                 $.each(localStorage, function(k, v)
                 {
                     var values = v;
@@ -261,9 +260,17 @@
                     )
                     {
                         this_account = $.fn.blockstrap.accounts.get(values.id, true);
+                        if(
+                            typeof this_account.blockchains != 'undefined'
+                            && typeof this_account.blockchains[tx.blockchain] != 'undefined'
+                            && typeof this_account.blockchains[tx.blockchain].address != 'undefined'
+                            && this_account.blockchains[tx.blockchain].address == this_address
+                        ){
+                            this_address = this_account.blockchains[tx.blockchain].name;
+                        }
                     }
                 });
-                address = '<a href="' +base+ '?key='+tx.address+'#address">' + this_account.name + '</a>';
+                address = '<a href="' +base+ '?key='+tx.address+'#address">' + this_address + '</a>';
                 html+= ' '+verb+' ' + address;
                 
                 items.push({

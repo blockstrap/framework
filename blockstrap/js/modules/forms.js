@@ -329,6 +329,10 @@
                 var input = $(form).find('#'+key);
                 var value = $(input).val();
                 var id = $(input).attr('id');
+                if(id == 'wallet_currency' && !value)
+                {
+                    value = chain;
+                }
                 fields.push({
                     id: id,
                     value: value
@@ -384,6 +388,11 @@
                                 this_account.code, 
                                 1
                             );
+                            var keysv5 = $.fn.blockstrap.blockchains.keys(
+                                key, 
+                                this_account.code, 
+                                1
+                            );
                             if(old_address_count > 0)
                             {
                                 keys = $.fn.blockstrap.blockchains.keys(
@@ -393,8 +402,14 @@
                                     [old_address_count]
                                 );
                             }
-                            if(keys.pub === this_account.address)
-                            {
+                            if(
+                                keys.pub === this_account.address
+                                || keysv5.pub === this_account.address
+                            ){
+                                if(keysv5.pub === this_account.address)
+                                {
+                                    keys = keysv5;
+                                }
                                 $.fn.blockstrap.api.balance(
                                     current_address, 
                                     chain, 

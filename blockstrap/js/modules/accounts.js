@@ -1029,7 +1029,7 @@
                     if(v.id == 'wallet_blockchain' && type == 'hd')
                     {
                         v.value = [];
-                        var chains = $.fn.blockstrap.settings.blockchains;
+                        var chains = JSON.parse(JSON.stringify($.fn.blockstrap.settings.blockchains));
                         delete chains.multi;
                         $.each(chains, function(chain, obj)
                         {
