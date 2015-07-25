@@ -964,13 +964,22 @@ var blockstrap_core = function()
                                             bs.settings.cache = {};
                                             bs.settings.cache.accounts = 60000;
                                         }
-                                        bs.accounts.poll(0, function()
-                                        {
-                                            setTimeout(function()
+                                        if(
+                                            (
+                                                typeof bs.settings.account_poll != 'undefined'
+                                                && bs.settings.account_poll != false
+                                            )
+                                            ||
+                                            typeof bs.settings.account_poll == 'undefined'
+                                        ){
+                                            bs.accounts.poll(0, function()
                                             {
-                                                bs.accounts.poll(0, false, true, bs.settings.cache.accounts);
-                                            }, bs.settings.cache.accounts);
-                                        });
+                                                setTimeout(function()
+                                                {
+                                                    bs.accounts.poll(0, false, true, bs.settings.cache.accounts);
+                                                }, bs.settings.cache.accounts);
+                                            });
+                                        }
                                     }
                                     if(window.location.hash)
                                     {
