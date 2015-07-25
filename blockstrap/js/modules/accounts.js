@@ -1102,14 +1102,24 @@
                 }
                 else
                 {
-                    if(callback) 
+                    keys = $.fn.blockstrap.blockchains.keys(key, account.code, 1, false, true);
+                    var v5address = keys.raw.getAddress().toString();
+                    if(v5address == account.address)
                     {
-                        callback(false, false, false, false);
+                        if(callback) callback(true, keys, keys.raw, seed);
+                        else return true;
                     }
                     else
                     {
-                        $.fn.blockstrap.core.loader('close');
-                        $.fn.blockstrap.core.modal('Warning', 'Credentials do not match');
+                        if(callback) 
+                        {
+                            callback(false, false, false, false);
+                        }
+                        else
+                        {
+                            $.fn.blockstrap.core.loader('close');
+                            $.fn.blockstrap.core.modal('Warning', 'Credentials do not match');
+                        }
                     }
                 }
             }
