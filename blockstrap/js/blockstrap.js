@@ -1423,6 +1423,7 @@ var blockstrap_core = function()
                 bs.core.modals('close_all');
                 bs.core.loader('open');
                 if(!slug) slug = bs.settings.page_base;
+                slug = bs.core.apply_filters('core_refresh_slug', slug, slug);
                 bs.templates.render(bs.settings.page_base, function()
                 {
                     if(slug != bs.settings.page_base)
