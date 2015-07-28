@@ -31,7 +31,6 @@
         e.preventDefault();
         var account_id = $(button).attr('data-key');
         var chain = $(button).attr('data-chain');
-        var blockchain = $.fn.blockstrap.settings.blockchains[chain].blockchain;
         $.fn.blockstrap.data.find('accounts', account_id, function(raw_account)
         {
             if(chain == 'all' && typeof raw_account.blockchains != 'undefined')
@@ -42,6 +41,7 @@
                 typeof raw_account.blockchains != 'undefined'
                 && typeof raw_account.blockchains[chain] != 'undefined'
             ){
+                var blockchain = $.fn.blockstrap.settings.blockchains[chain].blockchain;
                 var account = raw_account.blockchains[chain];
                 var title = 'Public Key:';
                 if(account.address) title = title + ' ' + account.address;
