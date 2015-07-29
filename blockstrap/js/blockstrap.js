@@ -1078,6 +1078,10 @@ var blockstrap_core = function()
             loader: function(state)
             {
                 var element = $($.fn.blockstrap.element);
+                if(typeof $.fn.blockstrap.settings.loader_id != 'undefined')
+                {
+                    element = $('#'+$.fn.blockstrap.settings.loader_id);
+                }
                 $.fn.blockstrap.core.modals('close_all');
                 if(state && state === 'open')
                 {
