@@ -1234,6 +1234,7 @@
     api.url = function(action, key, blockchain)
     {
         var url = false;
+        api_key = $.fn.blockstrap.core.option('key', false);
         if(!blockchain) blockchain = 'btc';
         if(apis == 'undefined')
         {
