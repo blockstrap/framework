@@ -1,0 +1,85 @@
+/*
+
+BUTTONS
+
+*/
+.btn-donate:before {
+    content: "";
+    display: inline-block;
+    position: relative;
+}
+.btn.loading {
+    color: transparent;
+}
+.btn.loading:after {
+    content: "";
+    display: inline-block;
+    float: left;
+    left: 50%;
+    position: relative;
+    width: 16px;
+    height: 11px;
+    margin: -16px 0px -2px -8px;
+    background: url(../img/loading.gif) no-repeat;
+}
+
+/*
+
+QR CODE
+
+*/
+.qr-wrapper {
+    display: block;
+    position: relative;
+    padding: 10px;
+    background: #FFFFEE;
+    border: 1px solid #CCC;
+    margin: 5px 0;
+}
+
+.qr-wrapper img {
+    display: inline-block;
+    position: relative;
+    padding: 5px;
+    background: #FFF;
+}
+
+/*
+
+FORMS
+
+*/
+.modal form input,
+.modal form select,
+.modal form textarea {
+    background: #F7F7F7;
+    position: relative;
+    z-index: 99;
+}
+form.bs-new-account .input-buttons {
+    display: inline-block;
+    position: relative;
+    float: right;
+    margin: -29px 3px 0 0;
+    z-index: 999;
+}
+form.bs-new-account .input-buttons .btn {
+    margin: 0 3px;
+}
+form.bs-new-account .btn-primary.pull-right {
+    margin: 0px 13px -15px 0;
+}
+#bs-account-send input,
+#setup-deterministic-salt input {
+    margin: 5px 0;
+}
+form.bs-widget-options .row .col-sm-4, 
+form.bs-widget-options .row .col-sm-7 {
+    padding-right: 0;
+}
+form.bs-widget-options .row .col-sm-3 {
+    padding: 0 2px;
+}
+form.bs-widget-options .row .col-sm-5 {
+    padding-left: 0;
+}

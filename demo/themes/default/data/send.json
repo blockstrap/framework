@@ -1,0 +1,122 @@
+{
+    "send": {
+        "panels": [
+            {
+                "id": "send-intro",
+                "css": "col-md-12 ribbon",
+                "body": {
+                    "func": "bootstrap",
+                    "type": "jumbotrons",
+                    "objects": [
+                        {
+                            "title": "Send Payments",
+                            "intro": "Send coins directly to contacts without using any third-parties for storage or processing.",
+                            "html": "Please note that there are small mining fees associated with transfers that are provided to the network in order to help improve propergation times."
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "send-payments",
+                "css": "col-md-12",
+                "body": {
+                    "func": "bootstrap",
+                    "type": "forms",
+                    "objects": [
+                        {
+                            "id": "payment-form",
+                            "fields": [
+                                {
+                                    "inputs": {
+                                        "id": "to",
+                                        "label": {
+                                            "text": "To",
+                                            "css": "col-xs-3"
+                                        },
+                                        "type": "text",
+                                        "placeholder": "Type any address or click the user to select a contact",
+                                        "wrapper": {
+                                            "css": "col-xs-9"
+                                        },
+                                        "icon": [
+                                            {
+                                                "css": "btn-toggle",
+                                                "href": "#",
+                                                "glyph": "user",
+                                                "attributes": [
+                                                    {
+                                                        "key": "data-toggle",
+                                                        "value": "contacts"
+                                                    }
+                                                ]
+                                            }
+                                        ],
+                                        "value": "{{vars.key}}"
+                                    }
+                                },
+                                {
+                                    "selects": {
+                                        "id": "from",
+                                        "label": {
+                                            "text": "From",
+                                            "css": "col-xs-3"
+                                        },
+                                        "type": "text",
+                                        "css": "bs-account-select",
+                                        "placeholder": "Select Wallet",
+                                        "wrapper": {
+                                            "css": "col-xs-9"
+                                        }
+                                    }
+                                },
+                                {
+                                    "inputs": {
+                                        "id": "amount",
+                                        "label": {
+                                            "text": "Amount",
+                                            "css": "col-xs-3"
+                                        },
+                                        "type": "text",
+                                        "placeholder": "Total to Send",
+                                        "wrapper": {
+                                            "css": "col-xs-9"
+                                        },
+                                        "value": "{{vars.amount}}"
+                                    }
+                                },
+                                {
+                                    "hiddens": {
+                                        "id": "from_account",
+                                        "value": "{{vars.from}}"
+                                    }
+                                },
+                                {
+                                    "hiddens": {
+                                        "id": "from_account_chain",
+                                        "value": "{{vars.chain}}"
+                                    }
+                                }
+                            ],
+                            "buttons": {
+                                "forms": [
+                                    {
+                                        "type": "submit",
+                                        "id": "send-money",
+                                        "css": "btn-primary pull-right",
+                                        "text": "Send",
+                                        "attributes": [
+                                            {
+                                                "key": "data-form-id",
+                                                "value": "payment-form"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

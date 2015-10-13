@@ -1,0 +1,213 @@
+{{#contacts.panels}}
+    <div class="panel-wrapper {{class}}">
+        <div id="{{id}}" class="panel panel-default">
+            {{#header}}<div class="panel-heading">{{{header}}}</div>{{/header}}
+            {{#body}}<div class="panel-body padless">{{{body}}}</div>{{/body}}
+        </div>
+    </div>
+{{/contacts.panels}}
+
+<div class="panel-wrapper col-sm-12">
+    <div id="contacts" class="panel panel-default">
+        <div class="panel-body padless">
+            
+            <table class="table table-striped data-table" data-order="desc" data-order-by="0">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="cell">
+                                Name
+                            </div>
+                        </th>
+                        <th>
+                            <div class="cell">
+                                Addresses
+                            </div>
+                        </th>
+                        <th class="hide-on-small-screen">
+                            <div class="cell">
+                                DNKey
+                            </div>
+                        </th>
+                        <th class="hide-on-mobile hide-on-tablets">
+                            <div class="cell">
+                                Actions
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+                    {{#contacts.objects}}
+                        <tr id="table-row-{{id}}">
+                            <td>
+                                <div class="cell">
+                                    <div class="hide-on-mobile">
+                                        <p><strong>{{name}}</strong></p>
+                                    </div>
+                                    <div class="show-on-mobile">
+                                        <h2 style="font-family: pro">{{name}}</h2>
+                                        <a 
+                                           href="#" 
+                                           class="btn btn-icon btn-edit"
+                                           data-collection="contacts"
+                                           data-parent="contacts"
+                                           data-element="table-row-{{id}}"
+                                           data-key="{{id}}"
+                                           title="Edit Contact"
+                                           style="margin:-5px;"
+                                        >
+                                        <i class="fa fa-edit"><span>Edit Contact</span></i>
+                                        </a>
+
+                                        <a 
+                                           href="#" 
+                                           class="btn btn-icon btn-add_contact_address"
+                                           data-collection="contacts"
+                                           data-parent="contacts"
+                                           data-element="table-row-{{id}}"
+                                           data-key="{{id}}"
+                                           title="Add Blockchain"
+                                           style="margin:-5px;"
+                                        >
+                                        <i class="fa fa-plus-circle"><span>Add Blockchain</span></i>
+                                        </a>
+
+                                        <a 
+                                           href="#" 
+                                           class="btn btn-icon btn-remove"
+                                           data-collection="contacts"
+                                           data-parent="contacts"
+                                           data-element="table-row-{{id}}"
+                                           data-key="{{id}}"
+                                           title="Remove Contact"
+                                           style="margin:-5px;"
+                                        >
+                                        <i class="fa fa-times"><span>Remove Contact</span></i>
+                                        </a>
+                                    </div>
+                                    <div class="hidden">
+                                    <br />
+                                    {{#blockchains}}
+                                        {{#addresses}}
+                                            <p style="text-align: left; clar:both;">
+                                                <a 
+                                                   class="btn btn-xs btn-primary btn-page" 
+                                                   href="#send"
+                                                   data-key="key"
+                                                   data-value="{{key}}"
+                                                   style="margin: -3px 5px -3px 0; float:left;"
+                                                >Send</a> 
+                                                {{blockchain}}: 
+                                                <div class="show-on-mobile"><br /></div>
+                                                <a href="?key={{key}}#address" style="float: left; margin:-20px 0 0;">{{key}}</a>
+                                                <a 
+                                                   href="#" 
+                                                   class="btn btn-xs btn-danger btn-remove"
+                                                   data-collection="contacts"
+                                                   data-parent="contacts"
+                                                   data-element="table-row-{{id}}"
+                                                   data-key="{{id}}"
+                                                   data-chain="{{code}}"
+                                                   style="float: right; margin: -45px 5px 0"
+                                                >Remove</a>
+                                            </p>
+                                        {{/addresses}}
+                                    {{/blockchains}}
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cell">
+                                    {{#blockchains}}
+                                        {{#addresses}}
+                                            <p>
+                                                <a 
+                                                   class="btn btn-xs btn-primary btn-page" 
+                                                   href="#send"
+                                                   data-key="key"
+                                                   data-value="{{key}}"
+                                                   style="float: left; margin: -3px 5px -3px 0"
+                                                >Send</a> 
+                                                {{blockchain}}: 
+                                                <a href="?key={{key}}#address">{{key}}</a> 
+                                                <a 
+                                                   href="#" 
+                                                   class="btn btn-icon btn-remove"
+                                                   data-collection="contacts"
+                                                   data-parent="contacts"
+                                                   data-element="table-row-{{id}}"
+                                                   data-key="{{id}}"
+                                                   data-chain="{{code}}"
+                                                   title="Remove Blockchain"
+                                                   style="float: right; margin: -10px 0 -4px"
+                                                >
+                                                <i class="fa fa-times"><span>Remove Blockchain</span></i>
+                                                </a>
+                                            </p>
+                                        {{/addresses}}
+                                    {{/blockchains}}
+                                </div>
+                            </td>
+                            <td class="hide-on-small-screen">
+                                <div class="cell">
+                                    {{#data.contact_dnk}}
+                                        <a href="http://api.blockstrap.com/v0/multi/dnkey/{{data.contact_dnk}}" target="_blank">
+                                            {{data.contact_dnk}}
+                                        </a>
+                                    {{/data.contact_dnk}}
+                                    {{^data.contact_dnk}}
+                                        N / A
+                                    {{/data.contact_dnk}}
+                                </div>
+                            </td>
+                            <td class="hide-on-mobile hide-on-tablets">
+                                <div class="cell">
+                                    
+                                    <a 
+                                       href="#" 
+                                       class="btn btn-icon btn-edit"
+                                       data-collection="contacts"
+                                       data-parent="contacts"
+                                       data-element="table-row-{{id}}"
+                                       data-key="{{id}}"
+                                       title="Edit Contact"
+                                    >
+                                    <i class="fa fa-edit"><span>Edit Contact</span></i>
+                                    </a>
+                                    
+                                    <a 
+                                       href="#" 
+                                       class="btn btn-icon btn-add_contact_address"
+                                       data-collection="contacts"
+                                       data-parent="contacts"
+                                       data-element="table-row-{{id}}"
+                                       data-key="{{id}}"
+                                       title="Add Blockchain"
+                                    >
+                                    <i class="fa fa-plus-circle"><span>Add Blockchain</span></i>
+                                    </a>
+                                    
+                                    <a 
+                                       href="#" 
+                                       class="btn btn-icon btn-remove"
+                                       data-collection="contacts"
+                                       data-parent="contacts"
+                                       data-element="table-row-{{id}}"
+                                       data-key="{{id}}"
+                                       title="Remove Contact"
+                                    >
+                                    <i class="fa fa-times"><span>Remove Contact</span></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {{/contacts.objects}}
+                </tbody>
+
+            </table>
+            
+        </div>
+    </div>
+</div>

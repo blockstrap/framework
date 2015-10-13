@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name='apple-mobile-web-app-capable' content='yes'>
+<link rel='apple-touch-icon' href='blockstrap/img/apple-touch-icon.png'>
+<link rel='apple-touch-startup-image' href='blockstrap/img/apple-startup.png'>
+<link href="blockstrap/img/apple-touch-icon-180x180.png" rel="icon" sizes="192x192" />
+<meta name="msapplication-TileImage" content="blockstrap/img/apple-touch-icon-180x180.png"/>
+<meta name="msapplication-TileColor" content="#ECECFB"/>
+<link rel='shortcut icon' href='favicon.ico'>
+<title>Blockstrap Widgets</title>
+    
+<link href="themes/default/css/less.css" rel="stylesheet">
+<link href="blockstrap/css/widgets-page.css" rel="stylesheet">
+<link href="blockstrap/css/widgets.css" rel="stylesheet">
+    
+<meta name="description" content="Blockstrap is an open source HTML5 framework and powerful API for building blockchain applcations." />
+<meta content="http://widgets.blockstrap.com" property="og:url" />
+<meta content="Blockstrap Widgets" property="og:title" />
+<meta content="http://widgets.blockstrap.com/blockstrap/img/meta.png" property="og:image" />
+<meta content="Blockstrap is an open source HTML5 framework and powerful API for building blockchain applcations." property="og:description" />
+<meta content="widgets.blockstrap.com" property="og:site_name" />
+    
+</head>
+<body>
+    
+<nav role="navigation" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+                <span class="sr-only">toggle</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://blockstrap.com" class="navbar-brand"></a>
+        </div>
+        <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="menu-item">
+                    <a href="http://blockstrap.com/en/framework/">framework</a>
+                </li>
+                <li class="menu-item">
+                    <a href="http://blockstrap.com/en/api/">API</a>
+                </li>
+                <li class="menu-item current-menu-item">
+                    <a href="#" title="Widgets | Blockstrap">widgets</a>
+                </li>
+                <li class="menu-item">
+                    <a href="http://blockstrap.com/en/downloads/" title="Downloads | Blockstrap">downloads</a>
+                </li>
+                <li class="menu-item">
+                    <a href="http://blockstrap.com/en/showcase/" title="Showcase | Blockstrap">showcase</a>
+                </li>
+                <li class="menu-item">
+                    <a href="http://docs.blockstrap.com/">docs</a>
+                </li>
+                <li class="menu-item">
+                    <a href="http://blockchains.io">explorer</a>
+                </li>
+                <li class="twitter mini-icon">
+                    <a target="_blank" href="http://twitter.com/blockstrap">
+                        Follow us on Twitter
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+    
+<div class="page" id="intro">
+    <div class="container">
+        <h1>blockstrap widgets</h1>
+        <h2>self-hosted widgets included within the framework</h2>
+    </div>
+</div>
+
+<div class="container">
+    <h3>&nbsp;</h3>
+</div>
+    
+<div class="container">
+    <div class="row widgets">
+        <div class="col-sm-4">
+            <hr>
+            <span class="alert alert-warning alert-block">
+                <strong>DONATION BUTTONS</strong>
+            </span>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="small">
+                        
+                        <!-- DONATION BUTTON -->
+                        <a href="#" 
+                           class="btn btn-block btn-primary bs-donate"
+                           data-chain="doget"
+                           data-address="naj1CrvX2kBXa7uDJMRfiUAnWD5ZFvGS54"
+                           data-loading="Fetching"
+                           data-label="Donation via Blockstrap Widget"
+                           data-amount="0.123"
+                           data-group="donate"
+                           data-balance="true"
+                           data-txs="true"
+                           data-qr="true"
+                           data-bip="true"
+                           data-inject="false"
+                        >Donate</a>
+                        
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p class="small">Add the <code>bs-donate</code> class to any element to activate widget</p>
+                </div>
+                <p class="clearfix">
+                    <hr>
+                    <span class="badge">Balance: <strong class="donate-balance-naj1CrvX2kBXa7uDJMRfiUAnWD5ZFvGS54">0.00000000</strong> | Donations: <strong class="donate-txs-naj1CrvX2kBXa7uDJMRfiUAnWD5ZFvGS54">0</strong></span>
+                </p>
+                <hr>
+                <p>The only required options here are <code>address</code> and <code>chain</code> - which should be added to the HTML data-attributes as follows:</p>
+                <hr>
+                <pre style="text-align: left;">&lt;a 
+                
+    href="#" 
+    class="bs-donate" 
+    data-address="naj1C...vGS54" 
+    data-chain="doget"
+    
+&gt;Donate&lt;/a&gt;</code></pre>
+                <hr>
+                <span class="alert alert-success alert-block">Other HTML Data-Attribute Options:</span>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <p><strong><code>data-qr</code> default is set to <code>true</code></strong></p>
+                        <p class="small">Displaying QR Codes requires the <code>qrcode.js</code> dependency.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <p><strong><code>data-bip</code> default is set to <code>true</code></strong></p>
+                        <p class="small">Would you like to display Desktop QT Link?</p>
+                    </li>
+                    <li class="list-group-item">
+                        <p><strong><code>data-amount</code> default is set to <code>0</code></strong></p>
+                        <p class="small">Include defined amount in BIP Link and Modal Header?</p>
+                    </li>
+                    <li class="list-group-item">
+                        <p><strong><code>data-inject</code> default is set to <code>true</code></strong></p>
+                        <p class="small">Attempt to auto-inject modal HTML?</p>
+                    </li>
+                    <li class="list-group-item">
+                        <p><strong><code>data-group</code> default is set to <code>false</code></strong></p>
+                        <p class="small">If updating text we use this as the class and add the dynamic text to an element with the following class, as follows (and seen above):</p> 
+                        <pre><code>&lt;span class="dontate-txs-naj1CrvX2kBXa7uDJMRfiUAnWD5ZFvGS54"&gt;0&lt;/span&gt;</code></pre>
+                    </li>
+                    <li class="list-group-item">
+                        <p><strong><code>data-balance</code> default is set to <code>false</code></strong></p>
+                        <p class="small">Update balances based on group class and address.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <p><strong><code>data-txs</code> default is set to <code>false</code></strong></p>
+                        <p class="small">Update TX counts based on group class and address.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <p><strong><code>data-loading</code> default is set to <code>false</code></strong></p>
+                        <p class="small">This is the text to display prior to fetching dynamic content and will use the content within the HTML if nothing specific has been set.</p>
+                    </li>
+                    <li class="list-group-item">
+                        <p><strong><code>data-label</code> default is set to <code>false</code></strong></p>
+                        <p class="small">This allows you to add a label to Desktop QT links.</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <hr>
+            <span class="alert alert-warning alert-block">
+                <strong>GENERATION BUTTONS</strong>
+            </span>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="small">
+                        
+                        <!-- GENERATE BUTTON -->
+                        <a 
+                            href="#" 
+                            id="demo-generate"
+                            class="btn btn-block btn-primary bs-generate"
+                            data-salt="my-unique-application-salt"
+                            data-chain="doget"
+                            data-random="true"
+                            data-deterministic="true"
+                            data-callback="bs_default_generate_callback"
+                            data-print="true"
+                            data-save="true"
+                            data-more="true"
+                            data-check="true"
+                        >Generate Keys</a>
+                        
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p class="small">Add <code>bs-generate</code> class to any element to activate widget</p>
+                </div>
+            </div>
+            
+            <hr>
+            <form class="bs-widget-options" data-id="demo-generate" data-type="generate">
+                <p class="small">(change the demo parameters below)</p>
+                <input type="text" name="salt" class="form-control" placeholder="Add your own custom salt here" autocomplete="off" />
+                <div class="row">
+                    <div class="col-sm-7">
+                        <select name="chain" class="form-control" autocomplete="off">
+                            <option value="btc">Bitcoin</option>
+                            <option value="dash">DashPay</option>
+                            <option value="doge">Dogecoin</option>
+                            <option value="ltc">Litecoin</option>
+                            <option value="btct">Bitcoin Testnet</option>
+                            <option value="dasht">DashPay Testnet</option>
+                            <option value="doget" selected="selected">Dogecoin Testnet</option>
+                            <option value="ltct">Litecoin Testnet</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-5">
+                        <button type="submit" class="btn btn-danger btn-block">Change</button>
+                    </div>
+                </div>
+            </form>
+            <hr>
+            
+            <p>The only required options here are <code>salt</code> and <code>chain</code> - which should be added to the data-attributes as follows:</p>
+            <span class="alert alert-danger alert-block"><strong>WARNING</strong><br>Failure to use unique salts could leave these keys and any coins they control vulnerable to brute force</span>
+            <pre style="text-align: left;">&lt;a 
+
+    href="#" 
+    class="bs-generate" 
+    data-salt="your-unique-app-salt" 
+    data-chain="doget"
+
+&gt;Generate Keys&lt;/a&gt;</code></pre>
+            <hr>
+            <span class="alert alert-success alert-block">Other HTML Data-Attribute Options:</span>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <p><strong><code>data-random</code> default is set to <code>true</code></strong></p>
+                    <p class="small">Allow random salt generation</p>
+                </li>
+                <li class="list-group-item">
+                    <p><strong><code>data-deterministic</code> default is set to <code>true</code></strong></p>
+                    <p class="small">Allow deterministic salt generation</p>
+                </li>
+                <li class="list-group-item">
+                    <p><strong><code>data-callback</code> default is set to <code>true</code></strong></p>
+                    <p class="small">This allows you to control what happens once the <code>keys</code> have been generated. By default it calls the <code>bs_default_generate_callback</code> function, which creates a modal window containing the key pair.</p>
+                </li>
+                <li class="list-group-item">
+                    <p><strong><code>data-print</code> default is set to <code>true</code></strong></p>
+                    <p class="small">If using the default callback, show the print keys button?</p>
+                </li>
+                <li class="list-group-item">
+                    <p><strong><code>data-save</code> default is set to <code>true</code></strong></p>
+                    <p class="small">If using the default callback, show the save keys button?</p>
+                </li>
+            </ul>
+            <hr>
+            <span class="alert alert-warning alert-block"><strong>ACCESS SAVED ACCOUNTS</strong></span>
+            <div class="row">
+                <div class="col-md-6">
+                    <p>
+                        
+                        <!-- ACCOUNTS MODAL -->
+                        <a href="#" 
+                           class="btn btn-danger btn-block bs-accounts-modal"
+                           data-all="false"
+                           data-salt="my-unique-application-salt"
+                        >View Accounts</a>
+                    
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p class="small">Add <code>bs-accounts-modal</code> class to element to activate</p>
+                </div>
+            </div>
+            <p class="clearfix"></p><br>
+            <p>This widget does not have any required options, but can utilize the following if set to HTML data attributes:</p>
+            <hr>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <p><strong><code>data-all</code> default is set to <code>false</code></strong></p>
+                    <p class="small">If set to true it will show all Blockstrap accounts rather than just accounts created by widgets.</p>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-4">
+            <hr>
+            <span class="alert alert-warning alert-block">
+                <strong>PAYMENT BUTTONS</strong>
+            </span>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="small">
+                        
+                        <!-- PAYMENT REQUEST -->
+                        <a  href="#" 
+                            id="demo-request"
+                            class="btn btn-block btn-primary bs-request"
+                            data-salt="your-unique-app-salt" 
+                            data-currency="sgd"
+                            data-chains="btc, ltc, dasht, doget"
+                            data-amount="0.01"
+                            data-addresses="1GjHvbkCyYpy3uaNPvHsxe2EptH2RxEvMt, LbGtaXcsPDQpU6pA8k3sTDmCaG5qFUPAhP, y67MSj12Wm9YJA4291VPpnC8pGS128tH4J, ncq5H5EdCwmGVtQtquk2TKyXDTNApoDpwq"
+                            data-amounts=""
+                            data-title="Payment Request"
+                            data-callback="bs_default_payment_callback"
+                        >Payment Request</a>
+                        
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p class="small">Add the <code>bs-request</code> class to any element to activate widget</p>
+                </div>
+            </div>
+            
+            <hr>
+            <form class="bs-widget-options" data-id="demo-request" data-type="request">
+                <p class="small">(change the demo parameters below)</p>
+                <input type="text" name="salt" class="form-control" placeholder="Add your own custom salt here" autocomplete="off" />
+                <div class="row">
+                    <div class="col-sm-4">
+                        <select name="currency" class="form-control" autocomplete="off">
+                            <option value="sgd">SGD</option>
+                            <option value="usd">USD</option>
+                            <option value="gbp">GBP</option>
+                            <option value="xau">Gold</option>
+                            <option value="jpy">Yen</option>
+                            <option value="usd">165+</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" name="amount" class="form-control" placeholder="Amount" value="0.01" autocomplete="off" />
+                    </div>
+                    <div class="col-sm-5">
+                        <button type="submit" class="btn btn-danger btn-block">Change</button>
+                    </div>
+                </div>
+            </form>
+            <hr>
+            
+            <p>Required options here include <code>currency</code>, <code>chains</code>, </code><code>amount</code>, <code>addresses</code> and <code>salt</code> - all of which should be added to the HTML data-attributes as follows:</p>
+            <br>
+            <pre style="text-align: left;">&lt;a 
+
+    href="#" 
+    class="bs-request" 
+    data-salt="your-unique-app-salt" 
+    data-currency="sgd"
+    data-chains="btc, ltc, dash, doget"
+    data-amount="1"
+    data-addresses="1G..Mt, Lb..hP, etc"
+
+&gt;Request Payment&lt;/a&gt;</code></pre>
+            <hr>
+            <p class="small">We provide support for <strong>165</strong> currencies, where the corresponding <code>amount</code> is converted and presented via a choice of <code>chains</code>. Deterministic payment addresses are created whilst waiting for specific transactions that are then routed to the corresponding <code>addresses</code>. Please note that the <code>chains</code> and <code>addresses</code> values should be comma separated arrays that follow the same order.</p>
+            <hr>
+            <span class="alert alert-success alert-block">Other HTML Data-Attribute Options:</span>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <p><strong><code>data-amounts</code> default is set to <code>0</code></strong></p>
+                    <p class="small">If <code>currency</code> is set to false or is unsupported this comma separated array can be used in the same order as the <code>chains</code> to provide crypto-only payment requests.</p>
+                    <p class="small">If set to <code>0</code> and required due to invalid currency, twice the mining fee of the chain will be requested.</p>
+                </li>
+                <li class="list-group-item">
+                    <p><strong><code>data-callback</code> default is set to <code>true</code></strong></p>
+                    <p class="small">This allows you to control what happens once the payment has been routed correctly. By default it calls the <code>bs_default_payment_callback</code> function, which generates a modal with information about the transaction.</p>
+                </li>
+                <li class="list-group-item">
+                    <p><strong><code>data-qr</code> default is set to <code>true</code></strong></p>
+                    <p class="small">Displaying QR Codes requires the <code>qrcode.js</code> dependency.</p>
+                </li>
+                <li class="list-group-item">
+                    <p><strong><code>data-bip</code> default is set to <code>true</code></strong></p>
+                    <p class="small">Would you like to display Desktop QT Link?</p>
+                </li>
+                <li class="list-group-item">
+                    <p><strong><code>data-poll</code> default is set to <code>60</code></strong></p>
+                    <p class="small">How many seconds between polls?</p>
+                </li>
+                <li class="list-group-item">
+                    <p><strong><code>data-title</code> default is set to <code>Payment Request</code></strong></p>
+                    <p class="small">The title of the modal window</p>
+                </li>
+                <li class="list-group-item">
+                    <p><strong><code>data-description</code> default is set to <code>false</code></strong></p>
+                    <p class="small">The description given to the payment request, which if set to false will use the text within the button as the description.</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    </div>
+</div>
+
+<div class="container">
+    <hr>
+    <span class="alert alert-success alert-block">
+        <br>
+        <p>THESE WIDGETS REQUIRE OUR HTML5 FRAMEWORK
+            <hr><a href="http://github.com/blockstrap/framework" class="btn btn-success">GET FRAMEWORK</a>
+        </p>
+        <br>
+    </span>
+</div>
+    
+<div id="default-modal" class="modal fade" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button data-dismiss="modal" class="close" type="button">
+                    <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body no-footer"></div>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<div id="footer">
+    <div class="container">
+        <div class="row desktop">
+            <div class="col-sm-3 left">
+                <h6>our network</h6>
+                <div class="menu-resources-container">
+                    <ul class="menu">
+                        <li class="menu-item">
+                            <a href="http://dnkey.org">dnkey</a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="http://blockauth.org">blockauth</a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="http://neuroware.io/">neuroware</a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="http://blockchains.io/">blockchains.io</a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="http://blockstrap.com/">blockstrap</a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="http://betanomics.asia/">betanomics</a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="https://github.com/blockstrap/press/archive/master.zip">press kit</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>            
+            <div class="col-sm-6 middle">    
+                <div id="media">
+                    <div class="row">
+                        <a href="http://www.500.co/startup/neuroware/" class="site col-sm-3">
+                            <img class="img img-responsive" src="http://blockcontent.s3.amazonaws.com/content/uploads/sites/3/2015/04/14224036/RTE92C9.png">
+                        </a>
+                        <a href="http://www.coindesk.com/neuroware-launches-future-proof-api-cryptocurrency-apps/" class="site col-sm-3">
+                            <img class="img img-responsive" src="http://blockcontent.s3.amazonaws.com/content/uploads/sites/3/2015/04/14223800/CoinDesk.png">
+                        </a>
+                        <a href="http://e27.co/blockstrap-wants-to-be-for-bitcoin-what-wordpress-is-for-media-20141205/" class="site col-sm-3">
+                            <img class="img img-responsive" src="http://blockcontent.s3.amazonaws.com/content/uploads/sites/3/2015/04/14223648/e27.png">
+                        </a>
+                        <a href="http://cointelegraph.com/news/113024/blockstrap-api-plans-to-revolutionize-blockchain-development" class="site col-sm-3">
+                            <img class="img img-responsive" src="http://blockcontent.s3.amazonaws.com/content/uploads/sites/3/2015/04/14223459/CoinTelegraph.png">
+                        </a>                    
+                    </div>
+                </div>
+                <h6>we're social</h6>
+                <div class="social-links">
+                    <a href="http://twitter.com/blockstrap" class="twitter"></a>
+                    <a href="https://github.com/blockstrap" class="github"></a>
+                    <a href="http://reddit.com/u/blockstrap" class="reddit"></a>
+                    <a href="http://instagram.com/blockstrap/" class="instagram"></a>
+                    <a href="http://blockstrap.com/feed/" class="rss"></a>
+                </div>
+                <form class="signup form-horizontal" method="post" action="//neuroware.us8.list-manage.com/subscribe/post?u=510ca926990f2cef070cbe3d2&amp;id=1d8f6ca30f">
+                    <div class="form-group">
+                        <div class="col-xs-9">
+                            <input type="email" class="form-control" id="email" name="EMAIL" placeholder="sign up to the developer mailing list for updates...">
+                        </div>
+                        <button type="submit" class="col-xs-3 btn btn-danger">
+                            Sign Up
+                        </button>
+                    </div>
+                </form>
+                <p class="credits">&copy; 2015 | All Rights Reserved | Made by <a href="http://neuroware.io">Neuroware.io</a> | Please read our <a href="http://blockstrap.com/en/beta/">Beta Disclaimer</a></p>
+            </div>
+            <div class="col-sm-3 right">
+                <h6>useful links</h6>
+                <div class="menu-communities-container">
+                    <ul class="menu">
+                        <li class="menu-item">
+                            <a href="http://reddit.com/r/bitcoin">/r/bitcoin</a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="http://bitcointalk.org/">bitcoin talk</a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="http://coindesk.com/">coin desk</a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="http://zapchain.com/">zapchain</a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="http://stackoverflow.com/">stackoverflow</a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="http://getbootstrap.com/">bootstrap</a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="http://github.com/">github</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>        
+        </div>
+        <div class="row mobile">
+            <div class="col-sm-12 middle">
+                <div class="col-sm-12 middle">
+                    <h6>our network</h6>
+                    <div class="menu-resources-container">
+                        <ul class="menu">
+                            <li class="menu-item">
+                                <a href="http://dnkey.org">dnkey</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="http://blockauth.org">blockauth</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="http://neuroware.io/">neuroware</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="http://blockchains.io/">blockchains.io</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="http://blockstrap.com/">blockstrap</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="http://betanomics.asia/">betanomics</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="https://blockstrap.com/press/blockstrap-press-kit.zip">press kit</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-12 middle">
+                    <h6>useful links</h6>
+                    <div class="menu-communities-container">
+                        <ul class="menu">
+                            <li class="menu-item">
+                                <a href="http://reddit.com/r/bitcoin">/r/bitcoin</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="http://bitcointalk.org/">bitcoin talk</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="http://coindesk.com/">coin desk</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="http://zapchain.com/">zapchain</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="http://stackoverflow.com/">stackoverflow</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="http://getbootstrap.com/">bootstrap</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="http://github.com/">github</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>                
+                <p class="credits">&copy; 2015 | All Rights Reserved | Made by <a href="http://neuroware.io">Neuroware.io</a> | Please read our <a href="http://blockstrap.com/en/beta/">Beta Disclaimer</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+    
+<!-- INCLUDE REQUIRED DEPENDENCIES MANUALLY -->
+<script src="blockstrap/js/dependencies/jquery.min.js"></script>
+<script src="blockstrap/js/dependencies/bootstrap.min.js"></script>
+<script src="blockstrap/js/dependencies/crypto.js"></script>
+<script src="blockstrap/js/dependencies/sha3.js"></script>
+<script src="blockstrap/js/dependencies/bitcoinjs-lib.js"></script>
+<script src="blockstrap/js/dependencies/qrcode.js"></script>
+<script src="blockstrap/js/dependencies/mustache.js"></script>
+    
+<!-- INCLUDE BS FRAMEWORK -->
+<script src="blockstrap/js/widget.options.js"></script>
+<script src="blockstrap/js/blockstrap.js"></script>
+<!-- PLEASE NOTE YOU CAN NOW SET INSTALL TO FALSE IN OPTIONS -->
+    
+<!-- INCLUDE REQUIRED MODULES MANUALLY -->
+<script src="blockstrap/js/modules/api.js"></script>
+<script src="blockstrap/js/modules/accounts.js"></script>
+<script src="blockstrap/js/modules/data.js"></script>
+<script src="blockstrap/js/modules/html.js"></script>
+<script src="blockstrap/js/modules/blockchains.js"></script>
+<script src="blockstrap/js/modules/widgets.js"></script>
+        
+<script>
+$(document).ready(function()
+{
+    $.fn.blockstrap.widgets.init();
+});
+</script>
+
+</body>
+</html>

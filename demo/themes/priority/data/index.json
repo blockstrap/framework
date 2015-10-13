@@ -1,0 +1,112 @@
+{
+    "issues": {
+        "func": "issues"
+    },
+    "filters": [
+        {
+            "id": "addresses",
+            "href": "#",
+            "text": "Addresses",
+            "attributes": [
+                {
+                    "key": "data-sort",
+                    "value": "addresses"
+                }
+            ]
+        },
+        {
+            "id": "titles",
+            "href": "#",
+            "text": "Issue Title",
+            "attributes": [
+                {
+                    "key": "data-sort",
+                    "value": "titles"
+                }
+            ]
+        },
+        {
+            "id": "authors",
+            "href": "#",
+            "text": "Author",
+            "attributes": [
+                {
+                    "key": "data-sort",
+                    "value": "authors"
+                }
+            ]
+        },
+        {
+            "id": "points",
+            "href": "#",
+            "css": "pull-right active",
+            "text": "Score",
+            "attributes": [
+                {
+                    "key": "data-sort",
+                    "value": "points"
+                }
+            ]
+        },
+        {
+            "id": "contributions",
+            "href": "#",
+            "css": "pull-right",
+            "text": "Amount",
+            "attributes": [
+                {
+                    "key": "data-sort",
+                    "value": "contributions"
+                }
+            ]
+        },
+        {
+            "id": "votes",
+            "href": "#",
+            "css": "pull-right",
+            "text": "Contributions",
+            "attributes": [
+                {
+                    "key": "data-sort",
+                    "value": "votes"
+                }
+            ]
+        }
+    ],
+    "copy": {
+        "contribute_to": "Contribute to",
+        "details": "Details",
+        "posted_by": "Posted by",
+        "share": "Share",
+        "total_contributions": "Total Contributions To-Date are",
+        "votes": "Votes",
+        "contributions": "Contributions",
+        "points": "Points",
+        "home": "Homepage",
+        "address": "Address",
+        "close": "Close"
+    },
+    "credits": "Powered by <a href='http://blockstrap.com'>Blockstrap</a>",
+    "total": {
+        "func": "balance"
+    },
+    "setup": {
+        "func": "setup",
+        "step": 1
+    },
+    "modals": {
+        "func": "bootstrap",
+        "type": "modals",
+        "objects": [
+            {
+                "id": "default",
+                "css": "in"
+            },
+            {
+                "id": "share",
+                "css": "in",
+                "body": "<p class='center'>Spread the word - let people know about this issue!</p><div class='share'><a class='twitter'></a><a class='facebook'></a><a class='linked'></a><a class='google'></a></div>"
+            }
+        ]
+    }
+}

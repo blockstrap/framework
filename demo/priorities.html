@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name='apple-mobile-web-app-capable' content='yes'>
+<link rel='apple-touch-icon' href='blockstrap/img/apple-touch-icon.png'>
+<link rel='apple-touch-startup-image' href='blockstrap/img/apple-startup.png'>
+<link href="blockstrap/img/apple-touch-icon-180x180.png" rel="icon" sizes="192x192" />
+<meta name="msapplication-TileImage" content="blockstrap/img/apple-touch-icon-180x180.png"/>
+<meta name="msapplication-TileColor" content="#ECECFB"/>
+<link rel='shortcut icon' href='favicon.ico'>
+<title>Blockstrap Priorities</title>
+    
+<style>
+.bs.installing:before,
+.bs.loading:before {
+    content: "";
+    text-align: center;
+    display: block;
+    position: absolute;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    color: #FFF;
+    z-index: 9999999;
+}
+.bs.installing:after,
+.bs.loading:after {
+    content: attr(data-loading-content);
+    background: url(blockstrap/img/block-gif.gif) no-repeat;
+    display: block;
+    color: #FFF;
+    position: absolute;
+    position: fixed;
+    width: 300px;
+    height: 200px;
+    top: 50%;
+    left: 50%;
+    padding-top: 230px;
+    text-align: center;
+    margin: -100px 0 0 -150px;
+    z-index: 99999999;
+}
+</style>
+
+<!-- INCLUDE ONE CORE JAVASCRIPT FILE -->
+    
+<script src="blockstrap/js/blockstrap.js"></script>
+    
+<!-- ALL OTHER JS AND CSS FILES INCLUDED AUTOMAGICALLY -->
+
+</head>
+<body>
+
+<!-- SPECIFICALLY TESTING DATA ATTRIBUTES -->
+<div 
+     id="blockstrap"
+     class="bs installing"
+     data-theme="priority"
+     data-skip_config="true"
+     data-app_id="prioritizer"
+     data-dependencies="[themes/priority/js/dependencies/example_issues, blockstrap/js/dependencies/crypto, blockstrap/js/dependencies/sha3, blockstrap/js/dependencies/mustache, blockstrap/js/dependencies/bootstrap.min, blockstrap/js/dependencies/bitcoinjs-lib, themes/priority/js/dependencies/isotope, blockstrap/js/dependencies/qrcode, themes/priority/js/dependencies/steps]"
+     data-public="true"
+     data-cascade="false"
+     data-security="9d2caf7f21ee0a0a679b2d15c79d165f"
+     data-content_id="issues"
+     data-slug_base="index"
+     data-modules="[blockstrap/js/modules/data, blockstrap/js/modules/api, blockstrap/js/modules/templates, blockstrap/js/modules/blockchains, blockstrap/js/modules/security, themes/priority/js/modules/theme]"
+     data-bootstrap="[modals, forms]"
+     data-css="[bootstrap, priority]"
+     data-styles="false"
+     data-plugins="false"
+     data-buttons.classes="[details, share, close, qr]"
+     data-loading-content="Installing / Loading Required Files"
+></div>
+
+</body>
+</html>

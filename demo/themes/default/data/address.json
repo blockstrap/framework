@@ -1,0 +1,84 @@
+{
+    "address": {
+        "panels": [
+            {
+                "id": "welcome-message",
+                "css": "col-md-12 ribbon",
+                "body": {
+                    "func": "bootstrap",
+                    "type": "jumbotrons",
+                    "objects": [
+                        {
+                            "title": "Address: {{vars.key}}",
+                            "intro": "This information about this address comes from the device, not the blockchain",
+                            "buttons": [
+                                {
+                                    "href": "#",
+                                    "css": "btn-success",
+                                    "text": "JSON VIEW"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "address-sumary",
+                "css": "col-md-6 odd",
+                "header": "Address Summary",
+                "body": {
+                    "func": "bootstrap",
+                    "type": "lists",
+                    "objects": [
+                        {
+                            "items": [
+                                {
+                                    "html": "TX Count",
+                                    "buttons": [
+                                        {
+                                            "css": "btn-xs disabled pull-right",
+                                            "text": "{{address.tx_count}}"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "html": "Current Balance",
+                                    "buttons": [
+                                        {
+                                            "css": "btn-xs disabled pull-right",
+                                            "text": "{{address.balance}}"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "tx-amounts",
+                "css": "col-md-6 even",
+                "header": "Transactions",
+                "body": {
+                    "func": "bootstrap",
+                    "type": "lists",
+                    "objects": [
+                        {
+                            "items": [
+                                {
+                                    "html": "Coming soon!",
+                                    "buttons": [
+                                        {
+                                            "css": "btn-xs disabled pull-right",
+                                            "text": "next release"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

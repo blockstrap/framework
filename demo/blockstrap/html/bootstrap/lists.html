@@ -1,0 +1,45 @@
+{{#objects}}
+    <ul id="{{id}}" class="list-group">
+        
+        {{#items}}
+
+            {{#href}}
+                <a href="{{href}}">
+                    <li class="list-group-item {{css}}">
+                        <div class="list-item-content">
+                            {{{html}}}
+                        </div>
+                        {{#badge}}
+                            <span class="badge">{{badge}}</span>
+                        {{/badge}}
+                    </li>
+                </a>
+            {{/href}}
+            {{^href}}
+                <li class="list-group-item {{css}}">
+                    <div class="list-item-content">
+                        {{{html}}}
+                    </div>
+                    {{#buttons}}
+                        <a 
+                           href="{{href}}" 
+                           class="btn {{css}}" 
+                           {{#attributes}}
+                                {{key}}="{{value}}" 
+                           {{/attributes}}
+                        >
+                            {{text}}
+                        </a>
+                    {{/buttons}}
+                </li>
+            {{/href}}
+        
+        {{/items}}
+        {{^items}}
+            <li class="list-group-item {{css}}">
+                {{{missing}}}
+            </li>
+        {{/items}}
+
+    </ul>
+{{/objects}}
