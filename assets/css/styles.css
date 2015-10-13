@@ -325,3 +325,49 @@ FONTS
 .tagline {
     font-family: 'Titillium Web', sans-serif;
 }
+
+/*
+
+RESPONSIVENESS
+
+*/
+@media (max-width: 960px) { 
+    .container {
+        width: 90%;
+        padding: 0 5%;
+    }
+}
+@media (max-width: 570px) { 
+    #person a,
+    #person span,
+    #header ul.nav li {
+        display: none;
+    }
+    #header ul.nav li.button {
+        display: inline-block;
+    }
+    #sub-header .btn {
+        width: 90%;
+        padding: 10px 5%;
+        margin: 5px;
+    }
+    #features li {
+        width: 100%;
+        margin: 30px 0;
+    }
+    #person::before {
+        bottom: -64px;
+    }
+    #footer form input {
+        clear: both;
+        width: 96%;
+        border-radius: 6px;
+        margin: 5px 0;
+        padding: 0 2%;
+    }
+    #footer form button {
+        width: 100%;
+        border-radius: 6px;
+        margin: 5px 0;
+    }
+}
