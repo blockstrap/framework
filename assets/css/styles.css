@@ -104,7 +104,7 @@ SUB HEADER
 }
 #sub-header .tagline {
     color: #FFF;
-    font-size: 40px;
+    font-size: 45px;
     font-weight: normal;
     text-transform: lowercase;
     margin: 0 0 20px;
@@ -165,6 +165,7 @@ FEATURES
 #features h3 {
     color: #00468C;
     margin: 0 0 20px;
+    font-weight: normal;
 }
 #features .btn {
     display: inline-block;
@@ -196,7 +197,7 @@ QUOTE
     margin-top: 80px;
     background: #EEE;
     border: 1px solid #CCC;
-    font-size: 20px;
+    font-size: 24px;
     font-style: italic;
     padding: 60px;
     border-radius: 15px;
@@ -312,4 +313,15 @@ SOCIAL
 }
 .social li.twitter a:hover {
     background-position: -200px -50px;
+}
+
+/*
+
+FONTS
+
+*/
+#quote,
+#features h3,
+.tagline {
+    font-family: 'Titillium Web', sans-serif;
 }
