@@ -358,7 +358,11 @@ RESPONSIVENESS
     #person::before {
         bottom: -64px;
     }
+    #footer li.form {
+        display: block;
+    }
     #footer form input {
+        display: block;
         clear: both;
         width: 96%;
         border-radius: 6px;
@@ -366,6 +370,7 @@ RESPONSIVENESS
         padding: 0 2%;
     }
     #footer form button {
+        display: block;
         width: 100%;
         border-radius: 6px;
         margin: 5px 0;
