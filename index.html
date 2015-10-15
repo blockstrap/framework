@@ -4,110 +4,60 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<meta name='apple-mobile-web-app-capable' content='yes'>
+<link rel='apple-touch-icon' href='blockstrap/img/apple-touch-icon.png'>
+<link rel='apple-touch-startup-image' href='blockstrap/img/apple-startup.png'>
+<link href="blockstrap/img/apple-touch-icon-180x180.png" rel="icon" sizes="192x192" />
+<meta name="msapplication-TileImage" content="blockstrap/img/apple-touch-icon-180x180.png"/>
+<meta name="msapplication-TileColor" content="#ECECFB"/>
 <link rel='shortcut icon' href='favicon.ico'>
-<title>Blockstrap | The Modular Blockchain Agnostic Wallet Framework</title>
-<link rel='stylesheet' id='dashicons-css'  href='assets/css/styles.css' type='text/css' media='all' />
-<link href='https://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>
+<title>Blockstrap Wallet</title>
+    
+<style>
+.bs.installing:before,
+.bs.loading:before {
+    content: "";
+    text-align: center;
+    display: block;
+    position: absolute;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    color: #FFF;
+    z-index: 9999999;
+}
+.bs.installing:after,
+.bs.loading:after {
+    content: attr(data-loading-content);
+    background: url(blockstrap/img/block-gif.gif) no-repeat;
+    display: block;
+    color: #FFF;
+    position: absolute;
+    position: fixed;
+    width: 300px;
+    height: 200px;
+    top: 50%;
+    left: 50%;
+    padding-top: 230px;
+    text-align: center;
+    margin: -100px 0 0 -150px;
+    z-index: 99999999;
+}
+</style>
+
+<!-- INCLUDE ONE CORE JAVASCRIPT FILE -->
+    
+<script src="blockstrap/js/blockstrap.js"></script>
+    
+<!-- ALL OTHER JS AND CSS FILES INCLUDED AUTOMAGICALLY -->
+
 </head>
 <body>
 
-<div id="header">
-    <div class="container">
-        <h1 class="logo">Blockstrap</h1>
-        <ul class="nav">
-            <li><a href="http://github.com/blockstrap/docs" target="_blank">Documentation</a></li>
-            <li><a href="http://github.com/blockstrap/" target="_blank">Source-Code</a></li>
-            <li class="button"><a href="/framework/blog/deprecated/" class="btn">Where is the API...?</a></li>
-        </ul>
-    </div>
-</div>
-    
-<div id="sub-header">
-    <div class="container">
-        <h2 class="tagline">html5 framework for blockchain applications</h2>
-        <a href="https://github.com/blockstrap/framework/archive/gh-pages.zip" class="btn primary">
-            Download
-            <span>jQuery Plugin / Version 0.6.1</span>
-        </a>
-        <a href="/framework/demo/" class="btn" target="_blank">
-            Live Demo
-            <span>The Default HTML Wallet</span>
-        </a>
-    </div>
-</div>
-
-<div class="container">
-    <ul id="features">
-        <li>
-            <span class="icon icon-blockchains"></span>
-            <h3>Supports Multiple Blockchains</h3>
-            <p class="description">Due to its modular design, the wallet supports any blockchain that can be mapped to a web accessible API and supports Bitcoin, Litecoin Dogecoin and DashPay (out of the box)</p>
-            <a href="https://github.com/blockstrap/docs/tree/master/en/framework/modules/blockchains" class="btn" target="_blank">Learn More</a>
-        </li>
-        <li>
-            <span class="icon icon-providers"></span>
-            <h3>API Neutral</h3>
-            <p class="description">Due to its modular design, the wallet can support any web-accesible API, which prevents vendor lock-in, ensuring that no matter what, you can will always have access</p>
-            <a href="https://github.com/blockstrap/docs/tree/master/en/framework/examples/tests" class="btn" target="_blank">Learn More</a>
-        </li>
-        <li>
-            <span class="icon icon-plugins"></span>
-            <h3>Supports Themes &amp; Plugins</h3>
-            <p class="description">Due to its modular design, the wallet can be easily extended with additional modules using a design pattern with hooks and filters very similar to the way wordpress works</p>
-            <a href="https://github.com/blockstrap/docs/tree/master/en/framework/extending" class="btn" target="_blank">Learn More</a>
-        </li>
-    </ul>
-    <hr>
-    
-    <ul id="features">
-        <li>
-            <span class="icon icon-blockchains"></span>
-            <h3>Complete Key Control</h3>
-            <p class="description">Due to its modular design, the wallet supports any blockchain that can be mapped to a web accessible API and supports Bitcoin, Litecoin Dogecoin and DashPay (out of the box)</p>
-            <a href="https://github.com/blockstrap/docs/tree/master/en/framework/modules/blockchains" class="btn" target="_blank">Learn More</a>
-        </li>
-        <li>
-            <span class="icon icon-providers"></span>
-            <h3>Multiple Accounts</h3>
-            <p class="description">Due to its modular design, the wallet can support any web-accesible API, which prevents vendor lock-in, ensuring that no matter what, you can will always have access</p>
-            <a href="https://github.com/blockstrap/docs/tree/master/en/framework/examples/tests" class="btn" target="_blank">Learn More</a>
-        </li>
-        <li>
-            <span class="icon icon-plugins"></span>
-            <h3>Entirely Open Source</h3>
-            <p class="description">Due to its modular design, the wallet can be easily extended with additional modules using a design pattern with hooks and filters very similar to the way wordpress works</p>
-            <a href="https://github.com/blockstrap/docs/tree/master/en/framework/extending" class="btn" target="_blank">Learn More</a>
-        </li>
-    </ul>
-    
-    <div id="quote">The easiest way for web-developers to get started with blockchains!</div>
-    <div id="person" class="mark">
-        <a href="http://twitter.com/m_smalley" target="_blank">Mark Smalley</a>
-        <span>CEO at Neuroware.io</span>
-    </div>
-</div>  
-<div id="footer">
-    <div class="container">
-        <ul class="social">
-            <li class="twitter">
-                <a href="http://twitter.com/blockstrap" target="_blank">Twitter</a>
-            </li>
-            <li class="github">
-                <a href="http://github.com/blockstrap" target="_blank">GitHub</a>
-            </li>
-            <li class="form">
-                <form 
-                    class="subscribe" 
-                    method="post" 
-                    action="//neuroware.us8.list-manage.com/subscribe/post?u=510ca926990f2cef070cbe3d2&id=1d8f6ca30f"
-                >
-                    <input type="text" name="EMAIL" class="email" placeholder="signup to the developer mailing list" />
-                    <button type="submit" class="submit">SIGNUP</button>
-                </form>
-            </li>
-        </ul>
-    </div>
-</div>
+<div id="blockstrap" class="bs installing" data-loading-content="Installing / Loading Required Files"></div>
 
 </body>
 </html>
