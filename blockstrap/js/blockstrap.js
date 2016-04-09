@@ -675,7 +675,7 @@ var blockstrap_core = function()
                         {
                             $(form).find('input#temp_un').remove();
                             $(form).find('input#temp_pw').remove();
-                        }, 1000);
+                        }, $.fn.blockstrap.core.timeouts('remove_temp_password'));
                     });
                     if($(this).find('[type="submit"]').length < 1)
                     {
@@ -910,30 +910,13 @@ var blockstrap_core = function()
 
                                 bs.core.loader('close');
 
-                                if($(bs.element).length > 0)
+                                bs.core.apply_actions('init_callback', function()
                                 {
-                                    // SMOOTHER FADE-IN
-                                    $(bs.element).animate({'opacity':1}, 600, function()
+                                    $(window).resize(function(e)
                                     {
-                                        bs.core.apply_actions('init_callback', function()
-                                        {
-                                            $(window).resize(function(e)
-                                            {
-                                                bs.core.resize();
-                                            })
-                                        });
-                                    });
-                                }
-                                else
-                                {
-                                    bs.core.apply_actions('init_callback', function()
-                                    {
-                                        $(window).resize(function(e)
-                                        {
-                                            bs.core.resize();
-                                        })
-                                    });
-                                }   
+                                        bs.core.resize();
+                                    })
+                                });
                             }
 
                             // RESET IF REQUIRED
@@ -1003,7 +986,7 @@ var blockstrap_core = function()
                             } 
                         });
                     });
-                }, 3000);
+                }, $.fn.blockstrap.core.timeouts('delayed_init'));
             },
             less: function(callback)
             {
@@ -1082,40 +1065,15 @@ var blockstrap_core = function()
                 {
                     element = $('#'+$.fn.blockstrap.settings.loader_id);
                 }
-                $.fn.blockstrap.core.modals('close_all');
                 if(state && state === 'open')
                 {
-                    $(element).animate({'opacity': 0}, 350, function()
-                    {
-                        $(element).addClass('loading');
-                        $(element).animate({'opacity': 1}, 150, function()
-                        {
-
-                        });
-                    });
-                }
-                else if(state && state === 'close')
-                {
-                    $(element).animate({'opacity': 0}, 350, function()
-                    {
-                        $(element).removeClass('loading');
-                        $(element).removeClass('installing');
-                        $(element).animate({'opacity': 1}, 150, function()
-                        {
-
-                        });
-                    });
+                    $(element).addClass('loading');
                 }
                 else
                 {
-                    if($(element).hasClass('loading'))
-                    {
-                        $(element).removeClass('loading');
-                    }
-                    else
-                    {
-                        $(element).addClass('loading');
-                    }
+                    $.fn.blockstrap.core.modals('close_all');
+                    $(element).removeClass('loading');
+                    $(element).removeClass('installing');
                 }
                     
             },
@@ -1134,7 +1092,10 @@ var blockstrap_core = function()
                 {
                     $(selector).find('input[type="password"]').val('');
                 });
-                $(selector).modal('show');
+                if($(selector).css('display') == 'none')
+                {
+                    $(selector).modal('show');
+                }
             },
             modals: function(action)
             {
@@ -1209,9 +1170,14 @@ var blockstrap_core = function()
                 var mnav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.mobile_nav_id);
                 $(nav).find('.active').removeClass('active');
                 $(mnav).find('.active').removeClass('active');
-                if(slug.charAt(0) != '#') slug = '#' + slug;
+                var original_slug = JSON.parse(JSON.stringify(slug));
+                if(slug.charAt(0) != '#') slug = '#' + $.fn.blockstrap.core.apply_filters('nav_slug', false, slug);
                 $(nav).find(slug).addClass('active');
                 $(mnav).find(slug).addClass('active');
+                $.fn.blockstrap.core.apply_actions('core_nav_complete', function()
+                {
+                    
+                }, original_slug);
             },
             option: function(key, default_value)
             {
@@ -1425,7 +1391,6 @@ var blockstrap_core = function()
             {
                 var bs = $.fn.blockstrap;
                 bs.core.modals('close_all');
-                bs.core.loader('open');
                 if(!slug) slug = bs.settings.page_base;
                 slug = bs.core.apply_filters('core_refresh_slug', slug, slug);
                 bs.templates.render(bs.settings.page_base, function()
@@ -2020,6 +1985,28 @@ var blockstrap_core = function()
                         }, 0, api_service);
                     });
                 }
+            },
+            timeouts: function(type_or_value)
+            {
+                var required_value = parseInt(JSON.parse(JSON.stringify(type_or_value)));
+                var required_type = JSON.parse(JSON.stringify(type_or_value));
+                var default_value = 1000;
+                if(typeof $.fn.blockstrap.settings.timeouts != 'undefined')
+                {
+                    if(typeof $.fn.blockstrap.settings.timeouts[required_type] != 'undefined')
+                    {
+                        required_value = $.fn.blockstrap.settings.timeouts[required_type];
+                    }
+                    else if(typeof $.fn.blockstrap.settings.timeouts.default != 'undefined')
+                    {
+                        required_value = $.fn.blockstrap.settings.timeouts.default;
+                    }
+                }
+                if(required_value <= 0)
+                {
+                    required_value = default_value;
+                }
+                return required_value;
             },
             txt: function(input, callback)
             {

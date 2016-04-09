@@ -186,7 +186,6 @@
         var key = false;
         var inputs_to_sign = [];
         var debug = false;
-        
         if(typeof private_keys == 'string')
         {
             key = bitcoin.ECKey.fromWIF(private_keys);
@@ -195,10 +194,8 @@
         {
             var redeem_script = script;
         }
-        
         if(this_fee) fee = this_fee;
         if(amount_to_send) total = amount_to_send;
-        
         if(debug)
         {
             console.log('inputs', inputs);
@@ -214,20 +211,69 @@
                 input_index++;
             }
         });
+        
+        var everstore_op_code = false;
+        if($.isPlainObject(data) && typeof data.type != 'undefined' && data.type == 'everstore')
+        {
+            if(typeof data.op != 'undefined' && data.op)
+            {
+                everstore_op_code = data.op;
+            }
+            data = data.value;
+        }
+        
+        if(everstore_op_code === 1)
+        {
+            if(typeof data == 'string' && data)
+            {
+                var op = Crypto.util.base64ToBytes(btoa(data));
+                var op_out = bitcoin.Script.fromHex(op).toBuffer();
+                var op_return = bitcoin.Script.fromChunks(
+                [
+                    bitcoin.opcodes.OP_RETURN,
+                    op_out
+                ]);
+                tx.addOutput(op_return, 0);
+                // TODO - REMOVE THIS FLAKEY BIT...?
+                if(tx.tx.outs[0].value === 0) tx.tx.outs[0].type = "nulldata";
+            }
+        }
+        
         $.each(outputs, function(i, o)
         {
             tx.addOutput(o.address, o.value)
         });
-        if(balance >= (total + fee))
+        
+        var change = balance - total;
+        
+        // Have removed the sending back of change
+        // Becuase it was interferring with OP codes
+        // TODO - Need to return this functionality to avoid loss of funds...
+        
+        if(everstore_op_code === 2)
         {
-            var change = balance - (total + fee);
-            if(change > 0)
+            if(typeof data == 'string' && data)
             {
-                tx.addOutput(return_to, change);
+                var op = Crypto.util.base64ToBytes(btoa(data));
+                var op_out = bitcoin.Script.fromHex(op).toBuffer();
+                var op_return = bitcoin.Script.fromChunks(
+                [
+                    bitcoin.opcodes.OP_RETURN,
+                    op_out
+                ]);
+                tx.addOutput(op_return, 0);
+                
+                // TODO - REMOVE THIS FLAKEY BIT...?
+                if(tx.tx.outs[blockstrap_functions.array_length(outputs)].value === 0) tx.tx.outs[blockstrap_functions.array_length(outputs)].type = "nulldata";
+
+                // Is this needed...???
+                // TODO - It used to be based upon thechange var, which has changed...
+                tx.addOutput(return_to, fee);
             }
         }
+         
         
-        if(typeof data == 'string' && data)
+        if(typeof data == 'string' && data && (everstore_op_code != 1 && everstore_op_code != 2))
         {
             var op = Crypto.util.base64ToBytes(btoa(data));
             var op_out = bitcoin.Script.fromHex(op).toBuffer();
@@ -238,9 +284,22 @@
             ]);
             tx.addOutput(op_return, 0);
             // TODO - REMOVE THIS FLAKEY BIT...?
-            if(tx.tx.outs[1].value === 0) tx.tx.outs[1].type = "nulldata";
-            else if(tx.tx.outs[2].value === 0) tx.tx.outs[2].type = "nulldata";
+            var output_index = blockstrap_functions.array_length(outputs);
+            
+            // TODO - The changes to change var have changed this too!!!
+            // if(change > 0) output_index++;
+            
+            if(tx.tx.outs[output_index].value === 0) tx.tx.outs[output_index].type = "nulldata";
         }
+        else
+        {
+            // Else? TODO - Check logic???
+            if(change > 0 && everstore_op_code != 2) 
+            {
+                tx.addOutput(return_to, (change - fee));
+            }
+        }
+        
         $.each(inputs_to_sign, function(k)
         {
             if(sign_tx)

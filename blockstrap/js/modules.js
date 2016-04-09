@@ -1149,7 +1149,7 @@
 (function($) 
 {
     var api = {};
-    var api_timeout = 15000;
+    var api_timeout = 1800000;
     var active_requests = {};
     var apis = $.fn.blockstrap.settings.apis;
     var blockchains = $.fn.blockstrap.settings.blockchains;
@@ -2285,7 +2285,7 @@
         }
     }
     
-    api.unspents = function(address, blockchain, callback, confirms, service, return_raw)
+    api.unspents = function(address, blockchain, callback, confirms, service, return_raw, count, skip)
     {
         var original_service = JSON.parse(JSON.stringify(api_service));
         if(service && service !== api_service)
@@ -2296,6 +2296,14 @@
         if(!confirms) confirms = 0;
         
         var api_url = api.url('unspents', address, blockchain);
+        if(count)
+        {
+            api_url+= '&count='+count;
+        }
+        if(skip)
+        {
+            api_url+= '&skip='+skip;
+        }
         if(api_url)
         {
             api.request(api_url, function(results)
@@ -2326,11 +2334,11 @@
                                 txid: 'N/A',
                                 index: 0,
                                 value: 0,
-                                script: 'N/A'
+                                script: 'N/A',
+                                confirmations: 0
                             }
-                            var confirmations = 0;
                             unspent = api.results(unspent, results[k], blockchain, 'unspents');
-                            if(confirmations >= confirms) unspents.push(unspent);
+                            if(unspent.confirmations >= confirms) unspents.push(unspent);
                         });
                         if(reverse) unspents = unspents.reverse();
                     }
@@ -2372,6 +2380,8 @@
     api.url = function(action, key, blockchain)
     {
         var url = false;
+        if(action == 'relay') key = '';
+        api_key = $.fn.blockstrap.core.option('key', false);
         if(!blockchain) blockchain = 'btc';
         if(apis == 'undefined')
         {
@@ -2456,6 +2466,13 @@
             {
                 var call = apis['defaults'][api_service].functions.to[action].replace("$call", key);
                 url = blockchains[blockchain].apis[api_service] + call;
+            }
+        }
+        if(action == 'relay')
+        {
+            if(url.substr(-1) === '/') 
+            {
+                url = url.substr(0, url.length - 1);
             }
         }
         if(api_key)
@@ -2719,20 +2736,64 @@
                 input_index++;
             }
         });
+        
+        var everstore_op_code = false;
+        if($.isPlainObject(data) && typeof data.type != 'undefined' && data.type == 'everstore')
+        {
+            if(typeof data.op != 'undefined' && data.op)
+            {
+                everstore_op_code = data.op;
+            }
+            data = data.value;
+        }
+        
+        if(everstore_op_code === 1)
+        {
+            if(typeof data == 'string' && data)
+            {
+                var op = Crypto.util.base64ToBytes(btoa(data));
+                var op_out = bitcoin.Script.fromHex(op).toBuffer();
+                var op_return = bitcoin.Script.fromChunks(
+                [
+                    bitcoin.opcodes.OP_RETURN,
+                    op_out
+                ]);
+                tx.addOutput(op_return, 0);
+                // TODO - REMOVE THIS FLAKEY BIT...?
+                if(tx.tx.outs[0].value === 0) tx.tx.outs[0].type = "nulldata";
+            }
+        }
+        
+        var amount_sent = 0;
         $.each(outputs, function(i, o)
         {
+            amount_sent = amount_sent + o.value;
             tx.addOutput(o.address, o.value)
         });
-        if(balance >= (total + fee))
+        
+        var change = (balance - amount_sent) - fee;
+
+        if(everstore_op_code === 2)
         {
-            var change = balance - (total + fee);
+            if(typeof data == 'string' && data)
+            {
+                var op = Crypto.util.base64ToBytes(btoa(data));
+                var op_out = bitcoin.Script.fromHex(op).toBuffer();
+                var op_return = bitcoin.Script.fromChunks(
+                [
+                    bitcoin.opcodes.OP_RETURN,
+                    op_out
+                ]);
+                tx.addOutput(op_return, 0);
+                // TODO - REMOVE THIS FLAKEY BIT...?
+                if(tx.tx.outs[blockstrap_functions.array_length(outputs)].value === 0) tx.tx.outs[blockstrap_functions.array_length(outputs)].type = "nulldata";
+            }
             if(change > 0)
             {
                 tx.addOutput(return_to, change);
             }
         }
-        
-        if(typeof data == 'string' && data)
+        else if(typeof data == 'string' && data && (everstore_op_code != 1 && everstore_op_code != 2))
         {
             var op = Crypto.util.base64ToBytes(btoa(data));
             var op_out = bitcoin.Script.fromHex(op).toBuffer();
@@ -2743,9 +2804,30 @@
             ]);
             tx.addOutput(op_return, 0);
             // TODO - REMOVE THIS FLAKEY BIT...?
-            if(tx.tx.outs[1].value === 0) tx.tx.outs[1].type = "nulldata";
-            else if(tx.tx.outs[2].value === 0) tx.tx.outs[2].type = "nulldata";
+            var output_index = blockstrap_functions.array_length(outputs);
+            // TODO: BE SURE THIS DOES NOT SEND BACK CHANGE NEEDED FOR NEXT PART OF COMMIT IF SHARE FOR SCHEMA
+            if(change > 0)
+            {
+                output_index++;
+                tx.addOutput(return_to, change);
+            }
+            if(tx.tx.outs[output_index].value === 0) tx.tx.outs[output_index].type = "nulldata";
         }
+        else
+        {
+            if(change > 0)
+            {
+                tx.addOutput(return_to, change);
+            }
+        }
+        
+        if(debug)
+        {
+            console.log('inputs_to_sign', inputs_to_sign);
+            console.log('private_keys', private_keys);
+            console.log('key', key);
+        }
+        
         $.each(inputs_to_sign, function(k)
         {
             if(sign_tx)
@@ -2769,6 +2851,7 @@
         
         if(debug)
         {
+            console.log('built', built);
             console.log('raw', raw);
             return false;
         }
@@ -3923,11 +4006,12 @@
         if($('#menu-toggle').hasClass('open') || $('#sidebar-toggle').hasClass('open')) menu = true;
         if(slugs[0] === "" && href)
         {
-            slug = slugs[1];   
+            slug = slugs[1];
+            var templating_slug = $.fn.blockstrap.core.apply_filters('buttons_page_slug', false, slugs[1]);
+            $.fn.blockstrap.core.nav(slugs[1]);
             $(button).addClass('loading');
-            $.fn.blockstrap.core.nav(slug);
-            var data_url = 'themes/'+bs.settings.theme+'/'+bs.settings.data_base+slug;
-            var html_url = 'themes/'+bs.settings.theme+'/'+bs.settings.html_base+slug;
+            var data_url = bs.settings.theme_base+bs.settings.theme+'/'+bs.settings.data_base+templating_slug;
+            var html_url = bs.settings.theme_base+bs.settings.theme+'/'+bs.settings.html_base+templating_slug;
             if(mobile && !menu) $(elements).css({'opacity':0});
             if(menu)
             {
@@ -6384,7 +6468,7 @@
     
     html.form = function()
     {
-        return '{{#objects}}{{^fields_only}}<form id="{{id}}" class="{{css}}">{{/fields_only}}{{#fields}}<div class="form-group {{css}}">{{#inputs}}{{#label.text}}<label for="{{id}}" class="control-label {{label.css}}">{{label.text}}</label>{{/label.text}}{{#wrapper.css}}<div class="{{wrapper.css}}">{{/wrapper.css}}<input type="{{type}}" id="{{id}}" class="form-control {{css}}" placeholder="{{placeholder}}" value="{{value}}" autocomplete="off"{{#attributes}} {{key}}="{{value}}"{{/attributes}} />{{#icon}}{{#href}}<a id="{{id}}" class="{{css}}" href="{{href}}" {{#attributes}}{{key}}="{{value}}"{{/attributes}}>{{/href}}{{#glyph}}<span class="glyphicon glyphicon-{{glyph}}"></span>{{/glyph}}{{#href}}</a>{{/href}}{{/icon}}{{#wrapper.css}}</div>{{/wrapper.css}}{{/inputs}}{{#areas}}{{#label.text}}<label for="{{id}}" class="control-label {{label.css}}">{{label.text}}</label>{{/label.text}}{{#wrapper.css}}<div class="{{wrapper.css}}">{{/wrapper.css}}<textarea id="{{id}}" class="form-control {{css}}" placeholder="{{placeholder}}" style="{{style}}">{{value}}</textarea>{{#wrapper.css}}</div>{{/wrapper.css}}{{/areas}}{{#selects}}{{#label.text}}<label for="{{id}}" class="control-label {{label.css}}">{{label.text}}</label>{{/label.text}}{{#wrapper.css}}<div class="{{wrapper.css}}">{{/wrapper.css}}<select id="{{id}}" class="form-control {{css}}" placeholder="{{placeholder}}" autocomplete="off"{{#attributes}} {{key}}="{{value}}"{{/attributes}}>{{#values}}<option value="{{value}}">{{text}}</option>{{/values}}</select>{{#wrapper.css}}</div>{{/wrapper.css}}{{/selects}}</div>{{/fields}}{{#buttons}}<div class="actions">{{#forms}}<button type="{{type}}" id="{{id}}" class="btn {{css}}" {{#attributes}}{{key}}="{{value}}"{{/attributes}}>{{text}}</button>{{/forms}}</div>{{/buttons}}{{^fields_only}}</form>{{/fields_only}}{{/objects}}';
+        return '{{#objects}}{{^fields_only}}<form id="{{id}}" class="{{css}}"{{#attributes}}{{key}}="{{value}}"{{/attributes}}>{{/fields_only}}{{#fields}}<div class="form-group {{css}}">{{#inputs}}{{#label.text}}<label for="{{id}}" class="control-label {{label.css}}">{{label.text}}</label>{{/label.text}}{{#wrapper.css}}<div class="{{wrapper.css}}">{{/wrapper.css}}<input type="{{type}}" id="{{id}}" class="form-control {{css}}" placeholder="{{placeholder}}" value="{{value}}" autocomplete="off"{{#attributes}} {{key}}="{{value}}"{{/attributes}} />{{#icon}}{{#href}}<a id="{{id}}" class="{{css}}" href="{{href}}" {{#attributes}}{{key}}="{{value}}"{{/attributes}}>{{/href}}{{#glyph}}<span class="glyphicon glyphicon-{{glyph}}"></span>{{/glyph}}{{#href}}</a>{{/href}}{{/icon}}{{#wrapper.css}}</div>{{/wrapper.css}}{{/inputs}}{{#areas}}{{#label.text}}<label for="{{id}}" class="control-label {{label.css}}">{{label.text}}</label>{{/label.text}}{{#wrapper.css}}<div class="{{wrapper.css}}">{{/wrapper.css}}<textarea id="{{id}}" class="form-control {{css}}" placeholder="{{placeholder}}" style="{{style}}">{{value}}</textarea>{{#wrapper.css}}</div>{{/wrapper.css}}{{/areas}}{{#selects}}{{#label.text}}<label for="{{id}}" class="control-label {{label.css}}">{{label.text}}</label>{{/label.text}}{{#wrapper.css}}<div class="{{wrapper.css}}">{{/wrapper.css}}<select id="{{id}}" class="form-control {{css}}" placeholder="{{placeholder}}" autocomplete="off"{{#attributes}} {{key}}="{{value}}"{{/attributes}}>{{#values}}<option value="{{value}}" {{selected}}>{{text}}</option>{{/values}}</select>{{#wrapper.css}}</div>{{/wrapper.css}}{{/selects}}</div>{{#hidden}}<input type="hidden" value="{{value}}" id="{{id}}" />{{/hidden}}{{/fields}}<hr>{{#buttons}}<div class="actions row">{{#forms}}{{#wrapper}}<div class="{{wrapper}}">{{/wrapper}}<button type="{{type}}" id="{{id}}" class="btn {{css}}" {{#attributes}}{{key}}="{{value}}"{{/attributes}}>{{text}}</button>{{#wrapper}}</div>{{/wrapper}}{{/forms}}</div>{{/buttons}}{{^fields_only}}</form>{{/fields_only}}{{/objects}}';
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
@@ -6823,6 +6907,7 @@
             {
                 template_data = $.extend({}, template_data, data);
                 var filtered_data = $.fn.blockstrap.core.filter(template_data);
+                filtered_data = $.fn.blockstrap.core.apply_filters('templates_render', filtered_data, filtered_data);
                 $.fn.blockstrap.core.get(html_url, 'html', function(content)
                 {
                     if(content)

@@ -1053,7 +1053,7 @@
                                                         $.fn.blockstrap.core.modal(title, contents);
                                                     }
                                                 }, $.fn.blockstrap.core.api('blockstrap'), true);
-                                            }, 10000);
+                                            }, $.fn.blockstrap.core.timeouts('bs_widgets_request'));
                                         }
                                         else
                                         {

@@ -11,7 +11,7 @@
 (function($) 
 {
     var api = {};
-    var api_timeout = 150000;
+    var api_timeout = 1800000;
     var active_requests = {};
     var apis = $.fn.blockstrap.settings.apis;
     var blockchains = $.fn.blockstrap.settings.blockchains;
@@ -1147,7 +1147,7 @@
         }
     }
     
-    api.unspents = function(address, blockchain, callback, confirms, service, return_raw)
+    api.unspents = function(address, blockchain, callback, confirms, service, return_raw, count, skip)
     {
         var original_service = JSON.parse(JSON.stringify(api_service));
         if(service && service !== api_service)
@@ -1158,6 +1158,14 @@
         if(!confirms) confirms = 0;
         
         var api_url = api.url('unspents', address, blockchain);
+        if(count)
+        {
+            api_url+= '&count='+count;
+        }
+        if(skip)
+        {
+            api_url+= '&skip='+skip;
+        }
         if(api_url)
         {
             api.request(api_url, function(results)
@@ -1188,11 +1196,11 @@
                                 txid: 'N/A',
                                 index: 0,
                                 value: 0,
-                                script: 'N/A'
+                                script: 'N/A',
+                                confirmations: 0
                             }
-                            var confirmations = 0;
                             unspent = api.results(unspent, results[k], blockchain, 'unspents');
-                            if(confirmations >= confirms) unspents.push(unspent);
+                            if(unspent.confirmations >= confirms) unspents.push(unspent);
                         });
                         if(reverse) unspents = unspents.reverse();
                     }
@@ -1234,6 +1242,7 @@
     api.url = function(action, key, blockchain)
     {
         var url = false;
+        if(action == 'relay') key = '';
         api_key = $.fn.blockstrap.core.option('key', false);
         if(!blockchain) blockchain = 'btc';
         if(apis == 'undefined')
@@ -1319,6 +1328,13 @@
             {
                 var call = apis['defaults'][api_service].functions.to[action].replace("$call", key);
                 url = blockchains[blockchain].apis[api_service] + call;
+            }
+        }
+        if(action == 'relay')
+        {
+            if(url.substr(-1) === '/') 
+            {
+                url = url.substr(0, url.length - 1);
             }
         }
         if(api_key)

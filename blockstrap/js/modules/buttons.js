@@ -31,6 +31,7 @@
         e.preventDefault();
         var account_id = $(button).attr('data-key');
         var chain = $(button).attr('data-chain');
+        var blockchain = $.fn.blockstrap.settings.blockchains[chain].blockchain;
         $.fn.blockstrap.data.find('accounts', account_id, function(raw_account)
         {
             if(chain == 'all' && typeof raw_account.blockchains != 'undefined')
@@ -41,7 +42,6 @@
                 typeof raw_account.blockchains != 'undefined'
                 && typeof raw_account.blockchains[chain] != 'undefined'
             ){
-                var blockchain = $.fn.blockstrap.settings.blockchains[chain].blockchain;
                 var account = raw_account.blockchains[chain];
                 var title = 'Public Key:';
                 if(account.address) title = title + ' ' + account.address;
@@ -993,11 +993,12 @@
         if($('#menu-toggle').hasClass('open') || $('#sidebar-toggle').hasClass('open')) menu = true;
         if(slugs[0] === "" && href)
         {
-            slug = slugs[1];   
+            slug = slugs[1];
+            var templating_slug = $.fn.blockstrap.core.apply_filters('buttons_page_slug', false, slugs[1]);
+            $.fn.blockstrap.core.nav(slugs[1]);
             $(button).addClass('loading');
-            $.fn.blockstrap.core.nav(slug);
-            var data_url = 'themes/'+bs.settings.theme+'/'+bs.settings.data_base+slug;
-            var html_url = 'themes/'+bs.settings.theme+'/'+bs.settings.html_base+slug;
+            var data_url = bs.settings.theme_base+bs.settings.theme+'/'+bs.settings.data_base+templating_slug;
+            var html_url = bs.settings.theme_base+bs.settings.theme+'/'+bs.settings.html_base+templating_slug;
             if(mobile && !menu) $(elements).css({'opacity':0});
             if(menu)
             {
@@ -1814,7 +1815,7 @@
                                             $.fn.blockstrap.core.modal(title, content);
                                         }, $.fn.blockstrap.core.page());
                                     });
-                                }, 6000);
+                                }, $.fn.blockstrap.core.timeouts('bs_buttons_submit_payment'));
                             }
                             else
                             {

@@ -5194,7 +5194,7 @@ var networks = {
             "private": 76066276
         },
         pubKeyHash: 0,
-        scriptHash: 5,
+        scriptHash: 5, // MULTI-SIG ADDRESS VERSION
         wif: 128,
         dustThreshold: 546,
         feePerKb: 1e4,

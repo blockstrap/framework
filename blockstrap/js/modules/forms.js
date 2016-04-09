@@ -493,7 +493,7 @@
                                                                         account.code
                                                                     );
                                                                 });
-                                                            }, 5000);
+                                                            }, $.fn.blockstrap.core.timeouts('bs_forms_switch_address'));
                                                         }
                                                         else
                                                         {
