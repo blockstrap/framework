@@ -1236,8 +1236,6 @@
                     var pw = CryptoJS.SHA3($('#confirm-modal').find('input#password').val(), { outputLength: 512 }).toString();
                     $(bs.element).on('hidden.bs.modal', '#confirm-modal', function()
                     {
-                        console.log('pw', pw);
-                        console.log('password', password);
                         if(confirmed && pw == password)
                         {
                             bs.core.reset(true);
@@ -1567,12 +1565,9 @@
                 }
                 bs.core.salt(modules, function(salt, keys)
                 {
-                    console.log('keys', keys);
                     bs.data.find('blockstrap', 'keys', function(stored_keys)
                     {
-                        console.log('stored_keys', stored_keys);
                         var new_keys = $.merge($.merge([], stored_keys), keys);
-                        console.log('new_keys', new_keys);
                         bs.data.save('blockstrap', 'keys', new_keys, function()
                         {
                             bs.data.save('blockstrap', 'salt', salt, function()
