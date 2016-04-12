@@ -1467,10 +1467,13 @@ var blockstrap_core = function()
             {
                 if(!salt) salt = $.fn.blockstrap.settings.id;
                 var keys = [];
+                console.log('salty modules?', modules);
                 if($.isPlainObject(modules))
                 {
                     var count = 0;
                     var key_count = Object.keys(modules).length;
+                    console.log('key_count', key_count);
+                    console.log('count', count);
                     if(key_count === count)
                     {
                         callback(salt, keys);
@@ -1486,6 +1489,8 @@ var blockstrap_core = function()
                             {
                                 $.each($.fn.blockstrap.settings.store, function(store_index, store_key)
                                 {
+                                    console.log('store_key', store_key);
+                                    console.log('k', k);
                                     if(store_key === k)
                                     {
                                         if(k == 'your_password') 
@@ -1496,9 +1501,10 @@ var blockstrap_core = function()
                                         {
                                             safe_v = v;
                                         }
+                                        console.log('safe_v', safe_v);
                                         $.fn.blockstrap.data.save('keys', store_key, safe_v, function()
                                         {
-
+                                            console.log('and then?');
                                         });
                                     }
                                 });

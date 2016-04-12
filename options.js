@@ -37,6 +37,12 @@ var blockstrap_options = {
     module_base: "js/modules/",
     page_base: "index",
     slug_base: "dashboard",
+    store: [
+        "app_url", 
+        "your_name",
+        "your_username",
+        "your_password"
+    ],
     api_service: "blockstrap",
     base_url: "",
     content_id: "main-content",
