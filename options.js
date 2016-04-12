@@ -17,7 +17,7 @@ var blockstrap_options = {
     app_id: "framework",
     key: "B726962B-F976-6FD9-67EA-71C9838FD6A7",
     loader_id: "loading-wrapper",
-    account_poll: false,
+    account_poll: false, // REMEMBER TO SWITCH THIS ON WHEN NEEDED !!!
     skip_config: true,
     install: false,
     public: false, 

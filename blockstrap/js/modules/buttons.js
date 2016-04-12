@@ -994,7 +994,7 @@
         if(slugs[0] === "" && href)
         {
             slug = slugs[1];
-            var templating_slug = $.fn.blockstrap.core.apply_filters('buttons_page_slug', false, slugs[1]);
+            var templating_slug = $.fn.blockstrap.core.apply_filters('buttons_page_slug', slugs[1], slugs[1]);
             $.fn.blockstrap.core.nav(slugs[1]);
             $(button).addClass('loading');
             var data_url = bs.settings.theme_base+bs.settings.theme+'/'+bs.settings.data_base+templating_slug;
