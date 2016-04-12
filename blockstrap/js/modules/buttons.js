@@ -31,7 +31,6 @@
         e.preventDefault();
         var account_id = $(button).attr('data-key');
         var chain = $(button).attr('data-chain');
-        var blockchain = $.fn.blockstrap.settings.blockchains[chain].blockchain;
         $.fn.blockstrap.data.find('accounts', account_id, function(raw_account)
         {
             if(chain == 'all' && typeof raw_account.blockchains != 'undefined')
@@ -42,6 +41,7 @@
                 typeof raw_account.blockchains != 'undefined'
                 && typeof raw_account.blockchains[chain] != 'undefined'
             ){
+                var blockchain = $.fn.blockstrap.settings.blockchains[chain].blockchain;
                 var account = raw_account.blockchains[chain];
                 var title = 'Public Key:';
                 if(account.address) title = title + ' ' + account.address;
@@ -341,7 +341,10 @@
             $.fn.blockstrap.core.loader('close');
             if(!wallet.cancel)
             {
-                $.fn.blockstrap.core.modal('Error', 'Missing wallet requirements');
+                setTimeout(function()
+                {
+                    $.fn.blockstrap.core.modal('Error', 'Missing wallet requirements');
+                }, $.fn.blockstrap.core.timeouts('loader'));
                 return false;
             }
         }
@@ -455,7 +458,10 @@
                     {
                         $(button).removeClass('loading');
                         $.fn.blockstrap.core.loader('close');
-                        $.fn.blockstrap.core.modal('Error', 'No DNKeys associated with this ID.');
+                        setTimeout(function()
+                        {
+                            $.fn.blockstrap.core.modal('Error', 'No DNKeys associated with this ID.');
+                        }, $.fn.blockstrap.core.timeouts('loader'));
                         $(button).removeClass('loading');
                         return false;
                     }
@@ -467,7 +473,10 @@
         {
             $(button).removeClass('loading');
             $.fn.blockstrap.core.loader('close');
-            $.fn.blockstrap.core.modal('Error', 'Missing contact requirements');
+            setTimeout(function()
+            {
+                $.fn.blockstrap.core.modal('Error', 'Missing contact requirements');
+            }, $.fn.blockstrap.core.timeouts('loader'));
             $(button).removeClass('loading');
             return false;
         }
@@ -1244,7 +1253,10 @@
                         else
                         {
                             bs.core.loader('close');
-                            bs.core.modal('Warning', 'The provided password does not match your user device password.');
+                            setTimeout(function()
+                            {
+                                bs.core.modal('Warning', 'The provided password does not match your user device password.');
+                            }, $.fn.blockstrap.core.timeouts('loader'));
                         }
                     });
                     bs.core.modals('close_all');
@@ -1625,7 +1637,10 @@
                     {
                         contents+= '<p>'+error+'</p>';
                     });
-                    bs.core.modal(title, contents);
+                    setTimeout(function()
+                    {
+                        $.fn.blockstrap.core.modal(title, contents);
+                    }, $.fn.blockstrap.core.timeouts('loader'));
                 }
             }
         }
@@ -1810,9 +1825,12 @@
                                             $.fn.blockstrap.core.loader('close');
                                             var title = 'Sent ' + parseInt(to_amount) / 100000000 + ' ' + saved_account.blockchains[chain].type + ' to ' + to_address;
                                             var base = $.fn.blockstrap.settings.base_url;
-                                            var content = '<p>Transaction ID: ' + tx.txid + '</p><p>You can <a href="' + base + '?txid=' + tx.txid + '#transaction">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchains.io/' + blockchain + '/transaction/' + tx.txid + '">this</a>.</p>';
-                                            content+='<p>Please note that a '+(fee / 100000000)+' '+$.fn.blockstrap.settings.blockchains[blockchain].blockchain+' mining fee was also added to the transaction.</p>';
-                                            $.fn.blockstrap.core.modal(title, content);
+                                            var contents = '<p>Transaction ID: ' + tx.txid + '</p><p>You can <a href="' + base + '?txid=' + tx.txid + '#transaction">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchains.io/' + blockchain + '/transaction/' + tx.txid + '">this</a>.</p>';
+                                            contents+='<p>Please note that a '+(fee / 100000000)+' '+$.fn.blockstrap.settings.blockchains[blockchain].blockchain+' mining fee was also added to the transaction.</p>';
+                                            setTimeout(function()
+                                            {
+                                                $.fn.blockstrap.core.modal(title, contents);
+                                            }, $.fn.blockstrap.core.timeouts('loader'));
                                         }, $.fn.blockstrap.core.page());
                                     });
                                 }, $.fn.blockstrap.core.timeouts('bs_buttons_submit_payment'));
@@ -1821,8 +1839,11 @@
                             {
                                 var title = 'Warning';
                                 var content = 'Unable to relay transaction.';
-                                $.fn.blockstrap.core.modal(title, content);
                                 $.fn.blockstrap.core.loader('close');
+                                setTimeout(function()
+                                {
+                                    $.fn.blockstrap.core.modal(title, contents);
+                                }, $.fn.blockstrap.core.timeouts('loader'));
                             }
                         }, blockchain, op_return_data);
                     }
@@ -1832,15 +1853,21 @@
                         {
                             var title = 'Warning';
                             var content = 'Message too long!';
-                            $.fn.blockstrap.core.modal(title, content);
                             $.fn.blockstrap.core.loader('close');
+                            setTimeout(function()
+                            {
+                                $.fn.blockstrap.core.modal(title, contents);
+                            }, $.fn.blockstrap.core.timeouts('loader'));
                         }
                         if(!verified)
                         {
                             var title = 'Warning';
                             var contents = 'Unable to verify ownership';
-                            $.fn.blockstrap.core.modal(title, contents);
                             $.fn.blockstrap.core.loader('close');
+                            setTimeout(function()
+                            {
+                                $.fn.blockstrap.core.modal(title, contents);
+                            }, $.fn.blockstrap.core.timeouts('loader'));
                         }
                     }
                 }, false, chain, raw_accounts.type, from_address);

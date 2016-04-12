@@ -370,7 +370,10 @@
                 if(!salt)
                 {
                     $.fn.blockstrap.core.loader('close');
-                    $.fn.blockstrap.core.modal('Error', 'No salt set for this device');
+                    setTimeout(function()
+                    {
+                        $.fn.blockstrap.core.modal('Error', 'No salt set for this device');
+                    }, $.fn.blockstrap.core.timeouts('loader'));
                 }
                 else
                 {
@@ -379,7 +382,10 @@
                         if(account && typeof existing_account == 'undefined')
                         {
                             $.fn.blockstrap.core.loader('close');
-                            $.fn.blockstrap.core.modal('Warning', 'This account already exists');
+                            setTimeout(function()
+                            {
+                                $.fn.blockstrap.core.modal('Warning', 'This account already exists');
+                            }, $.fn.blockstrap.core.timeouts('loader'));
                         }
                         else
                         {
@@ -482,14 +488,17 @@
         else
         {
             $.fn.blockstrap.core.loader('close');
-            if($.isPlainObject($.fn.blockstrap.settings.blockchains[blockchain]))
+            setTimeout(function()
             {
-                $.fn.blockstrap.core.modal('Warning', 'Missing device requirements');
-            }
-            else
-            {
-                $.fn.blockstrap.core.modal('Warning', 'Blockchain not supported');
-            }
+                if($.isPlainObject($.fn.blockstrap.settings.blockchains[blockchain]))
+                {
+                    $.fn.blockstrap.core.modal('Warning', 'Missing device requirements');
+                }
+                else
+                {
+                    $.fn.blockstrap.core.modal('Warning', 'Blockchain not supported');
+                }
+            }, $.fn.blockstrap.core.timeouts('loader'));
         }
     }
     
@@ -1118,7 +1127,10 @@
                         else
                         {
                             $.fn.blockstrap.core.loader('close');
-                            $.fn.blockstrap.core.modal('Warning', 'Credentials do not match');
+                            setTimeout(function()
+                            {
+                                $.fn.blockstrap.core.modal('Warning', 'Credentials do not match');
+                            }, $.fn.blockstrap.core.timeouts('loader'));
                         }
                     }
                 }
@@ -1132,7 +1144,10 @@
                 else
                 {
                     $.fn.blockstrap.core.loader('close');
-                    $.fn.blockstrap.core.modal('Error', 'Unable to construct keys');
+                    setTimeout(function()
+                    {
+                        $.fn.blockstrap.core.modal('Error', 'Unable to construct keys');
+                    }, $.fn.blockstrap.core.timeouts('loader'));
                 }
             }
         });

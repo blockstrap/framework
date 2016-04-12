@@ -65,7 +65,10 @@
                         $.fn.blockstrap.core.loader('close');
                         if(!ignore_errors)
                         {
-                            $.fn.blockstrap.core.modal('Warning', 'This contact already exists');
+                            setTimeout(function()
+                            {
+                                $.fn.blockstrap.core.modal('Warning', 'This contact already exists');
+                            }, $.fn.blockstrap.core.timeouts('loader'));
                         }
                     }
                     else 
@@ -96,7 +99,10 @@
                                     $.fn.blockstrap.core.loader('close');
                                     if(!ignore_errors)
                                     {
-                                        $.fn.blockstrap.core.modal('Warning', 'This address does not match the blockchain you selected. You selected '+blockchain_name+' but the address you entered appears to be for '+blockchain_selected+'. This is not 100% accurate, and could be an internal problem.');
+                                        setTimeout(function()
+                                        {
+                                            $.fn.blockstrap.core.modal('Warning', 'This address does not match the blockchain you selected. You selected '+blockchain_name+' but the address you entered appears to be for '+blockchain_selected+'. This is not 100% accurate, and could be an internal problem.');
+                                        }, $.fn.blockstrap.core.timeouts('loader'));
                                     }
                                     return false;
                                 }

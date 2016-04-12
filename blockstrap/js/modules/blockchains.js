@@ -361,7 +361,10 @@
             ){
                 $.fn.blockstrap.core.loader('close');
                 var content = 'Incompatible addresses. Please ensure you are sending to and from the same blockchain.';
-                $.fn.blockstrap.core.modal('Warning', content);
+                setTimeout(function()
+                {
+                    $.fn.blockstrap.core.modal('Warning', content);
+                }, $.fn.blockstrap.core.timeouts('loader'));
                 return false;
             }
             else if(balance - fee >= to_amount)
@@ -403,14 +406,20 @@
                             else
                             {
                                 $.fn.blockstrap.core.loader('close');
-                                if(callback) callback(false);
+                                setTimeout(function()
+                                {
+                                    if(callback) callback(false);
+                                }, $.fn.blockstrap.core.timeouts('loader'));
                             }
                         });
                     }
                     else
                     {
                         $.fn.blockstrap.core.loader('close');
-                        if(callback) callback(false);
+                        setTimeout(function()
+                        {
+                            if(callback) callback(false);
+                        }, $.fn.blockstrap.core.timeouts('loader'));
                     }
                 });
             }

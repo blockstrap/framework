@@ -95,13 +95,19 @@
                         else
                         {
                             $.fn.blockstrap.core.loader('close');
-                            $.fn.blockstrap.core.modal(title, contents);
+                            setTimeout(function()
+                            {
+                                $.fn.blockstrap.core.modal(title, contents);
+                            }, $.fn.blockstrap.core.timeouts('loader'));
                         }
                     }
                     else
                     {
                         $.fn.blockstrap.core.loader('close');
-                        $.fn.blockstrap.core.modal(title, contents);
+                        setTimeout(function()
+                        {
+                            $.fn.blockstrap.core.modal(title, contents);
+                        }, $.fn.blockstrap.core.timeouts('loader'));
                     }
                 })
             })
@@ -151,7 +157,10 @@
                     $.fn.blockstrap.core.refresh(function()
                     {
                         $.fn.blockstrap.core.loader('close');
-                        $.fn.blockstrap.core.modal('Success', 'Contact Updated');
+                        setTimeout(function()
+                        {
+                            $.fn.blockstrap.core.modal('Success', 'Contact Updated');
+                        }, $.fn.blockstrap.core.timeouts('loader'));
                     }, $.fn.blockstrap.core.page());
                 });
             }
@@ -500,7 +509,10 @@
                                                             var title = 'Error';
                                                             var contents = 'Unable to relay raw transaction';
                                                             $.fn.blockstrap.core.loader('close');
-                                                            $.fn.blockstrap.core.modal(title, contents);
+                                                            setTimeout(function()
+                                                            {
+                                                                $.fn.blockstrap.core.modal(title, contents);
+                                                            }, $.fn.blockstrap.core.timeouts('loader'));
                                                         }
                                                     });
                                                 }
@@ -536,7 +548,10 @@
                                 var title = 'Warning';
                                 var contents = 'Unable to re-verify ownership';
                                 $.fn.blockstrap.core.loader('close');
-                                $.fn.blockstrap.core.modal(title, contents);
+                                setTimeout(function()
+                                {
+                                    $.fn.blockstrap.core.modal(title, contents);
+                                }, $.fn.blockstrap.core.timeouts('loader'));
                             }
                         }
                     })
@@ -546,7 +561,10 @@
                     var title = 'Warning';
                     var contents = 'Unable to verify ownership';
                     $.fn.blockstrap.core.loader('close');
-                    $.fn.blockstrap.core.modal(title, contents);
+                    setTimeout(function()
+                    {
+                        $.fn.blockstrap.core.modal(title, contents);
+                    }, $.fn.blockstrap.core.timeouts('loader'));
                 }
             });
         }
