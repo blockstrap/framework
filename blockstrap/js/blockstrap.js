@@ -803,6 +803,15 @@ var blockstrap_core = function()
                     }
                     bs.core.modal(title, contents);
                 });
+                // TODO - DEAL WITH THIS PROPERLY
+                if($('#blockstrap-login').length > 0)
+                {
+                    setTimeout(function()
+                    {
+                        $('#blockstrap-login #login-username').val('');
+                        $('#blockstrap-login #login-password').val('');
+                    }, $.fn.blockstrap.core.timeouts('clear_forms'));
+                }
             },
             get: function(file, extension, callback, skip, cached)
             {

@@ -102,6 +102,7 @@ var blockstrap_options = {
         default: 750,
         loader: 750,
         isotope_delay: 750,
+        clear_forms: 50, // Related to a strange firefox bug
         delayed_init: 750, // Are we sure we need this? Was 3000
         bs_buttons_submit_payment: 750, // Are we sure we need this? Was 6000
         bs_forms_switch_address: 750, // Are we sure we need this? Was 6000
@@ -387,6 +388,9 @@ var blockstrap_options = {
         }
     },
     apis: {
+        available: {
+            "blockstrap": "Blockstrap"
+        },
         defaults: {
             blockstrap: {
                 functions: {
