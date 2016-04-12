@@ -30,7 +30,7 @@ LOADING SEQUENCE
 }
 .bs.loading:after {
     content: "LOADING";
-    background: url(blockstrap/img/block-gif.gif) no-repeat;
+    background: url(../img/block-gif.gif) no-repeat;
     display: block;
     color: #FFF;
     position: absolute;
@@ -60,7 +60,7 @@ LOADING SEQUENCE
 }
 .bs.installing:after {
     content: "INSTALLING (ADD TO MEMORY FOR LATER)";
-    background: url(blockstrap/img/block-gif.gif) no-repeat;
+    background: url(../img/block-gif.gif) no-repeat;
     display: block;
     color: #FFF;
     position: absolute;
