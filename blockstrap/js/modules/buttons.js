@@ -1111,7 +1111,7 @@
             var mnav = $($.fn.blockstrap.element).find('#' + $.fn.blockstrap.settings.mobile_nav_id);
             $(nav).find('.loading').removeClass('loading');
             $(mnav).find('.loading').removeClass('loading');
-
+            $(button).addClass('active');
             $($.fn.blockstrap.element).find('.activated').removeClass('activated');
             $.fn.blockstrap.core.ready();
         });

@@ -1171,7 +1171,7 @@ var blockstrap_core = function()
                 $(nav).find('.active').removeClass('active');
                 $(mnav).find('.active').removeClass('active');
                 var original_slug = JSON.parse(JSON.stringify(slug));
-                if(slug.charAt(0) != '#') slug = '#' + $.fn.blockstrap.core.apply_filters('nav_slug', false, slug);
+                if(slug.charAt(0) != '#') slug = '#' + $.fn.blockstrap.core.apply_filters('nav_slug', slug, slug);
                 $(nav).find(slug).addClass('active');
                 $(mnav).find(slug).addClass('active');
                 $.fn.blockstrap.core.apply_actions('core_nav_complete', function()

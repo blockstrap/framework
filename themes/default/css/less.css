@@ -6047,14 +6047,14 @@ html {
   position: absolute;
   width: 221px;
   height: 36px;
-  background: url(http://localhost/neuro/wallet/themes/default/img/logo.png) no-repeat;
+  background: url(../img/logo.png) no-repeat;
   top: 50%;
   left: 50%;
   margin: -21px 0 0 -110px;
 }
 .blockstrap-wrapper .loading {
   color: transparent !important;
-  background-image: url(http://localhost/neuro/wallet/themes/default/img/loading.gif) !important;
+  background-image: url(../img/loading.gif) !important;
   background-repeat: no-repeat !important;
   background-position: center center !important;
 }
