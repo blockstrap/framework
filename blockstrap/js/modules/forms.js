@@ -77,11 +77,17 @@
                         var address = keys.pub;
                         if(address == default_address)
                         {
+                            var fields_to_use = {};
+                            $.each(fields, function(i)
+                            {
+                                var field = fields[i];
+                                fields_to_use[field.id] = field.value;
+                            });
                             $.fn.blockstrap.accounts.new(
                                 new_chains, 
                                 account.name, 
-                                account.password, 
-                                keys, 
+                                fields_to_use.wallet_password, 
+                                fields_to_use, 
                                 function()
                                 {
                                     $.fn.blockstrap.core.refresh(function()

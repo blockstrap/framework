@@ -419,6 +419,7 @@
                             
                             var blockchains = {};
                             var chains = blockchain;
+                            
                             var pw_obj = CryptoJS.SHA3(salt+password, { outputLength: 512 });
                             var pw = pw_obj.toString();
                             
@@ -1035,22 +1036,6 @@
                 }
                 $.each(fields, function(k, v)
                 {
-                    if(v.id == 'wallet_blockchain' && type == 'hd')
-                    {
-                        v.value = [];
-                        var chains = JSON.parse(JSON.stringify($.fn.blockstrap.settings.blockchains));
-                        delete chains.multi;
-                        $.each(chains, function(chain, obj)
-                        {
-                            v.value.push(chain);
-                        });
-                    }
-                        
-                    // TODO: Remove this hardcoded hack?
-                    if(v.id == 'wallet_currency' && original)
-                    {
-                        v.value = original;
-                    }
                     key_obj = CryptoJS.SHA3(salt+key+v.id+v.value, { outputLength: 512 });
                     key = key_obj.toString();
                 });
@@ -1111,7 +1096,7 @@
                 }
                 else
                 {
-                    keys = $.fn.blockstrap.blockchains.keys(key, account.code, 1, false, true);
+                    keys = $.fn.blockstrap.blockchains.keys(key+account.code, account.code, 1, false, true);
                     var v5address = keys.raw.getAddress().toString();
                     if(v5address == account.address)
                     {
