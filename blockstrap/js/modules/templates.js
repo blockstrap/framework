@@ -40,6 +40,7 @@
             // ADDRESS INFO
             var archived = '';
             var address_url = '';
+            var address_hidden = '';
             var current_account = false;
             var add_blockchain = 'Bitcoin';
             var address_received = 0;
@@ -94,16 +95,23 @@
                             }
                         });
                     current_txs+= '</ul>';
+                    if(account.tx_count < 1)
+                    {
+                        key+= ' (ARCHIVED)';
+                        account.tx_count = 'N/A';
+                    }
                 }
             }
             else if(key)
             {
-                archived = ' (ARCHIVED)';
-                account.tx_count = 'RE-SYNC will not store detals due to being archived address';
+                key = 'N/A';
+                address_hidden = 'hidden';
+                account.tx_count = 'N/A';
             }
             
             // TX INFO
             var tx_url = '';
+            var tx_hidden = '';
             var current_tx = false;
             var tx_blockchain = 'Bitcoin';
             var txid = blockstrap_functions.vars('txid');
@@ -120,9 +128,14 @@
             if($.isPlainObject($.fn.blockstrap.accounts))
             {
                 current_tx = $.fn.blockstrap.accounts.tx(txid);
+                if(!current_tx) 
+                {
+                    txid = 'N/A';
+                    tx_hidden = 'hidden';
+                }
             }
             
-            if(txid && typeof current_tx.tx != 'undefined' && typeof current_tx.tx.blockchain != 'undefined')
+            if(txid && txid != 'N/A' && typeof current_tx.tx != 'undefined' && typeof current_tx.tx.blockchain != 'undefined')
             {
                 tx_blockchain = $.fn.blockstrap.settings.blockchains[current_tx.tx.blockchain].blockchain;
                 if(typeof typeof current_tx.tx.size != 'undefined') tx.size = current_tx.tx.size;
@@ -133,7 +146,7 @@
                 if(typeof current_tx.tx.block != 'undefined' && current_tx.tx.block) tx.block = current_tx.tx.block;
                 else
                 {
-                    tx.block = 'Must RE-SYNC to fetch live details!';
+                    tx.block = 'N/A';
                 }
                 var base_api_url = $.fn.blockstrap.settings.blockchains[current_tx.tx.blockchain].apis[$.fn.blockstrap.settings.api_service];
                 var tx_slugs = $.fn.blockstrap.settings.apis.defaults[$.fn.blockstrap.settings.api_service].functions.to.transaction;
@@ -162,7 +175,9 @@
                 'tx.output',
                 'tx.fees',
                 'address.tx_count',
-                'address.balance'
+                'address.balance',
+                'address.hidden',
+                'tx.hidden'
             ];
             var replacements = [
                 $.fn.blockstrap.settings.base_url,
@@ -183,7 +198,9 @@
                 parseInt(tx.output) / 100000000 + ' ' + tx_blockchain,
                 parseInt(tx.fees) / 100000000 + ' ' + tx_blockchain,
                 account.tx_count,
-                parseInt(account.balance) / 100000000 + ' ' + add_blockchain
+                parseInt(account.balance) / 100000000 + ' ' + add_blockchain,
+                address_hidden,
+                tx_hidden
             ];
         }
         

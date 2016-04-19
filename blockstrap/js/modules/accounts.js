@@ -246,6 +246,27 @@
                         address = this_chain_obj;
                     }
                 });
+                if(!address && typeof account.addresses != 'undefined')
+                {
+                    $.each(account.addresses, function(this_chain, this_chain_obj)
+                    {
+                        $.each(this_chain_obj.chains, function(this_inner_chain, this_inner_chain_address)
+                        {
+                            $.each(this_inner_chain_address, function(k, this_address)
+                            {
+                                if(this_address == key)
+                                {
+                                    address = {
+                                        tx_count: 0,
+                                        received: 0,
+                                        balance: 0,
+                                        code: this_inner_chain
+                                    }
+                                }
+                            });
+                        });
+                    }); 
+                }
             });
         }
         return address;

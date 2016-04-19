@@ -14,13 +14,8 @@
                             "buttons": [
                                 {
                                     "href": "{{urls.tx}}",
-                                    "css": "btn-success",
-                                    "text": "RAW JSON"
-                                },
-                                {
-                                    "href": "#",
-                                    "css": "btn-primary btn-update-tx",
-                                    "text": "RE-SYNC"
+                                    "css": "btn-success {{tx.hidden}}",
+                                    "text": "LIVE DATA"
                                 }
                             ]
                         }
