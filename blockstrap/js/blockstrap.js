@@ -150,7 +150,10 @@ var blockstrap_core = function()
                 {
                     api = $.fn.blockstrap.settings.api_service;
                 }
-                api = $.fn.blockstrap.core.option('api_service', api);
+                if($.fn.blockstrap.core.option('api_service'))
+                {
+                    api = $.fn.blockstrap.core.option('api_service');
+                }
                 return api;
             },
             apply_actions: function(hook, callback, options)
@@ -1807,6 +1810,7 @@ var blockstrap_core = function()
                             });
                             test_results = $.fn.blockstrap.core.test_results_table(full_results) + '<a href="#" class="btn-hidden_toggler btn btn-success btn-block" data-id="full-results">FULL RESULTS</a><div style="display: none" id="full-results">' + test_results + '</div>';
                             $.fn.blockstrap.core.modal('Test Results', test_results);
+                            $('#blockstrap').removeClass('loading');
                         }
                         
                     }
@@ -1919,79 +1923,87 @@ var blockstrap_core = function()
                     chain_total = blockstrap_functions.array_length(bs.settings.blockchains.btc.apis);
                     $.each(bs.settings.blockchains.btc.apis, function(api_service, api_url)
                     {
-                        var this_count = 0;
-                        var test_count = '5';
-                        chain_count++;
-                        bs.api.address(set.address.request, 'btc', function(results)
-                        {
-                            this_count++;
-                            bs.core.test_results(
-                                set.address.results, 
-                                results, 
-                                this_count, 
-                                test_count,
-                                'api.address('+set.address.request+', btc)',
-                                api_service,
-                                chain_count,
-                                chain_total
-                            );
-                        }, api_service);
-                        bs.api.block(set.block.request, 'btc', function(results)
-                        {
-                            this_count++;
-                            bs.core.test_results(
-                                set.block.results, 
-                                results, 
-                                this_count, 
-                                test_count,
-                                'api.block('+set.block.request+', btc)',
-                                api_service,
-                                chain_count,
-                                chain_total
-                            );
-                        }, api_service);
-                        bs.api.transaction(set.transaction.request, 'btc', function(results)
-                        {
-                            this_count++;
-                            bs.core.test_results(
-                                set.transaction.results, 
-                                results, 
-                                this_count, 
-                                test_count,
-                                'api.transaction('+set.transaction.request+', btc)',
-                                api_service,
-                                chain_count,
-                                chain_total
-                            );
-                        }, api_service);
-                        bs.api.transactions(set.transactions.request, 'btc', function(results)
-                        {
-                            this_count++;
-                            bs.core.test_results(
-                                set.transactions.results, 
-                                results, 
-                                this_count, 
-                                test_count,
-                                'api.transactions('+set.transactions.request+', btc)',
-                                api_service,
-                                chain_count,
-                                chain_total
-                            );
-                        }, api_service);
-                        bs.api.unspents(set.unspents.request, 'btc', function(results)
-                        {
-                            this_count++;
-                            bs.core.test_results(
-                                set.unspents.results, 
-                                results, 
-                                this_count, 
-                                test_count,
-                                'api.unspents('+set.unspents.request+', btc)',
-                                api_service,
-                                chain_count,
-                                chain_total
-                            );
-                        }, 0, api_service);
+                        if(
+                            (
+                                typeof $.fn.blockstrap.settings.api_service_test != 'undefined' 
+                                && api_service == $.fn.blockstrap.settings.api_service_test
+                            )
+                            || typeof $.fn.blockstrap.settings.api_service_test == 'undefined' 
+                        ){
+                            var this_count = 0;
+                            var test_count = '5';
+                            chain_count++;
+                            bs.api.address(set.address.request, 'btc', function(results)
+                            {
+                                this_count++;
+                                bs.core.test_results(
+                                    set.address.results, 
+                                    results, 
+                                    this_count, 
+                                    test_count,
+                                    'api.address('+set.address.request+', btc)',
+                                    api_service,
+                                    chain_count,
+                                    chain_total
+                                );
+                            }, api_service);
+                            bs.api.block(set.block.request, 'btc', function(results)
+                            {
+                                this_count++;
+                                bs.core.test_results(
+                                    set.block.results, 
+                                    results, 
+                                    this_count, 
+                                    test_count,
+                                    'api.block('+set.block.request+', btc)',
+                                    api_service,
+                                    chain_count,
+                                    chain_total
+                                );
+                            }, api_service);
+                            bs.api.transaction(set.transaction.request, 'btc', function(results)
+                            {
+                                this_count++;
+                                bs.core.test_results(
+                                    set.transaction.results, 
+                                    results, 
+                                    this_count, 
+                                    test_count,
+                                    'api.transaction('+set.transaction.request+', btc)',
+                                    api_service,
+                                    chain_count,
+                                    chain_total
+                                );
+                            }, api_service);
+                            bs.api.transactions(set.transactions.request, 'btc', function(results)
+                            {
+                                this_count++;
+                                bs.core.test_results(
+                                    set.transactions.results, 
+                                    results, 
+                                    this_count, 
+                                    test_count,
+                                    'api.transactions('+set.transactions.request+', btc)',
+                                    api_service,
+                                    chain_count,
+                                    chain_total
+                                );
+                            }, api_service);
+                            bs.api.unspents(set.unspents.request, 'btc', function(results)
+                            {
+                                this_count++;
+                                bs.core.test_results(
+                                    set.unspents.results, 
+                                    results, 
+                                    this_count, 
+                                    test_count,
+                                    'api.unspents('+set.unspents.request+', btc)',
+                                    api_service,
+                                    chain_count,
+                                    chain_total
+                                );
+                            }, 0, api_service);
+                        }
                     });
                 }
             },

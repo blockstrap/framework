@@ -341,16 +341,8 @@ var blockstrap_setup_steps = [
                                                 "text": "Blockstrap"
                                             },
                                             {
-                                                "value": "blockr",
-                                                "text": "Blockr"
-                                            },
-                                            {
-                                                "value": "sochain",
-                                                "text": "SoChain"
-                                            },
-                                            {
-                                                "value": "helloblock",
-                                                "text": "Hello Block (BTC Only)"
+                                                "value": "blockcypher",
+                                                "text": "BlockCypher"
                                             }
                                         ],
                                         "wrapper": {

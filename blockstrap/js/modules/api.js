@@ -1276,7 +1276,11 @@
                 $('#default-modal').find('h4.modal-title').text() != 'API Warning'
                 && $('#default-modal').find('.modal-body').find('.'+key+blockchain+action).length < 1
             ){
-                $.fn.blockstrap.core.modal('API Warning', text);
+                setTimeout(function()
+                {
+                    $.fn.blockstrap.core.modal('API Warning', text);
+                    $('#blockstrap').removeClass('loading');
+                }, $.fn.blockstrap.core.timeouts('loader'));
                 return false;
             }
             else if(
@@ -1284,7 +1288,11 @@
                 && $('#default-modal').find('.modal-body').find('.'+key+blockchain+action).length < 1
             ){
                 var current_text = $('#default-modal').find('.modal-body').html();
-                $.fn.blockstrap.core.modal('API Warning', current_text+text);
+                setTimeout(function()
+                {
+                    $.fn.blockstrap.core.modal('API Warning', current_text+text);
+                    $('#blockstrap').removeClass('loading');
+                }, $.fn.blockstrap.core.timeouts('loader'));
                 return false;
             }
             else
