@@ -1,6 +1,6 @@
 /*
  * 
- *  Blockstrap v0.6.0.0
+ *  Blockstrap v0.6.0.1
  *  http://blockstrap.com
  *
  *  Designed, Developed and Maintained by Neuroware.io Inc
@@ -12,7 +12,7 @@
  */
 
 var blockstrap_options = {
-    v: "0.6.0.0",
+    v: "0.6.0.1",
     id: "blockstrap",
     app_id: "framework",
     key: "B726962B-F976-6FD9-67EA-71C9838FD6A7",
