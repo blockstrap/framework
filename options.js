@@ -290,7 +290,7 @@ var blockstrap_options = {
     },
     blockchains: {
         btct: {
-            blockchain: "Bitcoin Testnet",
+            blockchain: "Bitcoin (Testnet)",
             lib: "bitcointestnet",
             apis: {
                 blockstrap: "http://192.168.1.200/v0/btct/"
@@ -300,7 +300,7 @@ var blockstrap_options = {
             op_limit: 80
         },
         dasht: {
-            blockchain: "DashPay Testnet",
+            blockchain: "DashPay (Testnet)",
             lib: "dashpaytestnet",
             apis: {
                 blockstrap: "http://192.168.1.200/v0/dasht/"
@@ -310,7 +310,7 @@ var blockstrap_options = {
             op_limit: 80
         },
         doget: {
-            blockchain: "Dogecoin Testnet",
+            blockchain: "Dogecoin (Testnet)",
             lib: "dogecointestnet",
             apis: {
                 blockstrap: "http://192.168.1.200/v0/dogt/",
@@ -321,7 +321,7 @@ var blockstrap_options = {
             op_limit: 80
         },
         ltct: {
-            blockchain: "Litecoin Testnet",
+            blockchain: "Litecoin (Testnet)",
             lib: "litecointestnet",
             apis: {
                 blockstrap: "http://192.168.1.200/v0/ltct/"

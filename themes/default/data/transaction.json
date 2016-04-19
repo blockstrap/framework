@@ -13,9 +13,14 @@
                             "intro": "This information about the transaction comes from the device, not the blockchain",
                             "buttons": [
                                 {
-                                    "href": "#",
+                                    "href": "{{urls.tx}}",
                                     "css": "btn-success",
-                                    "text": "JSON VIEW"
+                                    "text": "RAW JSON"
+                                },
+                                {
+                                    "href": "#",
+                                    "css": "btn-primary btn-update-tx",
+                                    "text": "RE-SYNC"
                                 }
                             ]
                         }

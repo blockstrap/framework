@@ -112,7 +112,7 @@ code,
 kbd,
 pre,
 samp {
-  font-family: monospace, monospace;
+  font-family: monospace;
   font-size: 1em;
 }
 button,
@@ -279,7 +279,6 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: #333333;
@@ -696,7 +695,7 @@ code,
 kbd,
 pre,
 samp {
-  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-family: monospace;
 }
 code {
   padding: 2px 4px;
@@ -5521,7 +5520,6 @@ button.close {
   height: 20px;
   margin-top: -10px;
   margin-left: -10px;
-  font-family: serif;
 }
 .carousel-control .icon-prev:before {
   content: '\2039';
@@ -6305,7 +6303,6 @@ SIDEBAR
 }
 .blockstrap-wrapper #sidebar #user-name {
   font-size: 125%;
-  font-family: pro, sans-serif;
   color: #ffffbb;
 }
 .blockstrap-wrapper #sidebar #last {
@@ -6356,7 +6353,6 @@ SIDEBAR
 }
 .blockstrap-wrapper #sidebar #sidebar-panel .panel-title {
   font-size: 125%;
-  font-family: pro, sans-serif;
   border-bottom: 1px solid #214760;
   margin-bottom: calc(10px);
 }
@@ -6396,7 +6392,6 @@ CONTENT / PANELS
 }
 .blockstrap-wrapper #main-content .panel .panel-heading {
   font-size: 125%;
-  font-family: pro, sans-serif;
   background: #111e27;
   color: #eeeeee;
   padding: calc(10px);
@@ -6695,6 +6690,12 @@ LISTS
   border-right: none;
   padding: 20px;
 }
+.blockstrap-wrapper .panel-body .list-group .list-group-item a.pull-right {
+    word-wrap: break-word;
+    word-break: break-all;
+    white-space: normal;
+    padding-left: 65px;
+}
 .blockstrap-wrapper .panel-body .list-group .list-group-item:first-child {
   border-top: none;
 }
@@ -6721,9 +6722,9 @@ JUMBOTRON
 }
 .blockstrap-wrapper .panel-body .jumbotron h1 {
   font-size: 125%;
-  font-family: pro, sans-serif;
   text-align: center;
   margin: 0;
+  word-wrap: break-word;
 }
 .blockstrap-wrapper .panel-body .jumbotron .intro {
   font-size: 12px;
@@ -6838,7 +6839,6 @@ TABLES
 }
 .blockstrap-wrapper #main-content table.table thead tr th,
 .blockstrap-wrapper table.table thead tr th {
-  font-family: pro, sans-serif;
   cursor: pointer;
   font-size: 125%;
   font-weight: normal;
@@ -7007,7 +7007,6 @@ MODALS
 }
 .blockstrap-wrapper .modal .modal-dialog .modal-header {
   font-size: 125%;
-  font-family: pro, sans-serif;
   background: #eeeeee;
   color: #757575;
   border-radius: 4px 4px 0 0;
@@ -7224,18 +7223,7 @@ PROGRESS
   background: #111e27;
   border: 1px solid #214760;
 }
-/*
 
-FONTS
-
-*/
-@font-face {
-  font-family: 'pro';
-  src: url('../../../blockstrap/fonts/absolut_pro_light_reduced-webfont.eot');
-  src: url('../../../blockstrap/fonts/absolut_pro_light_reduced-webfont.eot?#iefix') format('embedded-opentype'), url('../../../blockstrap/fonts/absolut_pro_light_reduced-webfont.woff') format('woff'), url('../../../blockstrap/fonts/absolut_pro_light_reduced-webfont.ttf') format('truetype'), url('../../../blockstrap/fonts/absolut_pro_light_reduced-webfont.svg#absolut_pro_reducedregular') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
 /*
 
 RESET PRIOR TO RESPONSIVENESS
@@ -7499,6 +7487,9 @@ body .blockstrap-wrapper {
     text-align: right;
     top: auto;
     width: auto;
+    display: block;
+    text-align: center;
+    padding-left: 0 !important;
   }
   html .blockstrap-wrapper .panel-body .jumbotron,
   body .blockstrap-wrapper .panel-body .jumbotron {

@@ -239,10 +239,13 @@
         {
             $.each(accounts, function(k, account)
             {
-                if(account.address == key)
+                $.each(account.blockchains, function(this_chain, this_chain_obj)
                 {
-                    address = account;
-                }
+                    if(this_chain_obj.address == key)
+                    {
+                        address = this_chain_obj;
+                    }
+                });
             });
         }
         return address;
@@ -762,7 +765,7 @@
             $.each(accounts, function(k, account)
             {
                 var txs = account.txs;
-                if($.isPlainObject(txs))
+                if($.isArray(txs))
                 {
                     $.each(txs, function(k, tx)
                     {
@@ -779,15 +782,16 @@
     
     accounts.txs = function(account_id)
     {
+        var accounts = [];
         var transactions = [];
-        if(account_id) accounts.push($.fn.blockstrap.accounts.get(account_id));
+        if(account_id) accounts.push($.fn.blockstrap.accounts.get(account_id, true));
         else accounts = $.fn.blockstrap.accounts.get();
         if($.isArray(accounts))
         {
             $.each(accounts, function(k, account)
             {
                 var txs = account.txs;
-                if($.isPlainObject(txs))
+                if($.isArray(txs))
                 {
                     $.each(txs, function(k, tx)
                     {

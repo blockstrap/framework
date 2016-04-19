@@ -9,13 +9,18 @@
                     "type": "jumbotrons",
                     "objects": [
                         {
-                            "title": "Address: {{vars.key}}",
+                            "title": "Address: {{vars.key}}{{vars.archived}}",
                             "intro": "This information about this address comes from the device, not the blockchain",
                             "buttons": [
                                 {
-                                    "href": "#",
+                                    "href": "{{urls.address}}",
                                     "css": "btn-success",
-                                    "text": "JSON VIEW"
+                                    "text": "RAW JSON"
+                                },
+                                {
+                                    "href": "#",
+                                    "css": "btn-primary btn-update-address",
+                                    "text": "RE-SYNC"
                                 }
                             ]
                         }
@@ -59,25 +64,7 @@
                 "id": "tx-amounts",
                 "css": "col-md-6 even",
                 "header": "Transactions",
-                "body": {
-                    "func": "bootstrap",
-                    "type": "lists",
-                    "objects": [
-                        {
-                            "items": [
-                                {
-                                    "html": "Coming soon!",
-                                    "buttons": [
-                                        {
-                                            "css": "btn-xs disabled pull-right",
-                                            "text": "next release"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                }
+                "body": "{{vars.txs}}"
             }
         ]
     }

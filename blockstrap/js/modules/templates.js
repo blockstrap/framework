@@ -34,14 +34,19 @@
             var amount = '';
             var raw_name = localStorage.getItem('nw_keys_your_name');
             var name = raw_name;
-
             if(blockstrap_functions.json(raw_name)) name = $.parseJSON(raw_name);
-            // ADDRESS INFO
-            var add_blockchain = 'Bitcoin';
             blockstrap_functions.vars(); // TODO: NEED TO REFRESH THIS :-(
+            
+            // ADDRESS INFO
+            var archived = '';
+            var address_url = '';
+            var current_account = false;
+            var add_blockchain = 'Bitcoin';
+            var address_received = 0;
             var key = blockstrap_functions.vars('key');
             var from = blockstrap_functions.vars('from');
             var chain = blockstrap_functions.vars('chain');
+            var current_txs = '<ul class="list-group"><li class="list-group-item"><div class="list-item-content">No transactions found in localStorage</div><a class="btn btn-xs disabled pull-right" href="">N/A</a></li></ul>';
             if(parseInt(blockstrap_functions.vars('amount')) > 0)
             {
                 amount = parseFloat(parseInt(blockstrap_functions.vars('amount')) / 100000000).toFixed(8);
@@ -49,55 +54,107 @@
             var account = false;
             if($.isPlainObject($.fn.blockstrap.accounts))
             {
-                var account = $.fn.blockstrap.accounts.address(key);
+                var current_account = $.fn.blockstrap.accounts.address(key);
             }
-            if(!account)
-            {
-                account = {};
-                account.tx_count = 0;
-                account.receievd = 0;
-                account.balance = 0;
-                account.blockchain = false;
+            var account = {
+                tx_count: 0,
+                received: 0,
+                balance: 0,
+                blockchain: false
             }
             if(account.blockchain && $.fn.blockstrap.settings.blockchains[account.blockchain])
             {
                 add_blockchain = $.fn.blockstrap.settings.blockchains[account.blockchain].blockchain;
             }
+            if(current_account)
+            {
+                account.tx_count = current_account.tx_count;
+                account.balance = current_account.balance;
+                account.blockchain = current_account.code;
+                if(typeof current_account.receievd != 'undefined' && current_account.receievd)
+                {
+                    account.received = parseInt(current_account.received) / 100000000 + ' ' + add_blockchain;
+                }
+                var base_api_url = $.fn.blockstrap.settings.blockchains[account.blockchain].apis[$.fn.blockstrap.settings.api_service];
+                var address_slugs = $.fn.blockstrap.settings.apis.defaults[$.fn.blockstrap.settings.api_service].functions.to.address;
+                address_url = base_api_url + address_slugs + key;
+                if($.fn.blockstrap.settings.key)
+                {
+                    address_url+= '?showtxnio=1&api_key=' + $.fn.blockstrap.settings.key;
+                }
+                var available_txs = $.fn.blockstrap.accounts.txs(current_account.id);
+                if($.isArray(available_txs) && blockstrap_functions.array_length(available_txs) > 0)
+                {
+                    current_txs = '<ul class="list-group">';
+                        $.each(available_txs, function(i)
+                        {
+                            if(available_txs[i].address == key)
+                            {
+                                current_txs+= '<li class="list-group-item"><div class="list-item-content">TXID:</div><a class="btn btn-xs pull-right" href="?txid=' + available_txs[i].txid + '#transaction">' + available_txs[i].txid + '</a></li>';
+                            }
+                        });
+                    current_txs+= '</ul>';
+                }
+            }
+            else if(key)
+            {
+                archived = ' (ARCHIVED)';
+                account.tx_count = 'RE-SYNC will not store detals due to being archived address';
+            }
             
             // TX INFO
-            var tx = false;
+            var tx_url = '';
+            var current_tx = false;
             var tx_blockchain = 'Bitcoin';
             var txid = blockstrap_functions.vars('txid');
+            var tx = {
+                size: 0,
+                time: 0,
+                block: '',
+                input: 0,
+                output: 0,
+                fees: 0,
+                tx_count: 0
+            };
             
             if($.isPlainObject($.fn.blockstrap.accounts))
             {
-                tx = $.fn.blockstrap.accounts.tx(txid);
+                current_tx = $.fn.blockstrap.accounts.tx(txid);
             }
-            if(tx.blockchain && $.fn.blockstrap.settings.blockchains[tx.blockchain])
+            
+            if(txid && typeof current_tx.tx != 'undefined' && typeof current_tx.tx.blockchain != 'undefined')
             {
-                tx_blockchain = $.fn.blockstrap.settings.blockchains[tx.blockchain].blockchain;
-            }
-            else
-            {
-                txid = '';
-                tx = {
-                    size: 0,
-                    time: 0,
-                    block: '',
-                    input: 0,
-                    output: 0,
-                    fees: 0,
-                    tx_count: 0
-                };
+                tx_blockchain = $.fn.blockstrap.settings.blockchains[current_tx.tx.blockchain].blockchain;
+                if(typeof typeof current_tx.tx.size != 'undefined') tx.size = current_tx.tx.size;
+                if(typeof current_tx.tx.time != 'undefined') tx.time = current_tx.tx.time;
+                if(typeof current_tx.tx.input != 'undefined') tx.input = current_tx.tx.input;
+                if(typeof current_tx.tx.output != 'undefined') tx.output = current_tx.tx.output;
+                if(typeof current_tx.tx.fees != 'undefined') tx.fees = current_tx.tx.fees;
+                if(typeof current_tx.tx.block != 'undefined' && current_tx.tx.block) tx.block = current_tx.tx.block;
+                else
+                {
+                    tx.block = 'Must RE-SYNC to fetch live details!';
+                }
+                var base_api_url = $.fn.blockstrap.settings.blockchains[current_tx.tx.blockchain].apis[$.fn.blockstrap.settings.api_service];
+                var tx_slugs = $.fn.blockstrap.settings.apis.defaults[$.fn.blockstrap.settings.api_service].functions.to.transaction;
+                tx_url = base_api_url + tx_slugs + txid;
+                if($.fn.blockstrap.settings.key)
+                {
+                    tx_url+= '?showtxnio=1&api_key=' + $.fn.blockstrap.settings.key;
+                }
             }
             var placeholders = [
                 'urls.root', 
+                'urls.tx',
+                'urls.address',
                 'user.name',
                 'vars.txid',
                 'vars.key',
+                'vars.txs',
                 'vars.from',
                 'vars.chain',
                 'vars.amount',
+                'vars.archived',
                 'tx.size',
                 'tx.time',
                 'tx.block',
@@ -109,12 +166,16 @@
             ];
             var replacements = [
                 $.fn.blockstrap.settings.base_url,
+                tx_url,
+                address_url,
                 name,
                 txid,
                 key,
+                current_txs,
                 from,
                 chain,
                 amount,
+                archived,
                 tx.size + ' (Bytes)',
                 tx.time,
                 tx.block,
