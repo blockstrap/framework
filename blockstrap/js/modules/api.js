@@ -549,15 +549,23 @@
                 }
             }
         }
+        
+        var data_type = 'json';
+        if(api_service == 'qt')
+        {
+            data_type = 'jsonp';
+            type = 'POST';
+        }
+        
         $.ajax({
             url: url,
             type: type,
-            dataType: 'JSON',
+            dataType: data_type,
             data: data,
-            async: true,
+            async: false,
             headers: headers,
             success: function(results)
-            {
+            {   
                 var extra_key = false;
                 var key_to_call = false;
                 if(
@@ -653,6 +661,11 @@
         var request_data = {};
         var map = api.map(blockchain);
         request_data[map.to.relay_param] = hash;
+        
+        if(typeof map.to.relay_json != 'undefined')
+        {
+            request_data = JSON.stringify(request_data);
+        }
         
         var api_url = api.url('relay', hash, blockchain);
         if(api_url)
@@ -847,7 +860,7 @@
                             {
                                 var address = results[arrayed_result[0]];
                                 var hash = bitcoin.Address.fromBase58Check(address);
-                                res_01 = hash;
+                                res_01 = hash.toString();
                             }
                             else if(parse_type == 'utctoepoch')
                             {
@@ -864,6 +877,10 @@
                             else if(parse_type == 'lowercase')
                             {
                                 res_01 = results[arrayed_result[0]].toLowerCase();
+                            }
+                            else
+                            {
+                                res_01 = results[arrayed_result[0]];
                             }
                             defaults[field_name] = res_01;
                         }
@@ -1085,12 +1102,22 @@
                 }
                 else
                 {
+                    var these_results = false;
                     var transactions = [];
                     var map = api.map(blockchain);
                     var now = new Date().getTime();
-                    if(results)
+                    var result_key = false;
+                    if(typeof map.from.transactions.inner != 'undefined' && map.from.transactions.inner)
                     {
-                        $.each(results, function(k, v)
+                        result_key = map.from.transactions.inner;
+                    }
+                    if(result_key && typeof results[result_key] != 'undefined')
+                    {
+                        these_results = results[result_key];
+                    }
+                    if(these_results)
+                    {
+                        $.each(these_results, function(k, v)
                         {
                             var transaction = {
                                 blockchain: blockchain,
@@ -1105,7 +1132,7 @@
                             };
                             transaction = api.results(
                                 transaction, 
-                                results[k], 
+                                these_results[k], 
                                 blockchain, 
                                 'transactions'
                             );
@@ -1181,7 +1208,17 @@
                 {
                     var unspents = [];
                     var map = api.map(blockchain);
-                    if(results)
+                    
+                    var result_key = false;
+                    if(typeof map.from.unspents.inner != 'undefined' && map.from.unspents.inner)
+                    {
+                        result_key = map.from.unspents.inner;
+                    }
+                    if(result_key && typeof results[result_key] != 'undefined')
+                    {
+                        these_results = results[result_key];
+                    }
+                    if(these_results)
                     {
                         var reverse = false;
                         if(
@@ -1190,7 +1227,12 @@
                         ){
                             reverse = true;
                         }
-                        $.each(results, function(k, v)
+                        var unspent_array = these_results;
+                        if(!$.isArray(unspent_array))
+                        {
+                            unspent_array = these_results[map.from.unspents.key];
+                        }
+                        $.each(unspent_array, function(k, v)
                         {
                             var unspent = {
                                 txid: 'N/A',
@@ -1199,7 +1241,7 @@
                                 script: 'N/A',
                                 confirmations: 0
                             }
-                            unspent = api.results(unspent, results[k], blockchain, 'unspents');
+                            unspent = api.results(unspent, unspent_array[k], blockchain, 'unspents');
                             if(unspent.confirmations >= confirms) unspents.push(unspent);
                         });
                         if(reverse) unspents = unspents.reverse();
@@ -1243,7 +1285,16 @@
     {
         var url = false;
         if(action == 'relay') key = '';
+        
         api_key = $.fn.blockstrap.core.option('key', false);
+        if($.fn.blockstrap.settings.key)
+        {
+            if($.isArray($.fn.blockstrap.settings.key))
+            {
+                api_key = $.fn.blockstrap.settings.key[Math.floor(Math.random()*$.fn.blockstrap.settings.key.length)];
+            }
+        }
+        
         if(!blockchain) blockchain = 'btc';
         if(apis == 'undefined')
         {
@@ -1345,15 +1396,20 @@
                 url = url.substr(0, url.length - 1);
             }
         }
+        var key_key = 'api_key';
+        if(typeof $.fn.blockstrap.settings.key_key != 'undefined')
+        {
+            key_key = $.fn.blockstrap.settings.key_key;
+        }
         if(api_key)
         {
             if(url.indexOf("?") > -1)
             {
-                url+='&api_key='+api_key;
+                url+='&'+key_key+'='+api_key;
             }
             else
             {
-                url+='?api_key='+api_key;
+                url+='?'+key_key+'='+api_key;
             }
         }
         var app_id = 'framework';

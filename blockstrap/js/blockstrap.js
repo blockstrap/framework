@@ -1687,8 +1687,6 @@ var blockstrap_core = function()
             },
             test_results: function(expected, given, index, total, title, api_service, chain_count, chain_total)
             {
-                var details = '';
-                var passed = true;
                 var bs = $.fn.blockstrap;
                 if(typeof full_results[api_service] == 'undefined')
                 {
@@ -1699,11 +1697,13 @@ var blockstrap_core = function()
                     full_results[api_service].addresses = false;
                     full_results[api_service].markets = false;
                     full_results[api_service].paginate = false;
+                    full_results[api_service].results = '';
                 }
                 if($.isPlainObject(expected) || $.isArray(expected))
                 {
                     var ex = expected;
                     var give = given;
+                    var provided_results = {};
                     if($.isPlainObject(expected))
                     {
                         expected = [];
@@ -1713,6 +1713,8 @@ var blockstrap_core = function()
                     }
                     $.each(expected, function(key, result)
                     {
+                        var details = '';
+                        var passed = true;
                         var expected_count = 0;
                         var expected_total = blockstrap_functions.array_length(result);
                         $.each(result, function(field, value)
@@ -1738,25 +1740,27 @@ var blockstrap_core = function()
                                 }
                             }
                         });
+                        if(passed === true && typeof provided_results[api_service] == 'undefined')
+                        {
+                            full_results[api_service].passed++;
+                            full_results[api_service].results+= '<hr />';
+                            full_results[api_service].results+= '<p class="break-word text-success left-aligned">';
+                            full_results[api_service].results+= '<strong class="black">API Request using '+$.fn.blockstrap.settings.apis.available[api_service]+':</strong><br />'+title;
+                            full_results[api_service].results+= ': <strong>PASSED</strong></p>';
+                            provided_results[api_service] = true;
+                        }
+                        else if(typeof provided_results[api_service] == 'undefined')
+                        {
+                            full_results[api_service].failed++;
+                            full_results[api_service].results+= '<hr />';
+                            full_results[api_service].results+= '<p class="break-word text-danger left-aligned">';
+                            full_results[api_service].results+= '<strong class="black">API Request using '+$.fn.blockstrap.settings.apis.available[api_service]+':</strong><br />'+title;
+                            full_results[api_service].results+= ': <strong>FAILED</strong>'+details+'</p>';
+                            provided_results[api_service] = true;
+                        }
                     });
-                    if(passed === true)
-                    {
-                        full_results[api_service].passed++;
-                        test_results+= '<hr />';
-                        test_results+= '<p class="break-word text-success left-aligned">';
-                        test_results+= '<strong class="black">API Request using '+api_service+':</strong><br />'+title;
-                        test_results+= ': <strong>PASSED</strong></p>';
-                    }
-                    else
-                    {
-                        full_results[api_service].failed++;
-                        test_results+= '<hr />';
-                        test_results+= '<p class="break-word text-danger left-aligned">';
-                        test_results+= '<strong class="black">API Request using '+api_service+':</strong><br />'+title;
-                        test_results+= ': <strong>FAILED</strong>'+details+'</p>';
-                    }
                     if(index >= total && chain_count >= chain_total)
-                    {   
+                    {
                         if($('#default-modal').find('.test-results').length < 1)
                         {
                             $.each(bs.settings.blockchains, function(blockchain, values)
@@ -1808,11 +1812,29 @@ var blockstrap_core = function()
                                     });
                                 }
                             });
-                            test_results = $.fn.blockstrap.core.test_results_table(full_results) + '<a href="#" class="btn-hidden_toggler btn btn-success btn-block" data-id="full-results">FULL RESULTS</a><div style="display: none" id="full-results">' + test_results + '</div>';
-                            $.fn.blockstrap.core.modal('Test Results', test_results);
-                            $('#blockstrap').removeClass('loading');
                         }
-                        
+
+                        provided_results = {};
+                        test_result_content = $.fn.blockstrap.core.test_results_table(full_results) + '<a href="#" class="btn-hidden_toggler btn btn-success btn-block" data-id="full-results">FULL RESULTS</a><div style="display: none" id="full-results">';
+                        $.each(bs.settings.blockchains, function(blockchain, values)
+                        {
+                            if(blockchain != 'multi')
+                            {
+                                $.each(values.apis, function(provider, url)
+                                {
+                                    if(
+                                        typeof full_results[provider] != 'undefined'
+                                        && typeof provided_results[provider] == 'undefined'
+                                    ){
+                                        test_result_content+= full_results[provider].results;
+                                        provided_results[provider] = true;
+                                    }
+                                });
+                            }
+                        });
+                        test_result_content+= '</div>';
+                        $.fn.blockstrap.core.modal('Test Results', test_result_content);
+                        $('#blockstrap').removeClass('loading');
                     }
                 }
             },
@@ -1851,7 +1873,7 @@ var blockstrap_core = function()
                         $.each(results, function(provider, these_results)
                         {
                             html+= '<tr>';
-                                html+= '<td><strong>'+provider+'</strong></td>';
+                                html+= '<td><strong>'+$.fn.blockstrap.settings.apis.available[provider]+'</strong></td>';
                                 if(these_results.failed > 0)
                                 {
                                     html+= '<td><span class="label label-success">'+these_results.passed+'</span></td>';
@@ -1921,89 +1943,85 @@ var blockstrap_core = function()
                     && typeof bs.settings.blockchains.btc.apis != 'undefined'
                 ){
                     chain_total = blockstrap_functions.array_length(bs.settings.blockchains.btc.apis);
+                    for (i = 0; i < blockstrap_functions.array_length(bs.settings.blockchains.btc.apis); i++) 
+                    {
+                        var this_chain = bs.settings.blockchains.btc.apis[i];
+                    }
                     $.each(bs.settings.blockchains.btc.apis, function(api_service, api_url)
                     {
-                        if(
-                            (
-                                typeof $.fn.blockstrap.settings.api_service_test != 'undefined' 
-                                && api_service == $.fn.blockstrap.settings.api_service_test
-                            )
-                            || typeof $.fn.blockstrap.settings.api_service_test == 'undefined' 
-                        ){
-                            var this_count = 0;
-                            var test_count = '5';
-                            chain_count++;
-                            bs.api.address(set.address.request, 'btc', function(results)
-                            {
-                                this_count++;
-                                bs.core.test_results(
-                                    set.address.results, 
-                                    results, 
-                                    this_count, 
-                                    test_count,
-                                    'api.address('+set.address.request+', btc)',
-                                    api_service,
-                                    chain_count,
-                                    chain_total
-                                );
-                            }, api_service);
-                            bs.api.block(set.block.request, 'btc', function(results)
-                            {
-                                this_count++;
-                                bs.core.test_results(
-                                    set.block.results, 
-                                    results, 
-                                    this_count, 
-                                    test_count,
-                                    'api.block('+set.block.request+', btc)',
-                                    api_service,
-                                    chain_count,
-                                    chain_total
-                                );
-                            }, api_service);
-                            bs.api.transaction(set.transaction.request, 'btc', function(results)
-                            {
-                                this_count++;
-                                bs.core.test_results(
-                                    set.transaction.results, 
-                                    results, 
-                                    this_count, 
-                                    test_count,
-                                    'api.transaction('+set.transaction.request+', btc)',
-                                    api_service,
-                                    chain_count,
-                                    chain_total
-                                );
-                            }, api_service);
-                            bs.api.transactions(set.transactions.request, 'btc', function(results)
-                            {
-                                this_count++;
-                                bs.core.test_results(
-                                    set.transactions.results, 
-                                    results, 
-                                    this_count, 
-                                    test_count,
-                                    'api.transactions('+set.transactions.request+', btc)',
-                                    api_service,
-                                    chain_count,
-                                    chain_total
-                                );
-                            }, api_service);
-                            bs.api.unspents(set.unspents.request, 'btc', function(results)
-                            {
-                                this_count++;
-                                bs.core.test_results(
-                                    set.unspents.results, 
-                                    results, 
-                                    this_count, 
-                                    test_count,
-                                    'api.unspents('+set.unspents.request+', btc)',
-                                    api_service,
-                                    chain_count,
-                                    chain_total
-                                );
-                            }, 0, api_service);
-                        }
+                        var this_count = 0;
+                        var test_count = 5; // TODO - REMOVE THIS "MANUAL" VARIABLE
+                        chain_count++;
+                        bs.api.address(set.address.request, 'btc', function(results)
+                        {
+                            this_count++;
+                            bs.core.test_results(
+                                set.address.results, 
+                                results, 
+                                this_count, 
+                                test_count,
+                                'api.address('+set.address.request+', btc)',
+                                api_service,
+                                chain_count,
+                                chain_total
+                            );
+                        }, api_service);
+                        bs.api.block(set.block.request, 'btc', function(results)
+                        {
+                            this_count++;
+                            bs.core.test_results(
+                                set.block.results, 
+                                results, 
+                                this_count, 
+                                test_count,
+                                'api.block('+set.block.request+', btc)',
+                                api_service,
+                                chain_count,
+                                chain_total
+                            );
+                        }, api_service);
+                        bs.api.transaction(set.transaction.request, 'btc', function(results)
+                        {
+                            this_count++;
+                            bs.core.test_results(
+                                set.transaction.results, 
+                                results, 
+                                this_count, 
+                                test_count,
+                                'api.transaction('+set.transaction.request+', btc)',
+                                api_service,
+                                chain_count,
+                                chain_total
+                            );
+                        }, api_service);
+                        bs.api.transactions(set.transactions.request, 'btc', function(results)
+                        {
+                            this_count++;
+                            bs.core.test_results(
+                                set.transactions.results, 
+                                results, 
+                                this_count, 
+                                test_count,
+                                'api.transactions('+set.transactions.request+', btc)',
+                                api_service,
+                                chain_count,
+                                chain_total
+                            );
+                        }, api_service);
+                        bs.api.unspents(set.unspents.request, 'btc', function(results)
+                        {
+                            this_count++;
+                            bs.core.test_results(
+                                set.unspents.results, 
+                                results, 
+                                this_count, 
+                                test_count,
+                                'api.unspents('+set.unspents.request+', btc)',
+                                api_service,
+                                chain_count,
+                                chain_total
+                            );
+                        }, 0, api_service);
                     });
                 }
             },

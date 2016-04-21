@@ -16,6 +16,21 @@ var blockstrap_options = {
     id: "blockstrap",
     app_id: "framework",
     key: "B726962B-F976-6FD9-67EA-71C9838FD6A7",
+    key: "d56509e44ea88cbabf6c4dd0ca86e8ae",
+    key: "ff45f11f32b3538cb48f2d58856d7632",
+    key: [
+        "795ad87531fff07a175e314ae9d6397c", 
+        "ff45f11f32b3538cb48f2d58856d7632", 
+        "ef19566f325e0cc034f78b1201071378", 
+        "e7bd9bc90349874a906541a76f6fd7d0", 
+        "0454bc05b54193da55544410e57737aa", 
+        "45d55bcc3f0b80d9d9c09cf7e110fd21", 
+        "991278394ed35e232823609aa1e1aed8", 
+        "d2d5bff9f0301249c7dd6a88db107a52", 
+        "c1d3af601a8cbac0680486d58b5e7fce", 
+        "33766acc25e8ab1bdf2eb23ea8452dfd"
+    ],
+    key_key: "token",
     loader_id: "loading-wrapper",
     account_poll: false, // REMEMBER TO SWITCH THIS ON WHEN NEEDED !!!
     skip_config: true,
@@ -43,8 +58,7 @@ var blockstrap_options = {
         "your_username",
         "your_password"
     ],
-    api_service: "blockstrap",
-    api_service_test: "blockcypher",
+    api_service: "qt",
     base_url: "",
     content_id: "main-content",
     navigation_id: "navigation",
@@ -343,8 +357,8 @@ var blockstrap_options = {
             blockchain: "Bitcoin",
             lib: "bitcoin",
             apis: {
-                blockstrap: "http://192.168.1.200/v0/btc/",
-                blockcypher: "http://api.blockcypher.com/v1/btc/main/"
+                blockcypher: "http://api.blockcypher.com/v1/btc/main/",
+                qt: "proxies/rpc.php?blockchain=btc"
             },
             fee: 0.0001,
             op_return: true,
@@ -394,14 +408,15 @@ var blockstrap_options = {
     },
     apis: {
         available: {
-            "blockstrap": "Blockstrap"
+            "blockstrap": "Blockstrap",
+            "blockcypher": "BlockCypher",
+            "qt": "Local QTs"
         },
         defaults: {
             blockcypher: {
                 functions: {
                     to: {
                         address: "addrs/$call/full",
-                        addresses: "",
                         block: "blocks/",
                         relay: "txs/push/",
                         relay_param: "tx",
@@ -414,13 +429,10 @@ var blockstrap_options = {
                         address: {
                             key: "",
                             address: "address",
-                            hash: "",
+                            hash: "[address, hextohash]",
                             tx_count: "n_tx",
                             received: "total_received",
                             balance: "balance"
-                        },
-                        addresses: {
-                            
                         },
                         block: {
                             key: "",
@@ -429,38 +441,40 @@ var blockstrap_options = {
                             prev: "prev_block",
                             next: "",
                             tx_count: "n_tx",
-                            time: "time"
+                            time: "[time, utctoepoch]"
                         },
                         relay: {
-                            txid: "id",
-                            inner: ""
+                            txid: "hash",
+                            inner: "tx"
                         },
                         transaction: {
                             key: "",
                             txid: "hash",
                             size: "size",
                             block: "block_height",
-                            time: "received",
-                            input: "",
-                            output: "",
-                            value: "total",
+                            time: "[received, utctoepoch]",
+                            input: "[total, +, fees, int]",
+                            output: "total",
+                            value: "[total, -, fees, int]",
                             fees: "fees",
                             data: "transactions.outputs.data_string"
                         },
                         transactions: {
-                            key: "txs",
+                            key: "txrefs",
+                            inner: "txs",
                             txid: "hash",
                             size: "size",
                             block: "block_height",
-                            time: "received",
-                            input: "",
-                            output: "",
-                            value: "total",
+                            time: "[received, utctoepoch]",
+                            input: "[total, +, fees, int]",
+                            output: "total",
+                            value: "[total, -, fees, int]",
                             fees: "fees",
                             data: "transactions.outputs.data_string"
                         },
                         unspents: {
-                            key: "txrefs",
+                            key: "",
+                            inner: "txrefs",
                             confirmations: "confirmations",
                             txid: "tx_hash",
                             index: "tx_output_n",
@@ -564,6 +578,66 @@ var blockstrap_options = {
                             index: "tx_address_pos",
                             value: "tx_address_value",
                             script: "[tx_address_script_pub_key, lowercase]"
+                        }
+                    }
+                }
+            },
+            qt: {
+                functions: {
+                    to: {
+                        address: "&call=address&id=",
+                        block: "&call=block&id=",
+                        transaction: "&call=transaction&id=",
+                        transactions: "&call=transactions&id=",
+                        unspents: "&call=unspents&id=",
+                    },
+                    from: {
+                        address: {
+                            key: "results",
+                            address: "address",
+                            hash: "hash",
+                            tx_count: "tx_count",
+                            received: "received",
+                            balance: "balance"
+                        },
+                        block: {
+                            key: "results",
+                            height: "height",
+                            hash: "hash",
+                            prev: "prev",
+                            next: "next",
+                            tx_count: "tx_count",
+                            time: "time"
+                        },
+                        transaction: {
+                            key: "results",
+                            txid: "txid",
+                            size: "size",
+                            block: "block",
+                            time: "time",
+                            input: "input",
+                            output: "output",
+                            value: "value",
+                            fees: "fees"
+                        },
+                        transactions: {
+                            key: "results",
+                            txid: "txid",
+                            size: "size",
+                            block: "block",
+                            time: "time",
+                            input: "input",
+                            output: "output",
+                            value: "value",
+                            fees: "fees"
+                        },
+                        unspents: {
+                            key: "results",
+                            confirmations: "confirmations",
+                            txid: "txid",
+                            index: "index",
+                            value: "value",
+                            script: "script"
                         }
                     }
                 }

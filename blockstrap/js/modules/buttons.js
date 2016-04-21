@@ -688,11 +688,11 @@
         if($(button).attr('data-speed')) speed = parseInt($(button).attr('data-speed'));
         if(css)
         {
-            $('textarea.'+css).toggle(speed);
+            $('.'+css).toggle(speed);
         }
         else
         {
-            $('textarea#'+id).toggle(speed);
+            $('#'+id).toggle(speed);
         }
     }
     

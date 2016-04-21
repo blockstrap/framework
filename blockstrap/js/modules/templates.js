@@ -63,6 +63,11 @@
                 balance: 0,
                 blockchain: false
             }
+            var key_key = 'api_key';
+            if(typeof $.fn.blockstrap.settings.key_key != 'undefined')
+            {
+                key_key = $.fn.blockstrap.settings.key_key;
+            }
             if(account.blockchain && $.fn.blockstrap.settings.blockchains[account.blockchain])
             {
                 add_blockchain = $.fn.blockstrap.settings.blockchains[account.blockchain].blockchain;
@@ -81,7 +86,11 @@
                 address_url = base_api_url + address_slugs + key;
                 if($.fn.blockstrap.settings.key)
                 {
-                    address_url+= '?showtxnio=1&api_key=' + $.fn.blockstrap.settings.key;
+                    if($.isArray($.fn.blockstrap.settings.key))
+                    {
+                        $.fn.blockstrap.settings.key = $.fn.blockstrap.settings.key[Math.floor(Math.random()*$.fn.blockstrap.settings.key.length)];
+                    }
+                    address_url+= '?showtxnio=1&'+key_key+'=' + $.fn.blockstrap.settings.key;
                 }
                 var available_txs = $.fn.blockstrap.accounts.txs(current_account.id);
                 if($.isArray(available_txs) && blockstrap_functions.array_length(available_txs) > 0)
@@ -153,7 +162,11 @@
                 tx_url = base_api_url + tx_slugs + txid;
                 if($.fn.blockstrap.settings.key)
                 {
-                    tx_url+= '?showtxnio=1&api_key=' + $.fn.blockstrap.settings.key;
+                    if($.isArray($.fn.blockstrap.settings.key))
+                    {
+                        $.fn.blockstrap.settings.key = $.fn.blockstrap.settings.key[Math.floor(Math.random()*$.fn.blockstrap.settings.key.length)];
+                    }
+                    tx_url+= '?showtxnio=1&'+key_key+'=' + $.fn.blockstrap.settings.key;
                 }
             }
             var placeholders = [
