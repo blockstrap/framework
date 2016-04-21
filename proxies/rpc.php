@@ -87,11 +87,44 @@ if(
     else if($call == 'block')
     {
         $obj = [
-            "blockchain" => $blockchain
+            "blockchain" => $blockchain,
+            "height" => "N/A",
+            "hash" => "N/A",
+            "prev" => "N/A",
+            "next" => "N/A",
+            "tx_count" => 0,
+            "time" => "N/A"
         ];
         if(isset($_GET['id']) && $_GET['id'])
         {
-
+            $height = intval($_GET['id']);
+            $block_hash = $bitcoind->getblockhash($height);
+            $block = $bitcoind->getblock($block_hash);
+            $obj['raw'] = $block;
+            if($block_hash)
+            {
+                $obj['height'] = $height;
+                $obj['hash'] = $block_hash;
+            }
+            if($block)
+            {
+                if(isset($block['previousblockhash']) && $block['previousblockhash'])
+                {
+                    $obj['prev'] = $block['previousblockhash'];
+                }
+                if(isset($block['nextblockhash']) && $block['nextblockhash'])
+                {
+                    $obj['next'] = $block['nextblockhash'];
+                }
+                if(isset($block['tx']) && is_array($block['tx']))
+                {
+                    $obj['tx_count'] = count($block['tx']);
+                }
+                if(isset($block['time']) && $block['time'])
+                {
+                    $obj['time'] = $block['time'];
+                }
+            }
         }
     }
     else if($call == 'transaction')
