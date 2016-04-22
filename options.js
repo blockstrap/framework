@@ -622,6 +622,7 @@ var blockstrap_options = {
                         },
                         transactions: {
                             key: "results",
+                            inner: "txs",
                             txid: "txid",
                             size: "size",
                             block: "block",
@@ -633,6 +634,7 @@ var blockstrap_options = {
                         },
                         unspents: {
                             key: "results",
+                            inner: "txs",
                             confirmations: "confirmations",
                             txid: "txid",
                             index: "index",
