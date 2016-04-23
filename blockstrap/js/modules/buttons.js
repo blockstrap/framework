@@ -466,7 +466,7 @@
                         return false;
                     }
                 }, 
-                $.fn.blockstrap.core.api('blockstrap')
+                $.fn.blockstrap.core.api()
             );
         }
         else
@@ -1517,10 +1517,18 @@
                 delete chains.multi;
                 $.each(chains, function(chain, obj)
                 {
-                    wallet.wallet_blockchain.push(chain);
+                    if(
+                        typeof $.fn.blockstrap.settings.blockchains[chain].apis[$.fn.blockstrap.core.api()] != 'undefined'
+                    ){
+                        wallet.wallet_blockchain.push(chain);
+                    }
                 });
             }
             
+            if(typeof options.api_service != 'undefined')
+            {
+                $.fn.blockstrap.api.api_service = options.api_service
+            }
             if(
                 wallet 
                 && wallet.wallet_blockchain

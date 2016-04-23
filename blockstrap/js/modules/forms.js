@@ -47,7 +47,11 @@
                 });
                 $.each(available_chains, function(chain, obj)
                 {
-                    new_chains.push(chain);
+                    if(
+                        typeof $.fn.blockstrap.settings.blockchains[chain].apis[$.fn.blockstrap.core.api()] != 'undefined'
+                    ){
+                        new_chains.push(chain);
+                    }
                 });
             }
             else

@@ -854,7 +854,6 @@
             {
                 var chain_count = 0;
                 var total_chains = blockstrap_functions.array_length(current_account.blockchains);
-                
                 if(chain)
                 {
                     $.each(current_account.blockchains, function(k, temp_chain)
@@ -904,61 +903,59 @@
                             chain.display_balance = parseFloat(chain.balance / 100000000).toFixed(8);
                             chain.tx_count = results.tx_count;
                             chain.ts = now;
-                            
                             the_account.tx_total = the_account.tx_total + (chain.tx_count - current_tx_count);
                             the_account.usd_total = parseFloat(parseFloat(the_account.usd_total) + parseFloat((usd_rates[chain.code] * chain.balance - current_balance) / 100000000)).toFixed(2);
-
                             $.fn.blockstrap.api.transactions(
                                 chain.address, 
                                 chain.code, 
                                 function(transactions)
-                            {
-                                if(!$.isPlainObject(chain.txs)) chain.txs = {};
-                                if($.isArray(transactions))
                                 {
-                                    $.each(transactions, function(k, transaction)
+                                    if(!$.isPlainObject(chain.txs)) chain.txs = {};
+                                    if($.isArray(transactions))
                                     {
-                                        var got_tx = false;
-                                        chain.txs['txid_'+transaction.txid] = transaction;
-                                        $.each(the_account.txs, function(k, v)
+                                        $.each(transactions, function(k, transaction)
                                         {
-                                            if(v.txid == transaction.txid) got_tx = true;
-                                        });
-                                        if(!got_tx)
-                                        {
-                                            the_account.txs.push({
-                                                ts: now,
-                                                address: chain.address,
-                                                chain: chain.code,
-                                                tx: transaction,
-                                                txid: transaction.txid
+                                            var got_tx = false;
+                                            chain.txs['txid_'+transaction.txid] = transaction;
+                                            $.each(the_account.txs, function(k, v)
+                                            {
+                                                if(v.txid == transaction.txid) got_tx = true;
                                             });
-                                        }
-                                    });
-                                }
-                                
-                                // TODO: Update account one by one?
-                                the_account.blockchains[k] = JSON.parse(JSON.stringify(chain));
-                                
-                                if(blockstrap_functions.array_length(chain.txs) < chain.tx_count)
-                                {
-                                    // Paginate?
-                                    page++;
-                                    accounts.update(the_account, callback, force_refresh, page);
-                                }
-                                else
-                                {
-                                    if(total_chains <= chain_count)
-                                    {
-                                        delete the_account.blockchains[k].txs;
-                                        $.fn.blockstrap.data.save('accounts', the_account.id, the_account, function(updated_account)
-                                        {
-                                            if(callback) callback(the_account);
-                                            else return the_account;
+                                            if(!got_tx)
+                                            {
+                                                the_account.txs.push({
+                                                    ts: now,
+                                                    address: chain.address,
+                                                    chain: chain.code,
+                                                    tx: transaction,
+                                                    txid: transaction.txid
+                                                });
+                                            }
                                         });
                                     }
-                                }
-                            }, false, false, 25, (page * 25));
+
+                                    // TODO: Update account one by one?
+                                    the_account.blockchains[k] = JSON.parse(JSON.stringify(chain));
+                                    if(blockstrap_functions.array_length(chain.txs) < chain.tx_count)
+                                    {
+                                        // Paginate?
+                                        page++;
+                                        accounts.update(the_account, callback, force_refresh, page);
+                                    }
+                                    else
+                                    {
+                                        if(total_chains <= chain_count)
+                                        {
+                                            delete the_account.blockchains[k].txs;
+                                            $.fn.blockstrap.data.save('accounts', the_account.id, the_account, function(updated_account)
+                                            {
+                                                if(callback) callback(the_account);
+                                                else return the_account;
+                                            });
+                                        }
+                                    }
+                                }, false, false, 25, (page * 25)
+                            );
                         }
                         else
                         {
@@ -968,8 +965,7 @@
                                 else return false;
                             }
                         }
-
-                    }, $.fn.blockstrap.core.api('blockstrap'))
+                    })
                 })
             }
             else

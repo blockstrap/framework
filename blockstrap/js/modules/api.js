@@ -16,7 +16,8 @@
     var apis = $.fn.blockstrap.settings.apis;
     var blockchains = $.fn.blockstrap.settings.blockchains;
     var api_key = $.fn.blockstrap.core.option('key', false);
-    var api_service = $.fn.blockstrap.core.api('blockstrap');
+    
+    api.api_service  = $.fn.blockstrap.core.api();
     
     if($.fn.blockstrap.settings.cache && $.fn.blockstrap.settings.cache.api && $.fn.blockstrap.settings.cache.api.timeout)
     {
@@ -25,13 +26,8 @@
     
     api.address = function(hash, blockchain, callback, service, return_raw)
     {
-        var original_service = JSON.parse(JSON.stringify(api_service));
-        if(service && service !== api_service)
-        {
-            api_service = service;
-        }
-        api_service = api.service(api_service, blockchain);
-        var api_url = api.url('address', hash, blockchain);
+        if(typeof service == 'undefined' || !service) service = $.fn.blockstrap.core.api();
+        var api_url = api.url('address', hash, blockchain, service);
         if(api_url)
         {
             api.request(api_url, function(results)
@@ -55,14 +51,10 @@
                     }
                     if(results)
                     {
-                        address = api.results(address, results, blockchain, 'address', callback);               
+                        address = api.results(address, results, blockchain, 'address', callback, service);               
                     }
                     if(callback) 
                     {
-                        if(api_service !== original_service)
-                        {
-                            api_service = original_service;
-                        }
                         $.fn.blockstrap.core.apply_actions('api_address', function()
                         {
                             callback(address);
@@ -70,14 +62,10 @@
                     }
                     else 
                     {
-                        if(api_service !== original_service)
-                        {
-                            api_service = original_service;
-                        }
                         return address;
                     }
                 }
-            }, 'GET', false, blockchain, 'address');
+            }, 'GET', false, blockchain, 'address', false, false, service);
         }
         else if(callback)
         {
@@ -95,16 +83,11 @@
     api.addresses = function(hashes, blockchain, callback, service)
     {
         var hashed_url = '';
-        var original_service = JSON.parse(JSON.stringify(api_service));
-        if(service && service !== api_service)
-        {
-            api_service = service;
-        }
-        api_service = api.service(api_service, blockchain);
+        if(typeof service == 'undefined' || !service) service = $.fn.blockstrap.core.api();
         if($.isArray(hashes))
         {
             var delimiter = '&addresses=';
-            var map = api.map(blockchain);
+            var map = $.fn.blockstrap.settings.apis.defaults[service].functions;
             if(map.from.addresses.delimiter) delimiter = map.from.addresses.delimiter;
             
             $.each(hashes, function(k, hash)
@@ -113,7 +96,7 @@
                 else hashed_url+= delimiter + hash;
             });
 
-            var api_url = api.url('addresses', hashed_url, blockchain);
+            var api_url = api.url('addresses', hashed_url, blockchain, service);
             if(api_url)
             {
                 api.request(api_url, function(results)
@@ -131,16 +114,12 @@
                                 received: 0,
                                 balance: 0
                             }
-                            address = api.results(address, results[k], blockchain, 'addresses');
+                            address = api.results(address, results[k], blockchain, 'addresses', false, service);
                             addresses.push(address);
                         })
                     }
                     if(callback) 
                     {
-                        if(api_service !== original_service)
-                        {
-                            api_service = original_service;
-                        }
                         $.fn.blockstrap.core.apply_actions('api_addresses', function()
                         {
                             callback(addresses);
@@ -148,13 +127,9 @@
                     }
                     else 
                     {
-                        if(api_service !== original_service)
-                        {
-                            api_service = original_service;
-                        }
                         return addresses;
                     }
-                }, 'GET', false, blockchain, 'addresses');
+                }, 'GET', false, blockchain, 'addresses', false, false, service);
             }
             else if(callback)
             {
@@ -176,20 +151,11 @@
     
     api.balance = function(hash, blockchain, callback, service)
     {
-        var original_service = JSON.parse(JSON.stringify(api_service));
-        if(service && service !== api_service)
-        {
-            api_service = service;
-        }
-        api_service = api.service(api_service, blockchain);
+        if(typeof service == 'undefined' || !service) service = $.fn.blockstrap.core.api();
         api.address(hash, blockchain, function(address)
         {
             if(address && address.balance) 
             {
-                if(api_service !== original_service)
-                {
-                    api_service = original_service;
-                }
                 $.fn.blockstrap.core.apply_actions('api_balance', function()
                 {
                     callback(address.balance);
@@ -197,10 +163,6 @@
             }
             else 
             {
-                if(api_service !== original_service)
-                {
-                    api_service = original_service;
-                }
                 $.fn.blockstrap.core.apply_actions('api_balance', function()
                 {
                     callback(0);
@@ -211,13 +173,8 @@
     
     api.block = function(height, blockchain, callback, service, return_raw)
     {
-        var original_service = JSON.parse(JSON.stringify(api_service));
-        if(service && service !== api_service)
-        {
-            api_service = service;
-        }
-        api_service = api.service(api_service, blockchain);
-        var api_url = api.url('block', height, blockchain);
+        if(typeof service == 'undefined' || !service) service = $.fn.blockstrap.core.api();
+        var api_url = api.url('block', height, blockchain, service);
         if(api_url)
         {
             api.request(api_url, function(results)
@@ -231,7 +188,7 @@
                 }
                 else
                 {
-                    var map = api.map(blockchain);
+                    var map = $.fn.blockstrap.settings.apis.defaults[service].functions;
                     var block = {
                         blockchain: blockchain,
                         height: 'N/A',
@@ -243,14 +200,10 @@
                     };
                     if(results)
                     {
-                        block = api.results(block, results, blockchain, 'block');
+                        block = api.results(block, results, blockchain, 'block', false, service);
                     }
                     if(callback) 
                     {
-                        if(api_service !== original_service)
-                        {
-                            api_service = original_service;
-                        }
                         $.fn.blockstrap.core.apply_actions('api_block', function()
                         {
                             callback(block);
@@ -258,14 +211,10 @@
                     }
                     else 
                     {
-                        if(api_service !== original_service)
-                        {
-                            api_service = original_service;
-                        }
                         return block;
                     }
                 }
-            }, 'GET', false, blockchain, 'block');
+            }, 'GET', false, blockchain, 'block', false, false, service);
         }
         else if(callback)
         {
@@ -282,13 +231,8 @@
     
     api.dnkey = function(id, blockchain, callback, service, return_raw)
     {
-        var original_service = JSON.parse(JSON.stringify(api_service));
-        if(service && service !== api_service)
-        {
-            api_service = service;
-        }
-        api_service = api.service(api_service, blockchain);
-        var api_url = api.url('dnkey', id, blockchain);
+        if(typeof service == 'undefined' || !service) service = $.fn.blockstrap.core.api();
+        var api_url = api.url('dnkey', id, blockchain, service);
         if(api_url)
         {
             api.request(api_url, function(results)
@@ -302,21 +246,17 @@
                 }
                 else
                 {
-                    var map = api.map(blockchain);
+                    var map = $.fn.blockstrap.settings.apis.defaults[service].functions;
                     var dnkeys = {
                         blockchain: blockchain,
                         dnkeys: false
                     };
                     if(results)
                     {
-                        dnkeys = api.results(dnkeys, results, blockchain, 'dnkey');
+                        dnkeys = api.results(dnkeys, results, blockchain, 'dnkey', false, service);
                     }
                     if(callback) 
                     {
-                        if(api_service !== original_service)
-                        {
-                            api_service = original_service;
-                        }
                         $.fn.blockstrap.core.apply_actions('api_dnkey', function()
                         {
                             callback(dnkeys);
@@ -324,14 +264,10 @@
                     }
                     else 
                     {
-                        if(api_service !== original_service)
-                        {
-                            api_service = original_service;
-                        }
                         return dnkeys;
                     }
                 }
-            }, 'GET', false, blockchain, 'dnkey');
+            }, 'GET', false, blockchain, 'dnkey', false, false, service);
         }
         else if(callback)
         {
@@ -348,13 +284,8 @@
     
     api.dnkeys = function(id, blockchain, callback, service, return_raw)
     {
-        var original_service = JSON.parse(JSON.stringify(api_service));
-        if(service && service !== api_service)
-        {
-            api_service = service;
-        }
-        api_service = api.service(api_service, blockchain);
-        var api_url = api.url('dnkeys', id, blockchain);
+        if(typeof service == 'undefined' || !service) service = $.fn.blockstrap.core.api();
+        var api_url = api.url('dnkeys', id, blockchain, service);
         if(api_url && blockchain == 'multi')
         {
             api.request(api_url, function(results)
@@ -368,14 +299,14 @@
                 }
                 else
                 {
-                    var map = api.map(blockchain);
+                    var map = $.fn.blockstrap.settings.apis.defaults[service].functions;
                     var dnkeys = {
                         blockchain: blockchain,
                         dnkeys: false
                     };
                     if(results)
                     {
-                        dnkeys = api.results(dnkeys, results, blockchain, 'dnkeys');
+                        dnkeys = api.results(dnkeys, results, blockchain, 'dnkeys', false, service);
                     }
                     $.each(dnkeys.dnkeys, function(chain, obj)
                     {
@@ -390,10 +321,6 @@
                     });
                     if(callback) 
                     {
-                        if(api_service !== original_service)
-                        {
-                            api_service = original_service;
-                        }
                         $.fn.blockstrap.core.apply_actions('api_dnkeys', function()
                         {
                             callback(dnkeys);
@@ -401,14 +328,10 @@
                     }
                     else 
                     {
-                        if(api_service !== original_service)
-                        {
-                            api_service = original_service;
-                        }
                         return dnkeys;
                     }
                 }
-            }, 'GET', false, blockchain, 'dnkeys');
+            }, 'GET', false, blockchain, 'dnkeys', false, false, service);
         }
         else if(callback)
         {
@@ -427,11 +350,11 @@
     {
         if(!blockchain) blockchain = 'btc';
         if(typeof apis[blockchain] == 'undefined') blockchain = 'defaults';
-        if(typeof apis[blockchain][api_service] == 'undefined')
+        if(typeof apis[blockchain][api.api_service] == 'undefined')
         {
-            if(typeof apis['defaults'][api_service] != 'undefined')
+            if(typeof apis['defaults'][api.api_service] != 'undefined')
             {
-                return apis['defaults'][api_service].functions;
+                return apis['defaults'][api.api_service].functions;
             }
             else
             {
@@ -440,29 +363,20 @@
         }
         else
         {
-            return apis[blockchain][api_service].functions;
+            return apis[blockchain][api.api_service].functions;
         }
     }
     
     api.market = function(blockchain, stat, callback, service, return_raw)
     {
-        var original_service = JSON.parse(JSON.stringify(api_service));
-        if(service && service !== api_service)
-        {
-            api_service = service;
-        }
-        api_service = api.service(api_service, blockchain);
-        var api_url = api.url('market', stat, blockchain);
+        if(typeof service == 'undefined' || !service) service = $.fn.blockstrap.core.api();
+        var api_url = api.url('market', stat, blockchain, $.fn.blockstrap.api.api_service);
         if(api_url)
         {
             api.request(api_url, function(results)
             {
                 if(return_raw && callback)
                 {
-                    if(api_service !== original_service)
-                    {
-                        api_service = original_service;
-                    }
                     $.fn.blockstrap.core.apply_actions('api_market', function()
                     {
                         callback(results);
@@ -470,7 +384,7 @@
                 }
                 else
                 {
-                    var map = api.map(blockchain);
+                    var map = $.fn.blockstrap.settings.apis.defaults[service].functions;
                     var market = {
                         price_usd_now: 0,
                         tx_count_24hr: 0,
@@ -481,14 +395,10 @@
                     };
                     if(results)
                     {
-                        market = api.results(market, results, blockchain, 'market');
+                        market = api.results(market, results, blockchain, 'market', false, service);
                     }
                     if(callback) 
                     {
-                        if(api_service !== original_service)
-                        {
-                            api_service = original_service;
-                        }
                         $.fn.blockstrap.core.apply_actions('api_market', function()
                         {
                             callback(market);
@@ -496,14 +406,10 @@
                     }
                     else 
                     {
-                        if(api_service !== original_service)
-                        {
-                            api_service = original_service;
-                        }
                         return market;
                     }
                 }
-            }, 'GET', false, blockchain, 'market');
+            }, 'GET', false, blockchain, 'market', false, false, service);
         }
         else if(callback)
         {
@@ -518,18 +424,18 @@
         }
     }
     
-    api.request = function(url, callback, type, data, blockchain, call, username, password)
+    api.request = function(url, callback, type, data, blockchain, call, username, password, service)
     {
         if(!type) type = 'GET';
         if(!blockchain) blockchain = 'btc';
-        var map = api.map(blockchain);
+        var map = $.fn.blockstrap.settings.apis.defaults[service].functions;
         var headers = false;
         if(
             $.isPlainObject(blockchains[blockchain]) 
             && $.isPlainObject(blockchains[blockchain].auth) 
-            && $.isPlainObject(blockchains[blockchain].auth[api_service])
+            && $.isPlainObject(blockchains[blockchain].auth[service])
         ){
-            var auth = blockchains[blockchain].auth[api_service];
+            var auth = blockchains[blockchain].auth[service];
             if(
                 !username 
                 && typeof auth.username != 'undefined'
@@ -549,20 +455,21 @@
                 }
             }
         }
-        
+        var api_type = $.fn.blockstrap.core.apis('type', service);
         var data_type = 'json';
-        if(api_service == 'qt')
+        var use_async = true;
+        if(api_type == 'rpc')
         {
+            use_async = false;
             data_type = 'jsonp';
             type = 'POST';
         }
-        
         $.ajax({
             url: url,
             type: type,
             dataType: data_type,
             data: data,
-            async: false,
+            async: use_async,
             headers: headers,
             success: function(results)
             {   
@@ -652,22 +559,15 @@
     
     api.relay = function(hash, blockchain, callback, service, return_raw)
     {
-        var original_service = JSON.parse(JSON.stringify(api_service));
-        if(service && service !== api_service)
-        {
-            api_service = service;
-        }
-        api_service = api.service(api_service, blockchain);
+        if(typeof service == 'undefined' || !service) service = $.fn.blockstrap.core.api();
         var request_data = {};
-        var map = api.map(blockchain);
+        var map = $.fn.blockstrap.settings.apis.defaults[service].functions;
         request_data[map.to.relay_param] = hash;
-        
         if(typeof map.to.relay_json != 'undefined')
         {
             request_data = JSON.stringify(request_data);
         }
-        
-        var api_url = api.url('relay', hash, blockchain);
+        var api_url = api.url('relay', hash, blockchain, service);
         if(api_url)
         {
             api.request(api_url, function(results)
@@ -711,10 +611,6 @@
                     }
                     if(callback) 
                     {
-                        if(api_service !== original_service)
-                        {
-                            api_service = original_service;
-                        }
                         $.fn.blockstrap.core.apply_actions('api_relay', function()
                         {
                             callback(tx);
@@ -722,14 +618,10 @@
                     }
                     else 
                     {
-                        if(api_service !== original_service)
-                        {
-                            api_service = original_service;
-                        }
                         return tx;
                     }
                 }
-            }, 'POST', request_data, blockchain, 'relay');
+            }, 'POST', request_data, blockchain, 'relay', false, false, service);
         }
         else if(callback)
         {
@@ -744,10 +636,11 @@
         }
     }
     
-    api.results = function(defaults, results, blockchain, request, callback)
+    api.results = function(defaults, results, blockchain, request, callback, service)
     {
         var clean_results = false;
-        var map = api.map(blockchain);
+        if(typeof service == 'undefined' || !service) service = $.fn.blockstrap.core.api();
+        var map = $.fn.blockstrap.settings.apis.defaults[service].functions;
         var bs = $.fn.blockstrap;
         var $bs = blockstrap_functions;
         
@@ -904,14 +797,14 @@
         return defaults;
     }
     
-    api.service = function(api_service, chain)
+    api.service = function(service, chain)
     {
         var bs = $.fn.blockstrap;
         if(typeof bs.settings.blockchains[chain].api != 'undefined')
         {
             return bs.settings.blockchains[chain].api;
         }
-        else return api_service;
+        else return api.api_service;
     }
     
     api.settings = function(chain, provider, direction, key)
@@ -957,13 +850,8 @@
     
     api.transaction = function(txid, blockchain, callback, service, return_raw)
     {
-        var original_service = JSON.parse(JSON.stringify(api_service));
-        if(service && service !== api_service)
-        {
-            api_service = service;
-        }
-        api_service = api.service(api_service, blockchain);
-        var api_url = api.url('transaction', txid, blockchain);
+        if(typeof service == 'undefined' || !service) service = $.fn.blockstrap.core.api();
+        var api_url = api.url('transaction', txid, blockchain, service);
         if(api_url)
         {
             api.request(api_url, function(results)
@@ -977,7 +865,7 @@
                 }
                 else
                 {
-                    var map = api.map(blockchain);
+                    var map = $.fn.blockstrap.settings.apis.defaults[service].functions;
                     var now = new Date().getTime();
                     var transaction = {
                         blockchain: blockchain,
@@ -992,14 +880,10 @@
                     }
                     if(results)
                     {
-                        transaction = api.results(transaction, results, blockchain, 'transaction');
+                        transaction = api.results(transaction, results, blockchain, 'transaction', false, service);
                     }
                     if(callback) 
                     {
-                        if(api_service !== original_service)
-                        {
-                            api_service = original_service;
-                        }
                         $.fn.blockstrap.core.apply_actions('api_transaction', function()
                         {
                             callback(transaction);
@@ -1007,14 +891,10 @@
                     }
                     else 
                     {
-                        if(api_service !== original_service)
-                        {
-                            api_service = original_service;
-                        }
                         return transaction;
                     }
                 }
-            }, 'GET', false, blockchain, 'transaction');
+            }, 'GET', false, blockchain, 'transaction', false, false, service);
         }
         else if(callback)
         {
@@ -1031,35 +911,29 @@
     
     api.transactions = function(address, blockchain, callback, service, return_raw, count, skip)
     {
-        var original_service = JSON.parse(JSON.stringify(api_service));
-        if(service && service !== api_service)
-        {
-            api_service = service;
-        }
-        api_service = api.service(api_service, blockchain);
-        var api_url = api.url('transactions', address, blockchain);
-        
+        if(typeof service == 'undefined' || !service) service = $.fn.blockstrap.core.api();
+        var api_url = api.url('transactions', address, blockchain, service);
         // Hack for BS API Pagination
         if(typeof count != 'undefined' && parseInt(count) > 0 )
         {
             if(
-                typeof $.fn.blockstrap.settings.apis.defaults[api_service] == 'undefined'
-                && typeof $.fn.blockstrap.settings.apis[blockchain][api_service] != 'undefined'
-                && typeof $.fn.blockstrap.settings.apis[blockchain][api_service].functions != 'undefined'
-                && typeof $.fn.blockstrap.settings.apis[blockchain][api_service].functions.to != 'undefined'
-                && typeof $.fn.blockstrap.settings.apis[blockchain][api_service].functions.to.tx_pagination != 'undefined'
+                typeof $.fn.blockstrap.settings.apis.defaults[service] == 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][service] != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][service].functions != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][service].functions.to != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][service].functions.to.tx_pagination != 'undefined'
             ){
-                var key_array = $.fn.blockstrap.settings.apis[blockchain][api_service].functions.to.tx_pagination.split(', ');
+                var key_array = $.fn.blockstrap.settings.apis[blockchain][api.api_service].functions.to.tx_pagination.split(', ');
                 var key = key_array[0];
                 api_url+= '&'+key+'='+count;
             }
             else if(
-                typeof $.fn.blockstrap.settings.apis.defaults[api_service] != 'undefined'
-                && typeof $.fn.blockstrap.settings.apis.defaults[api_service].functions != 'undefined'
-                && typeof $.fn.blockstrap.settings.apis.defaults[api_service].functions.to != 'undefined'
-                && typeof $.fn.blockstrap.settings.apis.defaults[api_service].functions.to.tx_pagination != 'undefined'
+                typeof $.fn.blockstrap.settings.apis.defaults[service] != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis.defaults[service].functions != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis.defaults[service].functions.to != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis.defaults[service].functions.to.tx_pagination != 'undefined'
             ){
-                var key_array = $.fn.blockstrap.settings.apis.defaults[api_service].functions.to.tx_pagination.split(', ');
+                var key_array = $.fn.blockstrap.settings.apis.defaults[service].functions.to.tx_pagination.split(', ');
                 var key = key_array[0];
                 api_url+= '&'+key+'='+count;
             }
@@ -1067,23 +941,23 @@
         if(typeof count != 'undefined' && parseInt(skip) > 0 )
         {
             if(
-                typeof $.fn.blockstrap.settings.apis.defaults[api_service] == 'undefined'
-                && typeof $.fn.blockstrap.settings.apis[blockchain][api_service] != 'undefined'
-                && typeof $.fn.blockstrap.settings.apis[blockchain][api_service].functions != 'undefined'
-                && typeof $.fn.blockstrap.settings.apis[blockchain][api_service].functions.to != 'undefined'
-                && typeof $.fn.blockstrap.settings.apis[blockchain][api_service].functions.to.tx_pagination != 'undefined'
+                typeof $.fn.blockstrap.settings.apis.defaults[service] == 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][service] != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][service].functions != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][service].functions.to != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][service].functions.to.tx_pagination != 'undefined'
             ){
-                var key_array = $.fn.blockstrap.settings.apis[blockchain][api_service].functions.to.tx_pagination.split(', ');
+                var key_array = $.fn.blockstrap.settings.apis[blockchain][service].functions.to.tx_pagination.split(', ');
                 var key = key_array[1];
                 api_url+= '&'+key+'='+skip;
             }
             else if(
-                typeof $.fn.blockstrap.settings.apis.defaults[api_service] != 'undefined'
-                && typeof $.fn.blockstrap.settings.apis.defaults[api_service].functions != 'undefined'
-                && typeof $.fn.blockstrap.settings.apis.defaults[api_service].functions.to != 'undefined'
-                && typeof $.fn.blockstrap.settings.apis.defaults[api_service].functions.to.tx_pagination != 'undefined'
+                typeof $.fn.blockstrap.settings.apis.defaults[service] != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis.defaults[service].functions != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis.defaults[service].functions.to != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis.defaults[service].functions.to.tx_pagination != 'undefined'
             ){
-                var key_array = $.fn.blockstrap.settings.apis.defaults[api_service].functions.to.tx_pagination.split(', ');
+                var key_array = $.fn.blockstrap.settings.apis.defaults[service].functions.to.tx_pagination.split(', ');
                 var key = key_array[1];
                 api_url+= '&'+key+'='+skip;
             }
@@ -1102,9 +976,9 @@
                 }
                 else
                 {
-                    var these_results = false;
+                    var map = $.fn.blockstrap.settings.apis.defaults[service].functions;
+                    var these_results = results;
                     var transactions = [];
-                    var map = api.map(blockchain);
                     var now = new Date().getTime();
                     var result_key = false;
                     if(typeof map.from.transactions.inner != 'undefined' && map.from.transactions.inner)
@@ -1134,17 +1008,15 @@
                                 transaction, 
                                 these_results[k], 
                                 blockchain, 
-                                'transactions'
+                                'transactions',
+                                false,
+                                service
                             );
                             transactions.push(transaction);
                         });
                     }
                     if(callback) 
                     {
-                        if(api_service !== original_service)
-                        {
-                            api_service = original_service;
-                        }
                         $.fn.blockstrap.core.apply_actions('api_transactions', function()
                         {
                             callback(transactions);
@@ -1152,14 +1024,10 @@
                     }
                     else 
                     {
-                        if(api_service !== original_service)
-                        {
-                            api_service = original_service;
-                        }
                         return transactions;
                     }
                 }
-            }, 'GET', false, blockchain, 'transactions');
+            }, 'GET', false, blockchain, 'transactions', false, false, service);
         }
         else if(callback)
         {
@@ -1176,15 +1044,10 @@
     
     api.unspents = function(address, blockchain, callback, confirms, service, return_raw, count, skip)
     {
-        var original_service = JSON.parse(JSON.stringify(api_service));
-        if(service && service !== api_service)
-        {
-            api_service = service;
-        }
-        api_service = api.service(api_service, blockchain);
+        if(typeof service == 'undefined' || !service) service = $.fn.blockstrap.core.api();
         if(!confirms) confirms = 0;
         
-        var api_url = api.url('unspents', address, blockchain);
+        var api_url = api.url('unspents', address, blockchain, service);
         if(count)
         {
             api_url+= '&count='+count;
@@ -1207,7 +1070,8 @@
                 else
                 {
                     var unspents = [];
-                    var map = api.map(blockchain);
+                    var map = $.fn.blockstrap.settings.apis.defaults[service].functions;
+                    var these_results = results;
                     
                     var result_key = false;
                     if(typeof map.from.unspents.inner != 'undefined' && map.from.unspents.inner)
@@ -1241,17 +1105,13 @@
                                 script: 'N/A',
                                 confirmations: 0
                             }
-                            unspent = api.results(unspent, unspent_array[k], blockchain, 'unspents');
+                            unspent = api.results(unspent, unspent_array[k], blockchain, 'unspents', false, service);
                             if(unspent.confirmations >= confirms) unspents.push(unspent);
                         });
                         if(reverse) unspents = unspents.reverse();
                     }
                     if(callback) 
                     {
-                        if(api_service !== original_service)
-                        {
-                            api_service = original_service;
-                        }
                         $.fn.blockstrap.core.apply_actions('api_unspents', function()
                         {
                             callback(unspents);
@@ -1259,14 +1119,10 @@
                     }
                     else 
                     {
-                        if(api_service !== original_service)
-                        {
-                            api_service = original_service;
-                        }
                         return unspents;
                     }
                 }
-            }, 'GET', false, blockchain, 'unspents');
+            }, 'GET', false, blockchain, 'unspents', false, false, service);
         }
         else if(callback)
         {
@@ -1281,20 +1137,21 @@
         }
     }
     
-    api.url = function(action, key, blockchain)
+    api.url = function(action, key, blockchain, service)
     {
         var url = false;
         if(action == 'relay') key = '';
-        
-        api_key = $.fn.blockstrap.core.option('key', false);
-        if($.fn.blockstrap.settings.key)
+        var api_key = $.fn.blockstrap.core.apis('key');
+        var key_name = $.fn.blockstrap.core.apis('key_name');
+        var api_service = api.api_service;
+        if(typeof service != 'undefined')
         {
-            if($.isArray($.fn.blockstrap.settings.key))
-            {
-                api_key = $.fn.blockstrap.settings.key[Math.floor(Math.random()*$.fn.blockstrap.settings.key.length)];
-            }
+            api_service = service;
         }
-        
+        if($.isArray(api_key))
+        {
+            api_key = api_key[Math.floor(Math.random()*api_key.length)];
+        }
         if(!blockchain) blockchain = 'btc';
         if(apis == 'undefined')
         {
@@ -1378,15 +1235,18 @@
         }
         else
         {
-            api_service = $.fn.blockstrap.core.api('blockstrap');
             blockchains = $.fn.blockstrap.settings.blockchains;
             apis = $.fn.blockstrap.settings.apis;
-            if(blockchain == 'multi') api_service = 'blockstrap';
-            url = blockchains[blockchain].apis[api_service] + apis['defaults'][api_service].functions.to[action] + key;
-            if(apis['defaults'][api_service].functions.to[action].indexOf("$call") > -1)
+            if(blockchain == 'multi') 
             {
-                var call = apis['defaults'][api_service].functions.to[action].replace("$call", key);
-                url = blockchains[blockchain].apis[api_service] + call;
+                key_name = $.fn.blockstrap.core.apis('key_name', 'blockstrap');
+                api_key = $.fn.blockstrap.core.apis('key', 'blockstrap');
+            }
+            url = blockchains[blockchain].apis['blockstrap'] + apis['defaults']['blockstrap'].functions.to[action] + key;
+            if(apis['defaults']['blockstrap'].functions.to[action].indexOf("$call") > -1)
+            {
+                var call = apis['defaults']['blockstrap'].functions.to[action].replace("$call", key);
+                url = blockchains[blockchain].apis['blockstrap'] + call;
             }
         }
         if(action == 'relay')
@@ -1396,20 +1256,15 @@
                 url = url.substr(0, url.length - 1);
             }
         }
-        var key_key = 'api_key';
-        if(typeof $.fn.blockstrap.settings.key_key != 'undefined')
-        {
-            key_key = $.fn.blockstrap.settings.key_key;
-        }
         if(api_key)
         {
             if(url.indexOf("?") > -1)
             {
-                url+='&'+key_key+'='+api_key;
+                url+='&'+key_name+'='+api_key;
             }
             else
             {
-                url+='?'+key_key+'='+api_key;
+                url+='?'+key_name+'='+api_key;
             }
         }
         var app_id = 'framework';

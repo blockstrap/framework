@@ -144,17 +144,41 @@ var blockstrap_core = function()
             },
             api: function(default_service)
             {
-                if(typeof default_service == 'undefined') default_service = 'blockstrap';
-                var api = default_service;
-                if(typeof $.fn.blockstrap.settings.api_service != 'undefined')
-                {
-                    api = $.fn.blockstrap.settings.api_service;
+                api = 'blockstrap';
+                if(typeof default_service != 'undefined') api = default_service;
+                if(
+                    typeof $.fn.blockstrap.api != 'undefined'
+                    && typeof $.fn.blockstrap.api.api_service != 'undefined'
+                ){
+                    api = $.fn.blockstrap.api.api_service;
                 }
                 if($.fn.blockstrap.core.option('api_service'))
                 {
                     api = $.fn.blockstrap.core.option('api_service');
+                    if(
+                        typeof $.fn.blockstrap.api != 'undefined'
+                        && typeof $.fn.blockstrap.api.api_service != 'undefined'
+                    ){
+                        $.fn.blockstrap.api.api_service = api;
+                    }
                 }
                 return api;
+            },
+            apis: function(property, api_provider)
+            {
+                var result = false;
+                var api = $.fn.blockstrap.core.api();
+                if(typeof api_provider != 'undefined' && api_provider)
+                {
+                    api = api_provider;
+                }
+                if(
+                    typeof $.fn.blockstrap.settings.apis.defaults[api] != 'undefined'
+                    && typeof $.fn.blockstrap.settings.apis.defaults[api][property] != 'undefined'
+                ){
+                    result = $.fn.blockstrap.settings.apis.defaults[api][property];
+                }
+                return result;
             },
             apply_actions: function(hook, callback, options)
             {
@@ -581,6 +605,11 @@ var blockstrap_core = function()
                         $.fn.blockstrap.accounts.access(account_id, false, chain);
                     }
                 });
+                $($.fn.blockstrap.element).on('change', '#api_service', function(i)
+                {
+                    var value = $(this).val();
+                    $.fn.blockstrap.api.api_service = value;
+                });
                 $($.fn.blockstrap.element).find('.bs-blockchain-select').each(function(i)
                 {
                     var select = $(this);
@@ -839,7 +868,7 @@ var blockstrap_core = function()
                             url: file + '.' + extension,
                             dataType: extension,
                             cache: cached,
-                            async: true,
+                            async: false,
                             success: function(results)
                             {
                                 if(store === true)
@@ -1204,7 +1233,7 @@ var blockstrap_core = function()
                 ){
                     default_value = options[key];
                 }
-                if(!default_value && typeof bs.settings[key] != 'undefined')
+                else if(!default_value && typeof bs.settings[key] != 'undefined')
                 {
                     default_value = bs.settings[key];
                 }   
@@ -2449,7 +2478,7 @@ var blockstrap_core = function()
                     url: 'defaults.json',
                     dataType: 'json',
                     cache: false,
-                    async: true,
+                    async: false,
                     success: function(defaults)
                     {
                         // CONSTRUCT PLUGIN AFTER

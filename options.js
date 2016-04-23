@@ -15,22 +15,6 @@ var blockstrap_options = {
     v: "0.6.0.1",
     id: "blockstrap",
     app_id: "framework",
-    key: "B726962B-F976-6FD9-67EA-71C9838FD6A7",
-    key: "d56509e44ea88cbabf6c4dd0ca86e8ae",
-    key: "ff45f11f32b3538cb48f2d58856d7632",
-    key: [
-        "795ad87531fff07a175e314ae9d6397c", 
-        "ff45f11f32b3538cb48f2d58856d7632", 
-        "ef19566f325e0cc034f78b1201071378", 
-        "e7bd9bc90349874a906541a76f6fd7d0", 
-        "0454bc05b54193da55544410e57737aa", 
-        "45d55bcc3f0b80d9d9c09cf7e110fd21", 
-        "991278394ed35e232823609aa1e1aed8", 
-        "d2d5bff9f0301249c7dd6a88db107a52", 
-        "c1d3af601a8cbac0680486d58b5e7fce", 
-        "33766acc25e8ab1bdf2eb23ea8452dfd"
-    ],
-    key_key: "token",
     loader_id: "loading-wrapper",
     account_poll: false, // REMEMBER TO SWITCH THIS ON WHEN NEEDED !!!
     skip_config: true,
@@ -58,7 +42,6 @@ var blockstrap_options = {
         "your_username",
         "your_password"
     ],
-    api_service: "qt",
     base_url: "",
     content_id: "main-content",
     navigation_id: "navigation",
@@ -308,7 +291,6 @@ var blockstrap_options = {
             blockchain: "Bitcoin (Testnet)",
             lib: "bitcointestnet",
             apis: {
-                blockstrap: "http://192.168.1.200/v0/btct/",
                 blockcypher: "http://api.blockcypher.com/v1/btc/test3/"
             },
             fee: 0.0001,
@@ -319,7 +301,7 @@ var blockstrap_options = {
             blockchain: "DashPay (Testnet)",
             lib: "dashpaytestnet",
             apis: {
-                blockstrap: "http://192.168.1.200/v0/dasht/"
+                
             },
             fee: 0.0001,
             op_return: true,
@@ -329,8 +311,7 @@ var blockstrap_options = {
             blockchain: "Dogecoin (Testnet)",
             lib: "dogecointestnet",
             apis: {
-                blockstrap: "http://192.168.1.200/v0/dogt/",
-                blockstrap_external: "http://officeapi.neuroware.io/v0/dogt/"
+                blockstrap: "http://officeapi.neuroware.io/v0/doget/"
             },
             fee: 2,
             op_return: true,
@@ -340,7 +321,7 @@ var blockstrap_options = {
             blockchain: "Litecoin (Testnet)",
             lib: "litecointestnet",
             apis: {
-                blockstrap: "http://192.168.1.200/v0/ltct/"
+                
             },
             fee: 0.001,
             op_return: true,
@@ -349,8 +330,7 @@ var blockstrap_options = {
         multi: {
             private: true,
             apis: {
-                blockstrap: "http://192.168.1.200/v0/multi/",
-                blockcypher: "http://api.blockcypher.com/v1/not/correct/"
+                blockstrap: "http://officeapi.neuroware.io/v0/multi/"
             }
         },
         btc: {
@@ -368,7 +348,7 @@ var blockstrap_options = {
             blockchain: "DashPay",
             lib: "dashpay",
             apis: {
-                blockstrap: "http://192.168.1.200/v0/dash/"
+                
             },
             fee: 0.0001,
             op_return: true,
@@ -378,8 +358,8 @@ var blockstrap_options = {
             blockchain: "Dogecoin",
             lib: "dogecoin",
             apis: {
-                blockstrap: "http://192.168.1.200/v0/doge/",
-                blockcypher: "http://api.blockcypher.com/v1/doge/main/"
+                blockcypher: "http://api.blockcypher.com/v1/doge/main/",
+                qt: "proxies/rpc.php?blockchain=doge"
             },
             fee: 1,
             op_return: true,
@@ -389,7 +369,7 @@ var blockstrap_options = {
             blockchain: "Litecoin",
             lib: "litecoin",
             apis: {
-                blockstrap: "http://192.168.1.200/v0/ltc/"
+                
             },
             fee: 0.001,
             op_return: true,
@@ -408,12 +388,25 @@ var blockstrap_options = {
     },
     apis: {
         available: {
-            "blockstrap": "Blockstrap",
-            "blockcypher": "BlockCypher",
-            "qt": "Local QTs"
+            blockstrap: "Blockstrap",
+            blockcypher: "BlockCypher",
+            qt: "Local QTs"
         },
         defaults: {
             blockcypher: {
+                key: [
+                    "795ad87531fff07a175e314ae9d6397c", 
+                    "ff45f11f32b3538cb48f2d58856d7632", 
+                    "ef19566f325e0cc034f78b1201071378", 
+                    "e7bd9bc90349874a906541a76f6fd7d0", 
+                    "0454bc05b54193da55544410e57737aa", 
+                    "45d55bcc3f0b80d9d9c09cf7e110fd21", 
+                    "991278394ed35e232823609aa1e1aed8", 
+                    "d2d5bff9f0301249c7dd6a88db107a52", 
+                    "c1d3af601a8cbac0680486d58b5e7fce", 
+                    "33766acc25e8ab1bdf2eb23ea8452dfd"
+                ],
+                key_name: "token",
                 functions: {
                     to: {
                         address: "addrs/$call/full",
@@ -460,7 +453,7 @@ var blockstrap_options = {
                             data: "transactions.outputs.data_string"
                         },
                         transactions: {
-                            key: "txrefs",
+                            key: "",
                             inner: "txs",
                             txid: "hash",
                             size: "size",
@@ -468,7 +461,7 @@ var blockstrap_options = {
                             time: "[received, utctoepoch]",
                             input: "[total, +, fees, int]",
                             output: "total",
-                            value: "[total, -, fees, int]",
+                            value: "total",
                             fees: "fees",
                             data: "transactions.outputs.data_string"
                         },
@@ -485,6 +478,8 @@ var blockstrap_options = {
                 }
             },
             blockstrap: {
+                key: "B726962B-F976-6FD9-67EA-71C9838FD6A7",
+                key_name: "api_key",
                 functions: {
                     to: {
                         address: "address/transactions/",
@@ -583,6 +578,7 @@ var blockstrap_options = {
                 }
             },
             qt: {
+                type: "rpc",
                 functions: {
                     to: {
                         address: "&call=address&id=",

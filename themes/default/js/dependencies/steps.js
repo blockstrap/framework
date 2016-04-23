@@ -343,6 +343,10 @@ var blockstrap_setup_steps = [
                                             {
                                                 "value": "blockcypher",
                                                 "text": "BlockCypher"
+                                            },
+                                            {
+                                                "value": "qt",
+                                                "text": "Local QTs"
                                             }
                                         ],
                                         "wrapper": {

@@ -63,11 +63,7 @@
                 balance: 0,
                 blockchain: false
             }
-            var key_key = 'api_key';
-            if(typeof $.fn.blockstrap.settings.key_key != 'undefined')
-            {
-                key_key = $.fn.blockstrap.settings.key_key;
-            }
+            var key_name = $.fn.blockstrap.core.apis('key_name');
             if(account.blockchain && $.fn.blockstrap.settings.blockchains[account.blockchain])
             {
                 add_blockchain = $.fn.blockstrap.settings.blockchains[account.blockchain].blockchain;
@@ -81,16 +77,18 @@
                 {
                     account.received = parseInt(current_account.received) / 100000000 + ' ' + add_blockchain;
                 }
-                var base_api_url = $.fn.blockstrap.settings.blockchains[account.blockchain].apis[$.fn.blockstrap.settings.api_service];
-                var address_slugs = $.fn.blockstrap.settings.apis.defaults[$.fn.blockstrap.settings.api_service].functions.to.address;
+                var api_provider = $.fn.blockstrap.core.api();
+                var base_api_url = $.fn.blockstrap.settings.blockchains[account.blockchain].apis[api_provider];
+                var address_slugs = $.fn.blockstrap.settings.apis.defaults[api_provider].functions.to.address;
                 address_url = base_api_url + address_slugs + key;
-                if($.fn.blockstrap.settings.key)
+                var api_key = $.fn.blockstrap.core.apis('key');
+                if(api_key)
                 {
-                    if($.isArray($.fn.blockstrap.settings.key))
+                    if($.isArray(api_key))
                     {
-                        $.fn.blockstrap.settings.key = $.fn.blockstrap.settings.key[Math.floor(Math.random()*$.fn.blockstrap.settings.key.length)];
+                        api_key = api_key[Math.floor(Math.random()*api_key.length)];
                     }
-                    address_url+= '?showtxnio=1&'+key_key+'=' + $.fn.blockstrap.settings.key;
+                    address_url+= '?showtxnio=1&'+key_name+'=' + api_key;
                 }
                 var available_txs = $.fn.blockstrap.accounts.txs(current_account.id);
                 if($.isArray(available_txs) && blockstrap_functions.array_length(available_txs) > 0)
@@ -157,16 +155,18 @@
                 {
                     tx.block = 'N/A';
                 }
-                var base_api_url = $.fn.blockstrap.settings.blockchains[current_tx.tx.blockchain].apis[$.fn.blockstrap.settings.api_service];
-                var tx_slugs = $.fn.blockstrap.settings.apis.defaults[$.fn.blockstrap.settings.api_service].functions.to.transaction;
+                var api_provider = $.fn.blockstrap.core.api();
+                var base_api_url = $.fn.blockstrap.settings.blockchains[current_tx.tx.blockchain].apis[api_provider];
+                var tx_slugs = $.fn.blockstrap.settings.apis.defaults[api_provider].functions.to.transaction;
                 tx_url = base_api_url + tx_slugs + txid;
-                if($.fn.blockstrap.settings.key)
+                var api_key = $.fn.blockstrap.core.apis('key');
+                if(api_key)
                 {
-                    if($.isArray($.fn.blockstrap.settings.key))
+                    if($.isArray(api_key))
                     {
-                        $.fn.blockstrap.settings.key = $.fn.blockstrap.settings.key[Math.floor(Math.random()*$.fn.blockstrap.settings.key.length)];
+                        api_key = api_key[Math.floor(Math.random()*api_key.length)];
                     }
-                    tx_url+= '?showtxnio=1&'+key_key+'=' + $.fn.blockstrap.settings.key;
+                    tx_url+= '?showtxnio=1&'+key_name+'=' + api_key;
                 }
             }
             var placeholders = [

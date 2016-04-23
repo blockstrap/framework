@@ -216,7 +216,14 @@
                 }
                 else
                 {
-                    markets.update(saved_conditions.data, callback);
+                    if(typeof saved_conditions != 'undefined' && saved_conditions)
+                    {
+                        markets.update(saved_conditions.data, callback);
+                    }
+                    else
+                    {
+                        callback();
+                    }
                 }
             }, $.fn.blockstrap.core.api('blockstrap'), true);
         }
