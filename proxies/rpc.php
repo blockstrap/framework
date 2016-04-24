@@ -45,6 +45,7 @@ $results = [
 if(
     $call == 'address' 
     || $call == 'block' 
+    || $call == 'relay' 
     || $call == 'transaction' 
     || $call == 'transactions' 
     || $call == 'unspents'
@@ -87,6 +88,7 @@ if(
                 $obj['address'] = $address;
                 $account_name = 'XXX_'.$address;
                 $balance = $bitcoind->getbalance($account_name, 1, true);
+                $obj['raw_bal'] = $balance;
                 $received = $bitcoind->getreceivedbyaccount($account_name, 1);
                 $address = $bitcoind->validateaddress($obj['address']);
                 $txs = $bitcoind->listtransactions($account_name, 100, 0, true);
@@ -101,6 +103,20 @@ if(
                 if($txs)
                 {
                     $obj['tx_count'] = count($txs);
+                }
+                $unspents = $bitcoind->listunspent(1, 9999999, [$obj['address']]);
+                $obj['unspents'] = $unspents;
+                if($unspents)
+                {
+                    if(is_array($unspents) && count($unspents) > 0)
+                    {
+                        $balance = 0;
+                        foreach(array_reverse($unspents) as $tx) 
+                        {
+                            $balance = $balance + intval($tx['amount'] * 100000000);
+                        }
+                        $obj['balance'] = $balance;
+                    }
                 }
             }
         }
@@ -166,6 +182,7 @@ if(
                 $tx = $bitcoind->gettransaction($txid, true);
                 if($tx)
                 {
+                    $value = 0;
                     $obj['txid'] = $txid;
                     $raw_tx = $bitcoind->getrawtransaction($txid, 1);
                     if(isset($tx['blockhash']) && $tx['blockhash'])
@@ -180,7 +197,6 @@ if(
                     {
                         // TODO - Need to know output and input, but cannot do that with looping raw TXs
                         $obj['output'] = intval($tx['amount'] * 100000000);
-                        $obj['value'] = intval($tx['amount'] * 100000000);
                     }
                     if(isset($tx['blocktime']) && $tx['blocktime'])
                     {
@@ -203,7 +219,15 @@ if(
                         if(isset($raw_tx['vout']) && is_array($raw_tx['vout']))
                         {
                             $outputs = $raw_tx['vout'];
+                            foreach($outputs as $output)
+                            {
+                                if($output['scriptPubKey']['addresses'][0] != $obj['address'])
+                                {
+                                    $value = $value + intval($output['value'] * 100000000);
+                                }
+                            }
                         }
+                        $obj['value'] = $value;
                         $obj['raw'] = $raw_tx;
                     }
                 }
@@ -226,6 +250,7 @@ if(
                 {
                     foreach(array_reverse($txs) as $tx) 
                     {
+                        $value = 0;
                         $txid = $tx['txid'];
                         $this_tx = [
                             "blockchain" => $blockchain,
@@ -271,11 +296,20 @@ if(
                             if(isset($raw_tx['vin']) && is_array($raw_tx['vin']))
                             {
                                 $inputs = $raw_tx['vin'];
+                                $obj['raw_in'] = $inputs;
                             }
                             if(isset($raw_tx['vout']) && is_array($raw_tx['vout']))
                             {
                                 $outputs = $raw_tx['vout'];
+                                foreach($outputs as $output)
+                                {
+                                    if($output['scriptPubKey']['addresses'][0] != $obj['address'])
+                                    {
+                                        $value = $value + intval($output['value'] * 100000000);
+                                    }
+                                }
                             }
+                            $this_tx['value'] = $value;
                             $this_tx['raw'] = $raw_tx;
                         }
                         $obj['txs'][] = $this_tx;
@@ -331,6 +365,22 @@ if(
                             }
                         }
                     }
+                }
+            }
+        }
+        else if($call == 'relay')
+        {
+            $obj = [
+                "blockchain" => $blockchain,
+                "txid" => false
+            ];
+            if(isset($_POST['tx']) && $_POST['tx'])
+            {
+                $raw_tx = $_POST['tx'];
+                $tx = $bitcoind->sendrawtransaction($raw_tx);
+                if($tx)
+                {
+                    $obj['txid'] = $tx;
                 }
             }
         }

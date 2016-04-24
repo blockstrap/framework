@@ -679,9 +679,9 @@
                 if(!confirm || confirm && confirm == password)
                 {
                     $('#confirm-modal').modal('hide');
-                    
                     if(chain && collection == 'accounts')
                     {
+                        // Just remove this one blockchain from account...
                         // Just remove this one blockchain from account...
                         var raw_account = $.fn.blockstrap.accounts.get(key, true);
                         if(
@@ -936,7 +936,9 @@
 
                                     // TODO: Update account one by one?
                                     the_account.blockchains[k] = JSON.parse(JSON.stringify(chain));
-                                    if(blockstrap_functions.array_length(chain.txs) < chain.tx_count)
+                                    // TODO - Remove this hardcoded pagination feature cancellation
+                                    paginate = false;
+                                    if(blockstrap_functions.array_length(chain.txs) < chain.tx_count && paginate)
                                     {
                                         // Paginate?
                                         page++;

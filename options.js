@@ -16,7 +16,7 @@ var blockstrap_options = {
     id: "blockstrap",
     app_id: "framework",
     loader_id: "loading-wrapper",
-    account_poll: false, // REMEMBER TO SWITCH THIS ON WHEN NEEDED !!!
+    account_poll: true, // REMEMBER TO SWITCH THIS ON WHEN NEEDED !!!
     skip_config: true,
     install: false,
     public: false, 
@@ -394,6 +394,7 @@ var blockstrap_options = {
         },
         defaults: {
             blockcypher: {
+                async: false,
                 key: [
                     "795ad87531fff07a175e314ae9d6397c", 
                     "ff45f11f32b3538cb48f2d58856d7632", 
@@ -406,6 +407,7 @@ var blockstrap_options = {
                     "c1d3af601a8cbac0680486d58b5e7fce", 
                     "33766acc25e8ab1bdf2eb23ea8452dfd"
                 ],
+                //key: "ceeefc8720aff0e9b9267d4114f7a20e",
                 key_name: "token",
                 functions: {
                     to: {
@@ -478,6 +480,7 @@ var blockstrap_options = {
                 }
             },
             blockstrap: {
+                async: true,
                 key: "B726962B-F976-6FD9-67EA-71C9838FD6A7",
                 key_name: "api_key",
                 functions: {
@@ -578,11 +581,14 @@ var blockstrap_options = {
                 }
             },
             qt: {
+                async: false,
                 type: "rpc",
                 functions: {
                     to: {
                         address: "&call=address&id=",
                         block: "&call=block&id=",
+                        relay: "&call=relay&id=",
+                        relay_param: "tx",
                         transaction: "&call=transaction&id=",
                         transactions: "&call=transactions&id=",
                         unspents: "&call=unspents&id=",
@@ -604,6 +610,10 @@ var blockstrap_options = {
                             next: "next",
                             tx_count: "tx_count",
                             time: "time"
+                        },
+                        relay: {
+                            key: "results",
+                            txid: "txid"
                         },
                         transaction: {
                             key: "results",

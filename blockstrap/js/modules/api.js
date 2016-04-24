@@ -456,8 +456,8 @@
             }
         }
         var api_type = $.fn.blockstrap.core.apis('type', service);
+        var use_async = $.fn.blockstrap.core.apis('async', service);
         var data_type = 'json';
-        var use_async = true;
         if(api_type == 'rpc')
         {
             use_async = false;
@@ -599,6 +599,29 @@
                                 && typeof results.data[map.from.relay.txid] != 'undefined'
                             ){
                                 data = results.data[map.from.relay.txid];
+                            }
+                            if(data)
+                            {
+                                tx = {
+                                    blockchain: blockchain,
+                                    txid: data
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if(
+                                map.from.relay.inner
+                                && typeof results[map.from.relay.inner] != 'undefined'
+                                && typeof results[map.from.relay.inner][map.from.relay.txid] != 'undefined'
+                            ){
+                                data = results[map.from.relay.inner][map.from.relay.txid];
+                            }
+                            else if(
+                                map.from.relay.txid
+                                && typeof results[map.from.relay.txid] != 'undefined'
+                            ){
+                                data = results[map.from.relay.txid];
                             }
                             if(data)
                             {
