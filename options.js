@@ -311,7 +311,8 @@ var blockstrap_options = {
             blockchain: "Dogecoin (Testnet)",
             lib: "dogecointestnet",
             apis: {
-                blockstrap: "http://officeapi.neuroware.io/v0/doget/"
+                blockstrap: "http://officeapi.neuroware.io/v0/doget/",
+                qt: "proxies/rpc.php?blockchain=doget"
             },
             fee: 2,
             op_return: true,
@@ -330,7 +331,8 @@ var blockstrap_options = {
         multi: {
             private: true,
             apis: {
-                blockstrap: "http://officeapi.neuroware.io/v0/multi/"
+                blockstrap: "http://192.168.1.200/v0/multi/",
+                qt: "proxies/rpc.php?blockchain=multi"
             }
         },
         btc: {
@@ -587,6 +589,9 @@ var blockstrap_options = {
                     to: {
                         address: "&call=address&id=",
                         block: "&call=block&id=",
+                        dnkey: "&call=dnkey&id=",
+                        dnkeys: "&call=dnkey&id=",
+                        op_returns: "&call=op_returns&id=",
                         relay: "&call=relay&id=",
                         relay_param: "tx",
                         transaction: "&call=transaction&id=",
@@ -610,6 +615,20 @@ var blockstrap_options = {
                             next: "next",
                             tx_count: "tx_count",
                             time: "time"
+                        },
+                        dnkey: {
+                            key: "results",
+                            dnkeys: "dnkeys"
+                        },
+                        dnkeys: {
+                            key: "results",
+                            dnkeys: "dnkeys"
+                        },
+                        op_returns: {
+                            key: "results",
+                            inner: "txs",
+                            txid: "txid",
+                            data: "data"
                         },
                         relay: {
                             key: "results",

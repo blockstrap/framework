@@ -1,7 +1,7 @@
 <?php
 
 // DEPENDENCIES
-error_reporting(0);
+//error_reporting(0);
 include('jsonRPCClient.php');
 
 // DEFAULTS
@@ -21,6 +21,12 @@ $rpc_options = [
         "port" => "8332"
     ],
     "doge" => [
+        "username" => "test",
+        "password" => "temptesting123",
+        "host" => "localhost",
+        "port" => "8335"
+    ],
+    "doget" => [
         "username" => "test",
         "password" => "temptesting123",
         "host" => "localhost",
@@ -45,6 +51,9 @@ $results = [
 if(
     $call == 'address' 
     || $call == 'block' 
+    || $call == 'dnkey' 
+    || $call == 'dnkeys' 
+    || $call == 'op_returns' 
     || $call == 'relay' 
     || $call == 'transaction' 
     || $call == 'transactions' 
@@ -54,25 +63,31 @@ if(
     $loaded = false;
     $debug = false;
     
-    try {
-        $bitcoind = new jsonRPCClient("http://".$rpc_options[$blockchain]['username'].":".$rpc_options[$blockchain]['password']."@".$rpc_options[$blockchain]['host'].":".$rpc_options[$blockchain]['port']."/");
-        if($bitcoind->getinfo())
+    if($blockchain != 'multi')
         {
-            $loaded = true;
+        try {
+            $bitcoind = new jsonRPCClient("http://".$rpc_options[$blockchain]['username'].":".$rpc_options[$blockchain]['password']."@".$rpc_options[$blockchain]['host'].":".$rpc_options[$blockchain]['port']."/");
+            if($bitcoind->getinfo())
+            {
+                $loaded = true;
+            }
+        } catch (Exception $e) {
+            $loaded = false;
         }
-    } catch (Exception $e) {
-        $loaded = false;
     }
     
-    if($loaded === true)
+    if($loaded === true || $blockchain == 'multi')
     {
-        $bitcoind = new jsonRPCClient("http://".$rpc_options[$blockchain]['username'].":".$rpc_options[$blockchain]['password']."@".$rpc_options[$blockchain]['host'].":".$rpc_options[$blockchain]['port']."/");
-        $raw = false;
-        if($debug && $bitcoind && $loaded)
+        if($blockchain != 'multi')
         {
-            $raw = $bitcoind->getinfo();
+            $bitcoind = new jsonRPCClient("http://".$rpc_options[$blockchain]['username'].":".$rpc_options[$blockchain]['password']."@".$rpc_options[$blockchain]['host'].":".$rpc_options[$blockchain]['port']."/");
+            $raw = false;
+            if($debug && $bitcoind && $loaded)
+            {
+                $raw = $bitcoind->getinfo();
+            }
         }
-        else if($call == 'address')
+        if($call == 'address')
         {
             $obj = [
                 "address" => false,
@@ -80,7 +95,8 @@ if(
                 "hash" => "N/A",
                 "tx_count" => 0,
                 "received" => 0,
-                "balance" => 0
+                "balance" => 0,
+                "raw" => []
             ];
             if(isset($_GET['id']) && $_GET['id'])
             {
@@ -88,7 +104,6 @@ if(
                 $obj['address'] = $address;
                 $account_name = 'XXX_'.$address;
                 $balance = $bitcoind->getbalance($account_name, 1, true);
-                $obj['raw_bal'] = $balance;
                 $received = $bitcoind->getreceivedbyaccount($account_name, 1);
                 $address = $bitcoind->validateaddress($obj['address']);
                 $txs = $bitcoind->listtransactions($account_name, 100, 0, true);
@@ -105,7 +120,6 @@ if(
                     $obj['tx_count'] = count($txs);
                 }
                 $unspents = $bitcoind->listunspent(1, 9999999, [$obj['address']]);
-                $obj['unspents'] = $unspents;
                 if($unspents)
                 {
                     if(is_array($unspents) && count($unspents) > 0)
@@ -163,6 +177,115 @@ if(
                 }
             }
         }
+        else if($call == 'dnkey' || $call == 'dnkeys')
+        {
+            $obj = [
+                "blockchain" => $blockchain,
+                "dns" => false,
+                "dnkeys" => []
+            ];
+            if(isset($_GET['id']) && $_GET['id'] && $_GET['id'] != 'false')
+            {
+                $domain = $_GET['id'];
+                $dns = dns_get_record($domain, DNS_TXT);
+                $obj['dns'] = $dns;
+                foreach($dns as $record)
+                {
+                    if(isset($record['entries']))
+                    {
+                        foreach($record['entries'] as $entry)
+                        {
+                            if(substr($entry, 0, 6) === "dnkey-")
+                            {
+                                $this_result = substr($entry, 6, strlen($entry));
+                                $these_results = explode('=', $this_result);
+                                if(isset($obj['dnkeys'][$these_results[0]]))
+                                {
+                                    $obj['dnkeys'][$these_results[0]][] = $these_results[1];
+                                }
+                                else
+                                {
+                                    $obj['dnkeys'][$these_results[0]] = [];
+                                    $obj['dnkeys'][$these_results[0]][] = $these_results[1];
+                                }
+                            }
+                        }
+                    }
+                        
+                }
+            }
+        }
+        else if($call == 'op_returns')
+        {
+            $obj = [
+                "blockchain" => $blockchain,
+                "addresses" => [],
+                "txs" => []
+            ];
+            if(isset($_GET['id']) && $_GET['id'] && $_GET['id'] != 'false')
+            {
+                $valid_txs = [];
+                $addresses = explode('_', $_GET['id']);
+                $to_address = $addresses[0];
+                $from_address = $addresses[0];
+                $obj['addresses']['to'] = $to_address;
+                $obj['addresses']['from'] = $from_address;
+                $account_name = 'XXX_'.$to_address;
+                $originaL_txs = $bitcoind->listtransactions($account_name, 1000, 0, true);
+                if($originaL_txs && is_array($originaL_txs))
+                {
+                    $txs = array_reverse($originaL_txs);
+                    foreach($txs as $key => $tx)
+                    {
+                        $txs[$key]['tx'] = $bitcoind->gettransaction($tx['txid'], true);
+                        foreach($txs[$key]['tx']['details'] as $detail)
+                        {
+                            if(isset($detail['address']) && $detail['address'] == $obj['addresses']['from'])
+                            {
+                                if(!isset($valid_txs['TX_'.$tx['time'].'_'.$tx['txid']]))
+                                {
+                                    $valid_txs['TX_'.$tx['time'].'_'.$tx['txid']] = $bitcoind->getrawtransaction($tx['txid'], 1);
+                                    $valid_txs['TX_'.$tx['time'].'_'.$tx['txid']]['details'] = $detail;
+                                }
+                            }
+                        }
+                    }
+                    $txs = [];
+                    foreach($valid_txs as $tx)
+                    {
+                        $this_tx = [
+                            "txid" => $tx['txid'],
+                            "data" => "",
+                            "pos" => null,
+                            "tot" => count($tx['vout'])
+                        ];
+                        foreach($tx['vout'] as $key => $output)
+                        {
+                            if($output['value'] <= 0)
+                            {
+                                $this_tx['data'] = $output['scriptPubKey']['hex'];
+                                $this_tx['pos'] = $key;
+                            }
+                        }
+                        foreach($tx['vin'] as $key => $input)
+                        {
+                            $include_this = false;
+                            $extra_info = $bitcoind->gettransaction($input['txid'], true);
+                            // CAN NOW USE DETAILS AND CHECK IF ADDRESS IS LINKED !!!
+                            foreach($extra_info['details'] as $detail)
+                            {
+                                if($detail['address'] == $obj['addresses']['from']) $include_this = true;
+                            }
+                        }
+                        if($this_tx['data'] && $include_this === true)
+                        {
+                            $txs[] = $this_tx;
+                        }
+                    }
+                    $obj['txs'] = $txs;
+                }
+            }
+        }
         else if($call == 'transaction')
         {
             $obj = [
@@ -174,20 +297,24 @@ if(
                 "input" => 0,
                 "output" => 0,
                 "value" => 0,
-                "fees" => 0
+                "fees" => 0,
+                "raw" => []
             ];
             if(isset($_GET['id']) && $_GET['id'])
             {
                 $txid = $_GET['id'];
                 $tx = $bitcoind->gettransaction($txid, true);
+                $obj['raw']['tx'] = $tx;
                 if($tx)
                 {
                     $value = 0;
                     $obj['txid'] = $txid;
                     $raw_tx = $bitcoind->getrawtransaction($txid, 1);
+                    $obj['raw']['raw_tx'] = $raw_tx;
                     if(isset($tx['blockhash']) && $tx['blockhash'])
                     {
                         $block = $bitcoind->getblock($tx['blockhash']);
+                        $obj['raw']['block'] = $block;
                         if($block && isset($block['height']) && $block['height'])
                         {
                             $obj['block'] = $block['height'];
@@ -208,27 +335,36 @@ if(
                     }
                     if($raw_tx)
                     {
+                        $addresses_used_in_outputs = [];
                         if(isset($raw_tx['size']) && $raw_tx['size'])
                         {
                             $obj['size'] = $raw_tx['size'];
                         }
-                        if(isset($raw_tx['vin']) && is_array($raw_tx['vin']))
-                        {
-                            $inputs = $raw_tx['vin'];
-                        }
                         if(isset($raw_tx['vout']) && is_array($raw_tx['vout']))
                         {
-                            $outputs = $raw_tx['vout'];
-                            foreach($outputs as $output)
+                            $inner_output_value = 0;
+                            foreach($raw_tx['vout'] as $output)
                             {
-                                if($output['scriptPubKey']['addresses'][0] != $obj['address'])
+                                $inner_output_value = $inner_output_value + intval($output['value'] * 100000000);
+                            }
+                            $obj['output'] = $inner_output_value;
+                        }
+                        if(isset($raw_tx['vin']) && is_array($raw_tx['vin']))
+                        {
+                            $inner_input_value = 0;
+                            $inputs = $raw_tx['vin'];
+                            foreach($inputs as $key => $input)
+                            {
+                                $tx = $bitcoind->getrawtransaction($input['txid'], 1);
+                                foreach($tx['vout'] as $output)
                                 {
-                                    $value = $value + intval($output['value'] * 100000000);
+                                    $inner_input_value = $inner_input_value + intval($output['value'] * 100000000);
                                 }
                             }
+                            $obj['input'] = $inner_input_value;
                         }
-                        $obj['value'] = $value;
-                        $obj['raw'] = $raw_tx;
+                        $obj['fees'] = $obj['input'] - $obj['output'];
+                        $obj['value'] = $obj['output'];
                     }
                 }
             }
@@ -237,20 +373,24 @@ if(
         {
             $obj = [
                 "blockchain" => $blockchain,
-                "txs" => []
+                "txs" => [],
+                "raw" => []
             ];
-            if(isset($_GET['id']) && $_GET['id'])
+            if(isset($_GET['id']) && $_GET['id'] && $_GET['id'] != 'false')
             {
                 $address = $_GET['id'];
                 $obj['address'] = $address;
                 $account_name = 'XXX_'.$address;
-                $txs = $bitcoind->listtransactions($account_name, 100, 0, true);
-                $obj['raw'] = $txs;
-                if($txs && is_array($txs))
+                $originaL_txs = $bitcoind->listtransactions($account_name, 100, 0, true);
+                if($originaL_txs && is_array($originaL_txs))
                 {
-                    foreach(array_reverse($txs) as $tx) 
+                    $txs = array_reverse($originaL_txs);
+                    $obj['raw']['txs'] = $txs;
+                    foreach($txs as $tx) 
                     {
                         $value = 0;
+                        $details = false;
+                        $this_input_value = 0;
                         $txid = $tx['txid'];
                         $this_tx = [
                             "blockchain" => $blockchain,
@@ -261,13 +401,16 @@ if(
                             "input" => 0,
                             "output" => 0,
                             "value" => 0,
-                            "fees" => 0
+                            "fees" => 0,
+                            "raw" => []
                         ];
                         $this_tx['txid'] = $txid;
                         $raw_tx = $bitcoind->getrawtransaction($txid, 1);
+                        $this_tx['raw']['raw_tx'] = $raw_tx;
                         if(isset($tx['blockhash']) && $tx['blockhash'])
                         {
                             $block = $bitcoind->getblock($tx['blockhash']);
+                            $this_tx['raw']['block'] = $block;
                             if($block && isset($block['height']) && $block['height'])
                             {
                                 $this_tx['block'] = $block['height'];
@@ -295,22 +438,80 @@ if(
                             }
                             if(isset($raw_tx['vin']) && is_array($raw_tx['vin']))
                             {
+                                $inner_value = 0;
                                 $inputs = $raw_tx['vin'];
-                                $obj['raw_in'] = $inputs;
+                                foreach($inputs as $key => $input)
+                                {
+                                    $txid = $input['txid'];
+                                    $this_inner_tx = $bitcoind->gettransaction($txid, true);
+                                    if(isset($this_inner_tx['details']) && is_array($this_inner_tx['details']))
+                                    {
+                                        $sent = false;
+                                        $inputs[$key]['details'] = $this_inner_tx['details'];
+                                        foreach($this_inner_tx['details'] as $detail)
+                                        {   
+                                            if(isset($detail['address']) && $detail['address'] && $detail['address'] != $obj['address'] && $detail['category'] == 'receive')
+                                            {
+                                                $inner_value = $inner_value + intval($detail['amount'] * 100000000);
+                                                $sent = true;
+                                            }
+                                        }
+                                        $this_tx['input'] = $inner_value;
+                                    }
+                                }
+                                $this_tx['raw']['inputs'] = $inputs;
                             }
                             if(isset($raw_tx['vout']) && is_array($raw_tx['vout']))
                             {
                                 $outputs = $raw_tx['vout'];
-                                foreach($outputs as $output)
+                                $inner_value = 0;
+                                foreach($outputs as $key => $output)
                                 {
-                                    if($output['scriptPubKey']['addresses'][0] != $obj['address'])
-                                    {
-                                        $value = $value + intval($output['value'] * 100000000);
-                                    }
+                                    $inner_value = $inner_value + intval($output['value'] * 100000000);
                                 }
+                                $this_tx['output'] = $inner_value;
+                                
+                                if($this_tx['output'] > $this_tx['input'])
+                                {
+                                    
+                                    
+                                    foreach($inputs as $key => $input)
+                                    {
+                                        $inner_value = 0;
+                                        $txid = $input['txid'];
+                                        $this_inner_tx = $bitcoind->gettransaction($txid, true);
+                                        if(isset($this_inner_tx['details']) && is_array($this_inner_tx['details']))
+                                        {
+                                            $sent = false;
+                                            $inputs[$key]['details'] = $this_inner_tx['details'];
+                                            foreach($this_inner_tx['details'] as $detail)
+                                            {   
+                                                if($detail['address'] == $obj['address'] && $detail['category'] == 'receive')
+                                                {
+                                                    $inner_value = $inner_value + intval($detail['amount'] * 100000000);
+                                                    $sent = true;
+                                                }
+                                            }
+                                            $this_tx['input'] = $inner_value;
+                                        }
+                                    }
+                                    $this_tx['raw']['inputs'] = $inputs;
+                                    //$this_tx['fees'] = $this_tx['input'] - $this_tx['output'];
+                                    $inner_value = 0;
+                                    foreach($outputs as $output)
+                                    {
+                                        if(
+                                            isset($output['scriptPubKey']['addresses']) 
+                                            && $output['scriptPubKey']['addresses'][0] != $obj['address']
+                                        ){
+                                            $inner_value = $inner_value + intval($output['value'] * 100000000);
+                                        }
+                                    }
+                                    $this_tx['value'] = 0 - $inner_value;
+                                }
+                                $this_tx['fees'] = $this_tx['input'] - $this_tx['output'];
+                                $this_tx['raw']['outputs'] = $outputs;
                             }
-                            $this_tx['value'] = $value;
-                            $this_tx['raw'] = $raw_tx;
                         }
                         $obj['txs'][] = $this_tx;
                     }
@@ -321,7 +522,8 @@ if(
         {
             $obj = [
                 "blockchain" => $blockchain,
-                "txs" => []
+                "txs" => [],
+                "raw" => []
             ];
             if(isset($_GET['id']) && $_GET['id'])
             {
@@ -329,6 +531,7 @@ if(
                 $obj['address'] = $address;
                 $account_name = 'XXX_'.$address;
                 $unspents = $bitcoind->listunspent(1, 9999999, [$address]);
+                $obj['raw']['unspents'] = $unspents;
                 if($unspents)
                 {
                     if(is_array($unspents) && count($unspents) > 0)
@@ -378,6 +581,7 @@ if(
             {
                 $raw_tx = $_POST['tx'];
                 $tx = $bitcoind->sendrawtransaction($raw_tx);
+                $obj['raw'] = $tx;
                 if($tx)
                 {
                     $obj['txid'] = $tx;

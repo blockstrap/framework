@@ -69,10 +69,18 @@
     {
         var str = '';
         var op_return = bitcoin.Script.fromHex(script_pub_key).toASM();
-        var op_array = op_return.split('OP_RETURN ');
+        var op_array = op_return.split(' ');
         if(blockstrap_functions.array_length(op_array) == 2)
         {
             var hex = op_array[1];
+            for (var i = 0; i < hex.length; i += 2)
+            {
+                str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+            }
+        }
+        else if(blockstrap_functions.array_length(op_array) == 5)
+        {
+            var hex = op_array[2];
             for (var i = 0; i < hex.length; i += 2)
             {
                 str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));

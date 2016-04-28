@@ -424,6 +424,132 @@
         }
     }
     
+    api.op_returns = function(to_address, from_address, blockchain, callback, service, return_raw, count, skip)
+    {
+        if(typeof service == 'undefined' || !service) service = $.fn.blockstrap.core.api();
+        var api_url = api.url('op_returns', to_address+'_'+from_address, blockchain, service);
+        // Hack for BS API Pagination
+        if(typeof count != 'undefined' && parseInt(count) > 0 )
+        {
+            if(
+                typeof $.fn.blockstrap.settings.apis.defaults[service] == 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][service] != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][service].functions != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][service].functions.to != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][service].functions.to.tx_pagination != 'undefined'
+            ){
+                var key_array = $.fn.blockstrap.settings.apis[blockchain][api.api_service].functions.to.tx_pagination.split(', ');
+                var key = key_array[0];
+                api_url+= '&'+key+'='+count;
+            }
+            else if(
+                typeof $.fn.blockstrap.settings.apis.defaults[service] != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis.defaults[service].functions != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis.defaults[service].functions.to != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis.defaults[service].functions.to.tx_pagination != 'undefined'
+            ){
+                var key_array = $.fn.blockstrap.settings.apis.defaults[service].functions.to.tx_pagination.split(', ');
+                var key = key_array[0];
+                api_url+= '&'+key+'='+count;
+            }
+        }
+        if(typeof count != 'undefined' && parseInt(skip) > 0 )
+        {
+            if(
+                typeof $.fn.blockstrap.settings.apis.defaults[service] == 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][service] != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][service].functions != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][service].functions.to != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis[blockchain][service].functions.to.tx_pagination != 'undefined'
+            ){
+                var key_array = $.fn.blockstrap.settings.apis[blockchain][service].functions.to.tx_pagination.split(', ');
+                var key = key_array[1];
+                api_url+= '&'+key+'='+skip;
+            }
+            else if(
+                typeof $.fn.blockstrap.settings.apis.defaults[service] != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis.defaults[service].functions != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis.defaults[service].functions.to != 'undefined'
+                && typeof $.fn.blockstrap.settings.apis.defaults[service].functions.to.tx_pagination != 'undefined'
+            ){
+                var key_array = $.fn.blockstrap.settings.apis.defaults[service].functions.to.tx_pagination.split(', ');
+                var key = key_array[1];
+                api_url+= '&'+key+'='+skip;
+            }
+        }
+        if(api_url)
+        {
+            api.request(api_url, function(results)
+            {
+                if(return_raw && callback)
+                {
+                    $.fn.blockstrap.core.apply_actions('api_op_returns', function()
+                    {
+                        callback(results);
+                    }, results);
+                }
+                else
+                {
+                    var map = $.fn.blockstrap.settings.apis.defaults[service].functions;
+                    var these_results = results;
+                    var transactions = [];
+                    var now = new Date().getTime();
+                    var result_key = false;
+                    if(typeof map.from.transactions.inner != 'undefined' && map.from.transactions.inner)
+                    {
+                        result_key = map.from.transactions.inner;
+                    }
+                    if(result_key && typeof results[result_key] != 'undefined')
+                    {
+                        these_results = results[result_key];
+                    }
+                    if(these_results)
+                    {
+                        $.each(these_results, function(k, v)
+                        {
+                            var transaction = {
+                                blockchain: blockchain,
+                                txid: 'N/A',
+                                data: ''
+                            };
+                            transaction = api.results(
+                                transaction, 
+                                these_results[k], 
+                                blockchain, 
+                                'op_returns',
+                                false,
+                                service
+                            );
+                            transactions.push(transaction);
+                        });
+                    }
+                    if(callback) 
+                    {
+                        $.fn.blockstrap.core.apply_actions('api_op_returns', function()
+                        {
+                            callback(transactions);
+                        }, transactions);
+                    }
+                    else 
+                    {
+                        return transactions;
+                    }
+                }
+            }, 'GET', false, blockchain, 'op_returns', false, false, service);
+        }
+        else if(callback)
+        {
+            $.fn.blockstrap.core.apply_actions('api_op_returns', function()
+            {
+                callback(false);
+            });
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
     api.request = function(url, callback, type, data, blockchain, call, username, password, service)
     {
         if(!type) type = 'GET';
@@ -472,7 +598,7 @@
             async: use_async,
             headers: headers,
             success: function(results)
-            {   
+            {
                 var extra_key = false;
                 var key_to_call = false;
                 if(
@@ -1181,8 +1307,8 @@
             apis = $.fn.blockstrap.settings.apis;
         }
         if(
-            blockchain != 'multi'
-            &&
+            //blockchain != 'multi'
+            //&&
             (
             (
             typeof apis[blockchain] == 'undefined' 
@@ -1232,8 +1358,8 @@
             }
         }
         else if(
-            blockchain != 'multi'
-            &&
+            //blockchain != 'multi'
+            //&&
             (
             typeof apis[blockchain] != 'undefined' 
             && typeof apis[blockchain][api_service] != 'undefined'
@@ -1247,7 +1373,8 @@
                 url = blockchains[blockchain].apis[api_service] + call;
             }
         }
-        else if( blockchain != 'multi')
+        //else if( blockchain != 'multi')
+        else
         {
             url = blockchains[blockchain].apis[api_service] + apis['defaults'][api_service].functions.to[action] + key;
             if(apis['defaults'][api_service].functions.to[action].indexOf("$call") > -1)
@@ -1256,6 +1383,7 @@
                 url = blockchains[blockchain].apis[api_service] + call;
             }
         }
+        /*
         else
         {
             blockchains = $.fn.blockstrap.settings.blockchains;
@@ -1272,6 +1400,7 @@
                 url = blockchains[blockchain].apis['blockstrap'] + call;
             }
         }
+        */
         if(action == 'relay')
         {
             if(url.substr(-1) === '/') 
