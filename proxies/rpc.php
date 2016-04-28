@@ -446,71 +446,82 @@ if(
                                     $this_inner_tx = $bitcoind->gettransaction($txid, true);
                                     if(isset($this_inner_tx['details']) && is_array($this_inner_tx['details']))
                                     {
-                                        $sent = false;
                                         $inputs[$key]['details'] = $this_inner_tx['details'];
                                         foreach($this_inner_tx['details'] as $detail)
                                         {   
-                                            if(isset($detail['address']) && $detail['address'] && $detail['address'] != $obj['address'] && $detail['category'] == 'receive')
+                                            if($detail['address'] == $obj['address'] && $detail['category'] == 'send')
                                             {
                                                 $inner_value = $inner_value + intval($detail['amount'] * 100000000);
-                                                $sent = true;
                                             }
                                         }
-                                        $this_tx['input'] = $inner_value;
                                     }
                                 }
-                                $this_tx['raw']['inputs'] = $inputs;
+                                if($inner_value <= 0)
+                                {
+                                    $this_tx['input'] = 0 - $inner_value;
+                                }
+                                else
+                                {
+                                    $this_tx['input'] = $inner_value;
+                                }
+                                $this_tx['value'] = $inner_value;
                             }
                             if(isset($raw_tx['vout']) && is_array($raw_tx['vout']))
                             {
                                 $outputs = $raw_tx['vout'];
                                 $inner_value = 0;
+                                $inner_output_value = 0;
                                 foreach($outputs as $key => $output)
                                 {
-                                    $inner_value = $inner_value + intval($output['value'] * 100000000);
+                                    if(
+                                        isset($output['scriptPubKey']['addresses']) 
+                                        && $output['scriptPubKey']['addresses'][0] != $obj['address']
+                                    ){
+                                        $inner_value = $inner_value + intval($output['value'] * 100000000);
+                                    }
+                                    $inner_output_value = $inner_output_value + intval($output['value'] * 100000000);
                                 }
-                                $this_tx['output'] = $inner_value;
+                                $this_tx['output'] = $inner_output_value;
+                                $this_tx['value'] = 0 - $inner_value;
+                                
+                                $this_tx['fees'] = $this_tx['input'] - $this_tx['output'];
                                 
                                 if($this_tx['output'] > $this_tx['input'])
                                 {
-                                    
-                                    
+                                    $inner_input_value = 0;
                                     foreach($inputs as $key => $input)
                                     {
                                         $inner_value = 0;
                                         $txid = $input['txid'];
-                                        $this_inner_tx = $bitcoind->gettransaction($txid, true);
-                                        if(isset($this_inner_tx['details']) && is_array($this_inner_tx['details']))
+                                        $magic_vout = $input['vout'];
+                                        
+                                        $this_inner_raw_tx = $bitcoind->getrawtransaction($txid, 1);
+                                        
+                                        foreach($this_inner_raw_tx['vout'] as $vout_key => $inner_output)
                                         {
-                                            $sent = false;
-                                            $inputs[$key]['details'] = $this_inner_tx['details'];
-                                            foreach($this_inner_tx['details'] as $detail)
-                                            {   
-                                                if($detail['address'] == $obj['address'] && $detail['category'] == 'receive')
-                                                {
-                                                    $inner_value = $inner_value + intval($detail['amount'] * 100000000);
-                                                    $sent = true;
-                                                }
+                                            if($inner_output['n'] == $magic_vout)
+                                            {
+                                                $inner_input_value = $inner_input_value + intval($inner_output['value'] * 100000000);
                                             }
-                                            $this_tx['input'] = $inner_value;
                                         }
+                                        $inputs[$key]['raw_tx'] = $this_inner_raw_tx;
                                     }
-                                    $this_tx['raw']['inputs'] = $inputs;
-                                    //$this_tx['fees'] = $this_tx['input'] - $this_tx['output'];
+                                    $this_tx['inputs'] = $inputs;
+                                    $this_tx['input'] = $inner_input_value;
+                                    
                                     $inner_value = 0;
                                     foreach($outputs as $output)
                                     {
                                         if(
                                             isset($output['scriptPubKey']['addresses']) 
-                                            && $output['scriptPubKey']['addresses'][0] != $obj['address']
+                                            && $output['scriptPubKey']['addresses'][0] == $obj['address']
                                         ){
                                             $inner_value = $inner_value + intval($output['value'] * 100000000);
                                         }
                                     }
-                                    $this_tx['value'] = 0 - $inner_value;
+                                    $this_tx['value'] = $inner_value;
+                                    $this_tx['fees'] = $this_tx['input'] - $this_tx['output'];
                                 }
-                                $this_tx['fees'] = $this_tx['input'] - $this_tx['output'];
-                                $this_tx['raw']['outputs'] = $outputs;
                             }
                         }
                         $obj['txs'][] = $this_tx;

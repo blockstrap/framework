@@ -360,8 +360,7 @@ var blockstrap_options = {
             blockchain: "Dogecoin",
             lib: "dogecoin",
             apis: {
-                blockcypher: "http://api.blockcypher.com/v1/doge/main/",
-                qt: "proxies/rpc.php?blockchain=doge"
+                blockcypher: "http://api.blockcypher.com/v1/doge/main/"
             },
             fee: 1,
             op_return: true,
