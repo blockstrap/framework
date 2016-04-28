@@ -464,7 +464,7 @@ var blockstrap_options = {
                             time: "[received, utctoepoch]",
                             input: "[total, +, fees, int]",
                             output: "total",
-                            value: "total",
+                            value: "[outputs, value]",
                             fees: "fees",
                             data: "transactions.outputs.data_string"
                         },
@@ -566,7 +566,7 @@ var blockstrap_options = {
                             time: "time",
                             input: "input_value",
                             output: "output_value",
-                            value: "tx_address_ledger_value",
+                            value: "[outputs, value]",
                             fees: "fees"
                         },
                         unspents: {

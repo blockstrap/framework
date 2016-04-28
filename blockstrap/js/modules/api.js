@@ -599,6 +599,7 @@
             headers: headers,
             success: function(results)
             {
+                //console.log('' + call + '.results', results);
                 var extra_key = false;
                 var key_to_call = false;
                 if(
@@ -785,7 +786,7 @@
         }
     }
     
-    api.results = function(defaults, results, blockchain, request, callback, service)
+    api.results = function(defaults, results, blockchain, request, callback, service, extra_id)
     {
         var clean_results = false;
         if(typeof service == 'undefined' || !service) service = $.fn.blockstrap.core.api();
@@ -888,6 +889,7 @@
                             || arrayed_result[1] == 'utctoepoch'
                             || arrayed_result[1] == 'count'
                             || arrayed_result[1] == 'lowercase'
+                            || arrayed_result[1] == 'value'
                         ){
                             if(parse_type == 'float')
                             {
@@ -919,6 +921,46 @@
                             else if(parse_type == 'lowercase')
                             {
                                 res_01 = results[arrayed_result[0]].toLowerCase();
+                            }
+                            else if(parse_type == 'value' && typeof extra_id != 'undefined')
+                            {
+                                var res_01_array = results[arrayed_result[0]];
+                                $.each(res_01_array, function(i)
+                                {
+                                    var send = false;
+                                    var inputs = results.inputs;
+                                    var magic_pos = 0;
+                                    $.each(inputs, function(i)
+                                    {
+                                        if(
+                                            (typeof inputs[i].addresses != 'undefined' && inputs[i].addresses[0] == extra_id)
+                                            ||
+                                            (typeof inputs[i].address != 'undefined' && inputs[i].address == extra_id)
+                                        ){
+                                            send = true;
+                                        }
+                                    });
+                                    if(send)
+                                    {
+                                        if(
+                                            (typeof res_01_array[i].addresses != 'undefined' && res_01_array[i].addresses[0] != extra_id)
+                                            ||
+                                            (typeof res_01_array[i].address != 'undefined' && res_01_array[i].address != extra_id)
+                                        ){
+                                            res_01 = 0 - parseInt(res_01_array[i].value);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if(
+                                            (typeof res_01_array[i].addresses != 'undefined' && res_01_array[i].addresses[0] == extra_id)
+                                            ||
+                                            (typeof res_01_array[i].address != 'undefined' && res_01_array[i].address == extra_id)
+                                        ){
+                                            res_01 = parseInt(res_01_array[i].value);
+                                        }
+                                    }
+                                });
                             }
                             else
                             {
@@ -1159,7 +1201,8 @@
                                 blockchain, 
                                 'transactions',
                                 false,
-                                service
+                                service,
+                                address
                             );
                             transactions.push(transaction);
                         });
