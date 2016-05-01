@@ -219,33 +219,41 @@ if(
         {
             $obj = [
                 "blockchain" => $blockchain,
-                "addresses" => [],
+                "address" => "N/A",
                 "txs" => []
             ];
-            if(isset($_GET['id']) && $_GET['id'] && $_GET['id'] != 'false')
-            {
+            if(
+                isset($_GET['id']) && $_GET['id'] && $_GET['id'] != 'false'
+                && isset($_GET['to']) && $_GET['to'] && $_GET['to'] != 'false'
+            ){
                 $valid_txs = [];
-                $addresses = explode('_', $_GET['id']);
-                $to_address = $addresses[0];
-                $from_address = $addresses[0];
-                $obj['addresses']['to'] = $to_address;
-                $obj['addresses']['from'] = $from_address;
-                $account_name = 'XXX_'.$to_address;
-                $originaL_txs = $bitcoind->listtransactions($account_name, 1000, 0, true);
+                $address = $_GET['id'];
+                $credit_address = $_GET['to'];
+                $obj['address'] = $address;
+                $account_name = 'XXX_'.$address;
+                $credit_account_name = 'XXX_'.$credit_address;
+                $originaL_txs = $bitcoind->listtransactions($credit_account_name, 1000, 0, true);
                 if($originaL_txs && is_array($originaL_txs))
                 {
                     $txs = array_reverse($originaL_txs);
                     foreach($txs as $key => $tx)
                     {
-                        $txs[$key]['tx'] = $bitcoind->gettransaction($tx['txid'], true);
-                        foreach($txs[$key]['tx']['details'] as $detail)
+                        //$txs[$key]['raw'] = $bitcoind->getrawtransaction($tx['txid'], 1);
+                        $txs[$key]['tx'] = $bitcoind->getrawtransaction($tx['txid'], 1);
+                        
+                        foreach($txs[$key]['tx']['vin'] as $input_key => $input)
                         {
-                            if(isset($detail['address']) && $detail['address'] == $obj['addresses']['from'])
+                            $txs[$key]['tx']['vin'][$input_key]['tx'] = $bitcoind->gettransaction($input['txid'], true);
+                            
+                            foreach($txs[$key]['tx']['vin'][$input_key]['tx']['details'] as $detail_key => $detail)
                             {
-                                if(!isset($valid_txs['TX_'.$tx['time'].'_'.$tx['txid']]))
+                                if(isset($detail['address']) && $detail['address'] == $obj['address'])
                                 {
-                                    $valid_txs['TX_'.$tx['time'].'_'.$tx['txid']] = $bitcoind->getrawtransaction($tx['txid'], 1);
-                                    $valid_txs['TX_'.$tx['time'].'_'.$tx['txid']]['details'] = $detail;
+                                    if(!isset($valid_txs['TX_'.$tx['time'].'_'.$tx['txid']]))
+                                    {
+                                        $valid_txs['TX_'.$tx['time'].'_'.$tx['txid']] = $bitcoind->getrawtransaction($tx['txid'], 1);
+                                        $valid_txs['TX_'.$tx['time'].'_'.$tx['txid']]['details'] = $detail;
+                                    }
                                 }
                             }
                         }
@@ -274,12 +282,12 @@ if(
                             // CAN NOW USE DETAILS AND CHECK IF ADDRESS IS LINKED !!!
                             foreach($extra_info['details'] as $detail)
                             {
-                                if($detail['address'] == $obj['addresses']['from']) $include_this = true;
+                                if($detail['address'] == $obj['address']) $include_this = true;
                             }
-                        }
-                        if($this_tx['data'] && $include_this === true)
-                        {
-                            $txs[] = $this_tx;
+                            if($this_tx['data'] && $include_this === true)
+                            {
+                                $txs[] = $this_tx;
+                            }
                         }
                     }
                     $obj['txs'] = $txs;

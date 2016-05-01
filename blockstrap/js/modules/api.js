@@ -424,10 +424,10 @@
         }
     }
     
-    api.op_returns = function(to_address, from_address, blockchain, callback, service, return_raw, count, skip)
+    api.op_returns = function(address, blockchain, callback, service, return_raw, count, skip, rpc_to_address)
     {
         if(typeof service == 'undefined' || !service) service = $.fn.blockstrap.core.api();
-        var api_url = api.url('op_returns', to_address+'_'+from_address, blockchain, service);
+        var api_url = api.url('op_returns', address, blockchain, service);
         // Hack for BS API Pagination
         if(typeof count != 'undefined' && parseInt(count) > 0 )
         {
@@ -495,9 +495,9 @@
                     var transactions = [];
                     var now = new Date().getTime();
                     var result_key = false;
-                    if(typeof map.from.transactions.inner != 'undefined' && map.from.transactions.inner)
+                    if(typeof map.from.op_returns.inner != 'undefined' && map.from.op_returns.inner)
                     {
-                        result_key = map.from.transactions.inner;
+                        result_key = map.from.op_returns.inner;
                     }
                     if(result_key && typeof results[result_key] != 'undefined')
                     {
@@ -507,20 +507,46 @@
                     {
                         $.each(these_results, function(k, v)
                         {
-                            var transaction = {
-                                blockchain: blockchain,
-                                txid: 'N/A',
-                                data: ''
-                            };
-                            transaction = api.results(
-                                transaction, 
-                                these_results[k], 
-                                blockchain, 
-                                'op_returns',
-                                false,
-                                service
-                            );
-                            transactions.push(transaction);
+                            if(
+                                typeof these_results[k].data != 'undefined' && these_results[k].data
+                                && typeof these_results[k].tot != 'undefined' && these_results[k].tot
+                                && typeof these_results[k].txid != 'undefined' && these_results[k].txid != 'N/A'
+                                && typeof these_results[k].pos != 'undefined'
+                            ){
+                                transactions.push(these_results[k]);
+                            }
+                            else
+                            {
+                                var transaction = {
+                                    txid: 'N/A',
+                                    pos: 0,
+                                    tot: blockstrap_functions.array_length(these_results[k].outputs),
+                                    data: ''
+                                };
+                                var this_tx = these_results[k];
+                                $.each(this_tx.outputs, function(output_k, output)
+                                {
+                                    transaction.pos = output_k;
+                                    if(
+                                        typeof this_tx[map.from.op_returns.txid] != 'undefined'
+                                    ){
+                                        transaction.txid = this_tx[map.from.op_returns.txid];
+                                    }
+                                    if(
+                                        typeof output[map.from.op_returns.data] != 'undefined'
+                                    ){
+                                        transaction.data = output[map.from.op_returns.data];
+                                    }
+                                    if(
+                                        typeof transaction.data != 'undefined' 
+                                        && typeof transaction.txid != 'undefined'
+                                        && transaction.txid != 'N/A'
+                                        && transaction.data
+                                    ){
+                                        transactions.push(transaction);
+                                    }
+                                });
+                            }
                         });
                     }
                     if(callback) 
@@ -535,7 +561,7 @@
                         return transactions;
                     }
                 }
-            }, 'GET', false, blockchain, 'op_returns', false, false, service);
+            }, 'GET', false, blockchain, 'op_returns', false, false, service, rpc_to_address);
         }
         else if(callback)
         {
@@ -550,7 +576,7 @@
         }
     }
     
-    api.request = function(url, callback, type, data, blockchain, call, username, password, service)
+    api.request = function(url, callback, type, data, blockchain, call, username, password, service, to_address)
     {
         if(!type) type = 'GET';
         if(!blockchain) blockchain = 'btc';
@@ -589,6 +615,10 @@
             use_async = false;
             data_type = 'jsonp';
             type = 'POST';
+            if(typeof to_address != 'undefined' && call == 'op_returns')
+            {
+                url+= '&to=' + to_address;
+            }
         }
         $.ajax({
             url: url,
@@ -1193,7 +1223,8 @@
                                 input: 0,
                                 output: 0,
                                 value: 0,
-                                fees: 0
+                                fees: 0,
+                                transactions: []
                             };
                             transaction = api.results(
                                 transaction, 
@@ -1264,7 +1295,6 @@
                     var unspents = [];
                     var map = $.fn.blockstrap.settings.apis.defaults[service].functions;
                     var these_results = results;
-                    
                     var result_key = false;
                     if(typeof map.from.unspents.inner != 'undefined' && map.from.unspents.inner)
                     {
@@ -1284,7 +1314,7 @@
                             reverse = true;
                         }
                         var unspent_array = these_results;
-                        if(!$.isArray(unspent_array))
+                        if(!$.isArray(unspent_array) && typeof these_results[map.from.unspents.key] != 'undefined')
                         {
                             unspent_array = these_results[map.from.unspents.key];
                         }

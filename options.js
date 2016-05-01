@@ -332,6 +332,7 @@ var blockstrap_options = {
             private: true,
             apis: {
                 blockstrap: "http://192.168.1.200/v0/multi/",
+                blockcypher: "http://api.blockcypher.com/v1/multi/main/",
                 qt: "proxies/rpc.php?blockchain=multi"
             }
         },
@@ -414,6 +415,9 @@ var blockstrap_options = {
                     to: {
                         address: "addrs/$call/full",
                         block: "blocks/",
+                        dnkey: "dnkey/",
+                        dnkeys: "dnkey/",
+                        op_returns: "addrs/$call/full",
                         relay: "txs/push/",
                         relay_param: "tx",
                         relay_json: "tx",
@@ -438,6 +442,18 @@ var blockstrap_options = {
                             next: "",
                             tx_count: "n_tx",
                             time: "[time, utctoepoch]"
+                        },
+                        dnkey: {
+                            
+                        },
+                        dnkeys: {
+                            
+                        },
+                        op_returns: {
+                            key: "",
+                            inner: "txs",
+                            txid: "hash",
+                            data: "script"
                         },
                         relay: {
                             txid: "hash",
@@ -466,7 +482,8 @@ var blockstrap_options = {
                             output: "total",
                             value: "[outputs, value]",
                             fees: "fees",
-                            data: "transactions.outputs.data_string"
+                            data: "transactions.outputs.data_string",
+                            transactions: "txs"
                         },
                         unspents: {
                             key: "",
@@ -492,6 +509,7 @@ var blockstrap_options = {
                         dnkey: "dnkey/",
                         dnkeys: "dnkey/",
                         market: "market/stats/",
+                        op_returns: "address/transactions/$call?showtxnio=1",
                         relay: "transaction/relay/",
                         relay_param: "txn_hex",
                         transaction: "transaction/id/",
@@ -542,6 +560,12 @@ var blockstrap_options = {
                             sent_coins_24hr: "output_value_24hr",
                             coins_discovered: "coinbase_value_todate",
                             marketcap: "marketcap"
+                        },
+                        op_returns: {
+                            key: "address",
+                            inner: "transactions",
+                            txid: "id",
+                            data: "script_pub_key"
                         },
                         relay: {
                             txid: "id",
