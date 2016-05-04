@@ -397,18 +397,7 @@ var blockstrap_options = {
         defaults: {
             blockcypher: {
                 async: false,
-                key: [
-                    "795ad87531fff07a175e314ae9d6397c", 
-                    "ff45f11f32b3538cb48f2d58856d7632", 
-                    "ef19566f325e0cc034f78b1201071378", 
-                    "e7bd9bc90349874a906541a76f6fd7d0", 
-                    "0454bc05b54193da55544410e57737aa", 
-                    "45d55bcc3f0b80d9d9c09cf7e110fd21", 
-                    "991278394ed35e232823609aa1e1aed8", 
-                    "d2d5bff9f0301249c7dd6a88db107a52", 
-                    "c1d3af601a8cbac0680486d58b5e7fce", 
-                    "33766acc25e8ab1bdf2eb23ea8452dfd"
-                ],
+                key: [],
                 //key: "ceeefc8720aff0e9b9267d4114f7a20e",
                 key_name: "token",
                 functions: {
@@ -499,7 +488,7 @@ var blockstrap_options = {
             },
             blockstrap: {
                 async: true,
-                key: "B726962B-F976-6FD9-67EA-71C9838FD6A7",
+                key: "",
                 key_name: "api_key",
                 functions: {
                     to: {
