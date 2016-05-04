@@ -959,7 +959,6 @@
                                 {
                                     var send = false;
                                     var inputs = results.inputs;
-                                    var magic_pos = 0;
                                     $.each(inputs, function(i)
                                     {
                                         if(
@@ -973,9 +972,9 @@
                                     if(send)
                                     {
                                         if(
-                                            (typeof res_01_array[i].addresses != 'undefined' && res_01_array[i].addresses[0] != extra_id)
+                                            (typeof res_01_array[i].addresses != 'undefined' && res_01_array[i].addresses[0] && res_01_array[i].addresses[0] != extra_id)
                                             ||
-                                            (typeof res_01_array[i].address != 'undefined' && res_01_array[i].address != extra_id)
+                                            (typeof res_01_array[i].address != 'undefined' && res_01_array[i].address && res_01_array[i].address != extra_id)
                                         ){
                                             res_01 = 0 - parseInt(res_01_array[i].value);
                                         }
@@ -983,9 +982,9 @@
                                     else
                                     {
                                         if(
-                                            (typeof res_01_array[i].addresses != 'undefined' && res_01_array[i].addresses[0] == extra_id)
+                                            (typeof res_01_array[i].addresses != 'undefined' && res_01_array[i].addresses[0] && res_01_array[i].addresses[0] == extra_id)
                                             ||
-                                            (typeof res_01_array[i].address != 'undefined' && res_01_array[i].address == extra_id)
+                                            (typeof res_01_array[i].address != 'undefined' && res_01_array[i].address && res_01_array[i].address == extra_id)
                                         ){
                                             res_01 = parseInt(res_01_array[i].value);
                                         }
