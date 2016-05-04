@@ -1363,9 +1363,9 @@
     {
         var url = false;
         if(action == 'relay') key = '';
-        var api_key = $.fn.blockstrap.core.apis('key');
-        var key_name = $.fn.blockstrap.core.apis('key_name');
-        var api_service = api.api_service;
+        var api_key = $.fn.blockstrap.core.apis('key', service);
+        var key_name = $.fn.blockstrap.core.apis('key_name', service);
+        var api_service = $.fn.blockstrap.core.api();
         if(typeof service != 'undefined')
         {
             api_service = service;

@@ -220,17 +220,17 @@
             }
         });
         
-        var everstore_op_code = false;
-        if($.isPlainObject(data) && typeof data.type != 'undefined' && data.type == 'everstore')
+        var bs_op_code = false;
+        if($.isPlainObject(data) && typeof data.type != 'undefined' && data.type == 'bs_op')
         {
             if(typeof data.op != 'undefined' && data.op)
             {
-                everstore_op_code = data.op;
+                bs_op_code = data.op;
             }
             data = data.value;
         }
         
-        if(everstore_op_code === 1)
+        if(bs_op_code === 1)
         {
             if(typeof data == 'string' && data)
             {
@@ -242,7 +242,6 @@
                     op_out
                 ]);
                 tx.addOutput(op_return, 0);
-                // TODO - REMOVE THIS FLAKEY BIT...?
                 if(tx.tx.outs[0].value === 0) tx.tx.outs[0].type = "nulldata";
             }
         }
@@ -254,11 +253,7 @@
         
         var change = balance - total;
         
-        // Have removed the sending back of change
-        // Becuase it was interferring with OP codes
-        // TODO - Need to return this functionality to avoid loss of funds...
-        
-        if(everstore_op_code === 2)
+        if(bs_op_code === 2)
         {
             if(typeof data == 'string' && data)
             {
@@ -270,18 +265,13 @@
                     op_out
                 ]);
                 tx.addOutput(op_return, 0);
-                
-                // TODO - REMOVE THIS FLAKEY BIT...?
                 if(tx.tx.outs[blockstrap_functions.array_length(outputs)].value === 0) tx.tx.outs[blockstrap_functions.array_length(outputs)].type = "nulldata";
-
-                // Is this needed...???
-                // TODO - It used to be based upon thechange var, which has changed...
                 tx.addOutput(return_to, fee);
             }
         }
          
         
-        if(typeof data == 'string' && data && (everstore_op_code != 1 && everstore_op_code != 2))
+        if(typeof data == 'string' && data && (bs_op_code != 1 && bs_op_code != 2))
         {
             var op = Crypto.util.base64ToBytes(btoa(data));
             var op_out = bitcoin.Script.fromHex(op).toBuffer();
@@ -291,21 +281,13 @@
                 op_out
             ]);
             tx.addOutput(op_return, 0);
-            // TODO - REMOVE THIS FLAKEY BIT...?
             var output_index = blockstrap_functions.array_length(outputs);
-            
-            // TODO - The changes to change var have changed this too!!!
-            // if(change > 0) output_index++;
-            
             if(tx.tx.outs[output_index].value === 0) tx.tx.outs[output_index].type = "nulldata";
         }
-        else
+        
+        if(change > 0 && !bs_op_code) 
         {
-            // Else? TODO - Check logic???
-            if(change > 0 && everstore_op_code != 2) 
-            {
-                tx.addOutput(return_to, (change - fee));
-            }
+            tx.addOutput(return_to, (change - fee));
         }
         
         $.each(inputs_to_sign, function(k)
