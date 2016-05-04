@@ -392,7 +392,8 @@ var blockstrap_options = {
         available: {
             blockstrap: "Blockstrap",
             blockcypher: "BlockCypher",
-            qt: "Local QTs"
+            qt: "Local QTs",
+            blocktrail: "Blocktrail"
         },
         defaults: {
             blockcypher: {
@@ -678,6 +679,74 @@ var blockstrap_options = {
                             value: "value",
                             script: "script"
                         }
+                    }
+                }
+            },
+            blocktrail: {
+                async: false,
+                key: 'cefc90c4097b8711f796b5580ccd0232c66cc748',
+                key_name: 'api_key',
+                functions: {
+                    to: {
+                        address: "address/$call",
+                        unspents: "address/$call/unspent-outputs",
+                        transactions: "address/$call/transactions",
+                        transaction: "transaction/$call",
+                        block: "block/$call"
+                    },
+                    from: {
+                        address: {
+                            key: "",
+                            address: "address",
+                            hash: "[hash160, lowercase]",
+                            tx_count: "transactions",
+                            received: "received",
+                            balance: "balance"
+                        },
+                        unspents: {
+                            key: "",
+                            inner: "data",
+                            confirmations: "confirmations",
+                            txid: "hash",
+                            index: "index",
+                            value: "value",
+                            script: "script"
+                        },
+                        transaction: {
+                            key: "",
+                            txid: "hash",
+                            size: "",
+                            block: "block_height",
+                            time: "[last_seen_at, utctoepoch]",
+                            input: "total_input_value",
+                            output: "total_output_value",
+                            value: "estimated_value",
+                            fees: "total_fee",
+                            data: false
+                        },
+                        transactions: {
+                            key: "",
+                            inner: "",
+                            txid: "hash",
+                            size: false,
+                            block: false,
+                            time: "[time, utctoepoch]",
+                            input: "total_input_value",
+                            output: "total_output_value",
+                            value: "estimated_value",
+                            fees: "total_fee",
+                            data: false,
+                            transactions: false
+                        },
+                        block: {
+                            key: "",
+                            height: "height",
+                            hash: "hash",
+                            prev: "prev_block",
+                            next: "next_block",
+                            tx_count: "transactions",
+                            time: "[block_time, utctoepoch]"
+                        },
                     }
                 }
             }
