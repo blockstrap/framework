@@ -1537,6 +1537,7 @@
                 && !wallet.cancel
             )
             {
+                $($.fn.blockstrap.element).addClass('loading');
                 bs.accounts.new(
                     wallet.wallet_blockchain, 
                     wallet.wallet_name,
@@ -1570,6 +1571,7 @@
                             $("html, body").animate({ scrollTop: 0 }, 350, function()
                             {
                                 bs.core.loader('close');
+                                $('.bs.loading').removeClass('loading');
                             });
                         }, true);
                     }
@@ -1621,10 +1623,8 @@
                                             var paged = bs.templates.filter(page);
                                             $(bs.element).html('');
                                             $(bs.element).append(paged);
-                                            $(bs.element).addClass('loading');
-                                            $(bs.element).find('#blockstrap-loader').css({'opacity': 1, 'z-index': 9999999});
                                             bs.core.ready();
-                                            $.fn.blockstrap.core.loader('close');
+                                            $('.bs.loading').removeClass('loading');
                                         });
                                     });
                                 }

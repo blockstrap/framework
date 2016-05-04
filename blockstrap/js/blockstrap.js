@@ -1010,6 +1010,7 @@ var blockstrap_core = function()
                                         $.fn.blockstrap.core.refresh(function()
                                         {
                                             init_callback(window.location.hash.substring(1));
+                                            $('.bs.loading').removeClass('loading');
                                         }, $bs.slug(window.location.hash));
                                     }
                                     else
@@ -1017,6 +1018,7 @@ var blockstrap_core = function()
                                         $.fn.blockstrap.core.refresh(function()
                                         {
                                             init_callback();
+                                            $('.bs.loading').removeClass('loading');
                                         }, bs.settings.page_base);
                                     }
                                     var run_tests = false;
