@@ -1379,8 +1379,8 @@
             apis = $.fn.blockstrap.settings.apis;
         }
         if(
-            //blockchain != 'multi'
-            //&&
+            blockchain != 'multi'
+            &&
             (
             (
             typeof apis[blockchain] == 'undefined' 
@@ -1430,8 +1430,8 @@
             }
         }
         else if(
-            //blockchain != 'multi'
-            //&&
+            blockchain != 'multi'
+            &&
             (
             typeof apis[blockchain] != 'undefined' 
             && typeof apis[blockchain][api_service] != 'undefined'
@@ -1445,8 +1445,7 @@
                 url = blockchains[blockchain].apis[api_service] + call;
             }
         }
-        //else if( blockchain != 'multi')
-        else
+        else if( blockchain != 'multi')
         {
             url = blockchains[blockchain].apis[api_service] + apis['defaults'][api_service].functions.to[action] + key;
             if(apis['defaults'][api_service].functions.to[action].indexOf("$call") > -1)
@@ -1455,9 +1454,11 @@
                 url = blockchains[blockchain].apis[api_service] + call;
             }
         }
-        /*
         else
         {
+            /* FORCE BLOCKSTRAP ...? */
+            
+            /*
             blockchains = $.fn.blockstrap.settings.blockchains;
             apis = $.fn.blockstrap.settings.apis;
             if(blockchain == 'multi') 
@@ -1471,8 +1472,9 @@
                 var call = apis['defaults']['blockstrap'].functions.to[action].replace("$call", key);
                 url = blockchains[blockchain].apis['blockstrap'] + call;
             }
+            */
+            url = '';
         }
-        */
         if(action == 'relay')
         {
             if(url.substr(-1) === '/') 
