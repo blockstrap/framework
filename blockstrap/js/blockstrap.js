@@ -1117,8 +1117,14 @@ var blockstrap_core = function()
                     $.fn.blockstrap.core.modals('close_all');
                     $(element).removeClass('loading');
                     $(element).removeClass('installing');
+                    $($.fn.blockstrap.element).attr('data-loading-content', 'LOADING');
                 }
                     
+            },
+            loading: function(text)
+            {
+                $($.fn.blockstrap.element).attr('data-loading-content', text);
+                $($.fn.blockstrap.element).addClass('loading');
             },
             modal: function(title, content, id, callback)
             {
