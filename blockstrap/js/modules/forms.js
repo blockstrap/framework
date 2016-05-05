@@ -592,7 +592,14 @@
         {
             var blockchain_key = $.fn.blockstrap.blockchains.key(chain);
             var blockchain_obj = bitcoin.networks[blockchain_key];
-            var verification = bitcoin.Message.verify(address, signature, message, blockchain_obj);
+            var verification = false;
+            try{
+                verification = bitcoin.Message.verify(address, signature, message, blockchain_obj);
+            }
+            catch(error)
+            {
+                
+            }
             if(verification === true)
             {
                 title = 'Success';
