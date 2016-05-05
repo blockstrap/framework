@@ -1245,14 +1245,17 @@
                     var pw = CryptoJS.SHA3($('#confirm-modal').find('input#password').val(), { outputLength: 512 }).toString();
                     $(bs.element).on('hidden.bs.modal', '#confirm-modal', function()
                     {
+                        bs.core.loader('close');
                         if(confirmed && pw == password)
                         {
                             bs.core.reset(true);
-                            location.reload();
+                            bs.core.refresh(function()
+                            {
+                                
+                            }, bs.core.page());
                         }
                         else
                         {
-                            bs.core.loader('close');
                             setTimeout(function()
                             {
                                 bs.core.modal('Warning', 'The provided password does not match your user device password.');
@@ -1537,7 +1540,7 @@
                 && !wallet.cancel
             )
             {
-                $.fn.blockstrap.core.loading('CREATE ACCOUNT');
+                $.fn.blockstrap.core.loading('CREATING ACCOUNT');
                 bs.accounts.new(
                     wallet.wallet_blockchain, 
                     wallet.wallet_name,
