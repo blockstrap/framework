@@ -726,7 +726,7 @@ var blockstrap_options = {
                         },
                         transactions: {
                             key: "",
-                            inner: "",
+                            inner: "../",
                             txid: "hash",
                             size: false,
                             block: false,
@@ -736,7 +736,7 @@ var blockstrap_options = {
                             value: "estimated_value",
                             fees: "total_fee",
                             data: false,
-                            transactions: false
+                            reverse_array: true
                         },
                         block: {
                             key: "",
