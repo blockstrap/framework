@@ -1201,8 +1201,11 @@
                     var transactions = [];
                     var now = new Date().getTime();
                     var result_key = false;
-                    if(typeof map.from.transactions.inner != 'undefined' && map.from.transactions.inner)
-                    {
+                    if(
+                        typeof map.from.transactions != 'undefined' 
+                        && typeof map.from.transactions.inner != 'undefined' 
+                        && map.from.transactions.inner
+                    ){
                         result_key = map.from.transactions.inner;
                     }
                     if(result_key && typeof results[result_key] != 'undefined')
@@ -1295,8 +1298,11 @@
                     var map = $.fn.blockstrap.settings.apis.defaults[service].functions;
                     var these_results = results;
                     var result_key = false;
-                    if(typeof map.from.unspents.inner != 'undefined' && map.from.unspents.inner)
-                    {
+                    if(
+                        typeof map.from.unspents != 'undefined' 
+                        && typeof map.from.unspents.inner != 'undefined' 
+                        && map.from.unspents.inner
+                    ){
                         result_key = map.from.unspents.inner;
                     }
                     if(result_key && typeof results[result_key] != 'undefined')
@@ -1360,8 +1366,10 @@
     
     api.url = function(action, key, blockchain, service)
     {
+        var strict = true;
         var url = false;
         if(action == 'relay') key = '';
+        if(service != $.fn.blockstrap.core.api()) strict = false;
         var api_key = $.fn.blockstrap.core.apis('key', service);
         var key_name = $.fn.blockstrap.core.apis('key_name', service);
         var api_service = $.fn.blockstrap.core.api();
@@ -1379,7 +1387,7 @@
             apis = $.fn.blockstrap.settings.apis;
         }
         if(
-            blockchain != 'multi'
+            (blockchain != 'multi' && strict === true)
             &&
             (
             (
@@ -1399,6 +1407,7 @@
             )
             )
         ){
+            console.log('WANT TO WARN YOU - REMEMER TO REMOVE ME!!!');
             if(action == 'addresses') key = 'multiple-addresses';
             var text = '<p class="'+key+blockchain+action+'">Please note that the selected API "<strong>'+api_service+'</strong>" used for "<strong>'+key+'</strong>" is either not mapped to the "<strong>'+blockchain+'</strong>" blockchain or does not support the required "<strong>'+action+'</strong>" function.</p>';
             if(
@@ -1430,7 +1439,7 @@
             }
         }
         else if(
-            blockchain != 'multi'
+            (blockchain != 'multi')
             &&
             (
             typeof apis[blockchain] != 'undefined' 
@@ -1445,7 +1454,7 @@
                 url = blockchains[blockchain].apis[api_service] + call;
             }
         }
-        else if( blockchain != 'multi')
+        else if(blockchain != 'multi')
         {
             url = blockchains[blockchain].apis[api_service] + apis['defaults'][api_service].functions.to[action] + key;
             if(apis['defaults'][api_service].functions.to[action].indexOf("$call") > -1)

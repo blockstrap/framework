@@ -1537,7 +1537,7 @@
                 && !wallet.cancel
             )
             {
-                $($.fn.blockstrap.element).addClass('loading');
+                $.fn.blockstrap.core.loading('CREATE ACCOUNT');
                 bs.accounts.new(
                     wallet.wallet_blockchain, 
                     wallet.wallet_name,
