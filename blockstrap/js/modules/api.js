@@ -1208,12 +1208,23 @@
                     ){
                         result_key = map.from.transactions.inner;
                     }
+                    if(result_key && result_key == '../')
+                    {
+                        these_results = results;
+                    }
                     if(result_key && typeof results[result_key] != 'undefined')
                     {
                         these_results = results[result_key];
                     }
                     if(these_results)
                     {
+                        var reverse = false;
+                        if(
+                            typeof map.from.transactions.reverse_array != 'undefined' 
+                            && map.from.transactions.reverse_array === true
+                        ){
+                            reverse = true;
+                        }
                         $.each(these_results, function(k, v)
                         {
                             var transaction = {
@@ -1239,6 +1250,7 @@
                             );
                             transactions.push(transaction);
                         });
+                        if(reverse) transactions = transactions.reverse();
                     }
                     if(callback) 
                     {
@@ -1407,7 +1419,6 @@
             )
             )
         ){
-            console.log('WANT TO WARN YOU - REMEMER TO REMOVE ME!!!');
             if(action == 'addresses') key = 'multiple-addresses';
             var text = '<p class="'+key+blockchain+action+'">Please note that the selected API "<strong>'+api_service+'</strong>" used for "<strong>'+key+'</strong>" is either not mapped to the "<strong>'+blockchain+'</strong>" blockchain or does not support the required "<strong>'+action+'</strong>" function.</p>';
             if(
