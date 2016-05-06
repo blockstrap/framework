@@ -43,19 +43,19 @@ We've also bundled the following plugins:
 Everything is powered by one or more of the following interchangable [modules](docs/en/framework/modules/):
 
 * [Accounts](docs/en/framework/modules/accounts/)
-* [API](http://docs.blockstrap.com/en/framework/modules/api/)
-* [Blockchains](http://docs.blockstrap.com/en/framework/modules/blockchains/)
-* [Buttons](http://docs.blockstrap.com/en/framework/modules/buttons/)
-* [Contacts](http://docs.blockstrap.com/en/framework/modules/contacts/)
-* [Data](http://docs.blockstrap.com/en/framework/modules/data/)
-* [Filters](http://docs.blockstrap.com/en/framework/modules/filters/)
-* [Forms](http://docs.blockstrap.com/en/framework/modules/forms/)
-* [HTML](http://docs.blockstrap.com/en/framework/modules/html/)
-* [Multisig](http://docs.blockstrap.com/en/framework/modules/multisig/)
-* [Security](http://docs.blockstrap.com/en/framework/modules/security/)
-* [Styles](http://docs.blockstrap.com/en/framework/modules/styles/)
-* [Templates](http://docs.blockstrap.com/en/framework/modules/templates/)
-* [Widgets](http://docs.blockstrap.com/en/framework/modules/widgets/)
+* [API](docs/en/framework/modules/api/)
+* [Blockchains](docs/en/framework/modules/blockchains/)
+* [Buttons](docs/en/framework/modules/buttons/)
+* [Contacts](docs/en/framework/modules/contacts/)
+* [Data](docs/en/framework/modules/data/)
+* [Filters](docs/en/framework/modules/filters/)
+* [Forms](docs/en/framework/modules/forms/)
+* [HTML](docs/en/framework/modules/html/)
+* [Multisig](docs/en/framework/modules/multisig/)
+* [Security](docs/en/framework/modules/security/)
+* [Styles](docs/en/framework/modules/styles/)
+* [Templates](docs/en/framework/modules/templates/)
+* [Widgets](docs/en/framework/modules/widgets/)
 
 When combined, they form our default deterministic wallet, which can be setup in seconds:
 
