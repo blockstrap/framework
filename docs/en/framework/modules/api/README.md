@@ -4,7 +4,7 @@ API Module <a name="docs_home"></a>
 In order to demonstrate the flexibility of the framework, it is configured to supports several different API providers, but not all of the framework functionality can be provided by all providers - with the following matrix used as a summary:
 
 | API Provider | Homepage | Provider ID | Blockchains | Markets | Pagination | Addresses | DNKeys |
-|---------|------------------|---------|---------|
+|---------|------------------|---------|---------|------|---------|-------|----------|
 |Blockstrap|[http://blockstrap.com](http://blockstrap.com)|blockstrap|8|<span class="label label-success">Y</span>|<span class="label label-success">Y</span>|<span class="label label-success">Y</span>|<span class="label label-success">Y</span>|
 |SoChain|[http://chain.so](http://chain.so)|sochain|6|<span class="label label-danger">N</span>|<span class="label label-danger">N</span>|<span class="label label-danger">N</span>|<span class="label label-danger">N</span>|
 |Blockr|[http://blockr.io](http://blockr.io)|blockr|4|<span class="label label-danger">N</span>|<span class="label label-danger">N</span>|<span class="label label-danger">N</span>|<span class="label label-danger">N</span>|
