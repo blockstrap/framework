@@ -1563,7 +1563,10 @@ var blockstrap_core = function()
                                     }
                                 });
                             }
-                            salt = CryptoJS.SHA3(salt+k+blockstrap_functions.slug(v), { outputLength: 512 });
+                            salt = CryptoJS.SHA3(
+                                salt + k.toLowerCase() + blockstrap_functions.slug(v).toLowerCase(), 
+                                { outputLength: 512 }
+                            );
                             if(count >= key_count && callback)
                             {
                                 callback(salt.toString(), keys);

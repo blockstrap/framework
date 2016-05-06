@@ -435,7 +435,10 @@
                                 $.each(values, function(k, v)
                                 {
                                     keys.push(k);
-                                    key_obj = CryptoJS.SHA3(salt+key+k+v, { outputLength: 512 });
+                                    key_obj = CryptoJS.SHA3(
+                                        salt + key.toLowerCase() + k.toLowerCase() + blockstrap_functions.slug(v).toLowerCase(), 
+                                        { outputLength: 512 }
+                                    );
                                     key = key_obj.toString();
                                 });
                             }
