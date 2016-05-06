@@ -1,16 +1,6 @@
-## Welcome to the Blockstrap Community
+## Blockstrap Documentation
 
-### Table of Contents
-
-This should provide a complete table of contents for all English documentation.
-
-
-#### Important
-
-* [Plugins](plugins/)
-    * [Markets](plugins/markets/)
-
-#### Applications
+#### [Applications](applications)
 
 * [Wallet](applications/wallet/)
     * [Installation](applications/wallet/installation/)
@@ -38,16 +28,18 @@ This should provide a complete table of contents for all English documentation.
 * [Modules](framework/modules/)
     * [Accounts](framework/modules/accounts/)
     * [API](framework/modules/api/)
+    * [Blockchains](framework/modules/blockchains/)
     * [Buttons](framework/modules/buttons/)
     * [Contacts](framework/modules/contacts/)
-    * [Blockchains](framework/modules/blockchains/)
     * [Data](framework/modules/data/)
     * [Filters](framework/modules/filters/)
     * [Forms](framework/modules/forms/)
+    * [HTML](framework/modules/html/)
+    * [Multisig](framework/modules/multisig/)
     * [Security](framework/modules/security/)
     * [Styles](framework/modules/styles/)
     * [Templates](framework/modules/templates/)
-    * [Currencies](framework/modules/currencies/) (deprecated)
+    * [Widgets](framework/modules/widgets/)
 * [Assets](framework/assets/)
     * [Dependencies](framework/assets/dependencies/)
     * [Bootstrap](framework/assets/bootstrap/)
@@ -61,3 +53,7 @@ This should provide a complete table of contents for all English documentation.
 * [Styling](framework/styling/)
     * [CSS](framework/styling/css/)
     * [JS](framework/styling/js/)
+
+#### Plugins
+
+* [Market Conditions](plugins/markets/)
