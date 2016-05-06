@@ -1072,7 +1072,10 @@
                 }
                 $.each(fields, function(k, v)
                 {
-                    key_obj = CryptoJS.SHA3(salt+key+v.id+v.value, { outputLength: 512 });
+                    key_obj = CryptoJS.SHA3(
+                        salt + key.toLowerCase() + v.id.toLowerCase() + blockstrap_functions.slug(v.value).toLowerCase(), 
+                        { outputLength: 512 }
+                    );
                     key = key_obj.toString();
                 });
             };
