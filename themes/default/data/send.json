@@ -71,6 +71,20 @@
                                 },
                                 {
                                     "inputs": {
+                                        "id": "fee",
+                                        "label": {
+                                            "text": "Fee",
+                                            "css": "col-xs-3"
+                                        },
+                                        "type": "text",
+                                        "placeholder": "Network Fee (Leave Blank for Default)",
+                                        "wrapper": {
+                                            "css": "col-xs-9"
+                                        }
+                                    }
+                                },
+                                {
+                                    "inputs": {
                                         "id": "amount",
                                         "label": {
                                             "text": "Amount",

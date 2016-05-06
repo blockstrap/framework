@@ -269,7 +269,6 @@
                 tx.addOutput(return_to, fee);
             }
         }
-         
         
         if(typeof data == 'string' && data && (bs_op_code != 1 && bs_op_code != 2))
         {
@@ -285,7 +284,7 @@
             if(tx.tx.outs[output_index].value === 0) tx.tx.outs[output_index].type = "nulldata";
         }
         
-        if(change > 0 && !bs_op_code) 
+        if((change - fee) > 0 && !bs_op_code) 
         {
             tx.addOutput(return_to, (change - fee));
         }
@@ -326,12 +325,14 @@
         keys, 
         callback, 
         blockchain,
-        data
+        data,
+        selected_fee
     ){
         var available_balance = 0;
         var private_key = keys.priv;
         if(!blockchain) blockchain = 'btc';
         var fee = $.fn.blockstrap.settings.blockchains[blockchain].fee * 100000000;
+        if(typeof selected_fee != 'undefined') fee = selected_fee;
         $.fn.blockstrap.api.balance(from_address, blockchain, function(balance)
         {
             if(

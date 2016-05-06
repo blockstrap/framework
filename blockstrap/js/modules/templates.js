@@ -109,7 +109,7 @@
                     }
                 }
             }
-            else if(key)
+            else if(key && $.fn.blockstrap.core.page() != 'send')
             {
                 key = 'N/A';
                 address_hidden = 'hidden';

@@ -216,13 +216,17 @@
                 value: tx.amount
             });
             options.buttons.forms[1].attributes.push({
+                key: 'data-tx-fee',
+                value: tx.fee
+            });
+            options.buttons.forms[1].attributes.push({
                 key: 'data-to-blockchain',
                 value: account.code
             });
             var amount = parseInt(tx.amount) / 100000000;
-            var fee = $.fn.blockstrap.settings.blockchains[account.code].fee;
+            var selected_fee = parseFloat(tx.fee / 100000000).toFixed(8);
             amount = amount + ' ' + account.type;
-            intro = '<p class="left">Please confirm you want to send ' + amount + ' to ' + tx.to + '</p><p>Please also note that there is a network mining fee of ' + fee + ' ' + account.type + ' applied to this transaction to ensure that it is propergated throughout the network quickly.</p>';
+            intro = '<p class="left">Please confirm you want to send ' + amount + ' to ' + tx.to + '</p><p>Please also note that there is a network mining fee of ' + selected_fee + ' ' + account.type + ' applied to this transaction to ensure that it is propergated throughout the network quickly.</p>';
         }
         var form = $.fn.blockstrap.forms.process(options);
         $.fn.blockstrap.core.modal('Verify Ownership of ' + account.name, intro + form);
@@ -615,10 +619,12 @@
         }
     }
     
-    accounts.prepare = function(to, account_id, amount, chain, standard)
+    accounts.prepare = function(to, account_id, amount, chain, standard, selected_fee)
     {
         var from = account_id;
+        var fee = $.fn.blockstrap.settings.blockchains[chain].fee;
         if(typeof standard == 'undefined') standard = true;
+        if(typeof selected_fee != 'undefined') fee = selected_fee;
         if(to && !$.fn.blockstrap.blockchains.validate(to))
         {
             $.fn.blockstrap.core.modal('Warning', to + ' is not a valid address');
@@ -656,7 +662,8 @@
                 var tx = {
                     to: to,
                     from: account_id,
-                    amount: amount
+                    amount: amount,
+                    fee: fee
                 };
                 $.fn.blockstrap.accounts.access(account_id, tx, chain, standard, from);
             }
