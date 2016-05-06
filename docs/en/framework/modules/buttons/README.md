@@ -6,29 +6,40 @@ Buttons Module <a name="docs_home"></a>
 The Buttons Module features the following functions:
 
 * [`$.fn.blockstrap.buttons.access`(button, e)](#buttons_access)
+* [`$.fn.blockstrap.buttons.add_contact_address`(button, e)](#buttons_addcontact) __needs updating__
 * [`$.fn.blockstrap.buttons.cancel`(button, mobile, menu, elements)](#buttons_cancel)
+* [`$.fn.blockstrap.buttons.check_all_inactive`(button, e)](#buttons_checkall) __needs updating__
+* [`$.fn.blockstrap.buttons.check_inactive`(button, e)](#buttons_checkinactive) __needs updating__
 * [`$.fn.blockstrap.buttons.create_account`(button, e)](#buttons_create_account)
 * [`$.fn.blockstrap.buttons.create_contact`(button, e)](#buttons_create_contact)
 * [`$.fn.blockstrap.buttons.create_credentials`(button, e)](#buttons_create_credentials)
 * [`$.fn.blockstrap.buttons.edit`(button, e)](#buttons_edit)
 * [`$.fn.blockstrap.buttons.edit_object`(button, e)](#buttons_edit_object)
+* [`$.fn.blockstrap.buttons.hidden_toggler`(button, e)](#buttons_hiddentoggler) __needs updating__
 * [`$.fn.blockstrap.buttons.import`(button, e)](#buttons_import)
+* [`$.fn.blockstrap.buttons.import_file`(button, e)](#buttons_importfile) __needs updating__
 * [`$.fn.blockstrap.buttons.login`(button, e)](#buttons_login)
 * [`$.fn.blockstrap.buttons.logout`(button, e)](#buttons_logout)
 * [`$.fn.blockstrap.buttons.more_security`(button, e)](#buttons_security)
+* [`$.fn.blockstrap.buttons.new_chain`(button, e)](#buttons_newchain) __needs updating__
 * [`$.fn.blockstrap.buttons.page`(button, e)](#buttons_page)
 * [`$.fn.blockstrap.buttons.print`(button, e)](#buttons_print)
 * [`$.fn.blockstrap.buttons.process`(slug, content, filtered_data, button, effect, direction, reverse_direxction, mobile, menu, elements)](#buttons_process)
 * [`$.fn.blockstrap.buttons.refresh`(button, e)](#buttons_refresh)
 * [`$.fn.blockstrap.buttons.remove`(button, e)](#buttons_remove)
 * [`$.fn.blockstrap.buttons.reset`(button, e)](#buttons_reset)
+* [`$.fn.blockstrap.buttons.save_salt`(button, e)](#buttons_savesalt) __needs updating__
+* [`$.fn.blockstrap.buttons.save_wallet`(button, e)](#buttons_savewallet) __needs updating__
+* [`$.fn.blockstrap.buttons.see_all`(button, e)](#buttons_seeall) __needs updating__
 * [`$.fn.blockstrap.buttons.send_money`(button, e)](#buttons_send_money)
-* [`$.fn.blockstrap.buttons.set_credentials`(button, e)](#buttons_set_credentials)
 * [`$.fn.blockstrap.buttons.setup`(button, e)](#buttons_setup)
 * [`$.fn.blockstrap.buttons.submit_import`(button, e)](#buttons_submit_import)
 * [`$.fn.blockstrap.buttons.submit_payment`(button, e)](#buttons_submit_payment)
 * [`$.fn.blockstrap.buttons.submit_verification`(button, e)](#buttons_submit_verification)
+* [`$.fn.blockstrap.buttons.sign`(button, e)](#buttons_sign) __needs updating__
+* [`$.fn.blockstrap.buttons.switch`(button, e)](#buttons_switch) __needs updating__
 * [`$.fn.blockstrap.buttons.toggle`(button, e)](#buttons_toggle)
+* [`$.fn.blockstrap.buttons.verify`(button, e)](#buttons_verify) __needs updating__
 
 --------------------------------------------------------------------------------
 
@@ -313,17 +324,21 @@ This function is used to toggle UI elements within the ocntact creation modal wi
 
 ---
 
-1. Related Articles
-2. [Back to Modules](../../modules/)
-3. [Accounts](../accounts/)
-4. [API](../api/)
-5. [Buttons](../buttons/)
-6. [Contacts](../contacts/)
-7. [Blockchains](../blockchains/)
-8. [Data](../data/)
-9. [Filters](../filters/)
-10. [Forms](../forms/)
-11. [Security](../security/)
-12. [Styles](../styles/)
-13. [Templates](../templates/)
-14. [Table of Contents](../../../)
+###### Related Articles
+
+01. [Back to Modules](../../modules/)
+02. [Accounts](../accounts/)
+03. [API](../api/)
+04. Buttons
+05. [Contacts](../contacts/)
+06. [Blockchains](../blockchains/)
+07. [Data](../data/)
+08. [Filters](../filters/)
+09. [Forms](../forms/)
+10. [HTML](../html/)
+11. [Multisig](../multisig/)
+12. [Security](../security/)
+13. [Styles](../styles/)
+14. [Templates](../templates/)
+15. [Widgets](../widgets/)
+16. [__Table of Contents__](../../../)

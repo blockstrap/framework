@@ -6,7 +6,7 @@ Contacts Module <a name="docs_home"></a>
 The Contacts Module features the following functions:
 
 * [`$.fn.blockstrap.contacts.get`(id)](#contacts_get)
-* [`$.fn.blockstrap.contacts.new`(name, address, blockchain, fields, callback)](#contacts_new)
+* [`$.fn.blockstrap.contacts.new`(name, address, blockchain, fields, callback, ignore_errors)](#contacts_new)
 
 --------------------------------------------------------------------------------
 
@@ -20,25 +20,29 @@ If the contact `id` is not provided it will instead return an array containing a
 
 --------------------------------------------------------------------------------
 
-#### `contacts.new`(name, address, blockchain, fields, callback) <a name="contacts_new" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `contacts.new`(name, address, blockchain, fields, callback, ignore_errors) <a name="contacts_new" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
-This function will take the required `name`, `address`, `blockchain` and `fields` and create a new contact, then perform the `callback` function upon completion.
+This function will take the required `name`, `address`, `blockchain` and `fields` and create a new contact, then perform the `callback` function upon completion. Modal errors messages can be supressed by setting `ignore_errors` to `true`.
 
 <a href="#docs_home"><small>- back to top</small></a>
 
 ---
 
-1. Related Articles
-2. [Back to Modules](../../modules/)
-3. [Accounts](../accounts/)
-4. [API](../api/)
-5. [Buttons](../buttons/)
-6. [Contacts](../contacts/)
-7. [Blockchains](../blockchains/)
-8. [Data](../data/)
-9. [Filters](../filters/)
-10. [Forms](../forms/)
-11. [Security](../security/)
-12. [Styles](../styles/)
-13. [Templates](../templates/)
-14. [Table of Contents](../../../)
+###### Related Articles
+
+01. [Back to Modules](../../modules/)
+02. [Accounts](../accounts/)
+03. [API](../api/)
+04. [Buttons](../buttons/)
+05. Contacts
+06. [Blockchains](../blockchains/)
+07. [Data](../data/)
+08. [Filters](../filters/)
+09. [Forms](../forms/)
+10. [HTML](../html/)
+11. [Multisig](../multisig/)
+12. [Security](../security/)
+13. [Styles](../styles/)
+14. [Templates](../templates/)
+15. [Widgets](../widgets/)
+16. [__Table of Contents__](../../../)

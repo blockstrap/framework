@@ -3,20 +3,17 @@ API Module <a name="docs_home"></a>
 
 In order to demonstrate the flexibility of the framework, it is configured to supports several different API providers, but not all of the framework functionality can be provided by all providers - with the following matrix used as a summary:
 
-| API Provider | Homepage | Provider ID | Blockchains | Markets | Pagination | Addresses | DNKeys |
-|---------|------------------|---------|---------|
-|Blockstrap|[http://blockstrap.com](http://blockstrap.com)|blockstrap|8|<span class="label label-success">Y</span>|<span class="label label-success">Y</span>|<span class="label label-success">Y</span>|<span class="label label-success">Y</span>|
-|SoChain|[http://chain.so](http://chain.so)|sochain|6|<span class="label label-danger">N</span>|<span class="label label-danger">N</span>|<span class="label label-danger">N</span>|<span class="label label-danger">N</span>|
-|Blockr|[http://blockr.io](http://blockr.io)|blockr|4|<span class="label label-danger">N</span>|<span class="label label-danger">N</span>|<span class="label label-danger">N</span>|<span class="label label-danger">N</span>|
-|HelloBlock|[http://helloblock.io](http://helloblock.io)|helloblock|1|<span class="label label-danger">N</span>|<span class="label label-success">Y</span>|<span class="label label-success">Y</span>|<span class="label label-danger">N</span>|
+| API Provider | Provider ID | Blockchains | Markets | DNKeys |
+|--------------|-------------|-------------|---------|--------|
+|[BlockCypher](http://blockcypher.com)|blockstrap|3|NO|NO|
+|[BlockTrail](http://blocktrail.com)|blocktrail|2|NO|NO|
+|__Local QTs__|qt|8|YES|YES|
 
 A brief explanation of the columns listed above:
 
 * __Provider ID__ is used in [configuration](../../core/configuration/) to set the desired API using `api_service`
 * __Blockchains__ attribute listed above refers to the number of supported [blockchains](../blockchains/)
 * __Markets__ refers to support for the [market conditions](../../../plugins/markets/) plugin included with the framework
-* __Pagination__ refers to the ability to [paginate transactions](#api_transactions) within addresses
-* __Addresses__ refers to the ability to check multiple addresses with one call (used for [prioritizer](../../../applications/prioritizer) theme)
 * __DNKeys__ refers to the ability to check publicly listed addresses using the [DNKey](http://dnkey.me) specification
 
 -----------------------------
@@ -33,13 +30,16 @@ The API Module features the following functions:
 * [`$.fn.blockstrap.api.dnkeys`(id, blockchain, callback, service, return_raw)](#api_dnkeys)
 * [`$.fn.blockstrap.api.map`(blockchain)](#api_map)
 * [`$.fn.blockstrap.api.market`(blockchain, stat, callback, service, return_raw)](#api_market)
-* [`$.fn.blockstrap.api.request`(url, callback, type, data, blockchain, call, username, password)](#api_request)
+* [`$.fn.blockstrap.api.op_returns`(address, blockchain, callback, service, return_raw, count, skip, rpc_to_address)](#api_opreturns) __needs updating__
+* [`$.fn.blockstrap.api.request`(url, callback, type, data, blockchain, call, username, password)](#api_request) __needs updating__
 * [`$.fn.blockstrap.api.relay`(hash, blockchain, callback, service, return_raw)](#api_relay)
-* [`$.fn.blockstrap.api.results`(defaults, results, blockchain, request, callback)](#api_results)
+* [`$.fn.blockstrap.api.results`(defaults, results, blockchain, request, callback)](#api_results) __needs updating__
+* [`$.fn.blockstrap.api.service`(service, chain)](#api_service) __needs updating__
+* [`$.fn.blockstrap.api.settings`(chain, provider, direction, key)](#api_settings) __needs updating__
 * [`$.fn.blockstrap.api.transaction`(txid, blockchain, callback, service, return_raw)](#api_transaction)
 * [`$.fn.blockstrap.api.transactions`(address, blockchain, callback, service, return_raw, count, skip)](#api_transactions)
-* [`$.fn.blockstrap.api.unspents`(address, blockchain, callback, confirms, service, return_raw)](#api_unspents)
-* [`$.fn.blockstrap.api.url`(action, key, blockchain)](#api_url)
+* [`$.fn.blockstrap.api.unspents`(address, blockchain, callback, confirms, service, return_raw)](#api_unspents) __needs updating__
+* [`$.fn.blockstrap.api.url`(action, key, blockchain)](#api_url) __needs updating__
 
 You may also want to learn about [API Mapping](#api_mapping).
 
@@ -639,17 +639,21 @@ Please note the we currently support the following APIs (from default configurat
 
 ---
 
-1. Related Articles
-2. [Back to Modules](../../modules/)
-3. [Accounts](../accounts/)
-4. [API](../api/)
-5. [Buttons](../buttons/)
-6. [Contacts](../contacts/)
-7. [Blockchains](../blockchains/)
-8. [Data](../data/)
-9. [Filters](../filters/)
-10. [Forms](../forms/)
-11. [Security](../security/)
-12. [Styles](../styles/)
-13. [Templates](../templates/)
-14. [Table of Contents](../../../)
+###### Related Articles
+
+01. [Back to Modules](../../modules/)
+02. [Accounts](../accounts/)
+03. API
+04. [Buttons](../buttons/)
+05. [Contacts](../contacts/)
+06. [Blockchains](../blockchains/)
+07. [Data](../data/)
+08. [Filters](../filters/)
+09. [Forms](../forms/)
+10. [HTML](../html/)
+11. [Multisig](../multisig/)
+12. [Security](../security/)
+13. [Styles](../styles/)
+14. [Templates](../templates/)
+15. [Widgets](../widgets/)
+16. [__Table of Contents__](../../../)

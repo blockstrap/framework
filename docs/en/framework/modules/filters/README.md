@@ -16,6 +16,7 @@ The Filters Module features the following functions:
 * [`$.fn.blockstrap.filters.got`(blockstrap, data)](#filters_got)
 * [`$.fn.blockstrap.filters.last`(blockstrap, data)](#filters_last)
 * [`$.fn.blockstrap.filters.plugin`(blockstrap, data)](#filters_plugin)
+* [`$.fn.blockstrap.filters.settings`(blockstrap, data)](#filters_settings)
 * [`$.fn.blockstrap.filters.setup`(blockstrap, data)](#filters_setup)
 * [`$.fn.blockstrap.filters.total`(blockstrap, data)](#filters_total)
 * [`$.fn.blockstrap.filters.txs`(blockstrap, data)](#filters_txs)
@@ -108,6 +109,14 @@ The results would derive from `$.fn.blockstrap.plugins[data.name][data.call](dat
 
 --------------------------------------------------------------------------------
 
+#### `filters.settings`(blockstrap, data) <a name="filters_settings" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This filter will return the results from `$.fn.blockstrap.settings`.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
 #### `filters.setup`(blockstrap, data) <a name="filters_setup" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This filter will return the results from `$.fn.blockstrap.core.filter(blockstrap_setup_steps[data.step])`.
@@ -136,17 +145,21 @@ This filter will return a rendered HTMl list of transactions for the defined acc
 
 ---
 
-1. Related Articles
-2. [Back to Modules](../../modules/)
-3. [Accounts](../accounts/)
-4. [API](../api/)
-5. [Buttons](../buttons/)
-6. [Contacts](../contacts/)
-7. [Blockchains](../blockchains/)
-8. [Data](../data/)
-9. [Filters](../filters/)
-10. [Forms](../forms/)
-11. [Security](../security/)
-12. [Styles](../styles/)
-13. [Templates](../templates/)
-14. [Table of Contents](../../../)
+###### Related Articles
+
+01. [Back to Modules](../../modules/)
+02. [Accounts](../accounts/)
+03. [API](../api/)
+04. [Buttons](../buttons/)
+05. [Contacts](../contacts/)
+06. [Blockchains](../blockchains/)
+07. [Data](../data/)
+08. Filters
+09. [Forms](../forms/)
+10. [HTML](../html/)
+11. [Multisig](../multisig/)
+12. [Security](../security/)
+13. [Styles](../styles/)
+14. [Templates](../templates/)
+15. [Widgets](../widgets/)
+16. [__Table of Contents__](../../../)
