@@ -420,9 +420,9 @@ var blockstrap_options = {
                             key: "",
                             address: "address",
                             hash: "[address, hextohash]",
-                            tx_count: "n_tx",
+                            tx_count: "final_n_tx",
                             received: "total_received",
-                            balance: "balance"
+                            balance: "final_balance"
                         },
                         block: {
                             key: "",
