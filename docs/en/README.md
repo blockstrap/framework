@@ -10,7 +10,7 @@
 * [Prioritizer](applications/prioritizer/)
     * [Installation](applications/prioritizer/installation/)
 
-#### Framework
+#### [Framework](framework/)
 
 * [Getting Started](framework/started/)
     * [Minimum Requirements](framework/started/requirements/)
@@ -54,6 +54,6 @@
     * [CSS](framework/styling/css/)
     * [JS](framework/styling/js/)
 
-#### Plugins
+#### [Plugins](plugins/)
 
 * [Market Conditions](plugins/markets/)
