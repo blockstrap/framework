@@ -3,8 +3,8 @@ API Module <a name="docs_home"></a>
 
 In order to demonstrate the flexibility of the framework, it is configured to supports several different API providers, but not all of the framework functionality can be provided by all providers - with the following matrix used as a summary:
 
-| API Provider | Provider ID | Blockchains | Can Relay? | Markets | DNKeys |
-|--------------|-------------|-------------|------------|---------|--------|
+| API Provider | Provider ID | Blockchains | Can Relay Transactions? | Markets | DNKeys |
+|--------------|-------------|-------------|-------------------------|---------|--------|
 |[BlockCypher](http://blockcypher.com)|blockstrap|3|YES|NO|NO|
 |[BlockTrail](http://blocktrail.com)|blocktrail|2|NO|NO|NO|
 |__Local QTs__|qt|8|YES|YES|YES|
