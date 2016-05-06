@@ -5,8 +5,16 @@ The Blockstrap framework provides a front-end HTML5 interface for web-applicatio
 By default, it is configured to use the [BlockCypher API](http://blocksypher.com) but as well as being a blockchain-agnoistic framework, Blockstrap is also API-neutral throughout. This allows you to host and manage your own API end-points or select from others configured at core, with examples included and ready for use with the following services:
 
 * [BlockCypher](http://blockcypher.com) (Supporting 3 Chains)
-* [BlockTrail](http://blockcypher.com) (Supporting 2 Chains)
-* [LocalQTs](#) (Supporting 2 Chains)
+* [BlockTrail](http://blocktrail.com) (Supporting 2 Chains)
+* __LocalQTs__ (Tested on 4 Chains)
+
+Work is currently underway to support the following APIs:
+
+* [SoChain](http://chain.so) (Supporting 6 Chains)
+* [BlockR](http://blockchain.info) (Supporting 5 Chains)
+* [Blockchain.info](http://blockchain.info) (Supporting 1 Chain)
+* [Insights](http://insights.io) (Supporting 2 Chains)
+* [Toshi](http://toshi.io) (Supporting 2 Chains)
 
 The framework itself is currently capable of supporting the following blockchains:
 
