@@ -4,17 +4,17 @@ The Blockstrap framework provides a front-end HTML5 interface for web-applicatio
 
 By default, it is configured to use the [BlockCypher API](http://blocksypher.com) but as well as being a blockchain-agnoistic framework, Blockstrap is also API-neutral throughout. This allows you to host and manage your own API end-points or select from others configured at core, with examples included and ready for use with the following services:
 
-* [BlockCypher](http://blockcypher.com) (Supporting 3 Chains)
-* [BlockTrail](http://blocktrail.com) (Supporting 2 Chains)
-* __LocalQTs__ (Tested on 4 Chains)
+* [BlockCypher](http://blockcypher.com) (Supporting 3 Chains - __ready for public testing__)
+* [BlockTrail](http://blocktrail.com) (Supporting 2 Chains - __not completed yet__)
+* __LocalQTs__ (Tested on 4 Chains - __not completed yet__)
 
-Work is currently underway to support the following APIs:
+We will also be adding support for the following APIs before officially re-launching:
 
-* [SoChain](http://chain.so) (Supporting 6 Chains)
-* [BlockR](http://blockchain.info) (Supporting 5 Chains)
-* [Blockchain.info](http://blockchain.info) (Supporting 1 Chain)
-* [Insights](http://insights.io) (Supporting 2 Chains)
-* [Toshi](http://toshi.io) (Supporting 2 Chains)
+* [SoChain](http://chain.so) (Can Support 6 Chains?)
+* [BlockR](http://blockr.io) (Can Support 5 Chains?)
+* [Blockchain.info](http://blockchain.info) (Can ONLY Support 1 Chain?)
+* [Insight](http://insight.is) (Can Support 2 Chains?)
+* [Toshi](http://toshi.io) (Can Support 2 Chains?)
 
 The framework itself is currently capable of supporting the following blockchains:
 
@@ -40,22 +40,22 @@ We've also bundled the following plugins:
 * Market Conditions
 * API Tests
 
-Everything is powered by one or more of the following interchangable [modules](modules/):
+Everything is powered by one or more of the following interchangable [modules](docs/en/framework/modules/):
 
 * [Accounts](docs/en/framework/modules/accounts/)
-* [API](http://docs.blockstrap.com/en/framework/modules/api/)
-* [Blockchains](http://docs.blockstrap.com/en/framework/modules/blockchains/)
-* [Buttons](http://docs.blockstrap.com/en/framework/modules/buttons/)
-* [Contacts](http://docs.blockstrap.com/en/framework/modules/contacts/)
-* [Data](http://docs.blockstrap.com/en/framework/modules/data/)
-* [Filters](http://docs.blockstrap.com/en/framework/modules/filters/)
-* [Forms](http://docs.blockstrap.com/en/framework/modules/forms/)
-* [HTML](http://docs.blockstrap.com/en/framework/modules/html/)
-* [Multisig](http://docs.blockstrap.com/en/framework/modules/multisig/)
-* [Security](http://docs.blockstrap.com/en/framework/modules/security/)
-* [Styles](http://docs.blockstrap.com/en/framework/modules/styles/)
-* [Templates](http://docs.blockstrap.com/en/framework/modules/templates/)
-* [Widgets](http://docs.blockstrap.com/en/framework/modules/widgets/)
+* [API](docs/en/framework/modules/api/)
+* [Blockchains](docs/en/framework/modules/blockchains/)
+* [Buttons](docs/en/framework/modules/buttons/)
+* [Contacts](docs/en/framework/modules/contacts/)
+* [Data](docs/en/framework/modules/data/)
+* [Filters](docs/en/framework/modules/filters/)
+* [Forms](docs/en/framework/modules/forms/)
+* [HTML](docs/en/framework/modules/html/)
+* [Multisig](docs/en/framework/modules/multisig/)
+* [Security](docs/en/framework/modules/security/)
+* [Styles](docs/en/framework/modules/styles/)
+* [Templates](docs/en/framework/modules/templates/)
+* [Widgets](docs/en/framework/modules/widgets/)
 
 When combined, they form our default deterministic wallet, which can be setup in seconds:
 
@@ -64,6 +64,8 @@ When combined, they form our default deterministic wallet, which can be setup in
 Once setup, users are provided with a fully-featured responsive experience that is available on any device - with support for accounts, contacts, message signing and much more. Come take a look at the live demo - [http://blockstrap.com/demo/](#)
 
 ![Wallet Screen-Shot](docs/img/dashboard.jpg)
+
+__No private keys are ever stored or transmitted as they are only generated inline at the moment of transaction. Public information is stored within the device using HTML5 localStorage so is unavailable when browsing privately.__
 
 We suggest that you read our [documentation](#) for more information and instructions on how to get started.
 
