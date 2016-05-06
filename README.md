@@ -22,9 +22,9 @@ The framework itself is currently capable of supporting the following blockchain
 * [DashPay Testnet](#)
 * [Dogecoin Testnet](#)
 
-The framework has been developed with modularity and flexibility as the focal point of each technical decision. Currently providing a choice of interchangable modules - features can be easily extended, included, replaced or removed depending on the need of each application.
+The framework has been developed with modularity and flexibility as the focal point of each technical decision. 
 
-These are the following [modules](modules/) available from within the framework:
+Currently providing a choice of interchangable modules - features can be easily extended, included, replaced or removed depending on the need of each application from a choice of the following [modules](modules/) that available upon download:
 
 * [Accounts](http://docs.blockstrap.com/en/framework/modules/accounts/)
 * [API](http://docs.blockstrap.com/en/framework/modules/api/)
