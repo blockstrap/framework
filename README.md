@@ -65,7 +65,7 @@ Once setup, users are provided with a fully-featured responsive experience that 
 
 ![Wallet Screen-Shot](docs/img/dashboard.jpg)
 
-__No private keys are stored or transmitted anywhere as they are only ever generated inline at the moment of transaction.__
+__No private keys are ever stored or transmitted anywhere as they are only generated inline at the moment of transaction.__
 
 __Public information is stored within the device using HTML5 localStorage so unavailable in private modes.__
 
