@@ -1359,6 +1359,9 @@
         var from_chain = $(form).find('#from_account_chain').val();
         var chain = $(form).find('#from option:selected').attr('data-chain');
         var amount = parseFloat($(form).find('#amount').val()) * 100000000;
+        var selected_fee = $(form).find('#fee').val();
+        if(selected_fee) selected_fee = parseInt(parseFloat(selected_fee).toFixed(8) * 100000000);
+        else selected_fee = parseInt(parseFloat($.fn.blockstrap.settings.blockchains[chain].fee).toFixed(8) * 100000000);
         if(from_chain && !chain) 
         {
             chain = from_chain;
@@ -1369,7 +1372,7 @@
         else if(!amount) $.fn.blockstrap.core.modal('Warning', 'You have not provided the amount you want to send');
         else
         {
-            $.fn.blockstrap.accounts.prepare(to, from, amount, chain, standard);
+            $.fn.blockstrap.accounts.prepare(to, from, amount, chain, standard, selected_fee);
         }
     }
     
@@ -1751,6 +1754,7 @@
         var blockchain = $(button).attr('data-to-blockchain');
         var to_address = $(button).attr('data-to-address');
         var to_amount = parseInt($(button).attr('data-to-amount'));
+        var selected_fee = parseInt($(button).attr('data-tx-fee'));
         var form = $('form#'+form_id);
         var raw_accounts = $.fn.blockstrap.accounts.get(account_id, true);
         if(standard == 'false') standard = false;
@@ -1763,6 +1767,7 @@
         }
         var balance = account.balance;
         var fee = $.fn.blockstrap.settings.blockchains[blockchain].fee * 100000000;
+        if(selected_fee) fee = selected_fee;
         var from_address = account.address;
         var change = balance - (to_amount + fee);
         var current_tx_count = account.tx_count;
@@ -1881,7 +1886,7 @@
                                     $.fn.blockstrap.core.modal(title, contents);
                                 }, $.fn.blockstrap.core.timeouts('loader'));
                             }
-                        }, blockchain, op_return_data);
+                        }, blockchain, op_return_data, fee);
                     }
                     else
                     {
