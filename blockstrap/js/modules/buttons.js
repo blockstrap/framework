@@ -1838,21 +1838,38 @@
                             {
                                 setTimeout(function()
                                 {
+                                    var total_spent = to_amount + fee;
+                                    var new_balance = saved_account.blockchains[blockchain].balance - total_spent;
+                                    var new_balance_display = parseFloat(new_balance / 100000000).toFixed(8);
+                                    var new_tx_count = saved_account.blockchains[blockchain].tx_count + 1;
+                                    console.log('saved_account', saved_account);
+                                    console.log('total_spent (to deducte from balance)', total_spent);
                                     $.fn.blockstrap.accounts.update(saved_account, function()
                                     {
-                                        $.fn.blockstrap.core.refresh(function()
-                                        {
-                                            $.fn.blockstrap.core.modals('close_all');
-                                            $.fn.blockstrap.core.loader('close');
-                                            var title = 'Sent ' + parseInt(to_amount) / 100000000 + ' ' + saved_account.blockchains[chain].type + ' to ' + to_address;
-                                            var base = $.fn.blockstrap.settings.base_url;
-                                            var contents = '<p>Transaction ID: ' + tx.txid + '</p><p>You can <a href="' + base + '?txid=' + tx.txid + '#transaction">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchains.io/' + blockchain + '/transaction/' + tx.txid + '">this</a>.</p>';
-                                            contents+='<p>Please note that a '+(fee / 100000000)+' '+$.fn.blockstrap.settings.blockchains[blockchain].blockchain+' mining fee was also added to the transaction.</p>';
-                                            setTimeout(function()
+                                        saved_account.blockchains[blockchain].balance = new_balance;
+                                        saved_account.blockchains[blockchain].display_balance = new_balance_display;
+                                        saved_account.blockchains[blockchain].tx_count = new_tx_count;
+                                        $.fn.blockstrap.data.save(
+                                            'accounts', 
+                                            saved_account.id, 
+                                            saved_account, 
+                                            function(updated_account)
                                             {
-                                                $.fn.blockstrap.core.modal(title, contents);
-                                            }, $.fn.blockstrap.core.timeouts('loader'));
-                                        }, $.fn.blockstrap.core.page());
+                                                $.fn.blockstrap.core.refresh(function()
+                                                {
+                                                    $.fn.blockstrap.core.modals('close_all');
+                                                    $.fn.blockstrap.core.loader('close');
+                                                    var title = 'Sent ' + parseInt(to_amount) / 100000000 + ' ' + saved_account.blockchains[chain].type + ' to ' + to_address;
+                                                    var base = $.fn.blockstrap.settings.base_url;
+                                                    var contents = '<p>Transaction ID: ' + tx.txid + '</p><p>You can <a href="' + base + '?txid=' + tx.txid + '#transaction">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchains.io/' + blockchain + '/transaction/' + tx.txid + '">this</a>.</p>';
+                                                    contents+='<p>Please note that a '+(fee / 100000000)+' '+$.fn.blockstrap.settings.blockchains[blockchain].blockchain+' mining fee was also added to the transaction.</p>';
+                                                    setTimeout(function()
+                                                    {
+                                                        $.fn.blockstrap.core.modal(title, contents);
+                                                    }, $.fn.blockstrap.core.timeouts('loader'));
+                                                }, $.fn.blockstrap.core.page());
+                                            }
+                                        );
                                     });
                                 }, $.fn.blockstrap.core.timeouts('bs_buttons_submit_payment'));
                             }
