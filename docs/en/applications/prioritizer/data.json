@@ -1,0 +1,8 @@
+{
+   "page": {
+       "title": "Prioritizer | Applications | Blockstrap Documentation",
+       "meta": "Prioritizer essentially transforms a list of issues into a collection of addresses, that can then be ordered and filtered based upon configruable contribution options",
+       "base": "../../../",
+       "lang": "en"
+    }
+}

@@ -1,0 +1,8 @@
+{
+   "page": {
+       "title": "Core | Framework | Blockstrap Documentation",
+       "meta": "Blockstrap core is a jQuery plugin and is required in order to load other modules",
+       "base": "../../../",
+       "lang": "en"
+    }
+}

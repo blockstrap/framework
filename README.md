@@ -50,6 +50,16 @@ When combined, they form our default deterministic wallet, which can be setup in
 
 ![Wallet Screen-Shot](https://raw.githubusercontent.com/blockstrap/docs/master/_libs/img/docs/applications/wallet/setup.jpg)
 
-Providing a fully-featured responsive experience that is available on any device - with support for accounts, contacts, message signing and much more. Come take a look at the live demo - [http://blockstrap.com/demo/](#)
+Once setup, users are provided with a fully-featured responsive experience that is available on any device - with support for accounts, contacts, message signing and much more. Come take a look at the live demo - [http://blockstrap.com/demo/](#)
 
-Or read our [documentation](#) for more information and instructions on getting started.
+![Wallet Screen-Shot](https://raw.githubusercontent.com/blockstrap/docs/master/_libs/img/docs/applications/wallet/setup.jpg)
+
+More importantly, the wallet features functionality for plugins and themes. 
+
+Included within the framework download are the following themes:
+
+* Default Wallet (as seen above)
+* Priorities (community-driven crowd-sourced to-do list)
+* BrainControl 2.0 (example of a heaviliy modified wallet)
+
+We suggest that you read our [documentation](#) for more information and instructions on how to get started.
