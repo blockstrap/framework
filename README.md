@@ -40,7 +40,7 @@ We've also bundled the following plugins:
 * Market Conditions
 * API Tests
 
-Everything is powered by one or more of the following interchangable [modules](modules/):
+Everything is powered by one or more of the following interchangable [modules](docs/en/framework/modules/):
 
 * [Accounts](docs/en/framework/modules/accounts/)
 * [API](http://docs.blockstrap.com/en/framework/modules/api/)
