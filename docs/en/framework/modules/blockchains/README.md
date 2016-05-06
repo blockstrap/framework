@@ -16,11 +16,13 @@ The framework currently supports the following blockchains (and their corrrespon
 
 The Blockchains Module features the following functions:
 
-* [`$.fn.blockstrap.blockchains.check`(input)](#blockchains_check)
+* [`$.fn.blockstrap.blockchains.check`(address)](#blockchains_check) __needs updating__
+* [`$.fn.blockstrap.blockchains.decode`(script_pub_key)](#blockchains_decode) __needs updating__
 * [`$.fn.blockstrap.blockchains.key`(code)](#blockchains_key)
-* [`$.fn.blockstrap.blockchains.keys`(secret, blockchain)](#blockchains_keys)
-* [`$.fn.blockstrap.blockchains.raw`(return_to, privkey, inputs, outputs, this_fee, amount_to_send, data, sign_tx)](#blockchains_raw)
-* [`$.fn.blockstrap.blockchains.send`(to_address, to_amount, from_address, keys, callback, blockchain)](#blockchains_send)
+* [`$.fn.blockstrap.blockchains.keys`(secret, blockchain, number_of_keys, indexes, raw)](#blockchains_keys) __needs updating__
+* [`$.fn.blockstrap.blockchains.raw`(return_to, privkey, inputs, outputs, this_fee, amount_to_send, data, sign_tx, script)](#blockchains_raw) __needs updating__
+* [`$.fn.blockstrap.blockchains.send`(to_address, to_amount, from_address, keys, callback, blockchain, data, selected_fee)](#blockchains_send) __needs updating__
+* [`$.fn.blockstrap.blockchains.supported`(blockchain)](#blockchains_supported) __needs updating__
 * [`$.fn.blockstrap.blockchains.validate`(address)](#blockchains_validate)
 * [`$.fn.blockstrap.blockchains.which`(address)](#blockchains_which)
 

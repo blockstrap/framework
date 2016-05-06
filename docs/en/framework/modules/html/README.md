@@ -5,15 +5,13 @@ HTML Module <a name="docs_home"></a>
 
 The HTML Module features the following functions:
 
-* [`$.fn.blockstrap.contacts.get`(id)](#contacts_get)
+* [`$.fn.blockstrap.html.form`()](#html_form)
 
 --------------------------------------------------------------------------------
 
-#### `contacts.get`(id) <a name="contacts_get" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `html.form`() <a name="html_form" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
-This function will return a contact object based upon the provided `id`. 
-
-If the contact `id` is not provided it will instead return an array containing all of the contact objects.
+This function will return a string containing the Mustache-Ready HTML template for forms.
 
 <a href="#docs_home"><small>- back to top</small></a>
 

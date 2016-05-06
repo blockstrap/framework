@@ -5,15 +5,16 @@ Multi-Signature Module <a name="docs_home"></a>
 
 The Multisig Module features the following functions:
 
-* [`$.fn.blockstrap.contacts.get`(id)](#contacts_get)
+* [`$.fn.blockstrap.multisig.address`(seed, chain, keys, required)](#multisig_address) __needs updating__
+* [`$.fn.blockstrap.multisig.decode`(script, chain)](#multisig_decode) __needs updating__
+* [`$.fn.blockstrap.multisig.generate`(seed, chain, keys, required)](#multisig_generate) __needs updating__
+* [`$.fn.blockstrap.multisig.publicize`(keys)](#multisig_publicize) __needs updating__
 
 --------------------------------------------------------------------------------
 
-#### `contacts.get`(id) <a name="contacts_get" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `multisig.address`(seed, chain, keys, required) <a name="multisig_address" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
-This function will return a contact object based upon the provided `id`. 
-
-If the contact `id` is not provided it will instead return an array containing all of the contact objects.
+More details coming soon!
 
 <a href="#docs_home"><small>- back to top</small></a>
 

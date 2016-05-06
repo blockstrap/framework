@@ -33,13 +33,16 @@ The API Module features the following functions:
 * [`$.fn.blockstrap.api.dnkeys`(id, blockchain, callback, service, return_raw)](#api_dnkeys)
 * [`$.fn.blockstrap.api.map`(blockchain)](#api_map)
 * [`$.fn.blockstrap.api.market`(blockchain, stat, callback, service, return_raw)](#api_market)
-* [`$.fn.blockstrap.api.request`(url, callback, type, data, blockchain, call, username, password)](#api_request)
+* [`$.fn.blockstrap.api.op_returns`(address, blockchain, callback, service, return_raw, count, skip, rpc_to_address)](#api_opreturns) __needs updating__
+* [`$.fn.blockstrap.api.request`(url, callback, type, data, blockchain, call, username, password)](#api_request) __needs updating__
 * [`$.fn.blockstrap.api.relay`(hash, blockchain, callback, service, return_raw)](#api_relay)
-* [`$.fn.blockstrap.api.results`(defaults, results, blockchain, request, callback)](#api_results)
+* [`$.fn.blockstrap.api.results`(defaults, results, blockchain, request, callback)](#api_results) __needs updating__
+* [`$.fn.blockstrap.api.service`(service, chain)](#api_service) __needs updating__
+* [`$.fn.blockstrap.api.settings`(chain, provider, direction, key)](#api_settings) __needs updating__
 * [`$.fn.blockstrap.api.transaction`(txid, blockchain, callback, service, return_raw)](#api_transaction)
 * [`$.fn.blockstrap.api.transactions`(address, blockchain, callback, service, return_raw, count, skip)](#api_transactions)
-* [`$.fn.blockstrap.api.unspents`(address, blockchain, callback, confirms, service, return_raw)](#api_unspents)
-* [`$.fn.blockstrap.api.url`(action, key, blockchain)](#api_url)
+* [`$.fn.blockstrap.api.unspents`(address, blockchain, callback, confirms, service, return_raw)](#api_unspents) __needs updating__
+* [`$.fn.blockstrap.api.url`(action, key, blockchain)](#api_url) __needs updating__
 
 You may also want to learn about [API Mapping](#api_mapping).
 

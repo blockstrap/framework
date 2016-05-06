@@ -6,7 +6,7 @@ Contacts Module <a name="docs_home"></a>
 The Contacts Module features the following functions:
 
 * [`$.fn.blockstrap.contacts.get`(id)](#contacts_get)
-* [`$.fn.blockstrap.contacts.new`(name, address, blockchain, fields, callback)](#contacts_new)
+* [`$.fn.blockstrap.contacts.new`(name, address, blockchain, fields, callback, ignore_errors)](#contacts_new) __needs updating__
 
 --------------------------------------------------------------------------------
 

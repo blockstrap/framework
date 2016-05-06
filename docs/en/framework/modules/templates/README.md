@@ -8,7 +8,7 @@ The Templates Module features the following functions:
 * [`$.fn.blockstrap.templates.bootstrap`(type)](#templates_bootstrap)
 * [`$.fn.blockstrap.templates.filter`(html, placeholders, replacements)](#templates_filter)
 * [`$.fn.blockstrap.templates.process`(data, html)](#templates_process)
-* [`$.fn.blockstrap.templates.render`(slug, callback, refresh)](#templates_render)
+* [`$.fn.blockstrap.templates.render`(slug, callback, refresh, cancel_ready)](#templates_render) __needs updating__
 
 --------------------------------------------------------------------------------
 

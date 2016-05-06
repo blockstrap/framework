@@ -5,16 +5,29 @@ Widgets Module <a name="docs_home"></a>
 
 The Widgets Module features the following functions:
 
-* [`$.fn.blockstrap.contacts.get`(id)](#contacts_get)
-* [`$.fn.blockstrap.contacts.new`(name, address, blockchain, fields, callback)](#contacts_new)
+* [`$.fn.blockstrap.widgets.accounts`()](#widgets_accounts) __needs updating__
+* [`$.fn.blockstrap.widgets.addresses`()](#widgets_addresses) __needs updating__
+* [`$.fn.blockstrap.widgets.donate`(button, e)](#widgets_donate) __needs updating__
+* [`$.fn.blockstrap.widgets.donations`()](#widgets_donations) __needs updating__
+* [`$.fn.blockstrap.widgets.form`(data)](#widgets_form) __needs updating__
+* [`$.fn.blockstrap.widgets.generate`(button, e)](#widgets_generate) __needs updating__
+* [`$.fn.blockstrap.widgets.generations`()](#widgets_generations) __needs updating__
+* [`$.fn.blockstrap.widgets.html`(type, options)](#widgets_html) __needs updating__
+* [`$.fn.blockstrap.widgets.init`()](#widgets_init) __needs updating__
+* [`$.fn.blockstrap.widgets.modals`()](#widgets_modals) __needs updating__
+* [`$.fn.blockstrap.widgets.options`()](#widgets_options) __needs updating__
+* [`$.fn.blockstrap.widgets.payments`()](#widgets_payments) __needs updating__
+* [`$.fn.blockstrap.widgets.poll`(seconds_delay, id, fn, clear, remove)](#widgets_poll) __needs updating__
+* [`$.fn.blockstrap.widgets.qr`(obj, content)](#widgets_qr) __needs updating__
+* [`$.fn.blockstrap.widgets.request`(button, e)](#widgets_request) __needs updating__
+* [`$.fn.blockstrap.widgets.toggles`()](#widgets_toggles) __needs updating__
+* [`$.fn.blockstrap.widgets.update`(type, acc, callback, page, chain)](#widgets_update) __needs updating__
 
 --------------------------------------------------------------------------------
 
-#### `contacts.get`(id) <a name="contacts_get" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `widgets.accounts`() <a name="wodgets_accounts" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
-This function will return a contact object based upon the provided `id`. 
-
-If the contact `id` is not provided it will instead return an array containing all of the contact objects.
+More details coming soon!
 
 <a href="#docs_home"><small>- back to top</small></a>
 

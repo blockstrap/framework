@@ -16,6 +16,7 @@ The Filters Module features the following functions:
 * [`$.fn.blockstrap.filters.got`(blockstrap, data)](#filters_got)
 * [`$.fn.blockstrap.filters.last`(blockstrap, data)](#filters_last)
 * [`$.fn.blockstrap.filters.plugin`(blockstrap, data)](#filters_plugin)
+* [`$.fn.blockstrap.filters.settings`(blockstrap, data)](#filters_settings) __needs updating__
 * [`$.fn.blockstrap.filters.setup`(blockstrap, data)](#filters_setup)
 * [`$.fn.blockstrap.filters.total`(blockstrap, data)](#filters_total)
 * [`$.fn.blockstrap.filters.txs`(blockstrap, data)](#filters_txs)
