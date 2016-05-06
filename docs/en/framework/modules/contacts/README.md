@@ -6,7 +6,7 @@ Contacts Module <a name="docs_home"></a>
 The Contacts Module features the following functions:
 
 * [`$.fn.blockstrap.contacts.get`(id)](#contacts_get)
-* [`$.fn.blockstrap.contacts.new`(name, address, blockchain, fields, callback, ignore_errors)](#contacts_new) __needs updating__
+* [`$.fn.blockstrap.contacts.new`(name, address, blockchain, fields, callback, ignore_errors)](#contacts_new)
 
 --------------------------------------------------------------------------------
 
@@ -20,9 +20,9 @@ If the contact `id` is not provided it will instead return an array containing a
 
 --------------------------------------------------------------------------------
 
-#### `contacts.new`(name, address, blockchain, fields, callback) <a name="contacts_new" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `contacts.new`(name, address, blockchain, fields, callback, ignore_errors) <a name="contacts_new" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
-This function will take the required `name`, `address`, `blockchain` and `fields` and create a new contact, then perform the `callback` function upon completion.
+This function will take the required `name`, `address`, `blockchain` and `fields` and create a new contact, then perform the `callback` function upon completion. Modal errors messages can be supressed by setting `ignore_errors` to `true`.
 
 <a href="#docs_home"><small>- back to top</small></a>
 
