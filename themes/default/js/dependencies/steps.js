@@ -345,6 +345,14 @@ var blockstrap_setup_steps = [
                                                 "text": "BlockCypher"
                                             },
                                             {
+                                                "value": "blocktrail",
+                                                "text": "Blocktrail"
+                                            },
+                                            {
+                                                "value": "toshi",
+                                                "text": "Toshi"
+                                            },
+                                            {
                                                 "value": "qt",
                                                 "text": "Local QTs"
                                             }

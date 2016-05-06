@@ -291,7 +291,9 @@ var blockstrap_options = {
             blockchain: "Bitcoin (Testnet)",
             lib: "bitcointestnet",
             apis: {
-                blockcypher: "http://api.blockcypher.com/v1/btc/test3/"
+                blockcypher: "http://api.blockcypher.com/v1/btc/test3/",
+                blocktrail: "https://api.blocktrail.com/v1/tBTC/",
+                toshi: "https://testnet3.toshi.io/api/v0/"
             },
             fee: 0.0001,
             op_return: true,
@@ -341,7 +343,9 @@ var blockstrap_options = {
             lib: "bitcoin",
             apis: {
                 blockcypher: "http://api.blockcypher.com/v1/btc/main/",
-                qt: "proxies/rpc.php?blockchain=btc"
+                qt: "proxies/rpc.php?blockchain=btc",
+                blocktrail: "https://api.blocktrail.com/v1/BTC/",
+                toshi: "https://bitcoin.toshi.io/api/v0/"
             },
             fee: 0.0001,
             op_return: true,
@@ -393,7 +397,8 @@ var blockstrap_options = {
             blockstrap: "Blockstrap",
             blockcypher: "BlockCypher",
             qt: "Local QTs",
-            blocktrail: "Blocktrail"
+            blocktrail: "Blocktrail",
+            toshi: "Toshi"
         },
         defaults: {
             blockcypher: {
@@ -704,13 +709,14 @@ var blockstrap_options = {
                             balance: "balance"
                         },
                         unspents: {
-                            key: "",
+                            key: "../",
                             inner: "data",
                             confirmations: "confirmations",
                             txid: "hash",
                             index: "index",
                             value: "value",
-                            script: "script"
+                            script: "script_hex",
+                            reverse_array: true
                         },
                         transaction: {
                             key: "",
@@ -730,7 +736,7 @@ var blockstrap_options = {
                             txid: "hash",
                             size: false,
                             block: false,
-                            time: "[time, utctoepoch]",
+                            time: false,
                             input: "total_input_value",
                             output: "total_output_value",
                             value: "estimated_value",
@@ -746,6 +752,72 @@ var blockstrap_options = {
                             next: "next_block",
                             tx_count: "transactions",
                             time: "[block_time, utctoepoch]"
+                        },
+                    }
+                }
+            },
+            toshi: {
+                async: false,
+                key: [],
+                key_name: "",
+                functions: {
+                    to: {
+                        address: "addresses/$call/transactions",
+                        unspents: "addresses/$call/unspent_outputs",
+                        transactions: "addresses/$call/transactions",
+                        transaction: "transactions/$call",
+                        block: "blocks/$call"
+                    },
+                    from: {
+                        address: {
+                            key: "",
+                            address: "[hash, hextohash]",
+                            hash: "hash",
+                            tx_count: "[transactions, count]",
+                            received: "received",
+                            balance: "balance"
+                        },
+                        unspents: {
+                            key: "",
+                            inner: "",
+                            confirmations: "confirmations",
+                            txid: "transaction_hash",
+                            index: "output_index",
+                            value: "amount",
+                            script: "script_hex"
+                        },
+                        transaction: {
+                            key: "",
+                            txid: "hash",
+                            size: "size",
+                            block: "block_height",
+                            time: "[block_time, utctoepoch]",
+                            input: "amount",
+                            output: "amount",
+                            value: "amount",
+                            fees: "fees"
+                        },
+                        transactions: {
+                            key: "",
+                            inner: "transactions",
+                            txid: "hash",
+                            size: "size",
+                            block: "block_height",
+                            time: "[block_time, utctoepoch]",
+                            input: false,
+                            output: false,
+                            value: "[inputs, value]",
+                            fees: "fees",
+                            data: false,
+                        },
+                        block: {
+                            key: "",
+                            height: "height",
+                            hash: "hash",
+                            prev: "previous_block_hash",
+                            next: "next_blocks",
+                            tx_count: "transactions_count",
+                            time: "[time, utctoepoch]"
                         },
                     }
                 }
