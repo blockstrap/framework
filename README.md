@@ -10,11 +10,11 @@ By default, it is configured to use the [BlockCypher API](http://blocksypher.com
 
 We will also be adding support for the following APIs before officially re-launching:
 
-* [SoChain](http://chain.so) (Supporting 6 Chains)
-* [BlockR](http://blockchain.info) (Supporting 5 Chains)
-* [Blockchain.info](http://blockchain.info) (Supporting 1 Chain)
-* [Insights](http://insights.io) (Supporting 2 Chains)
-* [Toshi](http://toshi.io) (Supporting 2 Chains)
+* [SoChain](http://chain.so) (Can Support 6 Chains?)
+* [BlockR](http://blockchain.info) (Can Support 5 Chains?)
+* [Blockchain.info](http://blockchain.info) (Can ONLY Support 1 Chain?)
+* [Insights](http://insights.io) (Can Support 2 Chains?)
+* [Toshi](http://toshi.io) (Can Support 2 Chains?)
 
 The framework itself is currently capable of supporting the following blockchains:
 
