@@ -67,7 +67,7 @@ Once setup, users are provided with a fully-featured responsive experience that 
 
 __No private keys are ever stored or transmitted anywhere as they are only generated inline at the moment of transaction.__
 
-__Public information is stored within the device using HTML5 localStorage so unavailable in private modes.__
+__Public information is stored within the device using HTML5 localStorage so is unavailable in private modes.__
 
 We suggest that you read our [documentation](#) for more information and instructions on how to get started.
 
