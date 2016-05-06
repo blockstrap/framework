@@ -3,7 +3,9 @@
 
 ## Blockstrap Framework
 
-The Blockstrap framework provides a front-end HTML5 interface for web-applications to communicate and manipulate blockchains via both external APIs and self-hosted QTs direct from the source. By default, it is configured to use the [BlockCypher API](../api/) but as well as being API-agnoistic is also API-neutral throughout. This allows you to host and manage your own API end-points or select from others configured at core, with examples included and ready for use with the following services:
+The Blockstrap framework provides a front-end HTML5 interface for web-applications to communicate and manipulate blockchains via both external APIs and self-hosted QTs direct from the source. 
+
+By default, it is configured to use the [BlockCypher API](../api/) but as well as being API-agnoistic is also API-neutral throughout. This allows you to host and manage your own API end-points or select from others configured at core, with examples included and ready for use with the following services:
 
 * [BlockCypher](http://blockcypher.com) (Supporting 3 Chains)
 * [BlockTrail](http://blockcypher.com) (Supporting 2 Chains)
