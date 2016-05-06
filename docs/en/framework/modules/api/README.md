@@ -7,6 +7,7 @@ In order to demonstrate the flexibility of the framework, it is configured to su
 |--------------|-------------|-------------|-------------------------|--------------------|----------|
 |[BlockCypher](http://blockcypher.com)|blockstrap|3|YES|NO|NO|
 |[BlockTrail](http://blocktrail.com)|blocktrail|2|NO|NO|NO|
+|[Toshi](http://toshi.io)|toshi|2|YES|NO|NO|
 |__Local QTs__|qt|8|YES|YES|YES|
 
 A brief explanation of the columns listed above:
@@ -30,7 +31,7 @@ The API Module features the following functions:
 * [`$.fn.blockstrap.api.dnkeys`(id, blockchain, callback, service, return_raw)](#api_dnkeys)
 * [`$.fn.blockstrap.api.map`(blockchain)](#api_map)
 * [`$.fn.blockstrap.api.market`(blockchain, stat, callback, service, return_raw)](#api_market)
-* [`$.fn.blockstrap.api.op_returns`(address, blockchain, callback, service, return_raw, count, skip, rpc_to_address)](#api_opreturns) __needs updating__
+* [`$.fn.blockstrap.api.op_returns`(address, blockchain, callback, service, return_raw, count, skip, rpc_to_address)](#api_opreturns)
 * [`$.fn.blockstrap.api.request`(url, callback, type, data, blockchain, call, username, password)](#api_request) __needs updating__
 * [`$.fn.blockstrap.api.relay`(hash, blockchain, callback, service, return_raw)](#api_relay)
 * [`$.fn.blockstrap.api.results`(defaults, results, blockchain, request, callback)](#api_results) __needs updating__
@@ -279,6 +280,14 @@ If a valid `stat` is defined, it will instead return the results of that stat.
 The `service` variable allows you to override the default API service for individual calls by providing one listed in configuration.
 
 If `return_raw` is set to true, the raw results will be returned through `callback` __instead__ of passing through `api.results`.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
+#### `api.op_returns`(address, blockchain, callback, service, return_raw, count, skip, rpc_to_address) <a name="api_market" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function is used to gather all of the OP_Returns sent from a specific `address`, where `count` and `skip` can be used for APIs with pagination support and the `rpc_to_address` must also be set if using local QTs, in which case, the function will only return the OP_Returns that were sent to the designated address.
 
 <a href="#docs_home"><small>- back to top</small></a>
 
