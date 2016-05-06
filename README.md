@@ -29,7 +29,18 @@ The framework itself is currently capable of supporting the following blockchain
 
 The framework has been developed with modularity and flexibility as the focal point of each technical decision. 
 
-Currently providing a choice of interchangable modules - features can be easily extended, included, replaced or removed depending on the need of each application from a choice of the following [modules](modules/) that available upon download:
+This has enabled us to provide support for plugins and themes and allows developers to easuly extend, modify and truly customize every aspect of the application. Included within the framework download as examples are the following themes:
+
+* Default Wallet (as seen above)
+* Priorities (community-driven crowd-sourced to-do list)
+* BrainControl 2.0 (example of a heaviliy modified wallet)
+
+We've also bundled the following plugins:
+
+* Market Conditions
+* API Tests
+
+Everything is powered by one or more of the following interchangable [modules](modules/):
 
 * [Accounts](docs/en/framework/modules/accounts/)
 * [API](http://docs.blockstrap.com/en/framework/modules/api/)
@@ -48,18 +59,10 @@ Currently providing a choice of interchangable modules - features can be easily 
 
 When combined, they form our default deterministic wallet, which can be setup in seconds:
 
-![Wallet Screen-Shot](https://raw.githubusercontent.com/blockstrap/docs/master/_libs/img/docs/applications/wallet/setup.jpg)
+![Wallet Screen-Shot](docs/img/setup.jpg)
 
 Once setup, users are provided with a fully-featured responsive experience that is available on any device - with support for accounts, contacts, message signing and much more. Come take a look at the live demo - [http://blockstrap.com/demo/](#)
 
-![Wallet Screen-Shot](https://raw.githubusercontent.com/blockstrap/docs/master/_libs/img/docs/applications/wallet/setup.jpg)
-
-More importantly, the wallet features functionality for plugins and themes. 
-
-Included within the framework download are the following themes:
-
-* Default Wallet (as seen above)
-* Priorities (community-driven crowd-sourced to-do list)
-* BrainControl 2.0 (example of a heaviliy modified wallet)
+![Wallet Screen-Shot](docs/img/dashboard.jpg)
 
 We suggest that you read our [documentation](#) for more information and instructions on how to get started.
