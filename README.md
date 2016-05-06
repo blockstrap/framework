@@ -8,7 +8,7 @@ By default, it is configured to use the [BlockCypher API](http://blocksypher.com
 * [BlockTrail](http://blocktrail.com) (Supporting 2 Chains - __not completed yet__)
 * __LocalQTs__ (Tested on 4 Chains - __not completed yet__)
 
-Work is currently underway to support the following APIs:
+We will also be adding support for the following APIs before officially re-launching:
 
 * [SoChain](http://chain.so) (Supporting 6 Chains)
 * [BlockR](http://blockchain.info) (Supporting 5 Chains)
