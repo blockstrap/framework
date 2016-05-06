@@ -54,8 +54,7 @@
                 var value = account[this_key];
                 var label = blockstrap_functions.unslug(this_key);
                 var attributes = false;
-                // TODO: HARD-CODED FIX THAT SHOULD BE DEALT WITH BY PATCH?
-                if(this_key == 'blockchain' || this_key == 'currency')
+                if(this_key == 'blockchain')
                 {
                     value = account.code;
                     type = 'hidden';
@@ -454,18 +453,21 @@
                             }
                             $.each(chains, function(k, blockchain)
                             {
-                                var address_keys = $.fn.blockstrap.blockchains.keys(key+blockchain, blockchain, 1);
-                                var blockchain_name =  $.fn.blockstrap.settings.blockchains[blockchain].blockchain;
-                                var address = address_keys.pub;
-                                blockchains[blockchain] = {
-                                    type: blockchain_name,
-                                    address: address,
-                                    code: blockchain,
-                                    tx_count: 0,
-                                    balance: 0,
-                                    display_balance: "0.00000000",
-                                    ts: 0
-                                };
+                                if(blockchain)
+                                {
+                                    var address_keys = $.fn.blockstrap.blockchains.keys(key+blockchain, blockchain, 1);
+                                    var blockchain_name =  $.fn.blockstrap.settings.blockchains[blockchain].blockchain;
+                                    var address = address_keys.pub;
+                                    blockchains[blockchain] = {
+                                        type: blockchain_name,
+                                        address: address,
+                                        code: blockchain,
+                                        tx_count: 0,
+                                        balance: 0,
+                                        display_balance: "0.00000000",
+                                        ts: 0
+                                    };
+                                }
                             })
                             
                             if(keys == key) keys = false;
@@ -830,6 +832,7 @@
     
     accounts.update = function(the_account, callback, force_refresh, page, chain)
     {
+        $.fn.blockstrap.core.loading('UPDATING ACCOUNTS', false);
         var current_account = JSON.parse(JSON.stringify(the_account));
         if(typeof page == 'undefined') page = 0;
         if(typeof chain == 'undefined') chain = false;
@@ -933,14 +936,12 @@
                                             }
                                         });
                                     }
-
-                                    // TODO: Update account one by one?
                                     the_account.blockchains[k] = JSON.parse(JSON.stringify(chain));
-                                    // TODO - Remove this hardcoded pagination feature cancellation
-                                    paginate = false;
-                                    if(blockstrap_functions.array_length(chain.txs) < chain.tx_count && paginate)
-                                    {
-                                        // Paginate?
+                                    if(
+                                        blockstrap_functions.array_length(chain.txs) < chain.tx_count
+                                        && $.fn.blockstrap.core.apis('paginate') === true
+                                    ){
+                                        // TODO - Re-support Pagination!!!
                                         page++;
                                         accounts.update(the_account, callback, force_refresh, page);
                                     }
@@ -1028,6 +1029,7 @@
                 }
                 if(index >= account_length)
                 {
+                    $.fn.blockstrap.core.loading('LOADING', false);
                     if(callback) callback(new_txs.slice(0, new_tx_count));
                 }
                 else
@@ -1038,6 +1040,7 @@
         }
         else
         {
+            $.fn.blockstrap.core.loading('LOADING', false);
             if(callback) callback();
         }
     }

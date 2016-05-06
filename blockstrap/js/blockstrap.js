@@ -1103,6 +1103,7 @@ var blockstrap_core = function()
             },
             loader: function(state)
             {
+                $.fn.blockstrap.core.modals('close_all');
                 var element = $($.fn.blockstrap.element);
                 if(typeof $.fn.blockstrap.settings.loader_id != 'undefined')
                 {
@@ -1114,17 +1115,27 @@ var blockstrap_core = function()
                 }
                 else
                 {
-                    $.fn.blockstrap.core.modals('close_all');
                     $(element).removeClass('loading');
                     $(element).removeClass('installing');
                     $($.fn.blockstrap.element).attr('data-loading-content', 'LOADING');
                 }
                     
             },
-            loading: function(text)
+            loading: function(text, add_loading_class)
             {
+                if(typeof add_loading_class == 'undefined' || add_loading_class)
+                {
+                    add_loading_class = true;
+                }
+                else
+                {
+                    add_loading_class = false;
+                }
                 $($.fn.blockstrap.element).attr('data-loading-content', text);
-                $($.fn.blockstrap.element).addClass('loading');
+                if(add_loading_class)
+                {
+                    $($.fn.blockstrap.element).addClass('loading');
+                }
             },
             modal: function(title, content, id, callback)
             {
@@ -2104,7 +2115,7 @@ var blockstrap_core = function()
                 if(typeof saved_version == 'undefined') saved_version = 0;
                 if(typeof this_version == 'undefined') this_version = 1;
                 if(typeof refresh == 'undefined') refresh = false;
-                // TODO: Now need to implement patches!
+                // TODO: FUNCTIONALIZE THIS
                 if(/^[0-9\.]+$/.test(saved_version) && /^[0-9\.]+$/.test(this_version)) 
                 {
                     var current_version_array = this_version.split('.');
