@@ -66,3 +66,14 @@ Once setup, users are provided with a fully-featured responsive experience that 
 ![Wallet Screen-Shot](docs/img/dashboard.jpg)
 
 We suggest that you read our [documentation](#) for more information and instructions on how to get started.
+
+-----
+
+#### PLEASE NOTE THAT OUR DOCUMENTATION IS UNDERGOING REJUVINATION
+
+Specific topics of interest include:
+
+* [Blockstrap Applications](docs/en/applications)
+* [Blockstrap Framework](docs/en/framework)
+* [Blockstrap Plugins](docs/en/plugins)
+* [Supported Blockchains](docs/en/blockchains)
