@@ -3,20 +3,17 @@ API Module <a name="docs_home"></a>
 
 In order to demonstrate the flexibility of the framework, it is configured to supports several different API providers, but not all of the framework functionality can be provided by all providers - with the following matrix used as a summary:
 
-| API Provider | Homepage | Provider ID | Blockchains | Markets | Pagination | Addresses | DNKeys |
-|---------|------------------|---------|---------|------|---------|-------|----------|
-|Blockstrap|[http://blockstrap.com](http://blockstrap.com)|blockstrap|8|<span class="label label-success">Y</span>|<span class="label label-success">Y</span>|<span class="label label-success">Y</span>|<span class="label label-success">Y</span>|
-|SoChain|[http://chain.so](http://chain.so)|sochain|6|<span class="label label-danger">N</span>|<span class="label label-danger">N</span>|<span class="label label-danger">N</span>|<span class="label label-danger">N</span>|
-|Blockr|[http://blockr.io](http://blockr.io)|blockr|4|<span class="label label-danger">N</span>|<span class="label label-danger">N</span>|<span class="label label-danger">N</span>|<span class="label label-danger">N</span>|
-|HelloBlock|[http://helloblock.io](http://helloblock.io)|helloblock|1|<span class="label label-danger">N</span>|<span class="label label-success">Y</span>|<span class="label label-success">Y</span>|<span class="label label-danger">N</span>|
+| API Provider | Provider ID | Blockchains | Markets | DNKeys |
+|--------------|-------------|-------------|---------|--------|
+|[BlockCypher](http://blockcypher.com)|blockstrap|3|NO|NO|
+|[BlockTrail](http://blocktrail.com)|blocktrail|2|NO|NO|
+|__Local QTs__|qt|8|YES|YES|
 
 A brief explanation of the columns listed above:
 
 * __Provider ID__ is used in [configuration](../../core/configuration/) to set the desired API using `api_service`
 * __Blockchains__ attribute listed above refers to the number of supported [blockchains](../blockchains/)
 * __Markets__ refers to support for the [market conditions](../../../plugins/markets/) plugin included with the framework
-* __Pagination__ refers to the ability to [paginate transactions](#api_transactions) within addresses
-* __Addresses__ refers to the ability to check multiple addresses with one call (used for [prioritizer](../../../applications/prioritizer) theme)
 * __DNKeys__ refers to the ability to check publicly listed addresses using the [DNKey](http://dnkey.me) specification
 
 -----------------------------
