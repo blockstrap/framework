@@ -1,7 +1,4 @@
-#### CURRENTLY UNDERGOING MAJOR CHANGES / UPDATE
-------------------------------------------------
-
-## Blockstrap Framework
+## Blockstrap Framework (OpenSource Blockchain Framework)
 
 The Blockstrap framework provides a front-end HTML5 interface for web-applications to communicate and manipulate blockchains using either external web-accessible APIs or self-hosted local QTs direct from the source.
 
@@ -41,10 +38,10 @@ Currently providing a choice of interchangable modules - features can be easily 
 * [Templates](http://docs.blockstrap.com/en/framework/modules/templates/)
 * [Widgets](http://docs.blockstrap.com/en/framework/modules/widgets/)
 
-When combined, they form our default deterministic wallet:
+When combined, they form our default deterministic wallet, which can be setup in seconds:
 
 ![Wallet Screen-Shot](https://raw.githubusercontent.com/blockstrap/docs/master/_libs/img/docs/applications/wallet/setup.jpg)
 
-A live demo is available for viewing at - [http://blockstrap.com/demo/](#)
+Providing a fully-featured responsive experience that is available on any device - with support for accounts, contacts, message signing and much more. Come take a look at the live demo - [http://blockstrap.com/demo/](#)
 
-Please see our [documentation](#) for more information and instructions on getting started.
+Or read our [documentation](#) for more information and instructions on getting started.
