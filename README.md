@@ -18,20 +18,20 @@ Work is currently underway to support the following APIs:
 
 The framework itself is currently capable of supporting the following blockchains:
 
-* [Bitcoin](#)
-* [DashPay](#)
-* [Dogecoin](#)
-* [Litecoin](#)
-* [Bitcoin Testnet](#)
-* [Litecoin Testnet](#)
-* [DashPay Testnet](#)
-* [Dogecoin Testnet](#)
+* __Bitcoin__
+* __Dash__
+* __Dogecoin__
+* __Litecoin__
+* Bitcoin Testnet
+* Litecoin Testnet
+* Dash Testnet
+* Dogecoin Testnet
 
 The framework has been developed with modularity and flexibility as the focal point of each technical decision. 
 
 Currently providing a choice of interchangable modules - features can be easily extended, included, replaced or removed depending on the need of each application from a choice of the following [modules](modules/) that available upon download:
 
-* [Accounts](http://docs.blockstrap.com/en/framework/modules/accounts/)
+* [Accounts](docs/en/framework/modules/accounts/)
 * [API](http://docs.blockstrap.com/en/framework/modules/api/)
 * [Blockchains](http://docs.blockstrap.com/en/framework/modules/blockchains/)
 * [Buttons](http://docs.blockstrap.com/en/framework/modules/buttons/)
