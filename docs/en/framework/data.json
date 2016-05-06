@@ -1,0 +1,8 @@
+{
+   "page": {
+       "title": "Framework | Blockstrap Documentation",
+       "meta": "The Blockstrap Framework provides a front-end HTML5 interface for web-applications to communicate and manipulate blockchains and other dynamic data stores via external APIs",
+       "base": "../../",
+       "lang": "en"
+    }
+}
