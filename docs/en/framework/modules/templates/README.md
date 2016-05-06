@@ -8,7 +8,7 @@ The Templates Module features the following functions:
 * [`$.fn.blockstrap.templates.bootstrap`(type)](#templates_bootstrap)
 * [`$.fn.blockstrap.templates.filter`(html, placeholders, replacements)](#templates_filter)
 * [`$.fn.blockstrap.templates.process`(data, html)](#templates_process)
-* [`$.fn.blockstrap.templates.render`(slug, callback, refresh, cancel_ready)](#templates_render) __needs updating__
+* [`$.fn.blockstrap.templates.render`(slug, callback, refresh, cancel_ready)](#templates_render)
 
 --------------------------------------------------------------------------------
 
@@ -88,7 +88,7 @@ This function takes the provided `data`, runs it through [`core.filter`](../../c
 
 --------------------------------------------------------------------------------
 
-#### `templates.render`(slug, callback, refresh) <a name="templates_render" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `templates.render`(slug, callback, refresh, cancel_ready) <a name="templates_render" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function is used to render page content by using the `slug` to collect data and HTML as follows:
 
@@ -101,7 +101,7 @@ var html_url = 'themes/' + bs.settings.theme + '/' + bs.settings.html_base + slu
 
 It then filters the collected data ([`$.fn.blovkstrap.core.filter`](../../core/core-functions/#bs_filter)), combines it with the HTML using [mustache templating](../../assets/mustache/) and then filters the rendered results using [`template.filter`](#templates_filter), at which point if `refresh` is set to true or the current `slug` is the homepage of the application, the current DOM will be replaced with new content.
 
-If the `refresh` is not set or the current `slug` is not the homepage, the application will instead update the content by using `$.fn.blockstrap.settings.content_id`.
+If the `refresh` is not set or the current `slug` is not the homepage, the application will instead update the content by using `$.fn.blockstrap.settings.content_id`. It is possible to cancel the calling of `bs.core.ready()` by settings `cancel_ready` to `true`.
 
 <a href="#docs_home"><small>- back to top</small></a>
 
