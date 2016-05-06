@@ -14,6 +14,8 @@
     
     accounts.access = function(account_id, tx, chain, standard, from)
     {
+        // TODO - Is from needed? Can it not be got from the account_id and chain?
+        // Why exactly is standard applied? When is it not and why?
         var fields = [];
         var account = accounts.get(account_id, true);
         var account_chains = JSON.parse(JSON.stringify(account.blockchains));

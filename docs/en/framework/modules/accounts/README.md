@@ -5,10 +5,10 @@ Accounts Module <a name="docs_home"></a>
 
 The Accounts Module features the following functions:
 
-* [`$.fn.blockstrap.accounts.access`(account_id, tx)](#accounts_access) __needs updating__
+* [`$.fn.blockstrap.accounts.access`(account_id, tx, chain, standard, from)](#accounts_access)
 * [`$.fn.blockstrap.accounts.address`(key, account_id)](#accounts_address)
 * [`$.fn.blockstrap.accounts.balances`()](#accounts_balances)
-* [`$.fn.blockstrap.accounts.get`(id)](#accounts_get) __needs updating__
+* [`$.fn.blockstrap.accounts.get`(id, raw, get_widgets)](#accounts_get)
 * [`$.fn.blockstrap.accounts.new`(blockchain, name, password, keys, callback)](#accounts_new) __needs updating__
 * [`$.fn.blockstrap.accounts.poll`(wait, callback)](#accounts_poll) __needs updating__
 * [`$.fn.blockstrap.accounts.prepare`(to, account_id, amount)](#accounts_prepare) __needs updating__
@@ -22,9 +22,9 @@ The Accounts Module features the following functions:
 
 --------------------------------------------------------------------------------
 
-#### `accounts.access`(account_id, tx) <a name="accounts_access" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `accounts.access`(account_id, tx, chain, standard, from) <a name="accounts_access" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
-This function is used to construct a form that can validate whether the active user has the right to access and (or) control the corresponding account. It uses the `account_id` to access the stored `keys` associated with that account, and then creates the necessary input fields as required. If you wish to send a payment upon completing the validation a valid `tx` object is required.
+This function is used to construct a form that can validate whether the active user has the right to access and (or) control the corresponding account. It uses the `account_id` and `chain` to access the stored `keys` associated with that account, and then creates the necessary input fields as required. If you wish to send a payment upon completing the validation a valid `tx` object is required.
 
 <a href="#docs_home"><small>- back to top</small></a>
 
@@ -46,7 +46,7 @@ This function checks all available accounts to find the total number of accounts
 
 --------------------------------------------------------------------------------
 
-#### `accounts.get`(id) <a name="accounts_get" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `accounts.get`(id, raw, get_widgets) <a name="accounts_get" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function will return an account object based upon the provided `id`. 
 
