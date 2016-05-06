@@ -5,20 +5,20 @@ Accounts Module <a name="docs_home"></a>
 
 The Accounts Module features the following functions:
 
-* [`$.fn.blockstrap.accounts.access`(account_id, tx)](#accounts_access)
+* [`$.fn.blockstrap.accounts.access`(account_id, tx)](#accounts_access) __needs updating__
 * [`$.fn.blockstrap.accounts.address`(key, account_id)](#accounts_address)
 * [`$.fn.blockstrap.accounts.balances`()](#accounts_balances)
-* [`$.fn.blockstrap.accounts.get`(id)](#accounts_get)
-* [`$.fn.blockstrap.accounts.new`(blockchain, name, password, keys, callback)](#accounts_new)
-* [`$.fn.blockstrap.accounts.poll`(wait, callback)](#accounts_poll)
-* [`$.fn.blockstrap.accounts.prepare`(to, account_id, amount)](#accounts_prepare)
-* [`$.fn.blockstrap.accounts.remove`(collection, key, element, confirm)](#accounts_remove)
+* [`$.fn.blockstrap.accounts.get`(id)](#accounts_get) __needs updating__
+* [`$.fn.blockstrap.accounts.new`(blockchain, name, password, keys, callback)](#accounts_new) __needs updating__
+* [`$.fn.blockstrap.accounts.poll`(wait, callback)](#accounts_poll) __needs updating__
+* [`$.fn.blockstrap.accounts.prepare`(to, account_id, amount)](#accounts_prepare) __needs updating__
+* [`$.fn.blockstrap.accounts.remove`(collection, key, element, confirm)](#accounts_remove) __needs updating__
 * [`$.fn.blockstrap.accounts.total`(rate, prefix)](#accounts_total)
 * [`$.fn.blockstrap.accounts.tx`(txid, account_id)](#accounts_tx)
 * [`$.fn.blockstrap.accounts.txs`(account_id)](#accounts_txs)
-* [`$.fn.blockstrap.accounts.update`(account, callback, force_refresh)](#accounts_update)
+* [`$.fn.blockstrap.accounts.update`(account, callback, force_refresh)](#accounts_update) __needs updating__
 * [`$.fn.blockstrap.accounts.updates`(index, callback, old_txs, old_tx_count)](#accounts_updates)
-* [`$.fn.blockstrap.accounts.verify`(account, fields, callback, password)](#accounts_verify)
+* [`$.fn.blockstrap.accounts.verify`(account, fields, callback, password)](#accounts_verify) __needs updating__
 
 --------------------------------------------------------------------------------
 
