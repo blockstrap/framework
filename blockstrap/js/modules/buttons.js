@@ -309,7 +309,6 @@
                 });
             });
             
-            // TODO: Re-evaluate this?
             if(wallet.wallet_blockchain == 'hd')
             {
                 wallet.wallet_blockchain = [];
@@ -317,7 +316,11 @@
                 delete chains.multi;
                 $.each(chains, function(chain, obj)
                 {
-                    wallet.wallet_blockchain.push(chain);
+                    if(
+                        typeof $.fn.blockstrap.settings.blockchains[chain].apis[$.fn.blockstrap.core.api()] != 'undefined'
+                    ){
+                        wallet.wallet_blockchain.push(chain);
+                    }
                 });
             }
             
@@ -819,6 +822,7 @@
         var account_id = $(button).attr('data-id');
         var account = bs.accounts.get(account_id, true);
         var current_chain_count = $bs.array_length(account.blockchains);
+        var api_service = $.fn.blockstrap.core.api();
         var default_address = false;
         var default_chain = false;
         var title = 'Warning';
@@ -834,7 +838,7 @@
             {
                 $.each(account.blockchains, function(this_chain, this_obj)
                 {
-                    if(this_chain == chain) 
+                    if(this_chain == chain)
                     {
                         delete chains[chain];
                     }
@@ -851,11 +855,19 @@
             });
             $.each(chains, function(chain, obj)
             {
-                chains_available.push({
-                    value: chain,
-                    text: obj.blockchain
-                });
+                if(typeof $.fn.blockstrap.settings.blockchains[chain].apis[api_service] != 'undefined')
+                {
+                    chains_available.push({
+                        value: chain,
+                        text: obj.blockchain
+                    });
+                }
             });
+            if(blockstrap_functions.array_length(chains_available) === 1)
+            {
+                chains_available[0].value = '';
+                chains_available[0].text = 'Already Have All Available Chains';
+            }
             var fields = [
                 {
                     selects: {
@@ -880,8 +892,7 @@
                     var key_array = v.split('_');
                     var this_key = key_array[1];
                     var value = account[this_key];
-                    // TODO: HARD-CODED FIX THAT SHOULD BE DEALT WITH BY PATCH?
-                    if(this_key == 'blockchain' || this_key == 'currency')
+                    if(this_key == 'blockchain')
                     {
                         value = account.code;
                         type = 'hidden';
@@ -1512,7 +1523,6 @@
                 });
             });
             
-            // TODO: Re-evaluate this?
             if(wallet.wallet_blockchain == 'hd')
             {
                 wallet.wallet_blockchain = [];
@@ -1998,8 +2008,7 @@
                 var key_array = v.split('_');
                 var this_key = key_array[1];
                 var value = account[this_key];
-                // TODO: HARD-CODED FIX THAT SHOULD BE DEALT WITH BY PATCH?
-                if(this_key == 'blockchain' || this_key == 'currency')
+                if(this_key == 'blockchain')
                 {
                     value = account.code;
                     type = 'hidden';

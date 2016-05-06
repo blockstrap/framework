@@ -28,6 +28,7 @@
             var raw_accounts = $.fn.blockstrap.accounts.get(account_id, true);
             var current_chains = raw_accounts.blockchains;
             var available_chains = JSON.parse(JSON.stringify($.fn.blockstrap.settings.blockchains));
+            $.fn.blockstrap.core.modals('close_all');
             delete available_chains.multi;
             if(
                 typeof raw_accounts.blockchains != 'undefined'
@@ -58,6 +59,7 @@
             {
                 new_chains.push(new_chain);
             }
+            $.fn.blockstrap.core.modals('close_all');
             $.fn.blockstrap.core.loader('open');
             $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
             {
@@ -371,13 +373,8 @@
                     $.fn.blockstrap.data.find('blockstrap', 'salt', function(salt)
                     {
                         var key = '';
-                        var original = false;
                         if($.isArray(fields))
                         {
-                            if(typeof account.original != 'undefined')
-                            {
-                                original = account.original;
-                            }
                             $.each(fields, function(k, v)
                             {
                                 if(v.id == 'wallet_blockchain' && type == 'hd')
@@ -389,12 +386,6 @@
                                     {
                                         v.value.push(chain);
                                     });
-                                }
-
-                                // TODO: Remove this hardcoded hack?
-                                if(v.id == 'wallet_currency' && original)
-                                {
-                                    v.value = original;
                                 }
                                 key_obj = CryptoJS.SHA3(salt+key+v.id+v.value, { outputLength: 512 });
                                 key = key_obj.toString();
@@ -592,7 +583,14 @@
         {
             var blockchain_key = $.fn.blockstrap.blockchains.key(chain);
             var blockchain_obj = bitcoin.networks[blockchain_key];
-            var verification = bitcoin.Message.verify(address, signature, message, blockchain_obj);
+            var verification = false;
+            try{
+                verification = bitcoin.Message.verify(address, signature, message, blockchain_obj);
+            }
+            catch(error)
+            {
+                
+            }
             if(verification === true)
             {
                 title = 'Success';

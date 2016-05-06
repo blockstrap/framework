@@ -154,9 +154,6 @@
                 if(typeof v.blockchain != 'undefined')
                 {
                     var rate = $.fn.blockstrap.settings.exchange.usd[k];
-
-                    // TODO: REPLACE
-                    if(k == 'doget') k = 'dogt';
                     if(
                         typeof market_info[k] != 'undefined'
                         && typeof market_info[k].fiat_usd_now != 'undefined'

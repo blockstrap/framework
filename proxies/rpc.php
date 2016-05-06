@@ -330,7 +330,6 @@ if(
                     }
                     if(isset($tx['amount']) && $tx['amount'])
                     {
-                        // TODO - Need to know output and input, but cannot do that with looping raw TXs
                         $obj['output'] = intval($tx['amount'] * 100000000);
                     }
                     if(isset($tx['blocktime']) && $tx['blocktime'])
@@ -426,7 +425,6 @@ if(
                         }
                         if(isset($tx['amount']) && $tx['amount'])
                         {
-                            // TODO - Need to know output and input, but cannot do that with looping raw TXs
                             $this_tx['output'] = intval($tx['amount'] * 100000000);
                             $this_tx['value'] = intval($tx['amount'] * 100000000);
                         }

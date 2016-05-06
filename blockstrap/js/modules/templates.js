@@ -35,7 +35,7 @@
             var raw_name = localStorage.getItem('nw_keys_your_name');
             var name = raw_name;
             if(blockstrap_functions.json(raw_name)) name = $.parseJSON(raw_name);
-            blockstrap_functions.vars(); // TODO: NEED TO REFRESH THIS :-(
+            blockstrap_functions.vars();
             
             // ADDRESS INFO
             var archived = '';
@@ -217,7 +217,7 @@
             ];
         }
         
-        // TODO: FIX HACK PART TWO
+        // TODO: FUNCTIONALIZE THIS!!!
         if(placeholders && replacements)
         {
             for(var i = 0; i < placeholders.length; i++) 
