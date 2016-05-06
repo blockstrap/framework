@@ -1842,8 +1842,6 @@
                                     var new_balance = saved_account.blockchains[blockchain].balance - total_spent;
                                     var new_balance_display = parseFloat(new_balance / 100000000).toFixed(8);
                                     var new_tx_count = saved_account.blockchains[blockchain].tx_count + 1;
-                                    console.log('saved_account', saved_account);
-                                    console.log('total_spent (to deducte from balance)', total_spent);
                                     $.fn.blockstrap.accounts.update(saved_account, function()
                                     {
                                         saved_account.blockchains[blockchain].balance = new_balance;
