@@ -1,4 +1,4 @@
-## Blockstrap Framework (OpenSource Blockchain Framework)
+## Blockstrap (The OpenSource HTML5 Blockchain Framework)
 
 The Blockstrap framework provides a front-end HTML5 interface for web-applications to communicate and manipulate blockchains using either external web-accessible APIs or self-hosted local QTs direct from the source.
 
