@@ -11,7 +11,7 @@ By default, it is configured to use the [BlockCypher API](http://blocksypher.com
 We will also be adding support for the following APIs before officially re-launching:
 
 * [SoChain](http://chain.so) (Can Support 6 Chains?)
-* [BlockR](http://blockchain.info) (Can Support 5 Chains?)
+* [BlockR](http://blockr.io) (Can Support 5 Chains?)
 * [Blockchain.info](http://blockchain.info) (Can ONLY Support 1 Chain?)
 * [Insight](http://insight.io) (Can Support 2 Chains?)
 * [Toshi](http://toshi.io) (Can Support 2 Chains?)
