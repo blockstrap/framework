@@ -2508,7 +2508,7 @@ var blockstrap_core = function()
                         blockstrap_functions.check(defaults, function(passed)
                         {
                             if(passed) plugin(false, false, defaults, store); 
-                            else alert('Your browser does not support the minimum requirements - please learn more at http://docs.blockstrap.com - either that or you may have private browsing activated, which would also prevent Blockstrap from working.');
+                            else alert('Your browser does not support the minimum requirements - please learn more at https://github.com/blockstrap/framework/tree/master/docs/en - either that or you may have private browsing activated, which would also prevent Blockstrap from working.');
                         });
                     }
                 }).fail(function(jqxhr, settings, exception)
@@ -2522,7 +2522,7 @@ var blockstrap_core = function()
                 blockstrap_functions.check(config, function(passed)
                 {
                     if(passed) plugin(false, false, config, store, skip); 
-                    else alert('Your browser does not support the minimum requirements - please learn more at http://docs.blockstrap.com - either that or you may have private browsing activated, which would also prevent Blockstrap from working.');
+                    else alert('Your browser does not support the minimum requirements - please learn more at https://github.com/blockstrap/framework/tree/master/docs/en - either that or you may have private browsing activated, which would also prevent Blockstrap from working.');
                 });
             }
         }

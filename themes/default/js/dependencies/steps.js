@@ -40,7 +40,7 @@ var blockstrap_setup_steps = [
             {
                 "id": "docs",
                 "css": "",
-                "href": "http://docs.blockstrap.com",
+                "href": "https://github.com/blockstrap/framework/tree/master/docs/en/",
                 "text": "Help"
             }
         ],
@@ -518,7 +518,7 @@ var blockstrap_setup_steps = [
             {
                 "id": "docs",
                 "css": "",
-                "href": "http://docs.blockstrap.com",
+                "href": "https://github.com/blockstrap/framework/tree/master/docs/en/",
                 "text": "Help"
             }
         ],
