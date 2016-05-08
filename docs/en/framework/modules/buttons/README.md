@@ -17,11 +17,11 @@ The Buttons Module features the following functions:
 * [`$.fn.blockstrap.buttons.edit_object`(button, e)](#buttons_edit_object)
 * [`$.fn.blockstrap.buttons.hidden_toggler`(button, e)](#buttons_hiddentoggler)
 * [`$.fn.blockstrap.buttons.import`(button, e)](#buttons_import)
-* [`$.fn.blockstrap.buttons.import_file`(button, e)](#buttons_importfile) __needs updating__
+* [`$.fn.blockstrap.buttons.import_file`(button, e)](#buttons_importfile)
 * [`$.fn.blockstrap.buttons.login`(button, e)](#buttons_login)
 * [`$.fn.blockstrap.buttons.logout`(button, e)](#buttons_logout)
 * [`$.fn.blockstrap.buttons.more_security`(button, e)](#buttons_security)
-* [`$.fn.blockstrap.buttons.new_chain`(button, e)](#buttons_newchain) __needs updating__
+* [`$.fn.blockstrap.buttons.new_chain`(button, e)](#buttons_newchain)
 * [`$.fn.blockstrap.buttons.page`(button, e)](#buttons_page)
 * [`$.fn.blockstrap.buttons.print`(button, e)](#buttons_print)
 * [`$.fn.blockstrap.buttons.process`(slug, content, filtered_data, button, effect, direction, reverse_direxction, mobile, menu, elements)](#buttons_process)
@@ -165,6 +165,14 @@ This function opens a modal window that provides instructions on importing devic
 
 --------------------------------------------------------------------------------
 
+#### `buttons.import_file`(button, e) <a name="buttons_importfile" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function open the file explorer dialog in order to import a backup file.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
 #### `buttons.login`(button, e) <a name="buttons_login" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function provides login functionality that utilizes internally stored `your_username` and `your_password` options to confirm if the user should be allowed further access.
@@ -184,6 +192,14 @@ This function will logout the current user.
 #### `buttons.more_security`(button, e) <a name="buttons_security" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function toggles hidden content display within the account creation modal window.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
+#### `buttons.new_chain`(button, e) <a name="buttons_newchain" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function opens a modal that allow for new blockchains to be added to an existing account.
 
 <a href="#docs_home"><small>- back to top</small></a>
 
