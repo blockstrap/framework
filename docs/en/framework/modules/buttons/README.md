@@ -24,7 +24,7 @@ The Buttons Module features the following functions:
 * [`$.fn.blockstrap.buttons.new_chain`(button, e)](#buttons_newchain)
 * [`$.fn.blockstrap.buttons.page`(button, e)](#buttons_page)
 * [`$.fn.blockstrap.buttons.print`(button, e)](#buttons_print)
-* [`$.fn.blockstrap.buttons.process`(slug, content, filtered_data, button, effect, direction, reverse_direxction, mobile, menu, elements)](#buttons_process)
+* [`$.fn.blockstrap.buttons.process`(slug, content, filtered_data, button, effect, direction, reverse, mobile, menu, elements)](#buttons_process)
 * [`$.fn.blockstrap.buttons.refresh`(button, e)](#buttons_refresh)
 * [`$.fn.blockstrap.buttons.remove`(button, e)](#buttons_remove)
 * [`$.fn.blockstrap.buttons.reset`(button, e)](#buttons_reset)
