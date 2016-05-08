@@ -5,15 +5,15 @@ Forms Module <a name="docs_home"></a>
 
 The Forms Module features the following functions:
 
-* [`$.fn.blockstrap.forms.add_blockchain`(form, vars)](#forms_add_blockchain) __needs updating__
-* [`$.fn.blockstrap.forms.add_blockchain_contact`(forms, vars)](#forms_add_blockchain_contact) __needs updating__
+* [`$.fn.blockstrap.forms.add_blockchain`(form, vars)](#forms_add_blockchain)
+* [`$.fn.blockstrap.forms.add_blockchain_contact`(forms, vars)](#forms_add_blockchain_contact)
 * [`$.fn.blockstrap.forms.get`(callback)](#forms_get)
 * [`$.fn.blockstrap.forms.input`(options)](#forms_input)
 * [`$.fn.blockstrap.forms.process`(data, form)](#forms_process)
-* [`$.fn.blockstrap.forms.settings_form`(form, vars)](#forms_settings) __needs updating__
-* [`$.fn.blockstrap.forms.sign_message`(form, vars)](#forms_sign) __needs updating__
-* [`$.fn.blockstrap.forms.switch_addresses`(form, vars)](#forms_switch) __needs updating__
-* [`$.fn.blockstrap.forms.verify_message`(form, vars)](#forms_verify) __needs updating__
+* [`$.fn.blockstrap.forms.settings_form`(form, vars)](#forms_settings)
+* [`$.fn.blockstrap.forms.sign_message`(form, vars)](#forms_sign)
+* [`$.fn.blockstrap.forms.switch_addresses`(form, vars)](#forms_switch)
+* [`$.fn.blockstrap.forms.verify_message`(form, vars)](#forms_verify)
 
 --------------------------------------------------------------------------------
 
