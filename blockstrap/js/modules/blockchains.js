@@ -326,13 +326,13 @@
         callback, 
         blockchain,
         data,
-        selected_fee
+        fee
     ){
         var available_balance = 0;
         var private_key = keys.priv;
         if(!blockchain) blockchain = 'btc';
-        var fee = $.fn.blockstrap.settings.blockchains[blockchain].fee * 100000000;
-        if(typeof selected_fee != 'undefined') fee = selected_fee;
+        var default_fee = $.fn.blockstrap.settings.blockchains[blockchain].fee * 100000000;
+        if(typeof fee != 'undefined') default_fee = fee;
         $.fn.blockstrap.api.balance(from_address, blockchain, function(balance)
         {
             if(
@@ -358,7 +358,7 @@
                 }, $.fn.blockstrap.core.timeouts('loader'));
                 return false;
             }
-            else if(balance - fee >= to_amount)
+            else if(balance - default_fee >= to_amount)
             {
                 $.fn.blockstrap.api.unspents(keys.pub, blockchain, function(unspents)
                 {
@@ -384,7 +384,7 @@
                             private_key, 
                             inputs, 
                             outputs, 
-                            fee, 
+                            default_fee, 
                             to_amount,
                             data
                         );
