@@ -1911,7 +1911,7 @@
                             }, $.fn.blockstrap.core.timeouts('loader'));
                         }
                     }
-                }, false, chain, raw_accounts.type, from_address);
+                }, false, from_address);
             });
         }
     } 
@@ -2007,7 +2007,7 @@
                     var contents = 'Unable to verify ownership';
                     $.fn.blockstrap.core.modal(title, contents);
                 }
-            }, false, chain, raw_accounts.type, from_address, true);
+            }, false, from_address, true);
         });
     }
     

@@ -9,16 +9,16 @@ The Accounts Module features the following functions:
 * [`$.fn.blockstrap.accounts.address`(key, account_id)](#accounts_address)
 * [`$.fn.blockstrap.accounts.balances`()](#accounts_balances)
 * [`$.fn.blockstrap.accounts.get`(id, raw, get_widgets)](#accounts_get)
-* [`$.fn.blockstrap.accounts.new`(blockchain, name, password, keys, callback)](#accounts_new) __needs updating__
-* [`$.fn.blockstrap.accounts.poll`(wait, callback)](#accounts_poll) __needs updating__
-* [`$.fn.blockstrap.accounts.prepare`(to, account_id, amount)](#accounts_prepare) __needs updating__
-* [`$.fn.blockstrap.accounts.remove`(collection, key, element, confirm)](#accounts_remove) __needs updating__
+* [`$.fn.blockstrap.accounts.new`(blockchain, name, password, keys, callback, existing_account)](#accounts_new)
+* [`$.fn.blockstrap.accounts.poll`(wait, callback, loop, loop_delay)](#accounts_poll)
+* [`$.fn.blockstrap.accounts.prepare`(to, account_id, amount, chain, standard, selected_fee)](#accounts_prepare)
+* [`$.fn.blockstrap.accounts.remove`(collection, key, element, confirm, chain)](#accounts_remove)
 * [`$.fn.blockstrap.accounts.total`(rate, prefix)](#accounts_total)
 * [`$.fn.blockstrap.accounts.tx`(txid, account_id)](#accounts_tx)
 * [`$.fn.blockstrap.accounts.txs`(account_id)](#accounts_txs)
-* [`$.fn.blockstrap.accounts.update`(account, callback, force_refresh)](#accounts_update) __needs updating__
+* [`$.fn.blockstrap.accounts.update`(account, callback, force_refresh, page, chain)](#accounts_update)
 * [`$.fn.blockstrap.accounts.updates`(index, callback, old_txs, old_tx_count)](#accounts_updates)
-* [`$.fn.blockstrap.accounts.verify`(account, fields, callback, password)](#accounts_verify) __needs updating__
+* [`$.fn.blockstrap.accounts.verify`(account, fields, callback, password, from, show_seed)](#accounts_verify)
 
 --------------------------------------------------------------------------------
 
@@ -56,31 +56,31 @@ If the account `id` is not provided it will instead return an array containing a
 
 --------------------------------------------------------------------------------
 
-#### `accounts.new`(blockchain, name, password, keys, callback) <a name="accounts_new" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `accounts.new`(blockchain, name, password, keys, callback, existing_account) <a name="accounts_new" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
-This function will take the required `blockchain`, `name`, `password` and `keys` and create a new account, then perform the `callback` function upon completion.
-
-<a href="#docs_home"><small>- back to top</small></a>
-
---------------------------------------------------------------------------------
-
-#### `accounts.poll`(wait, callback) <a name="accounts_poll" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
-
-This function is used make regular calls to the API in order to update account information. If no `wait` time isprovided it will instead refer to the following settings `$.fn.blockstrap.settings.cache.accounts`. During each interval, it will perform the [`accounts.updates`](#accounts_updates) function. If any new transactions have occured since those stored locally, the user will be informed via a modal window regarding the new transactions, and the page content will be refreshed.
+This function will take the required `blockchain`, `name`, `password` and `keys` and create a new account, then perform the `callback` function upon completion. Providing a valid account object using `existing_account` enables new blockchains and sub-accounts to be added to existing accounts.
 
 <a href="#docs_home"><small>- back to top</small></a>
 
 --------------------------------------------------------------------------------
 
-#### `accounts.prepare`(to, account_id, amount) <a name="accounts_prepare" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `accounts.poll`(wait, callback, loop, loop_delay) <a name="accounts_poll" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
-This function is wrapper for [`accounts.access`](#accounts_access) and first checks whether the `to` address and `account_id` are valid before proceeding.
+This function is used make regular calls to the API in order to update account information. If no `wait` time is provided it will instead refer to the following settings `$.fn.blockstrap.settings.cache.accounts`. During each interval, it will perform the [`accounts.updates`](#accounts_updates) function. If any new transactions have occured since those stored locally, the user will be informed via a modal window regarding the new transactions, and the page content will be refreshed. Setting `loop` to `true` ensure that the polling continues to occur after passing each `loop_delay` timing.
 
 <a href="#docs_home"><small>- back to top</small></a>
 
 --------------------------------------------------------------------------------
 
-#### `accounts.remove`(collection, key, element, confirm) <a name="accounts_remove" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `accounts.prepare`(to, account_id, amount, chain, standard, selected_fee) <a name="accounts_prepare" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function is wrapper for [`accounts.access`](#accounts_access) and first checks whether the `to` address and `account_id` are valid before proceeding. You may also use `selected_fee` for each individual transaction fee, else the default fee will be used.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
+#### `accounts.remove`(collection, key, element, confirm, chain) <a name="accounts_remove" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function will use the `collection` and `key` to locate an item stored locally.
 
@@ -118,9 +118,9 @@ This function will return an array of transaction objects based upon the provide
 
 --------------------------------------------------------------------------------
 
-#### `accounts.update`(account, callback, force_refresh) <a name="accounts_update" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `accounts.update`(account, callback, force_refresh, page, chain) <a name="accounts_update" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
-This function will make an API call to check the TX count for the provided `account` object. If new transactions have occured, it will also perform another API call to collect transactions. By default, it will only update an account if the caching time (set as `$.fn.blockstrap.settings.cache.accounts`) has passed. If `force_refresh` is set, it will update the account regardless.
+This function will make an API call to check the TX count for the provided `account` object. If new transactions have occured, it will also perform another API call to collect transactions. By default, it will only update an account if the caching time (set as `$.fn.blockstrap.settings.cache.accounts`) has passed. If `force_refresh` is set, it will update the account regardless. The `chain` variable can be used when wanting to update a single address from an account.
 
 <a href="#docs_home"><small>- back to top</small></a>
 
@@ -134,7 +134,7 @@ This function cycles through all accounts and applies [`accounts.update`](#accou
 
 --------------------------------------------------------------------------------
 
-#### `accounts.verify`(account, fields, callback, password) <a name="accounts_verify" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `accounts.verify`(account, fields, callback, password, from, show_seed) <a name="accounts_verify" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function is used to verify the results provided after submitting the form generated via [`accounts.access`](#accounts_access).
 

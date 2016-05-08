@@ -1057,7 +1057,7 @@
         }
     }
     
-    accounts.verify = function(account, fields, callback, password, chain, type, from, show_seed)
+    accounts.verify = function(account, fields, callback, password, from, show_seed)
     {
         if(typeof from == 'undefined') from = false;
         if(typeof show_seed == 'undefined') show_seed = false;
