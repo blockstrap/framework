@@ -320,7 +320,7 @@
     
     blockchains.send = function(
         to_address, 
-        to_amount, 
+        amount, 
         from_address, 
         keys, 
         callback, 
@@ -358,7 +358,7 @@
                 }, $.fn.blockstrap.core.timeouts('loader'));
                 return false;
             }
-            else if(balance - default_fee >= to_amount)
+            else if(balance - default_fee >= amount)
             {
                 $.fn.blockstrap.api.unspents(keys.pub, blockchain, function(unspents)
                 {
@@ -367,7 +367,7 @@
                         var inputs = [];
                         var outputs = [{
                             'address': to_address,
-                            'value': to_amount
+                            'value': amount
                         }];
                         $.each(unspents, function(k, unspent)
                         {
@@ -385,7 +385,7 @@
                             inputs, 
                             outputs, 
                             default_fee, 
-                            to_amount,
+                            amount,
                             data
                         );
                         $.fn.blockstrap.api.relay(raw_transaction, blockchain, function(tx)
