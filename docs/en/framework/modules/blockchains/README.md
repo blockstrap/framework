@@ -21,7 +21,7 @@ The Blockchains Module features the following functions:
 * [`$.fn.blockstrap.blockchains.key`(code)](#blockchains_key)
 * [`$.fn.blockstrap.blockchains.keys`(secret, blockchain, number_of_keys, indexes, raw)](#blockchains_keys)
 * [`$.fn.blockstrap.blockchains.raw`(return_to, privkey, inputs, outputs, this_fee, amount_to_send, data, sign_tx, script)](#blockchains_raw)
-* [`$.fn.blockstrap.blockchains.send`(to_address, amount, from_address, keys, callback, blockchain, data, fee)](#blockchains_send)
+* [`$.fn.blockstrap.blockchains.send`(to_address, amount, from, keys, callback, blockchain, data, fee)](#blockchains_send)
 * [`$.fn.blockstrap.blockchains.supported`(blockchain)](#blockchains_supported)
 * [`$.fn.blockstrap.blockchains.validate`(address)](#blockchains_validate)
 * [`$.fn.blockstrap.blockchains.which`(address)](#blockchains_which)
@@ -82,7 +82,7 @@ The `script` variable is used for multisignature transactions.
 
 --------------------------------------------------------------------------------
 
-#### `blockchains.send`(to_address, amount, from_address, keys, callback, blockchain, data, fee) <a name="blockchains_send" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `blockchains.send`(to_address, amount, from, keys, callback, blockchain, data, fee) <a name="blockchains_send" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function is used to construct a raw transaction and then relay it. Basic settings such as who to send the coins to with `to_address`, or how much to send with `to_amount` and `blockchain` are clear enough. The `from_address` will be used as the returning change address. The `keys` should be a key object as returned by [`blockchains.keys`](#blockchains_keys), which contains both the public and private keys. Before proceeding, we first check locally to see if the account belongs to this user and it has the necessary balance required to perform the transaction. If it does, the public key is used in reference to an [`api.unspents`](../api/#api_unspents) call, the results from which are then used to construct the necessary available inputs. We then call [`blockchains.raw`](#blockchains_raw) and use the returned object as the required variable in an [`api.relay`](../api/#api_relay) call.
 

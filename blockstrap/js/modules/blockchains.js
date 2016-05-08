@@ -321,7 +321,7 @@
     blockchains.send = function(
         to_address, 
         amount, 
-        from_address, 
+        from, 
         keys, 
         callback, 
         blockchain,
@@ -333,12 +333,12 @@
         if(!blockchain) blockchain = 'btc';
         var default_fee = $.fn.blockstrap.settings.blockchains[blockchain].fee * 100000000;
         if(typeof fee != 'undefined') default_fee = fee;
-        $.fn.blockstrap.api.balance(from_address, blockchain, function(balance)
+        $.fn.blockstrap.api.balance(from, blockchain, function(balance)
         {
             if(
                 (
                     blockchain != $.fn.blockstrap.blockchains.which(to_address)
-                    || blockchain != $.fn.blockstrap.blockchains.which(from_address)
+                    || blockchain != $.fn.blockstrap.blockchains.which(from)
                 )
                 &&
                 (
@@ -346,7 +346,7 @@
                     && 
                     (
                         $.fn.blockstrap.blockchains.which(to_address) != 'btct'
-                        || $.fn.blockstrap.blockchains.which(from_address) != 'btct'
+                        || $.fn.blockstrap.blockchains.which(from) != 'btct'
                     )
                 )
             ){
@@ -380,7 +380,7 @@
                             //available_balance = available_balance + unspent.value;
                         });
                         var raw_transaction = blockchains.raw(
-                            from_address, 
+                            from, 
                             private_key, 
                             inputs, 
                             outputs, 
