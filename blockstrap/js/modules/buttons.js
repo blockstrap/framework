@@ -1081,7 +1081,7 @@
         $.fn.blockstrap.core.print(contents);
     }
     
-    buttons.process = function(slug, content, filtered_data, button, effect, direction, reverse_direction, mobile, menu, elements)
+    buttons.process = function(slug, content, filtered_data, button, effect, direction, reverse, mobile, menu, elements)
     {
         $("html, body").animate({ scrollTop: 0 }, 350);
         if(direction == 'up' || menu === true) $.fn.blockstrap.core.loader('close');
@@ -1118,7 +1118,7 @@
         $('#'+$.fn.blockstrap.settings.content_id).hide(effect, {direction:direction}, 500, function()
         {
             var paged_html = $.fn.blockstrap.templates.filter(Mustache.render(content, filtered_data));
-            $('#'+$.fn.blockstrap.settings.content_id).html(paged_html).show(effect, {direction:reverse_direction}, 500, function()
+            $('#'+$.fn.blockstrap.settings.content_id).html(paged_html).show(effect, {direction:reverse}, 500, function()
             {
                 if(mobile && !menu) $(elements).css({'opacity':1});
                 if(menu)
@@ -1670,6 +1670,113 @@
         }
     }
     
+    
+    buttons.sign = function(button, e)
+    {
+        e.preventDefault();
+        var account_id = $(button).attr('data-key');
+        var chain = $(button).attr('data-chain');
+        var blockchain = $.fn.blockstrap.settings.blockchains[chain].blockchain;
+        var account = $.fn.blockstrap.accounts.get(account_id, true);
+        var fields = [];
+        if($.isArray(account.keys))
+        {
+            $.each(account.keys, function(k, v)
+            {
+                var group_css = '';   
+                var type = 'text';
+                var key_array = v.split('_');
+                var this_key = key_array[1];
+                var value = account[this_key];
+                if(this_key == 'blockchain')
+                {
+                    value = account.code;
+                    type = 'hidden';
+                    group_css = 'hidden';
+                }
+                if(this_key == 'password')
+                {
+                    type = 'password';
+                    value = '';
+                }
+                else if(account[this_key])
+                {
+                    type = 'hidden';
+                    group_css = 'hidden';
+                }
+                fields.push({
+                    css: group_css,
+                    inputs: {
+                        id: v,
+                        type: type,
+                        label: {
+                            css: 'col-xs-3',
+                            text: blockstrap_functions.unslug(this_key)
+                        },
+                        wrapper: {
+                            css: 'col-xs-9'
+                        },
+                        value: value
+                    }
+                });
+            })
+        }
+        fields.push({
+            areas: {
+                id: 'message',
+                placeholder: 'The message to sign'
+            }
+        });            
+        var contents = '<p>Please verify owenrship of the address before signing the message with its keys.</p>';
+        var form = $.fn.blockstrap.forms.process({
+            id: "sign-messages",
+            css: "form-horizontal bs",
+            data: [
+                {
+                    key: 'data-function',
+                    value: 'sign_message'
+                },
+                {
+                    key: 'data-account-id',
+                    value: account_id
+                },
+                {
+                    key: 'data-chain',
+                    value: chain
+                }
+            ],
+            objects: [
+                {
+                    fields: fields
+                }
+            ],
+            buttons: {
+                forms: [
+                    {
+                        id: 'cancel-verification',
+                        css: 'btn-danger pull-right btn-split',
+                        text: 'Cancel',
+                        type: 'button',
+                        attributes: [
+                            {
+                                key: 'data-dismiss',
+                                value: 'modal'
+                            }
+                        ]
+                    },
+                    {
+                        type: "submit",
+                        id: "sign-messagr",
+                        css: 'btn-success pull-right btn-split',
+                        text: 'Sign',
+                        type: 'submit'
+                    }
+                ]
+            }
+        });
+        $.fn.blockstrap.core.modal('Sign Message with '+blockchain, contents + form);
+    }
+    
     buttons.submit_import = function(button, e)
     {
         e.preventDefault();
@@ -2009,112 +2116,6 @@
                 }
             }, false, from_address, true);
         });
-    }
-    
-    buttons.sign = function(button, e)
-    {
-        e.preventDefault();
-        var account_id = $(button).attr('data-key');
-        var chain = $(button).attr('data-chain');
-        var blockchain = $.fn.blockstrap.settings.blockchains[chain].blockchain;
-        var account = $.fn.blockstrap.accounts.get(account_id, true);
-        var fields = [];
-        if($.isArray(account.keys))
-        {
-            $.each(account.keys, function(k, v)
-            {
-                var group_css = '';   
-                var type = 'text';
-                var key_array = v.split('_');
-                var this_key = key_array[1];
-                var value = account[this_key];
-                if(this_key == 'blockchain')
-                {
-                    value = account.code;
-                    type = 'hidden';
-                    group_css = 'hidden';
-                }
-                if(this_key == 'password')
-                {
-                    type = 'password';
-                    value = '';
-                }
-                else if(account[this_key])
-                {
-                    type = 'hidden';
-                    group_css = 'hidden';
-                }
-                fields.push({
-                    css: group_css,
-                    inputs: {
-                        id: v,
-                        type: type,
-                        label: {
-                            css: 'col-xs-3',
-                            text: blockstrap_functions.unslug(this_key)
-                        },
-                        wrapper: {
-                            css: 'col-xs-9'
-                        },
-                        value: value
-                    }
-                });
-            })
-        }
-        fields.push({
-            areas: {
-                id: 'message',
-                placeholder: 'The message to sign'
-            }
-        });            
-        var contents = '<p>Please verify owenrship of the address before signing the message with its keys.</p>';
-        var form = $.fn.blockstrap.forms.process({
-            id: "sign-messages",
-            css: "form-horizontal bs",
-            data: [
-                {
-                    key: 'data-function',
-                    value: 'sign_message'
-                },
-                {
-                    key: 'data-account-id',
-                    value: account_id
-                },
-                {
-                    key: 'data-chain',
-                    value: chain
-                }
-            ],
-            objects: [
-                {
-                    fields: fields
-                }
-            ],
-            buttons: {
-                forms: [
-                    {
-                        id: 'cancel-verification',
-                        css: 'btn-danger pull-right btn-split',
-                        text: 'Cancel',
-                        type: 'button',
-                        attributes: [
-                            {
-                                key: 'data-dismiss',
-                                value: 'modal'
-                            }
-                        ]
-                    },
-                    {
-                        type: "submit",
-                        id: "sign-messagr",
-                        css: 'btn-success pull-right btn-split',
-                        text: 'Sign',
-                        type: 'submit'
-                    }
-                ]
-            }
-        });
-        $.fn.blockstrap.core.modal('Sign Message with '+blockchain, contents + form);
     }
     
     buttons.switch = function(button, e)
