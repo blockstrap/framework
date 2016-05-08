@@ -21,7 +21,7 @@ The Blockchains Module features the following functions:
 * [`$.fn.blockstrap.blockchains.key`(code)](#blockchains_key)
 * [`$.fn.blockstrap.blockchains.keys`(secret, blockchain, number_of_keys, indexes, raw)](#blockchains_keys)
 * [`$.fn.blockstrap.blockchains.raw`(return_to, privkey, inputs, outputs, this_fee, amount_to_send, data, sign_tx, script)](#blockchains_raw)
-* [`$.fn.blockstrap.blockchains.send`(to_address, amount, from, keys, callback, blockchain, data, fee)](#blockchains_send)
+* [`$.fn.blockstrap.blockchains.send`(to, amount, from, keys, callback, blockchain, data, fee)](#blockchains_send)
 * [`$.fn.blockstrap.blockchains.supported`(blockchain)](#blockchains_supported)
 * [`$.fn.blockstrap.blockchains.validate`(address)](#blockchains_validate)
 * [`$.fn.blockstrap.blockchains.which`(address)](#blockchains_which)
