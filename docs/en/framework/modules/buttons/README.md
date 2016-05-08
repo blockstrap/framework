@@ -6,16 +6,16 @@ Buttons Module <a name="docs_home"></a>
 The Buttons Module features the following functions:
 
 * [`$.fn.blockstrap.buttons.access`(button, e)](#buttons_access)
-* [`$.fn.blockstrap.buttons.add_contact_address`(button, e)](#buttons_addcontact) __needs updating__
+* [`$.fn.blockstrap.buttons.add_contact_address`(button, e)](#buttons_addcontact)
 * [`$.fn.blockstrap.buttons.cancel`(button, mobile, menu, elements)](#buttons_cancel)
-* [`$.fn.blockstrap.buttons.check_all_inactive`(button, e)](#buttons_checkall) __needs updating__
-* [`$.fn.blockstrap.buttons.check_inactive`(button, e)](#buttons_checkinactive) __needs updating__
+* [`$.fn.blockstrap.buttons.check_all_inactive`(button, e)](#buttons_checkall)
+* [`$.fn.blockstrap.buttons.check_inactive`(button, e)](#buttons_checkinactive)
 * [`$.fn.blockstrap.buttons.create_account`(button, e)](#buttons_create_account)
 * [`$.fn.blockstrap.buttons.create_contact`(button, e)](#buttons_create_contact)
 * [`$.fn.blockstrap.buttons.create_credentials`(button, e)](#buttons_create_credentials)
 * [`$.fn.blockstrap.buttons.edit`(button, e)](#buttons_edit)
 * [`$.fn.blockstrap.buttons.edit_object`(button, e)](#buttons_edit_object)
-* [`$.fn.blockstrap.buttons.hidden_toggler`(button, e)](#buttons_hiddentoggler) __needs updating__
+* [`$.fn.blockstrap.buttons.hidden_toggler`(button, e)](#buttons_hiddentoggler)
 * [`$.fn.blockstrap.buttons.import`(button, e)](#buttons_import)
 * [`$.fn.blockstrap.buttons.import_file`(button, e)](#buttons_importfile) __needs updating__
 * [`$.fn.blockstrap.buttons.login`(button, e)](#buttons_login)
@@ -45,7 +45,17 @@ The Buttons Module features the following functions:
 
 #### `buttons.access`(button, e) <a name="buttons_access" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
-This function opens a modal window containing a QR code with the address for the corresponding `account_id`, and also provides a selection of actions that can then be performed on the account.
+This function opens a modal window containing a QR code with the address for the corresponding HTML data attributes attached to the button, such as `$(button).attr('data-key')`, which is used for the address and `$(button).attr('data-chain')` that is used for the selected blockchain. The modal also provides a selection of actions that can then be performed on the account.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
+#### `buttons.add_contact_address`(button, e) <a name="buttons_addcontact" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function opens a modal window containing a form that allows for new addresses to be added to existing contacts.
+
+The `data-key` HTML attribute is used from the button to ascertain which contact to update.
 
 <a href="#docs_home"><small>- back to top</small></a>
 
@@ -54,6 +64,22 @@ This function opens a modal window containing a QR code with the address for the
 #### `buttons.cancel`(button, mobile, menu, elements) <a name="buttons_cancel" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function is used internally to close sidebars and navigation upon page transitions.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
+#### `buttons.check_all_inactive`(button, e) <a name="buttons_checkall" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function is used to trigger a loop that initiates a `bs.buttons.check_inactive()` call upon each archived address that is visible within the `SEE ALL ACCOUNTS` modal that becomes accessible upon recycling or switching account addresses.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
+#### `buttons.check_inactive`(button, e) <a name="buttons_checkinactive" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function is used to check the balance of an archived address, which is visible within the `SEE ALL ACCOUNTS` modal that becomes accessible upon recycling or switching account addresses.
 
 <a href="#docs_home"><small>- back to top</small></a>
 
@@ -118,6 +144,14 @@ This function opens a modal window containing a form that allows you to edit con
 #### `buttons.edit_object`(button, e) <a name="buttons_edit_object" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function is used in conjunction with [`buttons.edit`](#buttons_edit) to perform the saving of edited information.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
+#### `buttons.hidden_toggler`(button, e) <a name="buttons_hiddentoggler" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function is used to toggle elements linked via HTML data attributes using either an ID `$('#' + $(button).attr('data-id')).toggle(speed)` or a class `$('.' + $(button).attr('data-class')).toggle(speed)`. The speed can also be set using `$(button).attr('data-speed')`.
 
 <a href="#docs_home"><small>- back to top</small></a>
 
