@@ -6,7 +6,7 @@ Please note that it is [BitcoinJS-Lib](http://bitcoinjs.org) that makes most of 
 The framework currently supports the following blockchains (and their corrresponding [testnets](https://en.bitcoin.it/wiki/Testnet)):
 
 | Blockchain | Homepage | Active Chain Code | Test-Net Code |
-|---------|------------------|---------|---------|
+|------------|----------|-------------------|---------------|
 |Bitcoin|[http://bitcoin.org](http://bitcoin.org)|btc|btct|
 |Litecoin|[http://litecoin.org](http://litecoin.org)|ltc|ltct|
 |Dogecoin|[http://dogecoin.com](http://dogecoin.com)|doge|doget|
@@ -16,21 +16,29 @@ The framework currently supports the following blockchains (and their corrrespon
 
 The Blockchains Module features the following functions:
 
-* [`$.fn.blockstrap.blockchains.check`(address)](#blockchains_check) __needs updating__
-* [`$.fn.blockstrap.blockchains.decode`(script_pub_key)](#blockchains_decode) __needs updating__
+* [`$.fn.blockstrap.blockchains.check`(address)](#blockchains_check)
+* [`$.fn.blockstrap.blockchains.decode`(script_pub_key)](#blockchains_decode)
 * [`$.fn.blockstrap.blockchains.key`(code)](#blockchains_key)
-* [`$.fn.blockstrap.blockchains.keys`(secret, blockchain, number_of_keys, indexes, raw)](#blockchains_keys) __needs updating__
-* [`$.fn.blockstrap.blockchains.raw`(return_to, privkey, inputs, outputs, this_fee, amount_to_send, data, sign_tx, script)](#blockchains_raw) __needs updating__
-* [`$.fn.blockstrap.blockchains.send`(to_address, to_amount, from_address, keys, callback, blockchain, data, selected_fee)](#blockchains_send) __needs updating__
-* [`$.fn.blockstrap.blockchains.supported`(blockchain)](#blockchains_supported) __needs updating__
+* [`$.fn.blockstrap.blockchains.keys`(secret, blockchain, number_of_keys, indexes, raw)](#blockchains_keys)
+* [`$.fn.blockstrap.blockchains.raw`(return_to, privkey, inputs, outputs, this_fee, amount_to_send, data, sign_tx, script)](#blockchains_raw)
+* [`$.fn.blockstrap.blockchains.send`(to, amount, from, keys, callback, blockchain, data, fee)](#blockchains_send)
+* [`$.fn.blockstrap.blockchains.supported`(blockchain)](#blockchains_supported)
 * [`$.fn.blockstrap.blockchains.validate`(address)](#blockchains_validate)
 * [`$.fn.blockstrap.blockchains.which`(address)](#blockchains_which)
 
 --------------------------------------------------------------------------------
 
-#### `blockchains.check`(input) <a name="blockchains_check" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `blockchains.check`(address) <a name="blockchains_check" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function will return the first character of a validated `address`.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
+#### `blockchains.decode`(script_pub_key) <a name="blockchains_decode" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function decodes the `script_pub_key` from a valid OP_Return outgoing transaction into a readable text string.
 
 <a href="#docs_home"><small>- back to top</small></a>
 
@@ -46,17 +54,19 @@ For example, `btc` becomes `bitcoin` and `doget` becomes `dogecointestnet`.
 
 --------------------------------------------------------------------------------
 
-#### `blockchains.keys`(secret, blockchain) <a name="blockchains_keys" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `blockchains.keys`(secret, blockchain, number_of_keys, indexes, raw) <a name="blockchains_keys" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function takes the `secret` seed and `blockchain` and returns an object containing the public and private keys generated from the `secret`.
 
 Please note that by default, Blockstrap __DOES NOT__ store the private keys anywhere.
 
+Multiple keys or specific HD derivative keys can be generated using the `number_of_keys` and `indexes` variables, where as the `raw` variable can be used to also return the complete unfiltered keys and attach them to the returned object within a raw field.
+
 <a href="#docs_home"><small>- back to top</small></a>
 
 --------------------------------------------------------------------------------
 
-#### `blockchains.raw`(return_to, privkey, inputs, outputs, this_fee, amount_to_send, data, sign_tx) <a name="blockchains_raw" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `blockchains.raw`(return_to, privkey, inputs, outputs, this_fee, amount_to_send, data, sign_tx, script) <a name="blockchains_raw" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function returns a raw transaction Hex-string that can then be relayed.
 
@@ -66,13 +76,25 @@ If you the raw transaction return to be signed, you need to provide the appropri
 
 The `data` variable is used to store additional information within the __op_return__ field of the transaction and must conform to the relevant `$.fn.settings.blockchains[chain].op_limit`.
 
+The `script` variable is used for multisignature transactions.
+
 <a href="#docs_home"><small>- back to top</small></a>
 
 --------------------------------------------------------------------------------
 
-#### `blockchains.send`(to_address, to_amount, from_address, keys, callback, blockchain) <a name="blockchains_send" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `blockchains.send`(to, amount, from, keys, callback, blockchain, data, fee) <a name="blockchains_send" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
-This function is used to construct a raw transaction and then relay it. Basic settings such as who to send the coins to with `to_address`, or how much to send with `to_amount` and `blockchain` are clear enough. The `from_address` will be used as the returning change address. The `keys` should be a key object as returned by [`blockchains.keys`](#blockchains_keys), which contains both the public and private keys. Before proceeding, we first check locally to see if the account belongs to this user and it has the necessary balance required to perform the transaction. If it does, the public key is used in reference to an [`api.unspents`](../api/#api_unspents) call, the results from which are then used to construct the necessary available inputs. We then call [`blockchains.raw`](#blockchains_raw) and use the returned object as the required variable in an [`api.relay`](../api/#api_relay) call.
+This function is used to construct a raw transaction and then relay it. Basic settings such as who to send the coins to with `to` address, or how much to send with the `amount` and `blockchain` are clear enough. The `from` will be used as the returning change address. The `keys` should be a key object as returned by [`blockchains.keys`](#blockchains_keys), which contains both the public and private keys. Before proceeding, we first check locally to see if the account belongs to this user and it has the necessary balance required to perform the transaction. If it does, the public key is used in reference to an [`api.unspents`](../api/#api_unspents) call, the results from which are then used to construct the necessary available inputs. We then call [`blockchains.raw`](#blockchains_raw) and use the returned object as the required variable in an [`api.relay`](../api/#api_relay) call.
+
+In order to attach aribitary data to the transaction via an OP_Return, simply add a `data` variable, where custom transaction fees canalso be set using the `fee` variable, which if left empty will then use the default fee structure instead.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
+#### `blockchains.supported`(blockchain) <a name="blockchains_check" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function will return a boolean value confirming whether or not the selected `blockchain` has API support or not.
 
 <a href="#docs_home"><small>- back to top</small></a>
 

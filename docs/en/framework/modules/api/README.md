@@ -3,11 +3,12 @@ API Module <a name="docs_home"></a>
 
 In order to demonstrate the flexibility of the framework, it is configured to supports several different API providers, but not all of the framework functionality can be provided by all providers - with the following matrix used as a summary:
 
-| API Provider | Provider ID | Blockchains | Markets | DNKeys |
-|--------------|-------------|-------------|---------|--------|
-|[BlockCypher](http://blockcypher.com)|blockstrap|3|NO|NO|
-|[BlockTrail](http://blocktrail.com)|blocktrail|2|NO|NO|
-|__Local QTs__|qt|8|YES|YES|
+| API Provider | Provider ID | Blockchains | Can Relay Transactions? | Market Conditions? | DN-Keys? |
+|--------------|-------------|-------------|-------------------------|--------------------|----------|
+|[BlockCypher](http://blockcypher.com)|blockstrap|3|YES|NO|NO|
+|[BlockTrail](http://blocktrail.com)|blocktrail|2|NO|NO|NO|
+|[Toshi](http://toshi.io)|toshi|2|YES|NO|NO|
+|__Local QTs__|qt|8|YES|YES|YES|
 
 A brief explanation of the columns listed above:
 
@@ -30,16 +31,15 @@ The API Module features the following functions:
 * [`$.fn.blockstrap.api.dnkeys`(id, blockchain, callback, service, return_raw)](#api_dnkeys)
 * [`$.fn.blockstrap.api.map`(blockchain)](#api_map)
 * [`$.fn.blockstrap.api.market`(blockchain, stat, callback, service, return_raw)](#api_market)
-* [`$.fn.blockstrap.api.op_returns`(address, blockchain, callback, service, return_raw, count, skip, rpc_to_address)](#api_opreturns) __needs updating__
-* [`$.fn.blockstrap.api.request`(url, callback, type, data, blockchain, call, username, password)](#api_request) __needs updating__
+* [`$.fn.blockstrap.api.op_returns`(address, blockchain, callback, service, return_raw, count, skip, rpc_to_address)](#api_opreturns)
+* [`$.fn.blockstrap.api.request`(url, callback, type, data, blockchain, call, username, password, service, to_address)](#api_request)
 * [`$.fn.blockstrap.api.relay`(hash, blockchain, callback, service, return_raw)](#api_relay)
-* [`$.fn.blockstrap.api.results`(defaults, results, blockchain, request, callback)](#api_results) __needs updating__
-* [`$.fn.blockstrap.api.service`(service, chain)](#api_service) __needs updating__
-* [`$.fn.blockstrap.api.settings`(chain, provider, direction, key)](#api_settings) __needs updating__
+* [`$.fn.blockstrap.api.results`(defaults, results, blockchain, request, callback, service, extra_id)](#api_results)
+* [`$.fn.blockstrap.api.settings`(chain, provider, direction, key)](#api_settings)
 * [`$.fn.blockstrap.api.transaction`(txid, blockchain, callback, service, return_raw)](#api_transaction)
 * [`$.fn.blockstrap.api.transactions`(address, blockchain, callback, service, return_raw, count, skip)](#api_transactions)
-* [`$.fn.blockstrap.api.unspents`(address, blockchain, callback, confirms, service, return_raw)](#api_unspents) __needs updating__
-* [`$.fn.blockstrap.api.url`(action, key, blockchain)](#api_url) __needs updating__
+* [`$.fn.blockstrap.api.unspents`(address, blockchain, callback, confirms, service, return_raw, count, skip)](#api_unspents)
+* [`$.fn.blockstrap.api.url`(action, key, blockchain, service)](#api_url)
 
 You may also want to learn about [API Mapping](#api_mapping).
 
@@ -284,7 +284,15 @@ If `return_raw` is set to true, the raw results will be returned through `callba
 
 --------------------------------------------------------------------------------
 
-#### `api.request`(url, callback, type, data, blockchain, call, username, password) <a name="api_request" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `api.op_returns`(address, blockchain, callback, service, return_raw, count, skip, rpc_to_address) <a name="api_market" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function is used to gather all of the OP_Returns sent from a specific `address`, where `count` and `skip` can be used for APIs with pagination support and the `rpc_to_address` must also be set if using local QTs, in which case, the function will only return the OP_Returns that were sent to the designated address.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
+#### `api.request`(url, callback, type, data, blockchain, call, username, password, service, to_address) <a name="api_request" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function is used internally by other functions within this class to route requests and should not be directly used.
 
@@ -336,9 +344,17 @@ If `return_raw` is set to true, the raw results will be returned through `callba
 
 --------------------------------------------------------------------------------
 
-#### `api.results`(defaults, results, blockchain, request, callback) <a name="api_results" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `api.results`(defaults, results, blockchain, request, callback, service, extra_id) <a name="api_results" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function is used internally by other functions within this class to format requested results and should not be directly used.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
+#### `api.settings`(chain, provider, direction, key) <a name="api_settings" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function is used internally by other functions within this class to gather API mapping variables.
 
 <a href="#docs_home"><small>- back to top</small></a>
 
@@ -475,7 +491,7 @@ Use `count` and `skip` for pagination, to control how many records are returned 
 
 --------------------------------------------------------------------------------
 
-#### `api.unspents`(address, blockchain, callback, confirms, service, return_raw) <a name="api_unspents" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `api.unspents`(address, blockchain, callback, confirms, service, return_raw, count, skip) <a name="api_unspents" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function uses the selected API to check an address for unspent inputs.
 
@@ -507,11 +523,13 @@ The `service` variable allows you to override the default API service for indivi
 
 If `return_raw` is set to true, the raw results will be returned through `callback` __instead__ of passing through `api.results`.
 
+The `count` and `skip` variables can be used with APIs that support pagination.
+
 <a href="#docs_home"><small>- back to top</small></a>
 
 --------------------------------------------------------------------------------
 
-#### `api.url`(action, key, blockchain) <a name="api_url" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `api.url`(action, key, blockchain, service) <a name="api_url" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function is used internally by other functions within this class to help construct URLs prior to API requests and should not be directly used.
 

@@ -6,46 +6,56 @@ Buttons Module <a name="docs_home"></a>
 The Buttons Module features the following functions:
 
 * [`$.fn.blockstrap.buttons.access`(button, e)](#buttons_access)
-* [`$.fn.blockstrap.buttons.add_contact_address`(button, e)](#buttons_addcontact) __needs updating__
+* [`$.fn.blockstrap.buttons.add_contact_address`(button, e)](#buttons_addcontact)
 * [`$.fn.blockstrap.buttons.cancel`(button, mobile, menu, elements)](#buttons_cancel)
-* [`$.fn.blockstrap.buttons.check_all_inactive`(button, e)](#buttons_checkall) __needs updating__
-* [`$.fn.blockstrap.buttons.check_inactive`(button, e)](#buttons_checkinactive) __needs updating__
+* [`$.fn.blockstrap.buttons.check_all_inactive`(button, e)](#buttons_checkall)
+* [`$.fn.blockstrap.buttons.check_inactive`(button, e)](#buttons_checkinactive)
 * [`$.fn.blockstrap.buttons.create_account`(button, e)](#buttons_create_account)
 * [`$.fn.blockstrap.buttons.create_contact`(button, e)](#buttons_create_contact)
 * [`$.fn.blockstrap.buttons.create_credentials`(button, e)](#buttons_create_credentials)
 * [`$.fn.blockstrap.buttons.edit`(button, e)](#buttons_edit)
 * [`$.fn.blockstrap.buttons.edit_object`(button, e)](#buttons_edit_object)
-* [`$.fn.blockstrap.buttons.hidden_toggler`(button, e)](#buttons_hiddentoggler) __needs updating__
+* [`$.fn.blockstrap.buttons.hidden_toggler`(button, e)](#buttons_hiddentoggler)
 * [`$.fn.blockstrap.buttons.import`(button, e)](#buttons_import)
-* [`$.fn.blockstrap.buttons.import_file`(button, e)](#buttons_importfile) __needs updating__
+* [`$.fn.blockstrap.buttons.import_file`(button, e)](#buttons_importfile)
 * [`$.fn.blockstrap.buttons.login`(button, e)](#buttons_login)
 * [`$.fn.blockstrap.buttons.logout`(button, e)](#buttons_logout)
 * [`$.fn.blockstrap.buttons.more_security`(button, e)](#buttons_security)
-* [`$.fn.blockstrap.buttons.new_chain`(button, e)](#buttons_newchain) __needs updating__
+* [`$.fn.blockstrap.buttons.new_chain`(button, e)](#buttons_newchain)
 * [`$.fn.blockstrap.buttons.page`(button, e)](#buttons_page)
 * [`$.fn.blockstrap.buttons.print`(button, e)](#buttons_print)
-* [`$.fn.blockstrap.buttons.process`(slug, content, filtered_data, button, effect, direction, reverse_direxction, mobile, menu, elements)](#buttons_process)
+* [`$.fn.blockstrap.buttons.process`(slug, content, filtered_data, button, effect, direction, reverse, mobile, menu, elements)](#buttons_process)
 * [`$.fn.blockstrap.buttons.refresh`(button, e)](#buttons_refresh)
 * [`$.fn.blockstrap.buttons.remove`(button, e)](#buttons_remove)
 * [`$.fn.blockstrap.buttons.reset`(button, e)](#buttons_reset)
-* [`$.fn.blockstrap.buttons.save_salt`(button, e)](#buttons_savesalt) __needs updating__
-* [`$.fn.blockstrap.buttons.save_wallet`(button, e)](#buttons_savewallet) __needs updating__
-* [`$.fn.blockstrap.buttons.see_all`(button, e)](#buttons_seeall) __needs updating__
+* [`$.fn.blockstrap.buttons.save_salt`(button, e)](#buttons_savesalt)
+* [`$.fn.blockstrap.buttons.save_wallet`(button, e)](#buttons_savewallet)
+* [`$.fn.blockstrap.buttons.see_all`(button, e)](#buttons_seeall)
 * [`$.fn.blockstrap.buttons.send_money`(button, e)](#buttons_send_money)
 * [`$.fn.blockstrap.buttons.setup`(button, e)](#buttons_setup)
+* [`$.fn.blockstrap.buttons.sign`(button, e)](#buttons_sign)
 * [`$.fn.blockstrap.buttons.submit_import`(button, e)](#buttons_submit_import)
 * [`$.fn.blockstrap.buttons.submit_payment`(button, e)](#buttons_submit_payment)
 * [`$.fn.blockstrap.buttons.submit_verification`(button, e)](#buttons_submit_verification)
-* [`$.fn.blockstrap.buttons.sign`(button, e)](#buttons_sign) __needs updating__
-* [`$.fn.blockstrap.buttons.switch`(button, e)](#buttons_switch) __needs updating__
+* [`$.fn.blockstrap.buttons.switch`(button, e)](#buttons_switch)
 * [`$.fn.blockstrap.buttons.toggle`(button, e)](#buttons_toggle)
-* [`$.fn.blockstrap.buttons.verify`(button, e)](#buttons_verify) __needs updating__
+* [`$.fn.blockstrap.buttons.verify`(button, e)](#buttons_verify)
 
 --------------------------------------------------------------------------------
 
 #### `buttons.access`(button, e) <a name="buttons_access" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
-This function opens a modal window containing a QR code with the address for the corresponding `account_id`, and also provides a selection of actions that can then be performed on the account.
+This function opens a modal window containing a QR code with the address for the corresponding HTML data attributes attached to the button, such as `$(button).attr('data-key')`, which is used for the address and `$(button).attr('data-chain')` that is used for the selected blockchain. The modal also provides a selection of actions that can then be performed on the account.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
+#### `buttons.add_contact_address`(button, e) <a name="buttons_addcontact" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function opens a modal window containing a form that allows for new addresses to be added to existing contacts.
+
+The `data-key` HTML attribute is used from the button to ascertain which contact to update.
 
 <a href="#docs_home"><small>- back to top</small></a>
 
@@ -54,6 +64,22 @@ This function opens a modal window containing a QR code with the address for the
 #### `buttons.cancel`(button, mobile, menu, elements) <a name="buttons_cancel" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function is used internally to close sidebars and navigation upon page transitions.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
+#### `buttons.check_all_inactive`(button, e) <a name="buttons_checkall" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function is used to trigger a loop that initiates a `bs.buttons.check_inactive()` call upon each archived address that is visible within the `SEE ALL ACCOUNTS` modal that becomes accessible upon recycling or switching account addresses.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
+#### `buttons.check_inactive`(button, e) <a name="buttons_checkinactive" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function is used to check the balance of an archived address, which is visible within the `SEE ALL ACCOUNTS` modal that becomes accessible upon recycling or switching account addresses.
 
 <a href="#docs_home"><small>- back to top</small></a>
 
@@ -123,9 +149,25 @@ This function is used in conjunction with [`buttons.edit`](#buttons_edit) to per
 
 --------------------------------------------------------------------------------
 
+#### `buttons.hidden_toggler`(button, e) <a name="buttons_hiddentoggler" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function is used to toggle elements linked via HTML data attributes using either an ID `$('#' + $(button).attr('data-id')).toggle(speed)` or a class `$('.' + $(button).attr('data-class')).toggle(speed)`. The speed can also be set using `$(button).attr('data-speed')`.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
 #### `buttons.import`(button, e) <a name="buttons_import" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function opens a modal window that provides instructions on importing device data.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
+#### `buttons.import_file`(button, e) <a name="buttons_importfile" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function open the file explorer dialog in order to import a backup file.
 
 <a href="#docs_home"><small>- back to top</small></a>
 
@@ -150,6 +192,14 @@ This function will logout the current user.
 #### `buttons.more_security`(button, e) <a name="buttons_security" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function toggles hidden content display within the account creation modal window.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
+#### `buttons.new_chain`(button, e) <a name="buttons_newchain" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function opens a modal that allow for new blockchains to be added to an existing account.
 
 <a href="#docs_home"><small>- back to top</small></a>
 
@@ -219,6 +269,30 @@ This function opens a confirmation modal asking if you want to reset your device
 
 --------------------------------------------------------------------------------
 
+#### `buttons.save_salt`(button, e) <a name="buttons_savesalt" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function opens a save file dialog to enable salts to be easily backed up.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
+#### `buttons.save_wallet`(button, e) <a name="buttons_savewallet" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function opens a save file dialog to enable wallets to be easily backed up.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
+#### `buttons.see_all`(button, e) <a name="buttons_seeall" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function opens a modal window containing archived addresses belonging to the relevant account, which is selected via the `$(button).attr('data-id')` HTML data attribute.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
 #### `buttons.send_money`(button, e) <a name="buttons_send_money" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function is used prior to [`$.fn.blockstrap.accounts.prepare`](../accounts/#accounts_prepare) as a way to collect the required information. It uses the following `button` data attributes:
@@ -262,6 +336,14 @@ However, it also allows you to define setup steps. Setup can consist of as many 
 * data-step
 
 The `data-steps` should confirm the total number of setup steps whereas the `data-step   should confirm the current step.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
+#### `buttons.sign`(button, e) <a name="buttons_sign" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function opens a modal window allowing you to sign messages using private keys belonging to specific addresses.
 
 <a href="#docs_home"><small>- back to top</small></a>
 
@@ -316,9 +398,25 @@ The `data-form-id` is used to define which form within the DOM to use to find th
 
 --------------------------------------------------------------------------------
 
+#### `buttons.switch`(button, e) <a name="buttons_switch" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function opens a modal window allowing you to switch or recylce HD addresses.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
 #### `buttons.toggle`(button, e) <a name="buttons_toggle" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function is used to toggle UI elements within the ocntact creation modal window between an input form with a user icon floating to the right to a select box filled with current contacts and the ability to switch back to the manual input. If no contacts have yet been created and the `button` is clicked, a new modal window will open informing the user that they do not yet have any contacts.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
+#### `buttons.verify`(button, e) <a name="buttons_verify" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+The function opens a modal window that allows you to verify whether or not someone has successfully signed their message.
 
 <a href="#docs_home"><small>- back to top</small></a>
 

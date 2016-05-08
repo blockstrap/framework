@@ -14,6 +14,8 @@
     
     accounts.access = function(account_id, tx, chain, standard, from)
     {
+        // TODO - Is from needed? Can it not be got from the account_id and chain?
+        // Why exactly is standard applied? When is it not and why?
         var fields = [];
         var account = accounts.get(account_id, true);
         var account_chains = JSON.parse(JSON.stringify(account.blockchains));
@@ -1055,7 +1057,7 @@
         }
     }
     
-    accounts.verify = function(account, fields, callback, password, chain, type, from, show_seed)
+    accounts.verify = function(account, fields, callback, password, from, show_seed)
     {
         if(typeof from == 'undefined') from = false;
         if(typeof show_seed == 'undefined') show_seed = false;

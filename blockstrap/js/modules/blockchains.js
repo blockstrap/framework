@@ -319,34 +319,34 @@
     }
     
     blockchains.send = function(
-        to_address, 
-        to_amount, 
-        from_address, 
+        to, 
+        amount, 
+        from, 
         keys, 
         callback, 
         blockchain,
         data,
-        selected_fee
+        fee
     ){
         var available_balance = 0;
         var private_key = keys.priv;
         if(!blockchain) blockchain = 'btc';
-        var fee = $.fn.blockstrap.settings.blockchains[blockchain].fee * 100000000;
-        if(typeof selected_fee != 'undefined') fee = selected_fee;
-        $.fn.blockstrap.api.balance(from_address, blockchain, function(balance)
+        var default_fee = $.fn.blockstrap.settings.blockchains[blockchain].fee * 100000000;
+        if(typeof fee != 'undefined') default_fee = fee;
+        $.fn.blockstrap.api.balance(from, blockchain, function(balance)
         {
             if(
                 (
-                    blockchain != $.fn.blockstrap.blockchains.which(to_address)
-                    || blockchain != $.fn.blockstrap.blockchains.which(from_address)
+                    blockchain != $.fn.blockstrap.blockchains.which(to)
+                    || blockchain != $.fn.blockstrap.blockchains.which(from)
                 )
                 &&
                 (
                     blockchain == 'ltct'
                     && 
                     (
-                        $.fn.blockstrap.blockchains.which(to_address) != 'btct'
-                        || $.fn.blockstrap.blockchains.which(from_address) != 'btct'
+                        $.fn.blockstrap.blockchains.which(to) != 'btct'
+                        || $.fn.blockstrap.blockchains.which(from) != 'btct'
                     )
                 )
             ){
@@ -358,7 +358,7 @@
                 }, $.fn.blockstrap.core.timeouts('loader'));
                 return false;
             }
-            else if(balance - fee >= to_amount)
+            else if(balance - default_fee >= amount)
             {
                 $.fn.blockstrap.api.unspents(keys.pub, blockchain, function(unspents)
                 {
@@ -366,8 +366,8 @@
                     {
                         var inputs = [];
                         var outputs = [{
-                            'address': to_address,
-                            'value': to_amount
+                            'address': to,
+                            'value': amount
                         }];
                         $.each(unspents, function(k, unspent)
                         {
@@ -380,12 +380,12 @@
                             //available_balance = available_balance + unspent.value;
                         });
                         var raw_transaction = blockchains.raw(
-                            from_address, 
+                            from, 
                             private_key, 
                             inputs, 
                             outputs, 
-                            fee, 
-                            to_amount,
+                            default_fee, 
+                            amount,
                             data
                         );
                         $.fn.blockstrap.api.relay(raw_transaction, blockchain, function(tx)
