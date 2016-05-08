@@ -1017,16 +1017,6 @@
         return defaults;
     }
     
-    api.service = function(service, chain)
-    {
-        var bs = $.fn.blockstrap;
-        if(typeof bs.settings.blockchains[chain].api != 'undefined')
-        {
-            return bs.settings.blockchains[chain].api;
-        }
-        else return api.api_service;
-    }
-    
     api.settings = function(chain, provider, direction, key)
     {
         var result = false;
