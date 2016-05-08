@@ -319,7 +319,7 @@
     }
     
     blockchains.send = function(
-        to_address, 
+        to, 
         amount, 
         from, 
         keys, 
@@ -337,7 +337,7 @@
         {
             if(
                 (
-                    blockchain != $.fn.blockstrap.blockchains.which(to_address)
+                    blockchain != $.fn.blockstrap.blockchains.which(to)
                     || blockchain != $.fn.blockstrap.blockchains.which(from)
                 )
                 &&
@@ -345,7 +345,7 @@
                     blockchain == 'ltct'
                     && 
                     (
-                        $.fn.blockstrap.blockchains.which(to_address) != 'btct'
+                        $.fn.blockstrap.blockchains.which(to) != 'btct'
                         || $.fn.blockstrap.blockchains.which(from) != 'btct'
                     )
                 )
@@ -366,7 +366,7 @@
                     {
                         var inputs = [];
                         var outputs = [{
-                            'address': to_address,
+                            'address': to,
                             'value': amount
                         }];
                         $.each(unspents, function(k, unspent)
