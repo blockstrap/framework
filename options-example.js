@@ -403,8 +403,7 @@ var blockstrap_options = {
         defaults: {
             blockcypher: {
                 async: false,
-                key: [],
-                //key: "ceeefc8720aff0e9b9267d4114f7a20e",
+                key: ["add_an_array", "of_api_keys"],
                 key_name: "token",
                 functions: {
                     to: {
@@ -483,6 +482,7 @@ var blockstrap_options = {
                         unspents: {
                             key: "",
                             inner: "txrefs",
+                            inner_unconfirmed: "unconfirmed_txrefs",
                             confirmations: "confirmations",
                             txid: "tx_hash",
                             index: "tx_output_n",
@@ -494,7 +494,7 @@ var blockstrap_options = {
             },
             blockstrap: {
                 async: true,
-                key: "",
+                key: "add-your-api-key-here",
                 key_name: "api_key",
                 functions: {
                     to: {
