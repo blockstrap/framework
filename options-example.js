@@ -804,11 +804,11 @@ var blockstrap_options = {
                             size: "size",
                             block: "block_height",
                             time: "[block_time, utctoepoch]",
-                            input: false,
-                            output: false,
-                            value: "[inputs, value]",
+                            input: "[inputs.amount, total]",
+                            output: "[outputs.amount, total]",
+                            value: "[amount, amount_minus_output_check]",
                             fees: "fees",
-                            data: false,
+                            data: false
                         },
                         block: {
                             key: "",

@@ -920,8 +920,10 @@
                             || arrayed_result[1] == 'count'
                             || arrayed_result[1] == 'lowercase'
                             || arrayed_result[1] == 'value'
+                            || arrayed_result[1] == 'total'
                             || arrayed_result[1] == 'hash_from_script'
                             || arrayed_result[1] == 'object_in_array'
+                            || arrayed_result[1] == 'amount_minus_output_check'
                         ){
                             if(parse_type == 'float')
                             {
@@ -953,6 +955,18 @@
                             else if(parse_type == 'lowercase')
                             {
                                 res_01 = results[arrayed_result[0]].toLowerCase();
+                            }
+                            else if(parse_type == 'total')
+                            {
+                                var field_names = arrayed_result[0].split('.');
+                                var fields_to_add = results[field_names[0]];
+                                var total = 0;
+                                $.each(fields_to_add, function(i)
+                                {
+                                    var field_to_add = fields_to_add[i][field_names[1]];
+                                    total = total + field_to_add;
+                                });
+                                res_01 = total;
                             }
                             else if(parse_type == 'object_in_array')
                             {
@@ -987,9 +1001,35 @@
                                     res_01 = hash;
                                 }
                             }
+                            else if(parse_type == 'amount_minus_output_check' && typeof extra_id != 'undefined')
+                            {
+                                var amount = results[arrayed_result[0]];
+                                var inputs = 0;
+                                var outputs = 0;
+                                var total_outputs = 0;
+                                $.each(results.inputs, function(i)
+                                {
+                                    inputs = inputs + results.inputs[i].amount;
+                                });
+                                $.each(results.outputs, function(i)
+                                {
+                                    if(results.outputs[i].addresses[0] != extra_id)
+                                    {
+                                        outputs = outputs + results.outputs[i].amount;
+                                    }
+                                    total_outputs = total_outputs + results.outputs[i].amount;
+                                });
+                                var fee = inputs - total_outputs;
+                                var total = (inputs - outputs) - fee;
+                                res_01 = total;
+                            }
                             else if(parse_type == 'value' && typeof extra_id != 'undefined')
                             {
-                                var res_01_array = results[arrayed_result[0]];
+                                var res_01_array = false;
+                                if(typeof results[arrayed_result[0]] != 'undefined')
+                                {
+                                    res_01_array = results[arrayed_result[0]];
+                                }
                                 $.each(res_01_array, function(i)
                                 {
                                     var send = false;
