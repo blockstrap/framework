@@ -708,7 +708,7 @@
             },
             error: function()
             {
-                if(callback) callback(false)
+                if(callback) callback()
             },
             timeout: api_timeout // 15 Seconds
         })
@@ -1021,6 +1021,10 @@
                                 });
                                 var fee = inputs - total_outputs;
                                 var total = (inputs - outputs) - fee;
+                                if(outputs == total_outputs)
+                                {
+                                    total = 0 - (inputs - fee);
+                                }
                                 res_01 = total;
                             }
                             else if(parse_type == 'value' && typeof extra_id != 'undefined')

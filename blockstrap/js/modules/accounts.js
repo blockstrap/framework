@@ -980,8 +980,12 @@
                         {
                             if(total_chains <= chain_count)
                             {
-                                if(callback) callback(false);
-                                else return false;
+                                delete the_account.blockchains[k].txs;
+                                $.fn.blockstrap.data.save('accounts', the_account.id, the_account, function(updated_account)
+                                {
+                                    if(callback) callback(false);
+                                    else return the_account;
+                                });
                             }
                         }
                     })

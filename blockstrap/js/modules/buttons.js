@@ -74,6 +74,10 @@
                                             {
                                                 value: 'access',
                                                 text: 'Access Private Key'
+                                            },
+                                            {
+                                                value: 'import',
+                                                text: 'Import Private Key'
                                             }
                                         ],
                                         attributes: [
