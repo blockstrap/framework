@@ -996,7 +996,7 @@ var blockstrap_core = function()
                                             ||
                                             typeof bs.settings.account_poll == 'undefined'
                                         ){
-                                            bs.accounts.poll(0, function()
+                                            bs.accounts.poll(0, function(poll)
                                             {
                                                 setTimeout(function()
                                                 {
@@ -1823,41 +1823,41 @@ var blockstrap_core = function()
                                         if(typeof full_results[provider] != 'undefined')
                                         {
                                             full_results[provider].blockchains++;
-                                            var api_addresses = $.fn.blockstrap.api.settings(
+                                            var relay = $.fn.blockstrap.api.settings(
                                                 blockchain, 
                                                 provider, 
                                                 'to', 
-                                                'addresses'
+                                                'relay'
                                             );
                                             if(
-                                                typeof api_addresses != 'undefined'
-                                                && api_addresses
+                                                typeof relay != 'undefined'
+                                                && relay
                                             ){
-                                                full_results[provider].addresses = true;
+                                                full_results[provider].relay = true;
                                             }
-                                            var api_markets = $.fn.blockstrap.api.settings(
-                                                'multi', 
-                                                provider, 
-                                                'to', 
-                                                'market'
-                                            );
-                                            if(
-                                                typeof api_markets != 'undefined'
-                                                && api_markets
-                                            ){
-                                                full_results[provider].markets = true;
-                                            }
-                                            var api_paginate = $.fn.blockstrap.api.settings(
+                                            var op_returns = $.fn.blockstrap.api.settings(
                                                 blockchain, 
                                                 provider, 
                                                 'to', 
-                                                'tx_pagination'
+                                                'op_returns'
                                             );
                                             if(
-                                                typeof api_paginate != 'undefined'
-                                                && api_paginate
+                                                typeof op_returns != 'undefined'
+                                                && op_returns
                                             ){
-                                                full_results[provider].paginate = true;
+                                                full_results[provider].op_returns = true;
+                                            }
+                                            var dnkeys = $.fn.blockstrap.api.settings(
+                                                blockchain, 
+                                                provider, 
+                                                'to', 
+                                                'dnkeys'
+                                            );
+                                            if(
+                                                typeof dnkeys != 'undefined'
+                                                && dnkeys
+                                            ){
+                                                full_results[provider].dnkeys = true;
                                             }
                                         }
                                     });
@@ -1910,7 +1910,7 @@ var blockstrap_core = function()
                 {
                     results[v.provider] = v.results;
                 });
-                var headers = ['API Provider', 'Passed', 'Failed', 'Chains', 'Addresses', 'Markets', 'Paginate'];
+                var headers = ['Provider', 'Pass', 'Fail', 'Chains', 'TX Relay', 'OP Return', 'DN Key'];
                 html+= '<table class="table table-striped test-results">';
                     html+= '<thead>';
                         html+= '<tr>';
@@ -1937,7 +1937,7 @@ var blockstrap_core = function()
                                 }
                                 html+= '<td><strong>'+these_results.blockchains+'</strong></td>';
                                 html+= '<td>';
-                                    if(these_results.addresses === true)
+                                    if(these_results.relay === true)
                                     {
                                         html+= '<span class="label label-success">YES</span>';   
                                     }
@@ -1947,7 +1947,7 @@ var blockstrap_core = function()
                                     }
                                 html+= '</td>';
                                 html+= '<td>';
-                                    if(these_results.markets === true)
+                                    if(these_results.op_returns === true)
                                     {
                                         html+= '<span class="label label-success">YES</span>';   
                                     }
@@ -1957,7 +1957,7 @@ var blockstrap_core = function()
                                     }
                                 html+= '</td>';
                                 html+= '<td>';
-                                    if(these_results.paginate === true)
+                                    if(these_results.dnkeys === true)
                                     {
                                         html+= '<span class="label label-success">YES</span>';   
                                     }

@@ -409,8 +409,6 @@ var blockstrap_options = {
                     to: {
                         address: "addrs/$call/full",
                         block: "blocks/",
-                        dnkey: "dnkey/",
-                        dnkeys: "dnkey/",
                         op_returns: "addrs/$call/full",
                         relay: "txs/push/",
                         relay_param: "tx",
@@ -436,12 +434,6 @@ var blockstrap_options = {
                             next: "",
                             tx_count: "n_tx",
                             time: "[time, utctoepoch]"
-                        },
-                        dnkey: {
-                            
-                        },
-                        dnkeys: {
-                            
                         },
                         op_returns: {
                             key: "",
