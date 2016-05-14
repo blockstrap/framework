@@ -920,6 +920,7 @@
                             || arrayed_result[1] == 'count'
                             || arrayed_result[1] == 'lowercase'
                             || arrayed_result[1] == 'value'
+                            || arrayed_result[1] == 'hash_from_script'
                         ){
                             if(parse_type == 'float')
                             {
@@ -951,6 +952,34 @@
                             else if(parse_type == 'lowercase')
                             {
                                 res_01 = results[arrayed_result[0]].toLowerCase();
+                            }
+                            else if(parse_type == 'hash_from_script')
+                            {
+                                var hash = false;
+                                var output_fields = arrayed_result[0].split('.');
+                                var transactions = results[output_fields[0]];
+                                $.each(transactions, function(tx_i)
+                                {
+                                    var outputs = transactions[tx_i][output_fields[1]];
+                                    $.each(outputs, function(i)
+                                    {
+                                        if(outputs[i].addresses[0] == results[map.from[request].address])
+                                        {
+                                            var output_script_array = outputs[i].script.split(' ');
+                                            $.each(output_script_array, function(script_i)
+                                            {
+                                                if(output_script_array[script_i].substring(0, 2) != 'OP')
+                                                {
+                                                    hash = output_script_array[script_i];
+                                                }
+                                            });
+                                        }
+                                    });
+                                });
+                                if(hash)
+                                {
+                                    res_01 = hash;
+                                }
                             }
                             else if(parse_type == 'value' && typeof extra_id != 'undefined')
                             {
@@ -1002,13 +1031,17 @@
                     {
                         if(
                             typeof map.from[request][field_name] != 'undefined' 
+                            && map.from[request][field_name]
                             && typeof results[map.from[request][field_name]] != 'undefined' 
+                            && results[map.from[request][field_name]] 
                         ){
                             defaults[field_name] = results[map.from[request][field_name]];
                         }
                         else
                         {
-                            defaults[request] = results;
+                            // TODO - CONFIDENTALLY DELETE THIS CLAUSE
+                            // COMMENTED IT OUT TO FIX ADDRESS BUG BUT MAY CAUSE OTHER PROBLEMS LATER...?
+                            // defaults[request] = results;
                         }
                     }
                 }

@@ -423,7 +423,7 @@ var blockstrap_options = {
                         address: {
                             key: "",
                             address: "address",
-                            hash: "[address, hextohash]",
+                            hash: "",
                             tx_count: "final_n_tx",
                             received: "total_received",
                             balance: "final_balance"
@@ -771,8 +771,8 @@ var blockstrap_options = {
                     from: {
                         address: {
                             key: "",
-                            address: "[hash, hextohash]",
-                            hash: "hash",
+                            address: "hash",
+                            hash: "[transactions.outputs, hash_from_script]",
                             tx_count: "[transactions, count]",
                             received: "received",
                             balance: "balance"
