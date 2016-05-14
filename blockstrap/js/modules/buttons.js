@@ -1265,11 +1265,15 @@
                                 
                             }, bs.core.page());
                         }
-                        else
+                        else if(password)
                         {
                             setTimeout(function()
                             {
-                                bs.core.modal('Warning', 'The provided password does not match your user device password.');
+                                var check_again = $.parseJSON(localStorage.getItem('nw_keys_your_password'));
+                                if(check_again)
+                                {
+                                    bs.core.modal('Warning', 'The provided password does not match your user device password.');
+                                }
                             }, $.fn.blockstrap.core.timeouts('loader'));
                         }
                     });
@@ -1360,13 +1364,13 @@
         var chain = $(form).find('#from option:selected').attr('data-chain');
         var amount = parseFloat($(form).find('#amount').val()) * 100000000;
         var selected_fee = $(form).find('#fee').val();
-        if(selected_fee) selected_fee = parseInt(parseFloat(selected_fee).toFixed(8) * 100000000);
-        else selected_fee = parseInt(parseFloat($.fn.blockstrap.settings.blockchains[chain].fee).toFixed(8) * 100000000);
         if(from_chain && !chain) 
         {
             chain = from_chain;
             standard = false;
         }
+        if(selected_fee) selected_fee = parseInt(parseFloat(selected_fee).toFixed(8) * 100000000);
+        else selected_fee = parseInt(parseFloat($.fn.blockstrap.settings.blockchains[chain].fee).toFixed(8) * 100000000);
         if(!to) $.fn.blockstrap.core.modal('Warning', 'Missing address to send payment to');
         else if(!from) $.fn.blockstrap.core.modal('Warning', 'Missing account to use to send from');
         else if(!amount) $.fn.blockstrap.core.modal('Warning', 'You have not provided the amount you want to send');

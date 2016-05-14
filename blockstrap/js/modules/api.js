@@ -1311,6 +1311,20 @@
                     {
                         these_results = results[result_key];
                     }
+                    else
+                    {
+                        if(
+                            typeof map.from.unspents != 'undefined' 
+                            && typeof map.from.unspents.inner_unconfirmed != 'undefined' 
+                            && map.from.unspents.inner_unconfirmed
+                        ){
+                            result_key = map.from.unspents.inner_unconfirmed;
+                        }
+                        if(result_key && typeof results[result_key] != 'undefined')
+                        {
+                            these_results = results[result_key];
+                        }
+                    }
                     if(these_results)
                     {
                         var reverse = false;
@@ -1320,7 +1334,8 @@
                         ){
                             reverse = true;
                         }
-                        var unspent_array = these_results;
+                        var unspent_array = false;
+                        if($.isArray(these_results)) unspent_array = these_results;
                         if(!$.isArray(unspent_array) && typeof these_results[map.from.unspents.key] != 'undefined')
                         {
                             unspent_array = these_results[map.from.unspents.key];
@@ -1440,13 +1455,9 @@
             }
         }
         else if(
-            (blockchain != 'multi')
-            &&
-            (
             typeof apis[blockchain] != 'undefined' 
             && typeof apis[blockchain][api_service] != 'undefined'
             && typeof apis[blockchain][api_service].functions.to[action] != 'undefined'
-            )
         ){
             url = blockchains[blockchain].apis[api_service] + apis[blockchain][api_service].functions.to[action] + key;
             if(apis[blockchain][api_service].functions.to[action].indexOf("$call") > -1)
@@ -1455,8 +1466,12 @@
                 url = blockchains[blockchain].apis[api_service] + call;
             }
         }
-        else if(blockchain != 'multi')
-        {
+        else if(
+            typeof blockchains[blockchain] != 'undefined'
+            && typeof blockchains[blockchain].apis[api_service] != 'undefined'
+            && typeof apis['defaults'][api_service] != 'undefined'
+            && typeof apis['defaults'][api_service].functions.to[action] != 'undefined'
+        ){
             url = blockchains[blockchain].apis[api_service] + apis['defaults'][api_service].functions.to[action] + key;
             if(apis['defaults'][api_service].functions.to[action].indexOf("$call") > -1)
             {
@@ -1466,23 +1481,6 @@
         }
         else
         {
-            /* FORCE BLOCKSTRAP ...? */
-            
-            /*
-            blockchains = $.fn.blockstrap.settings.blockchains;
-            apis = $.fn.blockstrap.settings.apis;
-            if(blockchain == 'multi') 
-            {
-                key_name = $.fn.blockstrap.core.apis('key_name', 'blockstrap');
-                api_key = $.fn.blockstrap.core.apis('key', 'blockstrap');
-            }
-            url = blockchains[blockchain].apis['blockstrap'] + apis['defaults']['blockstrap'].functions.to[action] + key;
-            if(apis['defaults']['blockstrap'].functions.to[action].indexOf("$call") > -1)
-            {
-                var call = apis['defaults']['blockstrap'].functions.to[action].replace("$call", key);
-                url = blockchains[blockchain].apis['blockstrap'] + call;
-            }
-            */
             url = '';
         }
         if(action == 'relay')

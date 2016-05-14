@@ -630,6 +630,10 @@
         var fee = $.fn.blockstrap.settings.blockchains[chain].fee;
         if(typeof standard == 'undefined') standard = true;
         if(typeof selected_fee != 'undefined') fee = selected_fee;
+        if(to.indexOf(' ') > -1)
+        {
+            to = to.split(' ')[0];
+        }
         if(to && !$.fn.blockstrap.blockchains.validate(to))
         {
             $.fn.blockstrap.core.modal('Warning', to + ' is not a valid address');
