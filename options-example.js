@@ -758,6 +758,9 @@ var blockstrap_options = {
                         unspents: "addresses/$call/unspent_outputs",
                         transactions: "addresses/$call/transactions",
                         transaction: "transactions/$call",
+                        relay: "transactions",
+                        relay_param: "hex",
+                        relay_json: true,
                         block: "blocks/$call"
                     },
                     from: {
@@ -811,6 +814,10 @@ var blockstrap_options = {
                             tx_count: "transactions_count",
                             time: "[time, utctoepoch]"
                         },
+                        relay: {
+                            key: "",
+                            txid: "hash"
+                        }
                     }
                 }
             }
