@@ -815,7 +815,7 @@ var blockstrap_options = {
                             height: "height",
                             hash: "hash",
                             prev: "previous_block_hash",
-                            next: "next_blocks",
+                            next: "[next_blocks.hash, object_in_array]",
                             tx_count: "transactions_count",
                             time: "[time, utctoepoch]"
                         },

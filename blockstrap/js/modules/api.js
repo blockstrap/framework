@@ -921,6 +921,7 @@
                             || arrayed_result[1] == 'lowercase'
                             || arrayed_result[1] == 'value'
                             || arrayed_result[1] == 'hash_from_script'
+                            || arrayed_result[1] == 'object_in_array'
                         ){
                             if(parse_type == 'float')
                             {
@@ -952,6 +953,11 @@
                             else if(parse_type == 'lowercase')
                             {
                                 res_01 = results[arrayed_result[0]].toLowerCase();
+                            }
+                            else if(parse_type == 'object_in_array')
+                            {
+                                var field_names = arrayed_result[0].split('.');
+                                res_01 = results[field_names[0]][0][field_names[1]];
                             }
                             else if(parse_type == 'hash_from_script')
                             {
