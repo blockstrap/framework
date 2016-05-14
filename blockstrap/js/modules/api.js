@@ -920,6 +920,10 @@
                             || arrayed_result[1] == 'count'
                             || arrayed_result[1] == 'lowercase'
                             || arrayed_result[1] == 'value'
+                            || arrayed_result[1] == 'total'
+                            || arrayed_result[1] == 'hash_from_script'
+                            || arrayed_result[1] == 'object_in_array'
+                            || arrayed_result[1] == 'amount_minus_output_check'
                         ){
                             if(parse_type == 'float')
                             {
@@ -952,9 +956,80 @@
                             {
                                 res_01 = results[arrayed_result[0]].toLowerCase();
                             }
+                            else if(parse_type == 'total')
+                            {
+                                var field_names = arrayed_result[0].split('.');
+                                var fields_to_add = results[field_names[0]];
+                                var total = 0;
+                                $.each(fields_to_add, function(i)
+                                {
+                                    var field_to_add = fields_to_add[i][field_names[1]];
+                                    total = total + field_to_add;
+                                });
+                                res_01 = total;
+                            }
+                            else if(parse_type == 'object_in_array')
+                            {
+                                var field_names = arrayed_result[0].split('.');
+                                res_01 = results[field_names[0]][0][field_names[1]];
+                            }
+                            else if(parse_type == 'hash_from_script')
+                            {
+                                var hash = false;
+                                var output_fields = arrayed_result[0].split('.');
+                                var transactions = results[output_fields[0]];
+                                $.each(transactions, function(tx_i)
+                                {
+                                    var outputs = transactions[tx_i][output_fields[1]];
+                                    $.each(outputs, function(i)
+                                    {
+                                        if(outputs[i].addresses[0] == results[map.from[request].address])
+                                        {
+                                            var output_script_array = outputs[i].script.split(' ');
+                                            $.each(output_script_array, function(script_i)
+                                            {
+                                                if(output_script_array[script_i].substring(0, 2) != 'OP')
+                                                {
+                                                    hash = output_script_array[script_i];
+                                                }
+                                            });
+                                        }
+                                    });
+                                });
+                                if(hash)
+                                {
+                                    res_01 = hash;
+                                }
+                            }
+                            else if(parse_type == 'amount_minus_output_check' && typeof extra_id != 'undefined')
+                            {
+                                var amount = results[arrayed_result[0]];
+                                var inputs = 0;
+                                var outputs = 0;
+                                var total_outputs = 0;
+                                $.each(results.inputs, function(i)
+                                {
+                                    inputs = inputs + results.inputs[i].amount;
+                                });
+                                $.each(results.outputs, function(i)
+                                {
+                                    if(results.outputs[i].addresses[0] != extra_id)
+                                    {
+                                        outputs = outputs + results.outputs[i].amount;
+                                    }
+                                    total_outputs = total_outputs + results.outputs[i].amount;
+                                });
+                                var fee = inputs - total_outputs;
+                                var total = (inputs - outputs) - fee;
+                                res_01 = total;
+                            }
                             else if(parse_type == 'value' && typeof extra_id != 'undefined')
                             {
-                                var res_01_array = results[arrayed_result[0]];
+                                var res_01_array = false;
+                                if(typeof results[arrayed_result[0]] != 'undefined')
+                                {
+                                    res_01_array = results[arrayed_result[0]];
+                                }
                                 $.each(res_01_array, function(i)
                                 {
                                     var send = false;
@@ -1002,13 +1077,17 @@
                     {
                         if(
                             typeof map.from[request][field_name] != 'undefined' 
+                            && map.from[request][field_name]
                             && typeof results[map.from[request][field_name]] != 'undefined' 
+                            && results[map.from[request][field_name]] 
                         ){
                             defaults[field_name] = results[map.from[request][field_name]];
                         }
                         else
                         {
-                            defaults[request] = results;
+                            // TODO - CONFIDENTALLY DELETE THIS CLAUSE
+                            // COMMENTED IT OUT TO FIX ADDRESS BUG BUT MAY CAUSE OTHER PROBLEMS LATER...?
+                            // defaults[request] = results;
                         }
                     }
                 }

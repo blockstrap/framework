@@ -423,7 +423,7 @@ var blockstrap_options = {
                         address: {
                             key: "",
                             address: "address",
-                            hash: "[address, hextohash]",
+                            hash: "",
                             tx_count: "final_n_tx",
                             received: "total_received",
                             balance: "final_balance"
@@ -771,8 +771,8 @@ var blockstrap_options = {
                     from: {
                         address: {
                             key: "",
-                            address: "[hash, hextohash]",
-                            hash: "hash",
+                            address: "hash",
+                            hash: "[transactions.outputs, hash_from_script]",
                             tx_count: "[transactions, count]",
                             received: "received",
                             balance: "balance"
@@ -804,18 +804,18 @@ var blockstrap_options = {
                             size: "size",
                             block: "block_height",
                             time: "[block_time, utctoepoch]",
-                            input: false,
-                            output: false,
-                            value: "[inputs, value]",
+                            input: "[inputs.amount, total]",
+                            output: "[outputs.amount, total]",
+                            value: "[amount, amount_minus_output_check]",
                             fees: "fees",
-                            data: false,
+                            data: false
                         },
                         block: {
                             key: "",
                             height: "height",
                             hash: "hash",
                             prev: "previous_block_hash",
-                            next: "next_blocks",
+                            next: "[next_blocks.hash, object_in_array]",
                             tx_count: "transactions_count",
                             time: "[time, utctoepoch]"
                         },
