@@ -727,6 +727,12 @@
         var api_url = api.url('relay', hash, blockchain, service);
         if(api_url)
         {
+            var get_type = 'POST';
+            if(typeof map.from.relay.get != 'undefined' && map.from.relay.get === true)
+            {
+                get_type = 'GET';
+                request_data = false;
+            }
             api.request(api_url, function(results)
             {
                 if(return_raw && callback)
@@ -801,7 +807,7 @@
                         return tx;
                     }
                 }
-            }, 'POST', request_data, blockchain, 'relay', false, false, service);
+            }, get_type, request_data, blockchain, 'relay', false, false, service);
         }
         else if(callback)
         {
@@ -1468,7 +1474,6 @@
     {
         var strict = true;
         var url = false;
-        if(action == 'relay') key = '';
         if(service != $.fn.blockstrap.core.api()) strict = false;
         var api_key = $.fn.blockstrap.core.apis('key', service);
         var key_name = $.fn.blockstrap.core.apis('key_name', service);
@@ -1485,6 +1490,16 @@
         if(apis == 'undefined')
         {
             apis = $.fn.blockstrap.settings.apis;
+        }
+        if(
+            action == 'relay'
+            &&
+            (
+                typeof apis.defaults[api_service].functions.from.relay.get == 'undefined'
+                || apis.defaults[api_service].functions.from.relay.get != true
+            )
+        ){
+            key = '';
         }
         if(
             (blockchain != 'multi' && strict === true)
