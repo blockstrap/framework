@@ -29,7 +29,7 @@ The framework itself is currently capable of supporting the following blockchain
 
 The framework has been developed with modularity and flexibility as the focal point of each technical decision. 
 
-This has enabled us to provide support for plugins and themes and allows developers to easuly extend, modify and truly customize every aspect of the application. Included within the framework download as examples are the following themes:
+This has enabled us to provide support for plugins and themes and allows developers to easily extend, modify and truly customize every aspect of the application. Included within the framework download as examples are the following themes:
 
 * Default Wallet (as seen above)
 * Priorities (community-driven crowd-sourced to-do list)
