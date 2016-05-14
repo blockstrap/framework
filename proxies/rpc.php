@@ -107,6 +107,24 @@ if(
                 $received = $bitcoind->getreceivedbyaccount($account_name, 1);
                 $address = $bitcoind->validateaddress($obj['address']);
                 $txs = $bitcoind->listtransactions($account_name, 100, 0, true);
+                foreach($txs as $tx_key => $tx)
+                {
+                    $raw_tx = $bitcoind->getrawtransaction($tx['txid'], 1);
+                    foreach($raw_tx['vout'] as $output)
+                    {
+                        if($output['scriptPubKey']['addresses'][0] == $_GET['id'])
+                        {
+                            $asm = explode(' ', $output['scriptPubKey']['asm']);
+                            foreach($asm as $op)
+                            {
+                                if(substr($op, 0, 2) != 'OP')
+                                {
+                                    $obj['hash'] = $op;
+                                }
+                            }
+                        }
+                    }
+                }
                 if($balance)
                 {
                     $obj['balance'] = intval($balance * 100000000);
