@@ -12,6 +12,17 @@
 {
     var markets = {};
     
+    $.fn.blockstrap.settings.exchange = {
+        usd: {
+            btc: 367.35,
+            ltc: 3.57,
+            doge: 0.00022388,
+            btct: 0,
+            ltct: 0,
+            doget: 0
+        }
+    };
+    
     // THESE ARE DEFAULT CONDITIONS
     // IF API BEING USED DOES NOT SUPPORT MARKET API
     // THESE VALUES WILL NOT BE UPDATED UNLESS API SUPPORTS
