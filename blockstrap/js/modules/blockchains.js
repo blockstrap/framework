@@ -89,6 +89,85 @@
         return str;
     }
     
+    blockchains.empty = function(private_key, to_address, chain, callback)
+    {
+        var results = {
+            success: false,
+            message: 'Missing Required Fields'
+        };
+        if(private_key && to_address && chain)
+        {
+            if(
+                typeof $.fn.blockstrap.settings.blockchains[chain] != 'undefined'
+            ){
+                var keys = false;
+                var fee = $.fn.blockstrap.settings.blockchains[chain].fee * 100000000;
+                try
+                {
+                    keys = bitcoin.ECKey.fromWIF(private_key);
+                }
+                catch(error)
+                {
+                    
+                }
+                var blockchain_key = blockchains.key(chain);
+                var blockchain_obj = bitcoin.networks[blockchain_key];
+                if(keys)
+                {
+                    keys.priv = private_key;
+                    var from_address = keys.pub.getAddress(blockchain_obj).toString();
+                    keys.pub = from_address;
+                    $.fn.blockstrap.api.balance(from_address, chain, function(balance)
+                    {
+                        if(balance > fee)
+                        {
+                            $.fn.blockstrap.blockchains.send(to_address, (balance - fee), from_address, keys,
+                                function(tx)
+                                {
+                                    if(typeof tx.txid != 'undefined')
+                                    {
+                                        results.success = true;
+                                        results.message = 'Success';
+                                    }
+                                    else
+                                    {
+                                        results.message = 'Unable to Relay';
+                                    }
+                                    if(callback) callback(results);
+                                    else return results;
+                                }, 
+                                chain
+                            );
+                        }
+                        else
+                        {
+                            results.message = 'Insufficient Funds';
+                            if(callback) callback(results);
+                            else return results;
+                        }
+                    });
+                }
+                else
+                {
+                    results.message = 'Invalid Private Key';
+                    if(callback) callback(results);
+                    else return results;
+                }
+            }
+            else
+            {
+                results.message = 'Invalid Chain';
+                if(callback) callback(results);
+                else return results;
+            }   
+        }
+        else
+        {
+            if(callback) callback(results);
+            else return results;
+        }
+    }
+    
     blockchains.key = function(code)
     {
         var bs = $.fn.blockstrap;

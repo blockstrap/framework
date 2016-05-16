@@ -535,8 +535,15 @@
                                 $.each(this_tx.outputs, function(output_k, output)
                                 {
                                     if(
+                                        (
                                         typeof output.script_type != 'undefined'
                                         && output.script_type != 'op_return'
+                                        )
+                                        ||
+                                        (
+                                        typeof output.type != 'undefined'
+                                        && output.type != 'op_return'
+                                        )
                                     ){
                                         
                                     }
@@ -1027,25 +1034,33 @@
                             else if(parse_type == 'amount_minus_output_check' && typeof extra_id != 'undefined')
                             {
                                 var send = false;
-                                var amount = results[arrayed_result[0]];
+                                var amount_key = arrayed_result[0];
                                 var inputs = 0;
                                 var outputs = 0;
                                 var total_outputs = 0;
                                 $.each(results.inputs, function(i)
                                 {
-                                    inputs = inputs + results.inputs[i].amount;
+                                    inputs = inputs + results.inputs[i][amount_key];
                                 });
-                                if(results.inputs[0].addresses[0] == extra_id)
+                                if(
+                                    (typeof results.inputs[0].addresses != 'undefined' && results.inputs[0].addresses[0] == extra_id)
+                                    ||
+                                    (typeof results.inputs[0].address != 'undefined' && results.inputs[0].address == extra_id)
+                                )
                                 {
                                     send = true;
                                 }
                                 $.each(results.outputs, function(i)
                                 {
-                                    if(results.outputs[i].addresses[0] != extra_id)
+                                    if(
+                                        (typeof results.outputs[i].addresses != 'undefined' && results.outputs[i].addresses[0] != extra_id)
+                                        ||
+                                        (typeof results.outputs[i].address != 'undefined' && results.outputs[i].address != extra_id)
+                                    )
                                     {
-                                        outputs = outputs + results.outputs[i].amount;
+                                        outputs = outputs + results.outputs[i][amount_key];
                                     }
-                                    total_outputs = total_outputs + results.outputs[i].amount;
+                                    total_outputs = total_outputs + results.outputs[i][amount_key];
                                 });
                                 var fee = inputs - total_outputs;
                                 var total = (inputs - outputs) - fee;

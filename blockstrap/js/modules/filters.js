@@ -26,7 +26,7 @@
                     {
                         if(typeof this_account.id != 'undefined')
                         {
-                            var account = $.fn.blockstrap.accounts.get(this_account.id, true);
+                            var account = $.fn.blockstrap.accounts.get(this_account.id);
                             account.blockchains = [];
                             if(typeof this_account.blockchains != 'undefined')
                             {
@@ -260,7 +260,7 @@
                         typeof values.id != 'undefined'
                     )
                     {
-                        this_account = $.fn.blockstrap.accounts.get(values.id, true);
+                        this_account = $.fn.blockstrap.accounts.get(values.id);
                         if(
                             typeof this_account.blockchains != 'undefined'
                             && typeof this_account.blockchains[tx.blockchain] != 'undefined'

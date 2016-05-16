@@ -757,7 +757,7 @@ var blockstrap_core = function()
                 $($.fn.blockstrap.element).find('.bs-account-select').each(function(i)
                 {
                     var select = $(this);
-                    var accounts = $.fn.blockstrap.accounts.get(false, true);
+                    var accounts = $.fn.blockstrap.accounts.get();
                     $(select).html('');
                     if($.isArray(accounts))
                     {

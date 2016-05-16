@@ -824,7 +824,7 @@
         delete chains.multi;
         var chain_count = $bs.array_length(chains);
         var account_id = $(button).attr('data-id');
-        var account = bs.accounts.get(account_id, true);
+        var account = bs.accounts.get(account_id);
         var current_chain_count = $bs.array_length(account.blockchains);
         var api_service = $.fn.blockstrap.core.api();
         var default_address = false;
@@ -1150,7 +1150,7 @@
         if(collection == 'accounts')
         {
             $.fn.blockstrap.core.loader('open');
-            var account = $.fn.blockstrap.accounts.get(key, true);
+            var account = $.fn.blockstrap.accounts.get(key);
             $.fn.blockstrap.accounts.update(account, function()
             {
                 $.fn.blockstrap.core.refresh(function()
@@ -1317,7 +1317,7 @@
         e.preventDefault();
         var bs = $.fn.blockstrap;
         var id = $(button).attr('data-id');
-        var account = bs.accounts.get(id, true);
+        var account = bs.accounts.get(id);
         var title = 'Warning';
         var contents = 'You do not have any inactive addresses';
         if(
@@ -1685,7 +1685,7 @@
         var account_id = $(button).attr('data-key');
         var chain = $(button).attr('data-chain');
         var blockchain = $.fn.blockstrap.settings.blockchains[chain].blockchain;
-        var account = $.fn.blockstrap.accounts.get(account_id, true);
+        var account = $.fn.blockstrap.accounts.get(account_id);
         var fields = [];
         if($.isArray(account.keys))
         {
@@ -1871,7 +1871,7 @@
         var to_amount = parseInt($(button).attr('data-to-amount'));
         var selected_fee = parseInt($(button).attr('data-tx-fee'));
         var form = $('form#'+form_id);
-        var raw_accounts = $.fn.blockstrap.accounts.get(account_id, true);
+        var raw_accounts = $.fn.blockstrap.accounts.get(account_id);
         if(standard == 'false') standard = false;
         else standard = true;
         if(
@@ -1953,7 +1953,7 @@
                     {
                         $.fn.blockstrap.blockchains.send(to_address, to_amount, from_address, keys, function(tx)
                         {
-                            var saved_account = $.fn.blockstrap.accounts.get(account_id, true);
+                            var saved_account = $.fn.blockstrap.accounts.get(account_id);
                             if(tx && typeof tx.txid != 'undefined')
                             {
                                 setTimeout(function()
@@ -2042,7 +2042,7 @@
         var from_address = $(button).attr('data-from');
         var chain = $(button).attr('data-chain');
         var form = $('form#'+form_id);
-        var raw_accounts = $.fn.blockstrap.accounts.get(account_id, true);
+        var raw_accounts = $.fn.blockstrap.accounts.get(account_id);
         var account_chains = JSON.parse(JSON.stringify(raw_accounts.blockchains));
         if(
             typeof raw_accounts.blockchains != 'undefined'
@@ -2132,7 +2132,7 @@
         var account_id = $(button).attr('data-key');
         var chain = $(button).attr('data-chain');
         var blockchain = $.fn.blockstrap.settings.blockchains[chain].blockchain;
-        var account = $.fn.blockstrap.accounts.get(account_id, true);
+        var account = $.fn.blockstrap.accounts.get(account_id);
         var fields = [];
         if($.isArray(account.keys))
         {
