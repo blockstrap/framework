@@ -1,0 +1,441 @@
+{
+    "accounts": {
+        "panels": [
+            {
+                "id": "welcome-message",
+                "css": "col-md-12 ribbon",
+                "body": {
+                    "func": "bootstrap",
+                    "type": "jumbotrons",
+                    "objects": [
+                        {
+                            "title": "Your Accounts",
+                            "intro": "You currently have 3 Bitcoin addresses, 2 Dogecoin addresses, 1 Litecoin address and 1 Peercoin address.",
+                            "html": "<a href='#' class='active btn btn-subtle btn-xs btn-table-filter btn-table-filter-all' data-col='*' data-table='account-table'>all</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='2' data-table='account-table'>date</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='3' data-table='account-table'>from</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='4' data-table='account-table'>to</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='5' data-table='account-table'>account</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='6' data-table='account-table'>blockchain</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='7' data-table='account-table'>amount</a> <a href='#' class='btn btn-subtle btn-xs btn-table-filter' data-col='8' data-table='account-table'>actions</a>",
+                            "buttons": [
+                                {
+                                    "href": "#",
+                                    "css": "btn-primary",
+                                    "text": "Add New Account"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "your-accounts",
+                "css": "col-md-12 empty",
+                "body": {
+                    "func": "bootstrap",
+                    "type": "tables",
+                    "objects": [ 
+                        {
+                            "id": "account-table",
+                            "css": "data-table",
+                            "order": "desc",
+                            "order_by": "1",
+                            "thead": {
+                                "tr": [
+                                    {
+                                        "th": [
+                                            {
+                                                "css": "ribbon",
+                                                "html": ""
+                                            },
+                                            {
+                                                "html": "Date"
+                                            },
+                                            {
+                                                "html": "From"
+                                            },
+                                            {
+                                                "html": "To"
+                                            },
+                                            {
+                                                "html": "Account"
+                                            },
+                                            {
+                                                "html": "Blockchain"
+                                            },
+                                            {
+                                                "html": "Amount"
+                                            },
+                                            {
+                                                "html": ""
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "tbody": {
+                                "tr": [
+                                    {
+                                        "css": "from",
+                                        "td": [
+                                            {
+                                                "css": "ribbon",
+                                                "html": ""
+                                            },
+                                            {
+                                                "html": "2014 / 06 / 13"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Johnny Mayo</a>"
+                                            },
+                                            {
+                                                "html": "Mark Smalley"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Personal</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Bitcoin</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>0.00000001</a>"
+                                            },
+                                            {
+                                                "html": "<div class='mobile-view'><a href='#'>0.00000001</a> (<a href='#'>BTC</a>)</div><a href='#' class='btn btn-xs btn-danger'>remove</a>"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "css": "to",
+                                        "td": [
+                                            {
+                                                "css": "ribbon",
+                                                "html": ""
+                                            },
+                                            {
+                                                "html": "2014 / 06 / 12"
+                                            },
+                                            {
+                                                "html": "Mark Smalley"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Johnny Mayo</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Family</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Bitcoin</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>1</a>"
+                                            },
+                                            {
+                                                "html": "<div class='mobile-view'><a href='#'>1</a> (<a href='#'>BTC</a>)</div><a href='#' class='btn btn-xs btn-danger'>remove</a>"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "css": "from",
+                                        "td": [
+                                            {
+                                                "css": "ribbon",
+                                                "html": ""
+                                            },
+                                            {
+                                                "html": "2014 / 06 / 12"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Adam Giles</a>"
+                                            },
+                                            {
+                                                "html": "Mark Smalley"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Donations</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Dogecoin</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>1,250</a>"
+                                            },
+                                            {
+                                                "html": "<div class='mobile-view'><a href='#'>1,250</a> (<a href='#'>XDG</a>)</div><a href='#' class='btn btn-xs btn-danger'>remove</a>"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "css": "from",
+                                        "td": [
+                                            {
+                                                "css": "ribbon",
+                                                "html": ""
+                                            },
+                                            {
+                                                "html": "2014 / 06 / 13"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Johnny Mayo</a>"
+                                            },
+                                            {
+                                                "html": "Mark Smalley"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Personal</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Bitcoin</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>0.00000001</a>"
+                                            },
+                                            {
+                                                "html": "<div class='mobile-view'><a href='#'>0.00000001</a> (<a href='#'>BTC</a>)</div><a href='#' class='btn btn-xs btn-danger'>remove</a>"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "css": "to",
+                                        "td": [
+                                            {
+                                                "css": "ribbon",
+                                                "html": ""
+                                            },
+                                            {
+                                                "html": "2014 / 06 / 12"
+                                            },
+                                            {
+                                                "html": "Mark Smalley"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Johnny Mayo</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Family</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Bitcoin</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>1</a>"
+                                            },
+                                            {
+                                                "html": "<div class='mobile-view'><a href='#'>1</a> (<a href='#'>BTC</a>)</div><a href='#' class='btn btn-xs btn-danger'>remove</a>"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "css": "from",
+                                        "td": [
+                                            {
+                                                "css": "ribbon",
+                                                "html": ""
+                                            },
+                                            {
+                                                "html": "2014 / 06 / 12"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Adam Giles</a>"
+                                            },
+                                            {
+                                                "html": "Mark Smalley"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Donations</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Dogecoin</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>1,250</a>"
+                                            },
+                                            {
+                                                "html": "<div class='mobile-view'><a href='#'>1,250</a> (<a href='#'>XDG</a>)</div><a href='#' class='btn btn-xs btn-danger'>remove</a>"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "css": "from",
+                                        "td": [
+                                            {
+                                                "css": "ribbon",
+                                                "html": ""
+                                            },
+                                            {
+                                                "html": "2014 / 06 / 13"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Johnny Mayo</a>"
+                                            },
+                                            {
+                                                "html": "Mark Smalley"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Personal</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Bitcoin</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>0.00000001</a>"
+                                            },
+                                            {
+                                                "html": "<div class='mobile-view'><a href='#'>0.00000001</a> (<a href='#'>BTC</a>)</div><a href='#' class='btn btn-xs btn-danger'>remove</a>"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "css": "to",
+                                        "td": [
+                                            {
+                                                "css": "ribbon",
+                                                "html": ""
+                                            },
+                                            {
+                                                "html": "2014 / 06 / 12"
+                                            },
+                                            {
+                                                "html": "Mark Smalley"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Johnny Mayo</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Family</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Bitcoin</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>1</a>"
+                                            },
+                                            {
+                                                "html": "<div class='mobile-view'><a href='#'>1</a> (<a href='#'>BTC</a>)</div><a href='#' class='btn btn-xs btn-danger'>remove</a>"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "css": "from",
+                                        "td": [
+                                            {
+                                                "css": "ribbon",
+                                                "html": ""
+                                            },
+                                            {
+                                                "html": "2014 / 06 / 12"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Adam Giles</a>"
+                                            },
+                                            {
+                                                "html": "Mark Smalley"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Donations</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Dogecoin</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>1,250</a>"
+                                            },
+                                            {
+                                                "html": "<div class='mobile-view'><a href='#'>1,250</a> (<a href='#'>XDG</a>)</div><a href='#' class='btn btn-xs btn-danger'>remove</a>"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "css": "from",
+                                        "td": [
+                                            {
+                                                "css": "ribbon",
+                                                "html": ""
+                                            },
+                                            {
+                                                "html": "2014 / 06 / 13"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Johnny Mayo</a>"
+                                            },
+                                            {
+                                                "html": "Mark Smalley"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Personal</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Bitcoin</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>0.00000001</a>"
+                                            },
+                                            {
+                                                "html": "<div class='mobile-view'><a href='#'>0.00000001</a> (<a href='#'>BTC</a>)</div><a href='#' class='btn btn-xs btn-danger'>remove</a>"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "css": "to",
+                                        "td": [
+                                            {
+                                                "css": "ribbon",
+                                                "html": ""
+                                            },
+                                            {
+                                                "html": "2014 / 06 / 12"
+                                            },
+                                            {
+                                                "html": "Mark Smalley"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Johnny Mayo</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Family</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Bitcoin</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>1</a>"
+                                            },
+                                            {
+                                                "html": "<div class='mobile-view'><a href='#'>1</a> (<a href='#'>BTC</a>)</div><a href='#' class='btn btn-xs btn-danger'>remove</a>"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "css": "from",
+                                        "td": [
+                                            {
+                                                "css": "ribbon",
+                                                "html": ""
+                                            },
+                                            {
+                                                "html": "2014 / 06 / 12"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Adam Giles</a>"
+                                            },
+                                            {
+                                                "html": "Mark Smalley"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Donations</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>Dogecoin</a>"
+                                            },
+                                            {
+                                                "html": "<a href='#'>1,250</a>"
+                                            },
+                                            {
+                                                "html": "<div class='mobile-view'><a href='#'>1,250</a> (<a href='#'>XDG</a>)</div><a href='#' class='btn btn-xs btn-danger'>remove</a>"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

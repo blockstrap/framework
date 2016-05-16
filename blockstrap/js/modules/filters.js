@@ -181,6 +181,11 @@
         return blockstrap.settings;
     }
     
+    filters.send = function(blockstrap, data)
+    {
+        return 'send form here';
+    }
+    
     filters.setup = function(blockstrap, data)
     {
         if(data.step)

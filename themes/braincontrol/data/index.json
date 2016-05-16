@@ -81,6 +81,9 @@
                 "text": "Logout"
             }
         ],
+        "total": {
+            "func": "total"
+        },
         "accounts": {
             "func": "balances"
         }
@@ -96,7 +99,7 @@
                     "objects": [
                         {
                             "title": "Welcome back {{user.name}}",
-                            "intro": "Here is an overview of your recent account activity.",
+                            "intro": "Here is an overview of your recent accounts and the bitcoin markets.",
                             "html": "Blockstrap is still in beta! Please read out <a href='https://github.com/blockstrap/framework/tree/master/docs/en/applications/wallet/security/'>beta / security disclaimer</a> before getting started.",
                             "buttons": [
                                 {
@@ -129,107 +132,41 @@
                 "css": "col-md-6 odd",
                 "header": "Recent Transactions",
                 "body": {
-                    "func": "txs",
-                    "limit": 6
+                    "func": "txs"
                 }
             },
             {
-                "id": "quick-send",
+                "id": "market-conditions",
                 "css": "col-md-6 even",
-                "header": "Quick Send",
+                "header": "Market Conditions <a href='#' class='pull-right btn btn-sm btn-default btn-markets'>Refresh</a>",
                 "body": {
-                    "func": "bootstrap",
-                    "type": "forms",
-                    "objects": [
+                    "func": "plugin",
+                    "name": "markets",
+                    "call": "filter",
+                    "data": [
                         {
-                            "id": "payment-form",
-                            "fields": [
-                                {
-                                    "inputs": {
-                                        "id": "to",
-                                        "label": {
-                                            "text": "To",
-                                            "css": "col-xs-3"
-                                        },
-                                        "type": "text",
-                                        "placeholder": "Type any address or click user to select contact",
-                                        "wrapper": {
-                                            "css": "col-xs-9"
-                                        },
-                                        "icon": [
-                                            {
-                                                "css": "btn-toggle",
-                                                "href": "#",
-                                                "glyph": "user",
-                                                "attributes": [
-                                                    {
-                                                        "key": "data-toggle",
-                                                        "value": "contacts"
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                },
-                                {
-                                    "selects": {
-                                        "id": "from",
-                                        "label": {
-                                            "text": "From",
-                                            "css": "col-xs-3"
-                                        },
-                                        "type": "text",
-                                        "css": "bs-account-select",
-                                        "placeholder": "Select Wallet",
-                                        "wrapper": {
-                                            "css": "col-xs-9"
-                                        }
-                                    }
-                                },
-                                {
-                                    "inputs": {
-                                        "id": "amount",
-                                        "label": {
-                                            "text": "Amount",
-                                            "css": "col-xs-3"
-                                        },
-                                        "type": "text",
-                                        "placeholder": "Total to Send",
-                                        "wrapper": {
-                                            "css": "col-xs-9"
-                                        },
-                                        "value": "{{vars.amount}}"
-                                    }
-                                },
-                                {
-                                    "hiddens": {
-                                        "id": "from_account",
-                                        "value": "{{vars.from}}"
-                                    }
-                                },
-                                {
-                                    "hiddens": {
-                                        "id": "from_account_chain",
-                                        "value": "{{vars.chain}}"
-                                    }
-                                }
-                            ],
-                            "buttons": {
-                                "forms": [
-                                    {
-                                        "type": "submit",
-                                        "id": "send-money",
-                                        "css": "btn-primary pull-right",
-                                        "text": "Send",
-                                        "attributes": [
-                                            {
-                                                "key": "data-form-id",
-                                                "value": "payment-form"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
+                            "css": "col-sm-6 panel",
+                            "id": "price_usd_now"
+                        },
+                        {
+                            "css": "col-sm-6 panel",
+                            "id": "tx_count_24hr"
+                        },
+                        {
+                            "css": "col-sm-6 panel",
+                            "id": "sent_usd_24hr"
+                        },
+                        {
+                            "css": "col-sm-6 panel",
+                            "id": "sent_coins_24hr"
+                        },
+                        {
+                            "css": "col-sm-6 panel",
+                            "id": "coins_discovered"
+                        },
+                        {
+                            "css": "col-sm-6 panel",
+                            "id": "marketcap"
                         }
                     ]
                 }
