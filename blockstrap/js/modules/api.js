@@ -1026,6 +1026,7 @@
                             }
                             else if(parse_type == 'amount_minus_output_check' && typeof extra_id != 'undefined')
                             {
+                                var send = false;
                                 var amount = results[arrayed_result[0]];
                                 var inputs = 0;
                                 var outputs = 0;
@@ -1034,6 +1035,10 @@
                                 {
                                     inputs = inputs + results.inputs[i].amount;
                                 });
+                                if(results.inputs[0].addresses[0] == extra_id)
+                                {
+                                    send = true;
+                                }
                                 $.each(results.outputs, function(i)
                                 {
                                     if(results.outputs[i].addresses[0] != extra_id)
@@ -1047,6 +1052,10 @@
                                 if(outputs == total_outputs)
                                 {
                                     total = 0 - (inputs - fee);
+                                }
+                                if(send)
+                                {
+                                    total = 0 - (outputs);
                                 }
                                 res_01 = total;
                             }
@@ -1311,6 +1320,14 @@
                     if(result_key && typeof results[result_key] != 'undefined')
                     {
                         these_results = results[result_key];
+                    }
+                    if(typeof map.from.transactions.inner_unconfirmed != 'undefined' && map.from.transactions.inner_unconfirmed)
+                    {
+                        var unconfirmed_result_key = map.from.transactions.inner_unconfirmed;
+                        if(unconfirmed_result_key && typeof results[unconfirmed_result_key] != 'undefined')
+                        {
+                            these_results = $.extend({}, these_results, results[unconfirmed_result_key]);
+                        }
                     }
                     if(these_results)
                     {

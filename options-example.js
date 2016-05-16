@@ -796,6 +796,7 @@ var blockstrap_options = {
                         transactions: {
                             key: "",
                             inner: "transactions",
+                            inner_unconfirmed: "unconfirmed_transactions",
                             txid: "hash",
                             size: "size",
                             block: "block_height",
