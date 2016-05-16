@@ -323,9 +323,9 @@
         ){ 
             usd_rates = $.fn.blockstrap.settings.exchange.usd;
         }
-        if(typeof raw == 'undefined') raw = false;
+        if(typeof raw == 'undefined' || raw === false) raw = false;
         else raw = true;
-        if(typeof get_widgets == 'undefined') get_widgets = false;
+        if(typeof get_widgets == 'undefined' || get_widgets === false) get_widgets = false;
         else get_widgets = true;
         if(localStorage)
         {
@@ -382,9 +382,10 @@
                         }
                     }
                 });
+                accounts = $.fn.blockstrap.core.apply_filters('accounts_get', accounts);
+                if(raw) return accounts;
+                else return accounts.blockchains;
             }
-            accounts = $.fn.blockstrap.core.apply_filters('accounts_get', accounts);
-            return accounts;
         }
     }
     
@@ -585,18 +586,21 @@
                             content+= '<p class="break-word">' + context + ':<br /><a href="' + url + '">' + tx.txid + '</a></p>';
                         });
                     }
-                    $.fn.blockstrap.core.refresh(function()
+                    if($('.modal.fade.in').length < 1)
                     {
-                        $.fn.blockstrap.core.modal(title, content);
-                        if(callback) callback();
-                        else if(typeof loop != 'undefined' && typeof loop_delay != 'undefined')
+                        $.fn.blockstrap.core.refresh(function()
                         {
-                            setTimeout(function()
+                            $.fn.blockstrap.core.modal(title, content);
+                            if(callback) callback();
+                            else if(typeof loop != 'undefined' && typeof loop_delay != 'undefined')
                             {
-                                $.fn.blockstrap.accounts.poll(wait, callback, loop, loop_delay);
-                            }, loop_delay);
-                        }
-                    }, $.fn.blockstrap.core.page());
+                                setTimeout(function()
+                                {
+                                    $.fn.blockstrap.accounts.poll(wait, callback, loop, loop_delay);
+                                }, loop_delay);
+                            }
+                        }, $.fn.blockstrap.core.page());
+                    }
                 }
                 else
                 {

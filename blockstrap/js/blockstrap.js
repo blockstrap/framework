@@ -604,6 +604,91 @@ var blockstrap_core = function()
                     {
                         $.fn.blockstrap.accounts.access(account_id, false, chain);
                     }
+                    else if(value === 'import')
+                    {
+                        var account = $.fn.blockstrap.accounts.get(account_id, false)[chain];
+                        var fee = $.fn.blockstrap.settings.blockchains[chain].fee;
+                        var options = {
+                            css: 'form-horizontal bs',
+                            objects: [
+                                {
+                                    id: 'import-key',
+                                    fields: [
+                                        {
+                                            inputs: {
+                                                id: 'private-key',
+                                                type: 'text',
+                                                label: {
+                                                    css: 'col-xs-3',
+                                                    text: 'Private Key'
+                                                },
+                                                wrapper: {
+                                                    css: 'col-xs-9'
+                                                },
+                                                placeholder: 'Private Key to Transfer Funds From'
+                                            }
+                                        },
+                                        {
+                                            inputs: {
+                                                id: 'to-address',
+                                                type: 'text',
+                                                label: {
+                                                    css: 'col-xs-3',
+                                                    text: 'Address'
+                                                },
+                                                wrapper: {
+                                                    css: 'col-xs-9'
+                                                },
+                                                value: account.address,
+                                                placeholder: 'Need to Send Funds Somewhere'
+                                            }
+                                        },
+                                        {
+                                            hiddens: {
+                                                id: 'chain',
+                                                value: chain
+                                            }
+                                        }
+                                    ]
+                                }
+                            ],
+                            data: [
+                                {
+                                    key: "autocomplete",
+                                    value: "off"
+                                },
+                                {
+                                    key: "data-function",
+                                    value: "import_key"
+                                }
+                            ],
+                            buttons: {
+                                forms: [
+                                    {
+                                        id: 'cancel-verification',
+                                        css: 'btn-danger pull-right btn-split',
+                                        text: 'Cancel',
+                                        type: 'button',
+                                        attributes: [
+                                            {
+                                                key: 'data-dismiss',
+                                                value: 'modal'
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        type: "submit",
+                                        id: "submit-import-key",
+                                        css: 'btn-primary pull-right btn-split',
+                                        text: 'Transfer Funds'
+                                    }
+                                ]
+                            }
+                        };
+                        var form = $.fn.blockstrap.forms.process(options);
+                        var intro = '<p>Please note that since we do not store private keys anywhere we cannot actually import the keys. Instead, <strong>what this function really does</strong> is that it first checks the balance of the address belonging to the private key and then sends the balance (minus the network fee) to the address specified below.</p><p><strong>Again, please be warned</strong> that using this function will remove all of the available funds from the address belonging to the imported private key and transfer those funds to the specified address below:</p>';
+                        $.fn.blockstrap.core.modal('Import Private Key', intro + form);
+                    }
                 });
                 $($.fn.blockstrap.element).on('change', '#api_service', function(i)
                 {

@@ -191,6 +191,28 @@
         }
     }
     
+    forms.import_key = function(form, vars)
+    {
+        var private_key = $(form).find('#private-key').val();
+        var to_address = $(form).find('#to-address').val();
+        var chain = $(form).find('#chain').val();
+        var title = 'Warning';
+        var contents = 'Missing required fields';
+        if(private_key && to_address && chain)
+        {
+            $.fn.blockstrap.core.loading('IMPORTING KEY');
+            $.fn.blockstrap.blockchains.empty(private_key, to_address, chain, function(results)
+            {
+                console.log('results', results);
+                $.fn.blockstrap.core.loading('LOADING', false);
+            });
+        }
+        else
+        {
+            $.fn.blockstrap.core.modal(title, contents);
+        }
+    }
+    
     forms.input = function(options)
     {
         var defaults = {

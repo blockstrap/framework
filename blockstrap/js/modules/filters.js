@@ -227,6 +227,7 @@
                     });
                 }
             });
+            var pre_sorted_txs = JSON.parse(JSON.stringify(txs));
             txs.sort(function(a,b) 
             { 
                 return parseInt(b.time) - parseInt(a.time) 
@@ -272,7 +273,6 @@
                 });
                 address = '<a href="' +base+ '?key='+tx.address+'#address">' + this_address + '</a>';
                 html+= ' '+verb+' ' + address;
-                
                 items.push({
                     css: css,
                     html: html,

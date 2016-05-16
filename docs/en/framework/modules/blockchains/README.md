@@ -18,6 +18,7 @@ The Blockchains Module features the following functions:
 
 * [`$.fn.blockstrap.blockchains.check`(address)](#blockchains_check)
 * [`$.fn.blockstrap.blockchains.decode`(script_pub_key)](#blockchains_decode)
+* [`$.fn.blockstrap.blockchains.empty`(private_key, to_address, chain, callback))](#blockchains_empty)
 * [`$.fn.blockstrap.blockchains.key`(code)](#blockchains_key)
 * [`$.fn.blockstrap.blockchains.keys`(secret, blockchain, number_of_keys, indexes, raw)](#blockchains_keys)
 * [`$.fn.blockstrap.blockchains.raw`(return_to, privkey, inputs, outputs, this_fee, amount_to_send, data, sign_tx, script)](#blockchains_raw)
@@ -39,6 +40,14 @@ This function will return the first character of a validated `address`.
 #### `blockchains.decode`(script_pub_key) <a name="blockchains_decode" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function decodes the `script_pub_key` from a valid OP_Return outgoing transaction into a readable text string.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
+#### `blockchains.empty`(private_key, to_address, chain, callback) <a name="blockchains_empty" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function checks the balance belonging to the provided `private_key` and then sends all of the funds (minus the default network fee) to the required `to_address`.
 
 <a href="#docs_home"><small>- back to top</small></a>
 
