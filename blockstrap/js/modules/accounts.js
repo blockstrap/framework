@@ -17,7 +17,7 @@
         // TODO - Is from needed? Can it not be got from the account_id and chain?
         // Why exactly is standard applied? When is it not and why?
         var fields = [];
-        var account = accounts.get(account_id, true);
+        var account = accounts.get(account_id);
         var account_chains = JSON.parse(JSON.stringify(account.blockchains));
         var is_tx = false;
         if($.isPlainObject(tx) && tx.to && tx.from && tx.amount)
@@ -323,9 +323,9 @@
         ){ 
             usd_rates = $.fn.blockstrap.settings.exchange.usd;
         }
-        if(typeof raw == 'undefined') raw = false;
+        if(typeof raw == 'undefined' || raw === false) raw = false;
         else raw = true;
-        if(typeof get_widgets == 'undefined') get_widgets = false;
+        if(typeof get_widgets == 'undefined' || get_widgets === false) get_widgets = false;
         else get_widgets = true;
         if(localStorage)
         {
@@ -350,8 +350,8 @@
                     });
                     this_account.usd_total = parseFloat(this_account.usd_total / 100000000).toFixed(2);
                     this_account = $.fn.blockstrap.core.apply_filters('accounts_get', this_account);
-                    if(raw) return this_account;
-                    else return this_account.blockchains;
+                    if(raw) return this_account.blockchains;
+                    else return this_account;
                 }
             }
             else
@@ -382,9 +382,10 @@
                         }
                     }
                 });
+                accounts = $.fn.blockstrap.core.apply_filters('accounts_get', accounts);
+                if(raw) return accounts.blockchains;
+                else return accounts;
             }
-            accounts = $.fn.blockstrap.core.apply_filters('accounts_get', accounts);
-            return accounts;
         }
     }
     
@@ -448,13 +449,10 @@
                             {
                                 key = keys;
                             }
-                            
                             var blockchains = {};
                             var chains = blockchain;
-                            
                             var pw_obj = CryptoJS.SHA3(salt+password, { outputLength: 512 });
                             var pw = pw_obj.toString();
-                            
                             if(type === 'single')
                             {
                                 chains = [];
@@ -478,9 +476,7 @@
                                     };
                                 }
                             })
-                            
                             if(keys == key) keys = false;
-                            
                             var account = {
                                 id: slug,
                                 blockchains: blockchains,
@@ -492,7 +488,6 @@
                                 txs: []
                             };
                             if(data) account.data = data;
-                            
                             if(typeof existing_account != 'undefined')
                             {
                                 var merged_chains = $.extend(
@@ -506,7 +501,7 @@
                             }
                             $.fn.blockstrap.data.save('accounts', slug, account, function()
                             {
-                                var this_account = $.fn.blockstrap.accounts.get(slug, true, true);
+                                var this_account = $.fn.blockstrap.accounts.get(slug);
                                 $.fn.blockstrap.accounts.update(this_account, function(account)
                                 {
                                     if(!account && $.isPlainObject(this_account)) account = this_account;
@@ -585,18 +580,21 @@
                             content+= '<p class="break-word">' + context + ':<br /><a href="' + url + '">' + tx.txid + '</a></p>';
                         });
                     }
-                    $.fn.blockstrap.core.refresh(function()
+                    if($('.modal.fade.in').length < 1)
                     {
-                        $.fn.blockstrap.core.modal(title, content);
-                        if(callback) callback();
-                        else if(typeof loop != 'undefined' && typeof loop_delay != 'undefined')
+                        $.fn.blockstrap.core.refresh(function()
                         {
-                            setTimeout(function()
+                            $.fn.blockstrap.core.modal(title, content);
+                            if(callback) callback();
+                            else if(typeof loop != 'undefined' && typeof loop_delay != 'undefined')
                             {
-                                $.fn.blockstrap.accounts.poll(wait, callback, loop, loop_delay);
-                            }, loop_delay);
-                        }
-                    }, $.fn.blockstrap.core.page());
+                                setTimeout(function()
+                                {
+                                    $.fn.blockstrap.accounts.poll(wait, callback, loop, loop_delay);
+                                }, loop_delay);
+                            }
+                        }, $.fn.blockstrap.core.page());
+                    }
                 }
                 else
                 {
@@ -640,10 +638,10 @@
         }
         else if(to && account_id && amount)
         {
-            var account = $.fn.blockstrap.accounts.get(account_id, true);
+            var account = $.fn.blockstrap.accounts.get(account_id);
             if(!standard)
             {
-                var accounts = $.fn.blockstrap.accounts.get(false, true);
+                var accounts = $.fn.blockstrap.accounts.get();
                 $.each(accounts, function(k, acc)
                 {
                     if(typeof acc.addresses != 'undefined')
@@ -701,7 +699,7 @@
                     {
                         // Just remove this one blockchain from account...
                         // Just remove this one blockchain from account...
-                        var raw_account = $.fn.blockstrap.accounts.get(key, true);
+                        var raw_account = $.fn.blockstrap.accounts.get(key);
                         if(
                             typeof raw_account.blockchains != 'undefined'
                             && typeof raw_account.blockchains[chain] != 'undefined'
@@ -823,7 +821,7 @@
     {
         var accounts = [];
         var transactions = [];
-        if(account_id) accounts.push($.fn.blockstrap.accounts.get(account_id, true));
+        if(account_id) accounts.push($.fn.blockstrap.accounts.get(account_id));
         else accounts = $.fn.blockstrap.accounts.get();
         if($.isArray(accounts))
         {
@@ -1094,7 +1092,7 @@
                 var old_addresses = false;
                 var raw_keys = $.fn.blockstrap.blockchains.keys(key+account.code, account.code, 1, false, true);
                 var keys = raw_keys;
-                var raw_account = $.fn.blockstrap.accounts.get(account.id, true);
+                var raw_account = $.fn.blockstrap.accounts.get(account.id);
                 if(blockstrap_functions.array_length(raw_account.addresses) > 0)
                 {
                     old_addresses = raw_account.addresses[0].chains[account.code];

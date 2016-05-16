@@ -25,7 +25,7 @@
             var default_address = vars.defaultAddress;
             var default_chain = vars.defaultChain;
             var new_chain = $(form).find('select#blockchain').val();
-            var raw_accounts = $.fn.blockstrap.accounts.get(account_id, true);
+            var raw_accounts = $.fn.blockstrap.accounts.get(account_id);
             var current_chains = raw_accounts.blockchains;
             var available_chains = JSON.parse(JSON.stringify($.fn.blockstrap.settings.blockchains));
             $.fn.blockstrap.core.modals('close_all');
@@ -191,6 +191,43 @@
         }
     }
     
+    forms.import_key = function(form, vars)
+    {
+        var private_key = $(form).find('#private-key').val();
+        var to_address = $(form).find('#to-address').val();
+        var chain = $(form).find('#chain').val();
+        var title = 'Warning';
+        var contents = 'Missing required fields';
+        if(private_key && to_address && chain)
+        {
+            $.fn.blockstrap.core.loading('IMPORTING KEY', false);
+            $.fn.blockstrap.core.loader('open');
+            $.fn.blockstrap.blockchains.empty(private_key, to_address, chain, function(results)
+            {
+                $.fn.blockstrap.core.loading('LOADING', false);
+                $.fn.blockstrap.core.loader('close');
+                setTimeout(function()
+                {
+                    if(typeof results.success != 'undefined' && results.success)
+                    {
+                        title = 'Successful Import';
+                        contents = 'Successfully imported funds to ' + to_address;
+                        $.fn.blockstrap.core.modal(title, contents);
+                    }
+                    else
+                    {
+                        title = 'Error';
+                        contents = 'Unable to import funds';
+                    }
+               }, $.fn.blockstrap.core.timeouts('loader'));
+            });
+        }
+        else
+        {
+            $.fn.blockstrap.core.modal(title, contents);
+        }
+    }
+    
     forms.input = function(options)
     {
         var defaults = {
@@ -287,7 +324,7 @@
             var account_id = vars.accountId;
             var chain = vars.chain;
             var message = $(form).find('#message').val();
-            var account = $.fn.blockstrap.accounts.get(account_id, true);
+            var account = $.fn.blockstrap.accounts.get(account_id);
             var this_account = account.blockchains[chain];
             var blockchain_key = $.fn.blockstrap.blockchains.key(chain);
             var blockchain_obj = bitcoin.networks[blockchain_key];
@@ -330,7 +367,7 @@
             var account_id = vars.accountId;
             var chain = vars.chain;
             var transfer = $(form).find('#transfer-funds').val();
-            var the_account = $.fn.blockstrap.accounts.get(account_id, true);
+            var the_account = $.fn.blockstrap.accounts.get(account_id);
             var account = JSON.parse(JSON.stringify(the_account));
             // THIS IS FOR FORM TO PROCESS AFTER GETTING KEY ...?
             if(typeof account.addresses == 'undefined')

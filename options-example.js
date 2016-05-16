@@ -688,6 +688,7 @@ var blockstrap_options = {
                         address: "address/$call",
                         unspents: "address/$call/unspent-outputs",
                         transactions: "address/$call/transactions",
+                        op_returns: "address/$call/transactions",
                         transaction: "transaction/$call",
                         block: "block/$call"
                     },
@@ -731,7 +732,7 @@ var blockstrap_options = {
                             time: false,
                             input: "total_input_value",
                             output: "total_output_value",
-                            value: "estimated_value",
+                            value: "[value, amount_minus_output_check]",
                             fees: "total_fee",
                             data: false,
                             reverse_array: true
@@ -745,6 +746,12 @@ var blockstrap_options = {
                             tx_count: "transactions",
                             time: "[block_time, utctoepoch]"
                         },
+                        op_returns: {
+                            key: "",
+                            inner: "../",
+                            txid: "hash",
+                            data: "script_hex"
+                        }
                     }
                 }
             },
@@ -796,6 +803,7 @@ var blockstrap_options = {
                         transactions: {
                             key: "",
                             inner: "transactions",
+                            inner_unconfirmed: "unconfirmed_transactions",
                             txid: "hash",
                             size: "size",
                             block: "block_height",

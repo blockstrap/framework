@@ -8,6 +8,7 @@ The Forms Module features the following functions:
 * [`$.fn.blockstrap.forms.add_blockchain`(form, vars)](#forms_add_blockchain)
 * [`$.fn.blockstrap.forms.add_blockchain_contact`(forms, vars)](#forms_add_blockchain_contact)
 * [`$.fn.blockstrap.forms.get`(callback)](#forms_get)
+* [`$.fn.blockstrap.forms.import_key`(form, vars)](#forms_importkey)
 * [`$.fn.blockstrap.forms.input`(options)](#forms_input)
 * [`$.fn.blockstrap.forms.process`(data, form)](#forms_process)
 * [`$.fn.blockstrap.forms.settings_form`(form, vars)](#forms_settings)
@@ -36,6 +37,14 @@ This function will attempt to add a new blockchain to an existing contact.
 #### `forms.get`(callback) <a name="forms_get" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function will return the raw Mustache-compliant HTML syntax for forms from `$.fn.blockstrap.snippets.form`.
+
+<a href="#docs_home"><small>- back to top</small></a>
+
+--------------------------------------------------------------------------------
+
+#### `forms.import_key`(form, vars) <a name="forms_importkey" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+
+This function helps to process a call to the [`$.fn.blockstrap.blockchains.empty()`](../blockchains#blockchains_empty) function.
 
 <a href="#docs_home"><small>- back to top</small></a>
 

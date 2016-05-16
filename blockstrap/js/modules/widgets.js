@@ -267,7 +267,7 @@
             var title = 'Error';
             var default_contents = 'You do not have any accouunts saved in localStorage yet.';
             var contents = default_contents;
-            var accounts = $.fn.blockstrap.accounts.get(false, true, true);
+            var accounts = $.fn.blockstrap.accounts.get();
             
             if(all && all == 'true') all = true;
             else all = false;

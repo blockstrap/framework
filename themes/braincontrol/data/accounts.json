@@ -1,0 +1,41 @@
+{
+    "accounts": {
+        "objects": {
+            "func": "accounts"
+        },
+        "panels": [
+            {
+                "id": "welcome-message",
+                "css": "col-md-12 ribbon",
+                "body": {
+                    "func": "bootstrap",
+                    "type": "jumbotrons",
+                    "objects": [
+                        {
+                            "title": "Your Accounts",
+                            "intro": "These are all the different accounts you have in different blockchains. More advanced filtering coming soon!",
+                            "html": "More information on <a href='https://github.com/blockstrap/framework/tree/master/docs/en/applications/wallet/accounts/'>accounts</a> is available in our <a href='https://github.com/blockstrap/framework/tree/master/docs/en'>documentation</a>.",
+                            "buttons": [
+                                {
+                                    "href": "#",
+                                    "css": "btn-primary",
+                                    "text": "Add New Account",
+                                    "attributes": [
+                                        {
+                                            "key": "data-target",
+                                            "value": "#new-account-modal"
+                                        },
+                                        {
+                                            "key": "data-toggle",
+                                            "value": "modal"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

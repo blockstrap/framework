@@ -1,0 +1,31 @@
+{
+    "modals": {
+        "func": "bootstrap",
+        "type": "modals",
+        "objects": [
+            {
+                "id": "default",
+                "title": "Title",
+                "body": "<p>Content.</p>",
+                "close": "Cancel"
+            },
+            {
+                "id": "confirm",
+                "title": "Confirmation Required",
+                "body": "<p>Please re-confirm you want to do that?</p>",
+                "close": "Cancel",
+                "footer": true,
+                "actions": [
+                    {
+                        "text": "Confirm",
+                        "css": "btn-success"
+                    }
+                ]
+            }
+        ]
+    },
+    "setup": {
+        "func": "setup",
+        "step": "1"
+    }
+}
