@@ -47,7 +47,7 @@ This function decodes the `script_pub_key` from a valid OP_Return outgoing trans
 
 #### `blockchains.empty`(private_key, to_address, chain, callback) <a name="blockchains_empty" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
-This function checks the balance belonging to the provided `private_key` and then sends all of the funds (minus the default network fee) to the required `to_address`.
+This function checks the balance belonging to the provided `private_key` and then sends all of the funds (minus the default network fee) to the required `to_address`. The `chain` variable is also required and the `callback` function is initiated if provided.
 
 <a href="#docs_home"><small>- back to top</small></a>
 
