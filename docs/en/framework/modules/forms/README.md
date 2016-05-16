@@ -42,7 +42,7 @@ This function will return the raw Mustache-compliant HTML syntax for forms from 
 
 --------------------------------------------------------------------------------
 
-#### `forms.import_key`(form, vars) <a name="forms_settings" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
+#### `forms.import_key`(form, vars) <a name="forms_importkey" class="pull-right" href="#docs_home"><i class="glyphicon glyphicon-upload"></i>- back to top</a>
 
 This function helps to process a call to the [`$.fn.blockstrap.blockchains.empty()`](../blockchains#blockchains_empty) function.
 
