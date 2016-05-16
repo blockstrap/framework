@@ -757,6 +757,7 @@ var blockstrap_options = {
                         address: "addresses/$call/transactions",
                         unspents: "addresses/$call/unspent_outputs",
                         transactions: "addresses/$call/transactions",
+                        op_returns: "addresses/$call/transactions",
                         transaction: "transactions/$call",
                         relay: "transactions",
                         relay_param: "hex",
@@ -817,6 +818,13 @@ var blockstrap_options = {
                         relay: {
                             key: "",
                             txid: "hash"
+                        },
+                        op_returns: {
+                            key: "",
+                            inner: "transactions",
+                            inner_unconfirmed: "unconfirmed_transactions",
+                            txid: "hash",
+                            data: "script_hex"
                         }
                     }
                 }

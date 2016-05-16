@@ -503,6 +503,14 @@
                     {
                         these_results = results[result_key];
                     }
+                    if(typeof map.from.op_returns.inner_unconfirmed != 'undefined' && map.from.op_returns.inner_unconfirmed)
+                    {
+                        var unconfirmed_result_key = map.from.op_returns.inner_unconfirmed;
+                        if(unconfirmed_result_key && typeof results[unconfirmed_result_key] != 'undefined')
+                        {
+                            these_results = $.extend({}, these_results, results[unconfirmed_result_key]);
+                        }
+                    }
                     if(these_results)
                     {
                         $.each(these_results, function(k, v)
@@ -526,24 +534,33 @@
                                 var this_tx = these_results[k];
                                 $.each(this_tx.outputs, function(output_k, output)
                                 {
-                                    transaction.pos = output_k;
                                     if(
-                                        typeof this_tx[map.from.op_returns.txid] != 'undefined'
+                                        typeof output.script_type != 'undefined'
+                                        && output.script_type != 'op_return'
                                     ){
-                                        transaction.txid = this_tx[map.from.op_returns.txid];
+                                        
                                     }
-                                    if(
-                                        typeof output[map.from.op_returns.data] != 'undefined'
-                                    ){
-                                        transaction.data = output[map.from.op_returns.data];
-                                    }
-                                    if(
-                                        typeof transaction.data != 'undefined' 
-                                        && typeof transaction.txid != 'undefined'
-                                        && transaction.txid != 'N/A'
-                                        && transaction.data
-                                    ){
-                                        transactions.push(transaction);
+                                    else
+                                    {
+                                        transaction.pos = output_k;
+                                        if(
+                                            typeof this_tx[map.from.op_returns.txid] != 'undefined'
+                                        ){
+                                            transaction.txid = this_tx[map.from.op_returns.txid];
+                                        }
+                                        if(
+                                            typeof output[map.from.op_returns.data] != 'undefined'
+                                        ){
+                                            transaction.data = output[map.from.op_returns.data];
+                                        }
+                                        if(
+                                            typeof transaction.data != 'undefined' 
+                                            && typeof transaction.txid != 'undefined'
+                                            && transaction.txid != 'N/A'
+                                            && transaction.data
+                                        ){
+                                            transactions.push(transaction);
+                                        }
                                     }
                                 });
                             }
@@ -1273,7 +1290,7 @@
                         callback(results);
                     }, results);
                 }
-                else
+                else if(results)
                 {
                     var map = $.fn.blockstrap.settings.apis.defaults[service].functions;
                     var these_results = results;
@@ -1343,6 +1360,10 @@
                         return transactions;
                     }
                 }
+                else
+                {
+                    callback(false);
+                }
             }, 'GET', false, blockchain, 'transactions', false, false, service);
         }
         else if(callback)
@@ -1383,7 +1404,7 @@
                         callback(results);
                     }, results);
                 }
-                else
+                else if(results)
                 {
                     var unspents = [];
                     var map = $.fn.blockstrap.settings.apis.defaults[service].functions;
@@ -1454,6 +1475,10 @@
                     {
                         return unspents;
                     }
+                }
+                else
+                {
+                    callback(false);
                 }
             }, 'GET', false, blockchain, 'unspents', false, false, service);
         }
