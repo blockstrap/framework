@@ -262,16 +262,6 @@ var blockstrap_options = {
         json: true,
         html: true
     },
-    exchange: {
-        usd: {
-            btc: 367.35,
-            ltc: 3.57,
-            doge: 0.00022388,
-            btct: 0,
-            ltct: 0,
-            doget: 0
-        }
-    },
     styles: {
         vars: {
             content_bg: "#DDD",
@@ -380,16 +370,6 @@ var blockstrap_options = {
             fee: 0.001,
             op_return: true,
             op_limit: 80
-        }
-    },
-    exchange: {
-        usd: {
-            btc: 367.35,
-            ltc: 3.57,
-            doge: 0.00022388,
-            btct: 0,
-            ltct: 0,
-            doget: 0
         }
     },
     apis: {
