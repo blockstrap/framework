@@ -1224,6 +1224,7 @@ var blockstrap_core = function()
             },
             modal: function(title, content, id, callback)
             {
+                var perform_callback = true;
                 var selector = $('#default-modal');
                 if(id) selector = $('#'+id);
                 if(title) $(selector).find('.modal-title').html(title);
@@ -1231,7 +1232,11 @@ var blockstrap_core = function()
                 $(selector).on('show.bs.modal', function()
                 {
                     $(selector).find('input[type="password"]').val('');
-                    if(callback) callback();
+                    if(callback) 
+                    {
+                        perform_callback = false;
+                        callback();
+                    }
                 });
                 $(selector).on('shown.bs.modal', function()
                 {
@@ -1240,6 +1245,10 @@ var blockstrap_core = function()
                 if($(selector).css('display') == 'none')
                 {
                     $(selector).modal('show');
+                }
+                if(typeof callback != 'undefined' && callback && perform_callback)
+                {
+                    callback();
                 }
             },
             modals: function(action)

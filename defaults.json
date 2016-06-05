@@ -321,6 +321,7 @@
             "lib": "dogecointestnet",
             "apis": {
                 "blockstrap": "http://192.168.1.200/v0/doget/",
+                "blockstrap": "http://officeapi.neuroware.io/v0/doget/",
                 "qt": "proxies/rpc.php?blockchain=doget"
             },
             "fee": 1,
@@ -340,7 +341,8 @@
         "multi": {
             "private": true,
             "apis": {
-                "blockstrap": "http://192.168.1.200/v0/multi/"
+                "blockstrap": "http://192.168.1.200/v0/multi/",
+                "blockstrap": "http://officeapi.neuroware.io/v0/multi/"
             }
         },
         "btc": {

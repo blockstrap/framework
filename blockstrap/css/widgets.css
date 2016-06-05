@@ -22,6 +22,36 @@ BUTTONS
     margin: -16px 0px -2px -8px;
     background: url(../img/loading.gif) no-repeat;
 }
+.btn.btn-bs-widget span {
+    display: inline-block;
+}
+
+/*
+
+BADGE
+
+*/
+span.badge strong {
+    display: inline-block;
+}
+
+/*
+
+MODALS
+
+*/
+.modal .modal-title {
+    word-wrap: break-word;
+}
+
+/*
+
+ALERT
+
+*/
+span.alert.alert-block {
+    display: block;
+}
 
 /*
 

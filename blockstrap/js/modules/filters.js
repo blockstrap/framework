@@ -223,13 +223,16 @@
         {
             $.each(accounts, function(key, account)
             {
-                if(account.txs && blockstrap_functions.array_length(account.txs) > 0)
+                if(account.key)
                 {
-                    $.each(account.txs, function(k, transaction)
+                    if(account.txs && blockstrap_functions.array_length(account.txs) > 0)
                     {
-                        transaction.tx.address = transaction.address;
-                        txs.push(transaction.tx);
-                    });
+                        $.each(account.txs, function(k, transaction)
+                        {
+                            transaction.tx.address = transaction.address;
+                            txs.push(transaction.tx);
+                        });
+                    }
                 }
             });
             var pre_sorted_txs = JSON.parse(JSON.stringify(txs));

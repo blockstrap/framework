@@ -10,6 +10,13 @@
     >
 {{/fields_only}}
         
+        <!-- HACK FOR IE/FIREBUG -->
+        <div style="display:none;">
+            <input type="text" id="fake_username_field"/>
+            <input type="password" id="fake_password_field"/>
+        </div>
+        <!-- END OF AUTO-COMPLETE HACK -->
+        
         {{#fields}}
 
             <!-- INPUTS -->
