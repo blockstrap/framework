@@ -6,7 +6,7 @@ In order to demonstrate the flexibility of the framework, it is configured to su
 | API Provider | Provider ID | Blockchains | Can Relay Transactions? | OP_Returns? | DN-Keys? |
 |--------------|-------------|-------------|-------------------------|-------------|----------|
 |[BlockCypher](http://blockcypher.com)|blockstrap|3|YES|YES|NO|
-|[BlockTrail](http://blocktrail.com)|blocktrail|2|NO|NO|NO|
+|[BlockTrail](http://blocktrail.com)|blocktrail|2|NO|YES|NO|
 |[Toshi](http://toshi.io)|toshi|2|YES|YES|NO|
 |__Local QTs__|qt|8|YES|YES|YES|
 
