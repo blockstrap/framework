@@ -140,9 +140,12 @@
                                 theme.issues = [];
                                 $.fn.blockstrap.core.refresh(function()
                                 {
-                                    theme.new();
-                                    var hash = theme.hash();
-                                    $.fn.blockstrap.core.modal('Success', '<p>Your device salt has now been generated.</p><p>Please add the following hash to your security configuration: <strong>'+hash+'</strong></p><p>You can safely continue using this application, but please remember that if you loose or change or device salt from this or any other application on this device at this domain, you will not be able to access the funds linked to these issues.</p>');
+                                    setTimeout(function()
+                                    {
+                                        theme.new();
+                                        var hash = theme.hash();
+                                        $.fn.blockstrap.core.modal('Success', '<p>Your device salt has now been generated.</p><p>Please add the following hash to your security configuration: <strong>'+hash+'</strong></p><p>You can safely continue using this application, but please remember that if you loose or change or device salt from this or any other application on this device at this domain, you will not be able to access the funds linked to these issues.</p>');
+                                    }, $.fn.blockstrap.core.timeouts('loader'));
                                 }, 'index');
                             })
                         })
@@ -201,7 +204,10 @@
                             var content = 'The funds have been transferred to ' + to;
                             $.fn.blockstrap.core.refresh(function()
                             {
-                                $.fn.blockstrap.core.modal('Success', content);
+                                setTimeout(function()
+                                {
+                                    $.fn.blockstrap.core.modal('Success', content);
+                                }, $.fn.blockstrap.core.timeouts('loader'));
                             }, 'index', false);
                         };
                     });
@@ -237,7 +243,10 @@
                                 content+= '<small>Please ensure that you add the following slug to the issue if you want to protect against renaming issues - "<strong>' + blockstrap_functions.slug(issue.title) + '</strong>" - saved locally to account for changes, but if the device is reset and you forget what they were originally called, well... You get the picture.</small><hr />';
                             content+= '</p>';
                         });
-                        $.fn.blockstrap.core.modal('Warning', content);
+                        setTimeout(function()
+                        {
+                            $.fn.blockstrap.core.modal('Warning', content);
+                        }, $.fn.blockstrap.core.timeouts('loader'));
                     }
                 }
                 // UPDATE BALANCES
