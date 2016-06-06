@@ -88,23 +88,17 @@
         {
             var delimiter = '&addresses=';
             var map = $.fn.blockstrap.settings.apis.defaults[service].functions;
-            if(map.from.addresses.delimiter) delimiter = map.from.addresses.delimiter;
             
-            $.each(hashes, function(k, hash)
+            if(typeof map.from.addresses.loop != 'undefined' && map.from.addresses.loop === true)
             {
-                if(k === 0) hashed_url+= hash;
-                else hashed_url+= delimiter + hash;
-            });
-
-            var api_url = api.url('addresses', hashed_url, blockchain, service);
-            if(api_url)
-            {
-                api.request(api_url, function(results)
+                var addresses_to_return = [];
+                var number_of_addresses = blockstrap_functions.array_length(hashes);
+                $.each(hashes, function(k, hash)
                 {
-                    var addresses = [];
-                    if(results)
+                    var api_url = api.url('address', hash, blockchain, service);
+                    if(api_url)
                     {
-                        $.each(results, function(k, v)
+                        api.request(api_url, function(results)
                         {
                             var address = {
                                 address: 'N/A',
@@ -112,35 +106,102 @@
                                 tx_count: 0,
                                 blockchain: blockchain,
                                 received: 0,
-                                balance: 0
+                                balance: 0,
                             }
-                            address = api.results(address, results[k], blockchain, 'addresses', false, service);
-                            addresses.push(address);
-                        })
+                            if(results)
+                            {
+                                address = api.results(address, results, blockchain, 'address', callback, service);               
+                            }
+                            if(callback) 
+                            {
+                                $.fn.blockstrap.core.apply_actions('api_address', function()
+                                {
+                                    addresses_to_return.push(address);
+                                    if(k >= number_of_addresses - 1)
+                                    {
+                                        callback(addresses_to_return);
+                                    }
+                                }, address);
+                            }
+                            else 
+                            {
+                                addresses_to_return.push(address);
+                                if(k >= number_of_addresses - 1)
+                                {
+                                    return addresses_to_return;
+                                }
+                            }
+                        }, 'GET', false, blockchain, 'address', false, false, service);
                     }
-                    if(callback) 
+                    else if(callback)
                     {
-                        $.fn.blockstrap.core.apply_actions('api_addresses', function()
+                        $.fn.blockstrap.core.apply_actions('api_address', function()
                         {
-                            callback(addresses);
-                        }, addresses);
+                            callback(false);
+                        });
                     }
-                    else 
+                    else
                     {
-                        return addresses;
+                        return false;
                     }
-                }, 'GET', false, blockchain, 'addresses', false, false, service);
-            }
-            else if(callback)
-            {
-                $.fn.blockstrap.core.apply_actions('api_addresses', function()
-                {
-                    callback(false);
                 });
             }
             else
             {
-                return false;
+                if(map.from.addresses.delimiter) delimiter = map.from.addresses.delimiter;
+                
+                $.each(hashes, function(k, hash)
+                {
+                    if(k === 0) hashed_url+= hash;
+                    else hashed_url+= delimiter + hash;
+                });
+
+                var api_url = api.url('addresses', hashed_url, blockchain, service);
+                if(api_url)
+                {
+                    api.request(api_url, function(results)
+                    {
+                        var addresses = [];
+                        if(results)
+                        {
+                            $.each(results, function(k, v)
+                            {
+                                var address = {
+                                    address: 'N/A',
+                                    hash: 'N/A',
+                                    tx_count: 0,
+                                    blockchain: blockchain,
+                                    received: 0,
+                                    balance: 0
+                                }
+                                address = api.results(address, results[k], blockchain, 'addresses', false, service);
+                                addresses.push(address);
+                            })
+                        }
+                        if(callback) 
+                        {
+                            $.fn.blockstrap.core.apply_actions('api_addresses', function()
+                            {
+                                callback(addresses);
+                            }, addresses);
+                        }
+                        else 
+                        {
+                            return addresses;
+                        }
+                    }, 'GET', false, blockchain, 'addresses', false, false, service);
+                }
+                else if(callback)
+                {
+                    $.fn.blockstrap.core.apply_actions('api_addresses', function()
+                    {
+                        callback(false);
+                    });
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
         else

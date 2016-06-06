@@ -410,6 +410,7 @@
                 "functions": {
                     "to": {
                         "address": "addrs/$call/full",
+                        "addresses": "addrs/$call/full",
                         "block": "blocks/",
                         "op_returns": "addrs/$call/full",
                         "relay": "txs/push/",
@@ -422,6 +423,15 @@
                     "from": {
                         "address": {
                             "key": "",
+                            "address": "address",
+                            "hash": "",
+                            "tx_count": "final_n_tx",
+                            "received": "total_received",
+                            "balance": "final_balance"
+                        },
+                        "addresses": {
+                            "key": "",
+                            "loop": true,
                             "address": "address",
                             "hash": "",
                             "tx_count": "final_n_tx",

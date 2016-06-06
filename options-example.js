@@ -372,6 +372,26 @@ var blockstrap_options = {
             op_limit: 80
         }
     },
+    keys: {
+        apis: {
+            blockcypher: {
+                key_name: "token",
+                key: [
+                    "YOUR-API-KEY", 
+                    "ANOTHER-YOUR-API-KEY", 
+                    "YET-ANOTHER-YOUR-API-KEY"
+                ]
+            },
+            blocktrail: {
+                key_name: "api_key",
+                key: "YOUR-API-KEY"
+            },
+            blockstrap: {
+                key_name: "api_key",
+                key: "YOUR-API-KEY"
+            }
+        }
+    },
     apis: {
         available: {
             blockstrap: "Blockstrap",
@@ -383,11 +403,10 @@ var blockstrap_options = {
         defaults: {
             blockcypher: {
                 async: false,
-                key: ["add_an_array", "of_api_keys"],
-                key_name: "token",
                 functions: {
                     to: {
                         address: "addrs/$call/full",
+                        addresses: "addrs/$call/full",
                         block: "blocks/",
                         op_returns: "addrs/$call/full",
                         relay: "txs/push/",
@@ -399,6 +418,14 @@ var blockstrap_options = {
                     },
                     from: {
                         address: {
+                            key: "",
+                            address: "address",
+                            hash: "",
+                            tx_count: "final_n_tx",
+                            received: "total_received",
+                            balance: "final_balance"
+                        },
+                        addressws: {
                             key: "",
                             address: "address",
                             hash: "",
@@ -466,8 +493,6 @@ var blockstrap_options = {
             },
             blockstrap: {
                 async: true,
-                key: "add-your-api-key-here",
-                key_name: "api_key",
                 functions: {
                     to: {
                         address: "address/transactions/",
@@ -661,8 +686,6 @@ var blockstrap_options = {
             },
             blocktrail: {
                 async: false,
-                key: 'cefc90c4097b8711f796b5580ccd0232c66cc748',
-                key_name: 'api_key',
                 functions: {
                     to: {
                         address: "address/$call",

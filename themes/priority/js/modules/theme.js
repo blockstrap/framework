@@ -329,7 +329,7 @@
         });
         var address_count = $bs.array_length(addresses);
         var diffs = {};
-
+        $.fn.blockstrap.core.loading('CHECKING ISSUES', false);
         bs.api.addresses(addresses, 'btc', function(results)
         {
             if($.isArray(results))
@@ -390,7 +390,11 @@
                                                             theme.issues = [];
                                                             bs.core.refresh(function()
                                                             {
-                                                                bs.core.modal(title, content);
+                                                                setTimeout(function()
+                                                                {
+                                                                    $.fn.blockstrap.core.loading('LOADING', false);
+                                                                    bs.core.modal(title, content);
+                                                                }, $.fn.blockstrap.core.timeouts('loader'));
                                                             }, 'index', false);
                                                         }
                                                     });
@@ -404,7 +408,7 @@
                     });
                 });
             }
-        }, $.fn.blockstrap.core.api('blockstrap'));
+        });
     }
     
     // THEME FILTERS
