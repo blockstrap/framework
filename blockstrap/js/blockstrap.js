@@ -3069,8 +3069,8 @@ var blockstrap_functions = {
     }
 };
 var blockstrap_js_scripts;
-window.onload = function()
+document.addEventListener('DOMContentLoaded', function()
 {
-    //blockstrap_functions.initialize();
-}
-blockstrap_functions.initialize();
+    blockstrap_functions.initialize();
+});
+//blockstrap_functions.initialize();

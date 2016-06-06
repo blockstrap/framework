@@ -53,12 +53,13 @@
             <h3 class="tagline">KEY GENERATION</h3>
             <p class="description">(click button below to open a key-generator)</p>
             <hr />
-            <a href="#" class="btn btn-primary btn-bs-widget bs-generate" target="_blank"
+            <script src="blockstrap/js/widget.js"
             
-               data-chain="btc"
-               data-salt="unique-bs-widget-salt-001"
+                data-type="btn-generate"
+                data-chain="btc"
+                data-salt="unique-bs-widget-salt-001"
             
-            >GENERATE KEYS</a>
+            >GENERATE KEYS</script>
             <hr />
             <p>Simply add the <code>bs-generate</code> class to any element on pages with the blockstrap <code><a href="#">widgets</a></code> module activated</p>
             <hr />
@@ -82,14 +83,16 @@
             <h3 class="tagline">DONATIONS</h3>
             <p class="description">(click button to open a donation window)</p>
             <hr />
-            <a href="#" class="btn btn-primary btn-bs-widget bs-donate" target="_blank"
+            <script src="blockstrap/js/widget.js"
             
+                data-type="btn-donate"
                 data-chain="btc"
                 data-address="1GjHvbkCyYpy3uaNPvHsxe2EptH2RxEvMt"
             
-            >DEFAULT DONATE</a>
-            <a href="#" class="btn btn-primary btn-bs-widget bs-donate" target="_blank"
-            
+            >DEFAULT DONATE</script> 
+            <script src="blockstrap/js/widget.js"
+                    
+                data-type="btn-donate"
                 data-chain="doge"
                 data-address="DEHfgFYKL97gFFoYHM7UejXBGKjLFzD4za"
                
@@ -103,7 +106,7 @@
                 data-loading="Fetching"
                 data-html="<p><a href='#' class='btn btn-default btn-bs-widget bs-qr' data-content='dogecoin:DEHfgFYKL97gFFoYHM7UejXBGKjLFzD4za?amount=123.00000000'>PAYMENT REQUEST QR</a> <a href='#' class='btn btn-primary btn-bs-widget bs-qr' data-content='DEHfgFYKL97gFFoYHM7UejXBGKjLFzD4za'>ADDRESS QR</a> <a href='dogecoin:DEHfgFYKL97gFFoYHM7UejXBGKjLFzD4za?amount=123.00000000' target='_blank' class='btn btn-default btn-bs-widget'>PAYMENT REQUEST URL</a></p><p>(and thank you for your very specific donation)</p>"
             
-            >CUSTOM DONATE</a>
+            >CUSTOM DONATE</script>
             <hr />
             <p>Simply add the <code>bs-donate</code> class to any element on pages with the blockstrap <code><a href="#">widgets</a></code> module activated</p>
             <hr />
@@ -137,11 +140,12 @@
             <h3 class="tagline">ACCOUNTS</h3>
             <p class="description">(click button to open accounts window)</p>
             <hr />
-            <a href="#" class="btn btn-primary btn-bs-widget bs-accounts-modal" target="_blank"
+            <script src="blockstrap/js/widget.js"
             
-               data-salt="unique-bs-widget-salt-001"
+                data-type="btn-accounts_modal"
+                data-salt="unique-bs-widget-salt-001"
             
-            >CHECK ACCOUNTS</a>
+            >CHECK ACCOUNTS</script>
             <hr />
             <p>Simply add the <code>bs-accounts</code> class to any element on pages with the blockstrap <code><a href="#">widgets</a></code> module activated</p>
             <hr />
@@ -242,7 +246,9 @@
     </div>
 </div>
     
-<!-- INCLUDE REQUIRED DEPENDENCIES MANUALLY -->
+<!-- 
+
+INCLUDE REQUIRED DEPENDENCIES MANUALLY
 <script src="blockstrap/js/dependencies/jquery.min.js"></script>
 <script src="blockstrap/js/dependencies/bootstrap.min.js"></script>
 <script src="blockstrap/js/dependencies/crypto.js"></script>
@@ -251,13 +257,13 @@
 <script src="blockstrap/js/dependencies/qrcode.js"></script>
 <script src="blockstrap/js/dependencies/mustache.js"></script>
     
-<!-- INCLUDE BS FRAMEWORK -->
+INCLUDE BS FRAMEWORK
 <script src="options.js"></script>
 <script src="blockstrap/js/widget.options.js"></script>
 <script src="blockstrap/js/blockstrap.js"></script>
-<!-- PLEASE NOTE YOU CAN NOW SET INSTALL TO FALSE IN OPTIONS -->
+PLEASE NOTE YOU CAN NOW SET INSTALL TO FALSE IN OPTIONS
     
-<!-- INCLUDE REQUIRED MODULES MANUALLY -->
+INCLUDE REQUIRED MODULES MANUALLY
 <script src="blockstrap/js/modules/api.js"></script>
 <script src="blockstrap/js/modules/accounts.js"></script>
 <script src="blockstrap/js/modules/data.js"></script>
@@ -265,8 +271,10 @@
 <script src="blockstrap/js/modules/blockchains.js"></script>
 <script src="blockstrap/js/modules/widgets.js"></script>
     
-<!-- ONE FILE TO EVENTUALLY REPLACE THEM ALL -->
+ONE FILE TO EVENTUALLY REPLACE THEM ALL
 <script src="blockstrap/js/widget.js"></script>
+
+-->
 
 </body>
 </html>
