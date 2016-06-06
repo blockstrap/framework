@@ -223,7 +223,7 @@
         {
             $.each(accounts, function(key, account)
             {
-                if(account.key)
+                if(account.keys)
                 {
                     if(account.txs && blockstrap_functions.array_length(account.txs) > 0)
                     {
@@ -270,7 +270,8 @@
                     {
                         this_account = $.fn.blockstrap.accounts.get(values.id);
                         if(
-                            typeof this_account.blockchains != 'undefined'
+                            typeof this_account != 'undefined'
+                            && typeof this_account.blockchains != 'undefined'
                             && typeof this_account.blockchains[tx.blockchain] != 'undefined'
                             && typeof this_account.blockchains[tx.blockchain].address != 'undefined'
                             && this_account.blockchains[tx.blockchain].address == this_address

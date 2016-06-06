@@ -1,5 +1,4 @@
 var widget_options = {
-    id: 'widgets',
     app_id: 'widgets',
     install: true,
     skip_config: true,

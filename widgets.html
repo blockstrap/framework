@@ -180,7 +180,7 @@
         <form class="bs-update-api">
             <div class="row">
                 <div class="col-sm-4">
-                    <select class="form-control" id="api-provider">
+                    <select class="form-control" id="api-provider" autocomplete="off">
                         <option value="">-- Select API Provider --</option>
                         <option value="bcinfo">Blockchain.info (1 Chain)</option>
                         <option value="blockcypher">BlockCypher (3 Chains)</option>
@@ -195,7 +195,7 @@
                     <hr />
                 </div>
                 <div class="col-sm-5">
-                    <input type="text" class="form-control" placeholder="Add Optional API Key" id="api=key" />    
+                    <input type="text" class="form-control" placeholder="Add Optional API Key" id="api-key" autocomplete="off" />    
                     <hr />
                 </div>
                 <div class="col-sm-3">
@@ -245,36 +245,6 @@
         </div>
     </div>
 </div>
-    
-<!-- 
-
-INCLUDE REQUIRED DEPENDENCIES MANUALLY
-<script src="blockstrap/js/dependencies/jquery.min.js"></script>
-<script src="blockstrap/js/dependencies/bootstrap.min.js"></script>
-<script src="blockstrap/js/dependencies/crypto.js"></script>
-<script src="blockstrap/js/dependencies/sha3.js"></script>
-<script src="blockstrap/js/dependencies/bitcoinjs-lib.js"></script>
-<script src="blockstrap/js/dependencies/qrcode.js"></script>
-<script src="blockstrap/js/dependencies/mustache.js"></script>
-    
-INCLUDE BS FRAMEWORK
-<script src="options.js"></script>
-<script src="blockstrap/js/widget.options.js"></script>
-<script src="blockstrap/js/blockstrap.js"></script>
-PLEASE NOTE YOU CAN NOW SET INSTALL TO FALSE IN OPTIONS
-    
-INCLUDE REQUIRED MODULES MANUALLY
-<script src="blockstrap/js/modules/api.js"></script>
-<script src="blockstrap/js/modules/accounts.js"></script>
-<script src="blockstrap/js/modules/data.js"></script>
-<script src="blockstrap/js/modules/html.js"></script>
-<script src="blockstrap/js/modules/blockchains.js"></script>
-<script src="blockstrap/js/modules/widgets.js"></script>
-    
-ONE FILE TO EVENTUALLY REPLACE THEM ALL
-<script src="blockstrap/js/widget.js"></script>
-
--->
 
 </body>
 </html>
