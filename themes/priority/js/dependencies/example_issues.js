@@ -1,14 +1,14 @@
 var priority_authors = {
     api: {
-        href: 'http://docs.blockstrap.com/en/api/',
+        href: 'https://github.com/blockstrap/framework/tree/master/docs/en/api/',
         name: 'Blockstrap API Team'
     },
     framework: {
-        href: 'http://docs.blockstrap.com/en/framework/',
+        href: 'https://github.com/blockstrap/framework/tree/master/docs/en/framework/',
         name: 'Blockstrap Framework Team'
     },
     apps: {
-        href: 'http://docs.blockstrap.com/en/applications/',
+        href: 'https://github.com/blockstrap/framework/tree/master/docs/en/applications/',
         name: 'Blockstrap App Team'
     }
 }

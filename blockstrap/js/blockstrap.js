@@ -177,10 +177,10 @@ var blockstrap_core = function()
                     api = api_provider;
                 }
                 if(
-                    typeof $.fn.blockstrap.settings.apis.defaults[api] != 'undefined'
-                    && typeof $.fn.blockstrap.settings.apis.defaults[api][property] != 'undefined'
+                    typeof $.fn.blockstrap.settings.keys.apis[api] != 'undefined'
+                    && typeof $.fn.blockstrap.settings.keys.apis[api][property] != 'undefined'
                 ){
-                    result = $.fn.blockstrap.settings.apis.defaults[api][property];
+                    result = $.fn.blockstrap.settings.keys.apis[api][property];
                 }
                 return result;
             },

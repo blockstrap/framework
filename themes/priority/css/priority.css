@@ -106,14 +106,14 @@ a.active, a:hover {
     display: inline-block;
     position: relative;
     float: right;
-    width: 220px;
+    width: 260px;
 }
 .info {
     display: block;
     position: absolute;
     top: 0;
     left: 90px;
-    right: 230px;
+    right: 260px;
 }
 .info h4, .meta .values {
     display: block;
