@@ -821,6 +821,7 @@
         widgets.modals();
         widgets.options();
         widgets.payments();
+        widgets.switch();
         widgets.toggles();
     }
     
@@ -1130,6 +1131,31 @@
         {
             bs.core.modal(modal_title, contents);
         }
+    }
+    
+    widgets.switch = function()
+    {
+        $('body').on('submit', 'form.bs-update-api', function(e)
+        {
+            e.preventDefault();
+            var form = $(this);
+            var api = $(form).find('#api-provider').val();
+            var key = $(form).find('#api-key').val();
+            if(api)
+            {
+                $.fn.blockstrap.settings.default_api = api;
+                if(
+                    key
+                    && typeof $.fn.blockstrap.settings.apis.defaults[api] != 'undefined'
+                ){
+                    $.fn.blockstrap.settings.apis.defaults[api].key = key;
+                }
+            }
+            if(key)
+            {
+                $.fn.blockstrap.settings.default_key = key;
+            }
+        });
     }
     
     widgets.toggles = function()
