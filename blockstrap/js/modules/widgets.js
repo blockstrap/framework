@@ -12,6 +12,7 @@
 {
     var widgets = {};   
     var polls = {};
+    var bs_widget_init = false;
 
     widgets.accounts = function()
     {
@@ -258,7 +259,7 @@
                 $.fn.blockstrap.core.modal(title, contents);
             }
         });
-        $('body').on('click', '.bs-accounts-modal', function(e)
+        $('body').on('click', '.bs-accounts_modal', function(e)
         {
             e.preventDefault();
             var button = this;
@@ -811,6 +812,7 @@
     
     widgets.init = function()
     {
+        bs_widget_init = true;
         widgets.accounts();
         widgets.addresses();
         widgets.donations();
