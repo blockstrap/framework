@@ -288,19 +288,20 @@
                         }
                         $.each(account.blockchains, function(chain, obj)
                         {
-                            var blockchain = $.fn.blockstrap.settings.blockchains[chain].blockchain;
-                            var key_button = '<a href="#" class="btn btn-primary bs-account-key btn-xs" data-name="'+obj.name+'" data-address="'+obj.address+'" data-chain="'+chain+'" data-salt="'+app_salt+'">Keys</a>';
-                            var qr_button = '<a href="#" class="btn btn-success bs-qr btn-xs" data-content="'+obj.address+'">QR</a>';
-                            var send_button = '<a href="#" class="btn btn-warning bs-account-send btn-xs" data-name="'+obj.name+'" data-address="'+obj.address+'" data-chain="'+chain+'" data-salt="'+app_salt+'">Send</a>';
-                            var remove_button = '<a href="#" class="btn btn-danger bs-account-remove btn-xs" data-id="'+blockstrap_functions.slug(obj.name)+'">Remove</a>';
-                            var buttons = key_button + ' ' + qr_button + ' ' + send_button + ' ' + remove_button;
-                            contents+= '<div id="wrapper-'+blockstrap_functions.slug(obj.name)+'">';
-                            contents+= '<p><hr><strong>'+obj.name+'</strong> ('+blockchain+')<br /><br />'+buttons+'</p>';
-                            contents+= '<p class="small"><strong>Address</strong>: '+obj.address+'</p>';
-                            contents+= '<p><strong>TXs</strong>: <span class="bs-txs">'+obj.tx_count+'</span> | <strong>Balance</strong>: <span class="bs-balance">'+parseFloat(obj.balance / 100000000).toFixed(8)+'</span> | <strong>Total Received</strong>: <span class="bs-received">'+parseFloat(obj.received / 100000000).toFixed(8)+'</span></p>';
-                            contents+= '</div>';
-                            widgets.update('accounts', account, function()
+                            widgets.update('accounts', account, function(x)
                             {
+                                obj = $.fn.blockstrap.accounts.get(account.id, true, true)[chain];
+                                var blockchain = $.fn.blockstrap.settings.blockchains[chain].blockchain;
+                                var key_button = '<a href="#" class="btn btn-primary bs-account-key btn-xs" data-name="'+obj.name+'" data-address="'+obj.address+'" data-chain="'+chain+'" data-salt="'+app_salt+'">Keys</a>';
+                                var qr_button = '<a href="#" class="btn btn-success bs-qr btn-xs" data-content="'+obj.address+'">QR</a>';
+                                var send_button = '<a href="#" class="btn btn-warning bs-account-send btn-xs" data-name="'+obj.name+'" data-address="'+obj.address+'" data-chain="'+chain+'" data-salt="'+app_salt+'">Send</a>';
+                                var remove_button = '<a href="#" class="btn btn-danger bs-account-remove btn-xs" data-id="'+blockstrap_functions.slug(obj.name)+'">Remove</a>';
+                                var buttons = key_button + ' ' + qr_button + ' ' + send_button + ' ' + remove_button;
+                                contents+= '<div id="wrapper-'+blockstrap_functions.slug(obj.name)+'">';
+                                contents+= '<p><hr><strong>'+obj.name+'</strong> ('+blockchain+')<br /><br />'+buttons+'</p>';
+                                contents+= '<p class="small"><strong>Address</strong>: '+obj.address+'</p>';
+                                contents+= '<p><strong>TXs</strong>: <span class="bs-txs">'+obj.tx_count+'</span> | <strong>Balance</strong>: <span class="bs-balance">'+parseFloat(obj.balance / 100000000).toFixed(8)+'</span> | <strong>Total Received</strong>: <span class="bs-received">'+parseFloat(obj.received / 100000000).toFixed(8)+'</span></p>';
+                                contents+= '</div>';
                                 widgets.poll(60, 'acc_' + blockstrap_functions.slug(obj.name), function()
                                 {
                                     widgets.update('accounts', account, false, 0, chain);
@@ -553,20 +554,20 @@
                 var input = this;
                 var id = $(input).attr('id');
                 var value = $(input).val();
-                if(id == 'your_password_repeat')
+                if(id == 'your_password_repeat' || id == 'fake_password_field' || id == 'fake_username_field')
                 {
                     
                 }
                 else
                 {
-                    keys[id] = value;
+                    keys[id] = value
                 }
             });
             $.fn.blockstrap.core.salt(keys, function(salt, keys)
             {
                 $.fn.blockstrap.data.save('blockstrap', 'salt', salt, function()
                 {
-                    window.location.reload();
+                    $.fn.blockstrap.core.modals('close_all');
                 });
             }, $.fn.blockstrap.settings.id);
         });
@@ -797,7 +798,7 @@
             }
             if(typeof options.chain != 'undefined') chain = options.chain;
             if(typeof options.salt != 'undefined') app_salt = options.salt;
-            return '<form class="bs-new-account form-horizontal" data-chain="'+chain+'" data-salt="'+app_salt+'" data-callback="'+callback+'" data-print="'+print+'" data-save="'+save+'" data-more="'+more+'" data-check="'+check+'"><div class="form-group"><label for="name" class="control-label col-sm-3">Account Name</label><div class="col-sm-9"><input type="text" class="form-control" name="name" id="name" placeholder="This name gets used as part of the hashing process..." autocomplete="off" /></div></div><div class="form-group"><label class="control-label col-sm-3" for="salt">Your Unique Salt</label><div class="col-sm-9"><input type="text" class="form-control" placeholder="Type Salt or Click to Generate New" value="'+salt+'" name="salt" id="salt" autocomplete="off" />'+salt_button+'</div></div><div class="form-group"><label class="control-label col-sm-3" for="pass">Password</label><div class="col-sm-9"><input type="password" class="form-control" name="pass" id="pass" placeholder="Add a password for extra hashing strength!" autocomplete="off" /></div></div><div class="form-group"><label class="control-label col-sm-3">&nbsp;</label><div class="col-sm-9"><input type="password" class="form-control" placeholder="Repeat your password to be sure you typed it correctly..." name="password" id="password" autocomplte="off" /></div></div><div class="form-group"><button type="submit" class="btn btn-primary pull-right">Submit</button></div></form>';
+            return '<form class="bs-new-account form-horizontal" data-chain="'+chain+'" data-salt="'+app_salt+'" data-callback="'+callback+'" data-print="'+print+'" data-save="'+save+'" data-more="'+more+'" data-check="'+check+'"><!-- HACK FOR IE/FIREBUG --><div style="display:none;"><input type="text" id="fake_username_field"/><input type="password" id="fake_password_field"/></div>  <!-- END OF AUTO-COMPLETE HACK --><div class="form-group"><label for="name" class="control-label col-sm-3">Account Name</label><div class="col-sm-9"><input type="text" class="form-control" name="name" id="name" placeholder="This name gets used as part of the hashing process..." autocomplete="off" /></div></div><div class="form-group"><label class="control-label col-sm-3" for="salt">Your Unique Salt</label><div class="col-sm-9"><input type="text" class="form-control" placeholder="Type Salt or Click to Generate New" value="'+salt+'" name="salt" id="salt" autocomplete="off" />'+salt_button+'</div></div><div class="form-group"><label class="control-label col-sm-3" for="pass">Password</label><div class="col-sm-9"><input type="password" class="form-control" name="pass" id="pass" placeholder="Add a password for extra hashing strength!" autocomplete="off" /></div></div><div class="form-group"><label class="control-label col-sm-3">&nbsp;</label><div class="col-sm-9"><input type="password" class="form-control" placeholder="Repeat your password to be sure you typed it correctly..." name="password" id="password" autocomplte="off" /></div></div><div class="form-group"><button type="submit" class="btn btn-primary pull-right">Submit</button></div></form>';
         }
         else if(type == 'qr')
         {

@@ -145,6 +145,10 @@ var blockstrap_core = function()
             api: function(default_service)
             {
                 api = 'blockstrap';
+                if(typeof $.fn.blockstrap.settings.default_api != 'undefined')
+                {
+                    api = $.fn.blockstrap.settings.default_api;
+                }
                 if(typeof default_service != 'undefined') api = default_service;
                 if(
                     typeof $.fn.blockstrap.api != 'undefined'
@@ -1257,7 +1261,9 @@ var blockstrap_core = function()
                 {
                     if(action === 'close_all')
                     {
-                        $($.fn.blockstrap.element).find('.modal').each(function(i)
+                        var space = $.fn.blockstrap.element;
+                        if(!space ||space.length < 1) space = 'body';
+                        $(space).find('.modal').each(function(i)
                         {
                             $(this).modal('hide');
                         });
@@ -3071,6 +3077,6 @@ var blockstrap_functions = {
 var blockstrap_js_scripts;
 document.addEventListener('DOMContentLoaded', function()
 {
-    blockstrap_functions.initialize();
+    //blockstrap_functions.initialize();
 });
-//blockstrap_functions.initialize();
+blockstrap_functions.initialize();
