@@ -177,7 +177,8 @@ var blockstrap_core = function()
                     api = api_provider;
                 }
                 if(
-                    typeof $.fn.blockstrap.settings.keys.apis[api] != 'undefined'
+                    typeof $.fn.blockstrap.settings.keys != 'undefined'
+                    && typeof $.fn.blockstrap.settings.keys.apis[api] != 'undefined'
                     && typeof $.fn.blockstrap.settings.keys.apis[api][property] != 'undefined'
                 ){
                     result = $.fn.blockstrap.settings.keys.apis[api][property];
