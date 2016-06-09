@@ -6137,17 +6137,6 @@ HEADER
   height: 40px;
   border-radius: calc(20px);
 }
-.blockstrap-wrapper #navigation {
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 250px;
-  height: 60px;
-  padding-left: 20px;
-  padding-right: 20px;
-  position: fixed;
-}
 .blockstrap-wrapper #navigation a {
   outline: 0;
 }
@@ -6216,10 +6205,9 @@ FORMS
   display: block;
   position: fixed;
   right: 0;
-  left: calc(50px);
-  right: calc(50px);
-  padding-left: calc(10px);
-  padding-right: calc(10px);
+  left: 0;
+  padding-left: 10px;
+  padding-right: 10px;
   top: 7px;
   z-index: 999999;
 }
@@ -6748,49 +6736,7 @@ JUMBOTRON
 .blockstrap-wrapper .panel-body.padless .jumbotron {
   padding: 20px;
 }
-/*
 
-HIDDEN MENU
-
-*/
-.blockstrap-wrapper #navigation {
-  display: block;
-  position: fixed;
-  overflow-y: auto;
-  overflow-x: hidden;
-  top: 0;
-  padding-top: calc(80px);
-  padding-left: 20px;
-  padding-right: 20px;
-  left: 250px;
-  bottom: 0;
-  right: 0;
-  width: auto;
-  height: auto;
-  z-index: 1;
-  background: black;
-}
-.blockstrap-wrapper #navigation a {
-  display: block;
-  position: relative;
-  padding: 20px 0;
-  border-top: 1px dotted #111e27;
-}
-.blockstrap-wrapper #navigation a:first-child {
-  border-top: none;
-}
-.blockstrap-wrapper #navigation:before {
-  content: "";
-  display: block;
-  position: fixed;
-  left: 250px;
-  right: 0;
-  top: 0;
-  height: 60px;
-  width: 100%;
-  z-index: 9;
-  background: #475862;
-}
 /*
 
 TABLES
@@ -7297,6 +7243,47 @@ REMEMBER TO REMOVE FROM MAIN CSS IF RESET HERE FIRST
   margin-left: calc(10px);
 }
 
+ html .blockstrap-wrapper #navigation,
+  body .blockstrap-wrapper #navigation {
+    background: transparent;
+    display: block;
+    position: fixed;
+    right: 0;
+    margin: -3px 0 0 15px;
+    height: 60px;
+    z-index: 99999;
+  }
+  html .blockstrap-wrapper #navigation a.nav-links,
+  body .blockstrap-wrapper #navigation a.nav-links {
+    font-size: 11px;
+    display: inline-block;
+    position: relative;
+    padding: 8px 15px;
+    margin: 12px 5px 0 0;
+    text-transform: uppercase;
+    color: #ededed;
+    background: transparent;
+    border: 1px solid transparent;
+  }
+  html .blockstrap-wrapper #navigation a.nav-links:hover,
+  body .blockstrap-wrapper #navigation a.nav-links:hover {
+    color: #ffff99;
+    background: #2f2f2f;
+    border-color: #000000;
+  }
+  html .blockstrap-wrapper #navigation a.nav-links.active:hover,
+  body .blockstrap-wrapper #navigation a.nav-links.active:hover,
+  html .blockstrap-wrapper #navigation a.nav-links.active,
+  body .blockstrap-wrapper #navigation a.nav-links.active {
+    color: #aaaaaa;
+    background: #2b3f4b;
+    border-color: #111e27;
+  }
+  html .blockstrap-wrapper #navigation a.nav-links.active:hover,
+  body .blockstrap-wrapper #navigation a.nav-links.active:hover {
+    color: #ffff99;
+  }
+
 /*
 
 FUNKY SIDEBARS ON MOBILE
@@ -7752,11 +7739,6 @@ body .blockstrap-wrapper {
   body .blockstrap-wrapper header #sidebar-toggle {
     display: none;
   }
-  html .blockstrap-wrapper #search-form,
-  body .blockstrap-wrapper #search-form {
-    left: calc(300px);
-    right: 20px;
-  }
   html .blockstrap-wrapper #sidebar .sidebar-wrapper,
   body .blockstrap-wrapper #sidebar .sidebar-wrapper {
     position: absolute;
@@ -7796,59 +7778,6 @@ body .blockstrap-wrapper {
   html .blockstrap-wrapper #main-content .panel-wrapper.col-md-6,
   body .blockstrap-wrapper #main-content .panel-wrapper.col-md-6 {
     width: 50%;
-  }
-  html .blockstrap-wrapper #navigation,
-  body .blockstrap-wrapper #navigation {
-    background: transparent;
-    display: block;
-    top: 0;
-    left: 250px;
-    right: 0;
-    padding-top: 0;
-    height: 60px;
-    z-index: 99999;
-  }
-  html .blockstrap-wrapper #navigation a.nav-links,
-  body .blockstrap-wrapper #navigation a.nav-links {
-    font-size: 11px;
-    display: inline-block;
-    position: relative;
-    padding: 8px 15px;
-    margin: 12px 5px 0 0;
-    text-transform: uppercase;
-    color: #ededed;
-    background: transparent;
-    border: 1px solid transparent;
-  }
-  html .blockstrap-wrapper #navigation a.nav-links:hover,
-  body .blockstrap-wrapper #navigation a.nav-links:hover {
-    color: #ffff99;
-    background: #2f2f2f;
-    border-color: #000000;
-  }
-  html .blockstrap-wrapper #navigation a.nav-links.active:hover,
-  body .blockstrap-wrapper #navigation a.nav-links.active:hover,
-  html .blockstrap-wrapper #navigation a.nav-links.active,
-  body .blockstrap-wrapper #navigation a.nav-links.active {
-    color: #aaaaaa;
-    background: #2b3f4b;
-    border-color: #111e27;
-  }
-  html .blockstrap-wrapper #navigation a.nav-links.active:hover,
-  body .blockstrap-wrapper #navigation a.nav-links.active:hover {
-    color: #ffff99;
-  }
-  html .blockstrap-wrapper #search-form,
-  body .blockstrap-wrapper #search-form {
-    left: auto;
-    right: 0;
-    padding-left: 0;
-    padding-right: 20px;
-    width: 300px;
-  }
-  html .blockstrap-wrapper #navigation:before,
-  body .blockstrap-wrapper #navigation:before {
-    display: none;
   }
   html .blockstrap-wrapper .jumbotron-contents .btn-table-filter,
   body .blockstrap-wrapper .jumbotron-contents .btn-table-filter {

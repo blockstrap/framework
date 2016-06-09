@@ -44,50 +44,12 @@
             "text": "Contacts"
         },
         {
-            "id": "settings",
-            "css": "btn-page",
-            "href": "#settings",
-            "text": "Settings"
-        },
-        {
             "id": "docs",
             "css": "",
             "href": "https://github.com/blockstrap/framework/tree/master/docs/en",
             "text": "Help"
         }
     ],
-    "sidebar": {
-        "actions": [
-            {
-                "id": "nu-send-payment",
-                "css": "btn btn-primary btn-sm",
-                "href": "#send",
-                "text": "Send Money",
-                "data": [
-                    {
-                        "key": "toggle",
-                        "value": "modal"
-                    },
-                    {
-                        "key": "target",
-                        "value": "#send-modal"
-                    }
-                ]
-            },
-            {
-                "id": "logout",
-                "css": "btn btn-default btn-sm btn-logout",
-                "href": "#logout",
-                "text": "Logout"
-            }
-        ],
-        "total": {
-            "func": "total"
-        },
-        "accounts": {
-            "func": "balances"
-        }
-    },
     "dashboard": {
         "panels": [
             {
@@ -100,7 +62,7 @@
                         {
                             "title": "Welcome back {{user.name}}",
                             "intro": "Here is an overview of your recent accounts and the bitcoin markets.",
-                            "html": "Blockstrap is still in beta! Please read out <a href='https://github.com/blockstrap/framework/tree/master/docs/en/applications/wallet/security/'>beta / security disclaimer</a> before getting started.",
+                            "html": "You are currently communicating with the blockchains via {{user.api}} and have <a href='#accounts' class='btn-page'>{{user.accounts}}</a> and <a href='#contacts' class='btn-page'>{{user.contacts}}</a> stored on this device",
                             "buttons": [
                                 {
                                     "href": "#",

@@ -14,7 +14,7 @@
                         {
                             "title": "Your Accounts",
                             "intro": "These are all the different accounts you have in different blockchains. More advanced filtering coming soon!",
-                            "html": "More information on <a href='https://github.com/blockstrap/framework/tree/master/docs/en/applications/wallet/accounts/'>accounts</a> is available in our <a href='https://github.com/blockstrap/framework/tree/master/docs/en'>documentation</a>.",
+                            "html": "You are currently communicating with the blockchains via {{user.api}} and have <a href='#accounts' class='btn-page'>{{user.accounts}}</a> and <a href='#contacts' class='btn-page'>{{user.contacts}}</a> stored on this device",
                             "buttons": [
                                 {
                                     "href": "#",

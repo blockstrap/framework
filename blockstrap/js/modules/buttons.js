@@ -1530,7 +1530,7 @@
                 var merged_options = $.extend({}, current_options, options);
                 bs.data.save('blockstrap', 'options', merged_options, function()
                 {
-
+                    
                 });
             });
             
@@ -1553,7 +1553,115 @@
             {
                 $.fn.blockstrap.api.api_service = options.api_service
             }
-            if(
+            if(continue_salting)
+            {
+                var saved_salt = bs.settings.id;
+                if(localStorage.getItem('nw_blockstrap_salt'))
+                {
+                    saved_salt = localStorage.getItem('nw_blockstrap_salt');
+                    if($bs.json(saved_salt)) saved_salt = $.parseJSON(saved_salt);
+                }
+                bs.core.salt(modules, function(salt, keys)
+                {
+                    bs.data.find('blockstrap', 'keys', function(stored_keys)
+                    {
+                        var new_keys = $.merge($.merge([], stored_keys), keys);
+                        bs.data.save('blockstrap', 'keys', new_keys, function()
+                        {
+                            bs.data.save('blockstrap', 'salt', salt, function()
+                            {
+                                $("html, body").animate({ scrollTop: 0 }, 350);
+                                if(current_step >= steps)
+                                {
+                                    
+                                    if(
+                                        wallet 
+                                        && wallet.wallet_blockchain
+                                        && wallet.wallet_name 
+                                        && wallet.wallet_password
+                                        && !wallet.cancel
+                                    )
+                                    {
+                                        $.fn.blockstrap.core.loading('CREATING ACCOUNT');
+                                        bs.accounts.new(
+                                            wallet.wallet_blockchain, 
+                                            wallet.wallet_name,
+                                            wallet.wallet_password,
+                                            wallet,
+                                            function(account)
+                                            {
+                                                // INSTALL CONFIGURED CONTACTS IF AVAILABLE
+                                                if($.isArray(bs.settings.contacts))
+                                                {
+                                                    var contacts = bs.settings.contacts;
+                                                    $.each(contacts, function(k, contact)
+                                                    {
+                                                        bs.contacts.new(
+                                                            contact.name, 
+                                                            contact.blockchains,
+                                                            false,
+                                                            contact,
+                                                            function()
+                                                            {
+                                                                // And then?
+                                                            },
+                                                            true // TODO: FIX THIS DIRTY HACK !!!
+                                                        );
+                                                    });
+                                                }
+
+                                                /* NEED TO RESET THE INDEX HTML AND DATA */
+                                                bs.templates.render(bs.settings.page_base, function()
+                                                {
+                                                    $("html, body").animate({ scrollTop: 0 }, 350, function()
+                                                    {
+                                                        bs.core.loader('close');
+                                                        $('.bs.loading').removeClass('loading');
+                                                    });
+                                                }, true);
+                                            }
+                                        )
+                                    }
+                                    else
+                                    {
+                                        /* NEED TO RESET THE INDEX HTML AND DATA */
+                                        bs.templates.render(bs.settings.page_base, function()
+                                        {
+
+                                        }, true);
+                                    }
+                                }
+                                else
+                                {
+                                    bs.core.get(data_url, 'json', function(results)
+                                    { 
+                                        res = {};
+                                        if($.isPlainObject(results))
+                                        {
+                                            res = results;
+                                            res.user = false;
+                                        }
+                                        res.setup = {};
+                                        res.setup.func = 'setup';
+                                        res.setup.step = next_step;
+                                        var data = bs.core.filter(res);
+                                        bs.core.get(html_url, 'html', function(html)
+                                        { 
+                                            var page = Mustache.render(html, data);
+                                            var paged = bs.templates.filter(page);
+                                            $(bs.element).html('');
+                                            $(bs.element).append(paged);
+                                            bs.core.ready();
+                                            $('.bs.loading').removeClass('loading');
+                                        });
+                                    });
+                                }
+                            });
+                        });
+                    });
+                }, saved_salt);
+            }
+            else if(
                 wallet 
                 && wallet.wallet_blockchain
                 && wallet.wallet_name 
@@ -1600,62 +1708,6 @@
                         }, true);
                     }
                 )
-            }
-            else if(continue_salting)
-            {
-                var saved_salt = bs.settings.id;
-                if(localStorage.getItem('nw_blockstrap_salt'))
-                {
-                    saved_salt = localStorage.getItem('nw_blockstrap_salt');
-                    if($bs.json(saved_salt)) saved_salt = $.parseJSON(saved_salt);
-                }
-                bs.core.salt(modules, function(salt, keys)
-                {
-                    bs.data.find('blockstrap', 'keys', function(stored_keys)
-                    {
-                        var new_keys = $.merge($.merge([], stored_keys), keys);
-                        bs.data.save('blockstrap', 'keys', new_keys, function()
-                        {
-                            bs.data.save('blockstrap', 'salt', salt, function()
-                            {
-                                $("html, body").animate({ scrollTop: 0 }, 350);
-                                if(current_step >= steps)
-                                {
-                                    /* NEED TO RESET THE INDEX HTML AND DATA */
-                                    bs.templates.render(bs.settings.page_base, function()
-                                    {
-                                        
-                                    }, true);
-                                }
-                                else
-                                {
-                                    bs.core.get(data_url, 'json', function(results)
-                                    { 
-                                        res = {};
-                                        if($.isPlainObject(results))
-                                        {
-                                            res = results;
-                                            res.user = false;
-                                        }
-                                        res.setup = {};
-                                        res.setup.func = 'setup';
-                                        res.setup.step = next_step;
-                                        var data = bs.core.filter(res);
-                                        bs.core.get(html_url, 'html', function(html)
-                                        { 
-                                            var page = Mustache.render(html, data);
-                                            var paged = bs.templates.filter(page);
-                                            $(bs.element).html('');
-                                            $(bs.element).append(paged);
-                                            bs.core.ready();
-                                            $('.bs.loading').removeClass('loading');
-                                        });
-                                    });
-                                }
-                            });
-                        });
-                    });
-                }, saved_salt);
             }
             else
             {

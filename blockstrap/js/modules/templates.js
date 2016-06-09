@@ -169,11 +169,30 @@
                     tx_url+= '?showtxnio=1&'+key_name+'=' + api_key;
                 }
             }
+            
+            var app_salt = CryptoJS.SHA3((new Date).getTime() + '_' + navigator.userAgent, { outputLength: 512 }).toString();
+            if(typeof $.fn.blockstrap.settings.app_salt != 'undefined')
+            {
+                app_salt = CryptoJS.SHA3($.fn.blockstrap.settings.app_salt, { outputLength: 512 }).toString();
+            }
+            
+            var accounts = $.fn.blockstrap.accounts.get();
+            var contacts = $.fn.blockstrap.contacts.get();
+            var account_count = blockstrap_functions.array_length(accounts);
+            var contact_count = blockstrap_functions.array_length(contacts);
+            if(account_count > 1 || account_count < 1) account_count = '' + account_count + ' accounts';
+            else account_count = '' + account_count + ' account';
+            if(contact_count > 1 || contact_count < 1) contact_count = '' + contact_count + ' contacts';
+            else contact_count = '' + contact_count + ' contact';
+            
             var placeholders = [
                 'urls.root', 
                 'urls.tx',
                 'urls.address',
                 'user.name',
+                'user.api',
+                'user.accounts',
+                'user.contacts',
                 'vars.txid',
                 'vars.key',
                 'vars.txs',
@@ -190,13 +209,17 @@
                 'address.tx_count',
                 'address.balance',
                 'address.hidden',
-                'tx.hidden'
+                'tx.hidden',
+                'salt'
             ];
             var replacements = [
                 $.fn.blockstrap.settings.base_url,
                 tx_url,
                 address_url,
                 name,
+                $.fn.blockstrap.settings.apis.available[$.fn.blockstrap.core.api()],
+                account_count,
+                contact_count,
                 txid,
                 key,
                 current_txs,
@@ -213,7 +236,8 @@
                 account.tx_count,
                 parseInt(account.balance) / 100000000 + ' ' + add_blockchain,
                 address_hidden,
-                tx_hidden
+                tx_hidden,
+                app_salt
             ];
         }
         
