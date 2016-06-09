@@ -37,6 +37,18 @@ html .blockstrap-wrapper #navigation a.nav-links.active:hover {
 
 /*
 
+FONTS 
+
+*/
+h1, h2, h3, h4, h5, h6,
+.panel-heading, .panel-value,
+th .cell,
+.exo {
+    font-family: 'Exo', sans-serif;
+}
+
+/*
+
 BORDERS
 
 */
@@ -58,6 +70,9 @@ FONTS
 */
 html .blockstrap-wrapper .panel {
     color: #BBB;
+}
+html .blockstrap-wrapper #main-content .panel-body .jumbotron h1 {
+    color: #FFFFDD;
 }
 
 
@@ -82,12 +97,15 @@ html .blockstrap-wrapper #navigation a.nav-links.active:hover,
 
 /*
 
-GARDIENTS
+GRADIENTS
 
 */
 html .blockstrap-wrapper #main-content .btn.btn-primary,
+html .blockstrap-wrapper #main-content .btn.btn-default,
+html .blockstrap-wrapper #main-content .btn.btn-success,
 html .blockstrap-wrapper .btn.btn-primary,
 html .blockstrap-wrapper .btn.btn-default,
+html .blockstrap-wrapper .btn.btn-success,
 html .blockstrap-wrapper .modal .btn.btn-success,
 html .blockstrap-wrapper #main-content .btn.btn-default {
     color: #000;
@@ -101,6 +119,7 @@ html .blockstrap-wrapper #main-content .btn.btn-default {
 }
 html .blockstrap-wrapper #main-content .btn.btn-primary:hover,
 html .blockstrap-wrapper #main-content .btn.btn-default:hover,
+html .blockstrap-wrapper #main-content .btn.btn-success:hover,
 html .blockstrap-wrapper .modal .btn.btn-success:hover,
 html .blockstrap-wrapper .btn.btn-primary:hover,
 html .blockstrap-wrapper .btn.btn-default:hover {
@@ -116,7 +135,7 @@ html .blockstrap-wrapper #main-content .btn.btn-danger,
 html .blockstrap-wrapper .btn.btn-danger {
     background: transparent;
     border: 1px solid #8c0000;
-    color: #bbb;
+    color: #FFFFDD;
     font-weight: normal;
     opacity: 0.6;
 }
@@ -127,6 +146,13 @@ html .blockstrap-wrapper .btn.btn-danger:hover {
     color: #0085B2;
     font-weight: normal;
     opacity: 1;
+}
+html .blockstrap-wrapper .dropup .dropdown-menu,
+html .blockstrap-wrapper .dropup .dropdown-menu li a {
+    background: #000 !important;
+}
+html .dropdown-menu .divider {
+    background-color: #333;
 }
 
 /*
@@ -258,6 +284,10 @@ html .blockstrap-wrapper #send-payments .form-group select {
     border: 1px solid #333;
     color: #0085B2
 }
+html .modal .close {
+    color: #FFFFDD;
+    font-family: sans-serif;
+}
 
 /*
 
@@ -266,6 +296,10 @@ JUMBOTRON
 */
 .blockstrap-wrapper .panel-body .jumbotron {
     background: #000;
+}
+html .blockstrap-wrapper .panel .panel-body .jumbotron .intro,
+html .blockstrap-wrapper #main-content .panel .panel-body .jumbotron .intro {
+    padding: 10px 0 0;
 }
 
 /*
@@ -295,4 +329,19 @@ FORMS
     background: #000;
     border: 1px solid #333;
     color: #00BFFF;
+}
+
+/*
+
+RECENT TXS
+
+*/
+html .blockstrap-wrapper #main-content .list-item-content a {
+    color: #FFFFDD;
+}
+html .blockstrap-wrapper #main-content .list-item-content a:hover {
+    color: #FFF;
+}
+.panel .list-group-item {
+    border: 1px solid #000;
 }

@@ -44,6 +44,12 @@
             "text": "Contacts"
         },
         {
+            "id": "send",
+            "css": "btn-page",
+            "href": "#send",
+            "text": "Send"
+        },
+        {
             "id": "docs",
             "css": "",
             "href": "https://github.com/blockstrap/framework/tree/master/docs/en",
