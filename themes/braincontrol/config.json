@@ -1,6 +1,7 @@
 {
     "theme": "default",
-    "app_id": "wallet",
+    "app_id": "braincontrol",
+    "styles": false,
     "plugins": [
         "markets"
     ]

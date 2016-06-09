@@ -14,7 +14,7 @@
                         {
                             "title": "Your Contacts",
                             "intro": "These are your contacts. Contacts make it easier to send money to addresses where you may send more than once.",
-                            "html": "More information on <a href='https://github.com/blockstrap/framework/tree/master/docs/en/applications/wallet/contacts/'>contacts</a> is available in our <a href='https://github.com/blockstrap/framework/tree/master/docs/en/'>documentation</a>.",
+                            "html": "You are currently communicating with the blockchains via {{user.api}} and have <a href='#accounts' class='btn-page'>{{user.accounts}}</a> and <a href='#contacts' class='btn-page'>{{user.contacts}}</a> stored on this device",
                             "buttons": [
                                 {
                                     "href": "#",

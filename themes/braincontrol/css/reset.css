@@ -1,0 +1,47 @@
+/*
+
+RESET BLOCKSTRAP/BOOTSTRAP
+
+*/
+.blockstrap-wrapper header,
+.blockstrap-wrapper #navigation::before,
+html .blockstrap-wrapper #navigation, 
+body .blockstrap-wrapper #navigation,
+html body .blockstrap-wrapper #main-content {
+    left: 0;
+    top: 0;
+    padding-top: 5px;
+}
+
+html .blockstrap-wrapper #navigation {
+    z-index: 99999 !important;
+}
+
+/*
+
+RESET BLOCKSTRAP/BOOTSTRAP RESPONSIVENESS
+
+*/
+@media (min-width: 661px) {
+    html body .blockstrap-wrapper #main-content {
+        left: 0;
+        top: 0;
+        padding-top: 80px;
+    }
+    html .blockstrap-wrapper #search-form,
+    body .blockstrap-wrapper #search-form {
+        left: auto;
+        right: 0;
+        padding-left: 0;
+        padding-right: 20px;
+        width: 300px;
+    }
+}
+@media (max-width: 661px) {
+    html .blockstrap-wrapper form#search-form,
+    .blockstrap-wrapper header,
+    .blockstrap-wrapper #navigation::before,
+    html .blockstrap-wrapper #navigation {
+        display: none;
+    }
+}

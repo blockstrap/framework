@@ -1,0 +1,298 @@
+/*
+
+BACKGROUNDS
+
+*/
+html .blockstrap-wrapper #main-content,
+html .blockstrap-wrapper .modal .modal-dialog .modal-body,
+html .blockstrap-wrapper .modal .modal-dialog .modal-content,
+html, body, .blockstrap-wrapper, #main-content {
+    background: #222;
+}
+.blockstrap-wrapper #main-content .panel,
+.blockstrap-wrapper #main-content .panel .panel-heading,
+.blockstrap-wrapper #main-content .list-group,
+.blockstrap-wrapper #main-content .list-group .list-group-item,
+.blockstrap-wrapper #main-content .panel .panel-body .panel,
+html .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(2n),
+html .blockstrap-wrapper .panel .panel-body .panel:nth-child(2n),
+html .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(4n+4),
+html .blockstrap-wrapper .panel .panel-body .panel:nth-child(4n+4),
+html .blockstrap-wrapper #main-content .panel .panel-body .panel:nth-child(4n+3),
+html .blockstrap-wrapper .panel .panel-body .panel:nth-child(4n+3),
+.blockstrap-wrapper #main-content .panel .panel-body {
+    background: #333;
+}
+.blockstrap-wrapper .panel-body form .form-group:nth-child(2n),
+.blockstrap-wrapper .panel-body form .form-group,
+.blockstrap-wrapper table, 
+.blockstrap-wrapper #main-content table.table tbody tr td, 
+.blockstrap-wrapper table.table tbody tr td,
+.blockstrap-wrapper #main-content table.table tbody tr:nth-child(2n+1) td, 
+.blockstrap-wrapper table.table tbody tr:nth-child(2n+1) td,
+html .blockstrap-wrapper #navigation a.nav-links.active,
+html .blockstrap-wrapper #navigation a.nav-links.active:hover {
+    background: transparent;
+}
+
+/*
+
+BORDERS
+
+*/
+.panel-default,
+.panel-default > .panel-heading,
+html .blockstrap-wrapper #main-content .panel .panel-body .panel,
+.panel-default > .panel-body {
+    border-color: transparent !important;
+}
+.blockstrap-wrapper #main-content table.table, .blockstrap-wrapper table.table,
+hr {
+    border-color: #333;
+}
+
+/*
+
+FONTS
+
+*/
+html .blockstrap-wrapper .panel {
+    color: #BBB;
+}
+
+
+/*
+
+BRIGHT BLUE
+
+*/
+html .blockstrap-wrapper #navigation a.nav-links:hover,
+html .blockstrap-wrapper #navigation a.nav-links.active,
+html .blockstrap-wrapper #navigation a.nav-links.active:hover,
+.blockstrap-wrapper #main-content .panel .panel-body .panel .panel-value,
+.blockstrap-wrapper #main-content a {
+    color: #00BFFF;
+}
+.blockstrap-wrapper #main-content a:hover {
+    color: #FFF;
+}
+.blockstrap-wrapper .panel-body .jumbotron {
+    border-left: 8px solid #00BFFF;
+}
+
+/*
+
+GARDIENTS
+
+*/
+html .blockstrap-wrapper #main-content .btn.btn-primary,
+html .blockstrap-wrapper .btn.btn-primary,
+html .blockstrap-wrapper .btn.btn-default,
+html .blockstrap-wrapper .modal .btn.btn-success,
+html .blockstrap-wrapper #main-content .btn.btn-default {
+    color: #000;
+    border: 2px solid #000;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#3ca3d6+0,00698c+100 */
+    background: rgb(60,163,214); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(60,163,214,1) 0%, rgba(0,105,140,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  rgba(60,163,214,1) 0%,rgba(0,105,140,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  rgba(60,163,214,1) 0%,rgba(0,105,140,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3ca3d6', endColorstr='#00698c',GradientType=0 ); /* IE6-9 */
+}
+html .blockstrap-wrapper #main-content .btn.btn-primary:hover,
+html .blockstrap-wrapper #main-content .btn.btn-default:hover,
+html .blockstrap-wrapper .modal .btn.btn-success:hover,
+html .blockstrap-wrapper .btn.btn-primary:hover,
+html .blockstrap-wrapper .btn.btn-default:hover {
+    background: #00698C;
+}
+
+/*
+
+BUTTONS
+
+*/
+html .blockstrap-wrapper #main-content .btn.btn-danger,
+html .blockstrap-wrapper .btn.btn-danger {
+    background: transparent;
+    border: 1px solid #8c0000;
+    color: #bbb;
+    font-weight: normal;
+    opacity: 0.6;
+}
+html .blockstrap-wrapper #main-content .btn.btn-danger:hover,
+html .blockstrap-wrapper .btn.btn-danger:hover {
+    background: transparent;
+    border: 1px solid #8c0000;
+    color: #0085B2;
+    font-weight: normal;
+    opacity: 1;
+}
+
+/*
+
+DARKER BLUE
+
+*/
+.blockstrap-wrapper #search-term {
+    color: #0085B2;
+    background: #222;
+}
+.blockstrap-wrapper #main-content .panel-body .dataTables_wrapper 
+.dataTables_paginate ul li.active a, 
+.blockstrap-wrapper .panel-body .dataTables_wrapper .dataTables_paginate ul li.active a {
+    background: #0085B2;
+}
+
+/*
+
+TABLES
+
+*/
+html .blockstrap-wrapper #main-content #contacts.panel,
+html .blockstrap-wrapper #main-content #contacts.panel .panel-body,
+html .blockstrap-wrapper #main-content #accounts.panel,
+html .blockstrap-wrapper #main-content #accounts.panel .panel-body {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+.blockstrap-wrapper #main-content table.table thead tr th, 
+.blockstrap-wrapper table.table thead tr th {
+    background: #000;
+    border-bottom-color: #0085B2;
+}
+.blockstrap-wrapper #main-content table.table thead tr th.sorting_asc, 
+.blockstrap-wrapper table.table thead tr th.sorting_asc, 
+.blockstrap-wrapper #main-content table.table thead tr th.sorting_desc, 
+.blockstrap-wrapper table.table thead tr th.sorting_desc {
+    background: #0085B2;
+}
+.table tr p.chains,
+.table tr:nth-child(2n+1) p.chains {
+    background: transparent;
+}
+.dataTables_wrapper.form-inline .form-control {
+    background: #000;
+    color: #AAA;
+    border: 1px solid #333;
+}
+.blockstrap-wrapper #main-content .panel-body .dataTables_wrapper .dataTables_paginate ul li a, 
+.blockstrap-wrapper .panel-body .dataTables_wrapper .dataTables_paginate ul li a {
+    background: #000;
+    border: 1px solid #333;
+}
+html .blockstrap-wrapper #main-content #accounts .dataTables_wrapper table.table .cell .btn.btn-xs.btn-success,
+html .blockstrap-wrapper #main-content #accounts .dataTables_wrapper table.table .cell .btn.btn-xs.btn-primary,
+.dataTables_wrapper table.table .cell .btn.btn-xs {
+    background: transparent;
+    border-color: transparent;
+    color: #FFF;
+}
+html .blockstrap-wrapper #main-content #accounts .dataTables_wrapper table.table .cell .btn.btn-xs.btn-success,
+html .blockstrap-wrapper #main-content #accounts .dataTables_wrapper table.table .cell .btn.btn-xs.btn-primary {
+    font-size: 16px;
+    margin: -4px -5px 0 8px;
+}
+.blockstrap-wrapper .panel-body form .form-group {
+    border-color: #000;
+}
+.blockstrap-wrapper .panel-body form label.control-label {
+    color: #ddd;
+}
+
+/*
+
+HEADERS
+
+*/
+.blockstrap-wrapper .modal .modal-dialog .modal-header,
+.blockstrap-wrapper header {
+    background: #000;
+    border-bottom: 1px solid #0085B2;
+}
+
+/*
+
+MODALS
+
+*/
+html .blockstrap-wrapper .modal::before {
+    background: #000;
+}
+html .blockstrap-wrapper .modal .modal-dialog .modal-header {
+    color: #00BFFF;
+}
+html .blockstrap-wrapper .modal .modal-dialog .modal-body {
+    color: #ddd;
+}
+html .blockstrap-wrapper .modal .modal-dialog .modal-footer,
+html .blockstrap-wrapper .modal .modal-dialog .modal-body .actions {
+    background: #000;
+    border-top: 1px solid #0085B2;
+}
+html .blockstrap-wrapper form.form-horizontal label.control-label {
+    background: #000;
+    color: #FFF;
+    font-weight: normal;
+    border-color: #000;
+}
+.blockstrap-wrapper .modal .modal-dialog .modal-body .qr-holder {
+    background: #000;
+    border-color: #333;
+}
+html .blockstrap-wrapper .modal .modal-dialog input,
+html .blockstrap-wrapper .modal .modal-dialog textarea,
+html .blockstrap-wrapper .modal .modal-dialog select,
+html .blockstrap-wrapper .modal .modal-dialog .modal-body form input, 
+html .blockstrap-wrapper .modal .modal-dialog .modal-body form textarea, 
+html .blockstrap-wrapper .modal .modal-dialog .modal-body form select {
+    background: #333;
+    color: #0085B2;
+    border-color: #000;
+}
+html .blockstrap-wrapper #send-payments .form-group input, 
+html .blockstrap-wrapper #send-payments .form-group textarea, 
+html .blockstrap-wrapper #send-payments .form-group select {
+    background: #000;
+    border: 1px solid #333;
+    color: #0085B2
+}
+
+/*
+
+JUMBOTRON
+
+*/
+.blockstrap-wrapper .panel-body .jumbotron {
+    background: #000;
+}
+
+/*
+
+PANELS
+
+*/
+.blockstrap-wrapper #main-content .panel .panel-heading {
+    background: #000;
+    border-bottom: 1px solid #0085B2 !important;
+    line-height: 33px;
+    color: #00BFFF;
+    font-weight: normal;
+}
+.panel-default,
+html .blockstrap-wrapper #main-content .panel .panel-body .panel {
+    border-color: #000 !important;
+}
+
+/*
+
+FORMS
+
+*/
+.blockstrap-wrapper .panel-body form .form-group .col-sm-9 input.form-control, 
+.blockstrap-wrapper .panel-body form .form-group .col-sm-9 select.form-control {
+    background: #000;
+    border: 1px solid #333;
+    color: #00BFFF;
+}
