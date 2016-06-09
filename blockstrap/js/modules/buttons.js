@@ -2031,7 +2031,7 @@
                                                     $.fn.blockstrap.core.loader('close');
                                                     var title = 'Sent ' + parseInt(to_amount) / 100000000 + ' ' + saved_account.blockchains[chain].type + ' to ' + to_address;
                                                     var base = $.fn.blockstrap.settings.base_url;
-                                                    var contents = '<p>Transaction ID: ' + tx.txid + '</p><p>You can <a href="' + base + '?txid=' + tx.txid + '#transaction">verify</a> your transaction using our internal explorer, or via a third-party service such as <a href="https://blockchains.io/' + blockchain + '/transaction/' + tx.txid + '">this</a>.</p>';
+                                                    var contents = '<p>Transaction ID: ' + tx.txid + '</p>';
                                                     contents+='<p>Please note that a '+(fee / 100000000)+' '+$.fn.blockstrap.settings.blockchains[blockchain].blockchain+' mining fee was also added to the transaction.</p>';
                                                     setTimeout(function()
                                                     {

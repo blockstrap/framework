@@ -48,6 +48,7 @@
             var from = blockstrap_functions.vars('from');
             var chain = blockstrap_functions.vars('chain');
             var current_txs = '<ul class="list-group"><li class="list-group-item"><div class="list-item-content">No transactions found in localStorage</div><a class="btn btn-xs disabled pull-right" href="">N/A</a></li></ul>';
+            if(!key) key = '';
             if(parseInt(blockstrap_functions.vars('amount')) > 0)
             {
                 amount = parseFloat(parseInt(blockstrap_functions.vars('amount')) / 100000000).toFixed(8);
