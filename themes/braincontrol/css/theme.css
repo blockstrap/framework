@@ -285,8 +285,13 @@ html .blockstrap-wrapper #send-payments .form-group select {
     color: #0085B2
 }
 html .modal .close {
-    color: #FFFFDD;
+    color: #FFFF99;
     font-family: sans-serif;
+    opacity: 0.8;
+}
+html .modal .close:hover {
+    color: #FFF;
+    opacity: 1;
 }
 
 /*
