@@ -12,6 +12,9 @@ html body .blockstrap-wrapper #main-content {
     top: 0;
     padding-top: 5px;
 }
+html body .blockstrap-wrapper #main-content {
+    padding-top: 80px;
+}
 
 html .blockstrap-wrapper #navigation {
     z-index: 99999 !important;
@@ -26,7 +29,6 @@ RESET BLOCKSTRAP/BOOTSTRAP RESPONSIVENESS
     html body .blockstrap-wrapper #main-content {
         left: 0;
         top: 0;
-        padding-top: 80px;
     }
     html .blockstrap-wrapper #search-form,
     body .blockstrap-wrapper #search-form {
@@ -34,14 +36,24 @@ RESET BLOCKSTRAP/BOOTSTRAP RESPONSIVENESS
         right: 0;
         padding-left: 0;
         padding-right: 20px;
-        width: 300px;
+        width: 250px;
     }
 }
 @media (max-width: 661px) {
-    html .blockstrap-wrapper form#search-form,
-    .blockstrap-wrapper header,
-    .blockstrap-wrapper #navigation::before,
     html .blockstrap-wrapper #navigation {
         display: none;
+    }
+    html .blockstrap-wrapper .panel-body .jumbotron .jumbotron-contents {
+        font-size: 15px;
+        line-height: 18px;
+    }
+    html .blockstrap-wrapper .panel-body .jumbotron .intro {
+        font-size: 18px;
+    }
+    html .blockstrap-wrapper .panel-body .jumbotron h1 {
+        font-size: 42px;
+    }
+    html .panel {
+        font-size: 125%;
     }
 }
