@@ -3,6 +3,6 @@
     "app_id": "braincontrol",
     "styles": false,
     "plugins": [
-        "markets"
+        "markets", "shapeshift"
     ]
 }
