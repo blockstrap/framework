@@ -51,11 +51,11 @@
                                 && blockchain.code.slice(-1) != 't'
                             ){
                                 obj.objects[0].fields[0].selects[0].values.push({
-                                    value: blockchain.code + '_' + blockchain.address + '_' + account.id,
+                                    value: blockchain.code + '-' + blockchain.address + '-' + account.id,
                                     text: account.name + ' > ' + blockchain.type
                                 });
                                 obj.objects[0].fields[2].selects[0].values.push({
-                                    value: blockchain.code + '_' + blockchain.address,
+                                    value: blockchain.code + '-' + blockchain.address,
                                     text: account.name + ' > ' + blockchain.type
                                 });
                             }
@@ -158,8 +158,8 @@
         $('body').on('change', 'form#bs-shapeshift #shift_from, form#bs-shapeshift #shift_to, form#bs-shapeshift #shift_amount', function(e)
         {
             var id = false;
-            var from = $('form#bs-shapeshift #shift_from').val().split('_');
-            var to = $('form#bs-shapeshift #shift_to').val().split('_');
+            var from = $('form#bs-shapeshift #shift_from').val().split('-');
+            var to = $('form#bs-shapeshift #shift_to').val().split('-');
             var amount = parseInt(parseFloat($('form#bs-shapeshift #shift_amount').val()) * 100000000);
             var from_code = from[0];
             var to_code = to[0];
@@ -212,7 +212,7 @@
             var to_minimum_display = parseFloat(to_minimum / 100000000).toFixed(8);
             var to_limit_display = parseFloat(to_limit / 100000000).toFixed(8);
             var amount = parseInt(parseFloat($(form).find('#shift_amount').val()) * 100000000);
-            var pw = $(form).find('#shift_pw');
+            var pw = $(form).find('#shift_pw').val();
             if(from_code && from_address && to_code && to_address && amount && to_fee && to_limit && to_minimum && pw && account_id)
             {
                 if(from_address != to_address)
@@ -234,6 +234,12 @@
                                         if(salt)
                                         {
                                             var account = $.fn.blockstrap.accounts.get(account_id);
+                                            if(
+                                                typeof account.blockchains != 'undefined'
+                                                && typeof account.blockchains[from_code] != 'undefined'
+                                            ){
+                                                account = account.blockchains[from_code];
+                                            }
                                             var fields = [
                                                 {
                                                     id: 'wallet_name',
@@ -246,7 +252,6 @@
                                             ];
                                             $.fn.blockstrap.accounts.verify(account, fields, function(verified, keys)
                                             {
-                                                console.log('keys', keys);
                                                 if(verified === true)
                                                 {
                                                     shapeshift.shift(pair, to_address, from_address, function(response)
@@ -268,8 +273,9 @@
                                                                     {
                                                                         title = 'Success';
                                                                         contents = '<p>We have sent your coins to shapeshift.</p>';
-                                                                        contents+= '<p>You may require your Transaction ID: ' + response.txid + '</p>';
+                                                                        contents+= '<p>You may require your Transaction ID:<br />' + response.txid + '</p>';
                                                                         contents+= '<p>You may also require your Order ID: ' + id + '</p>';
+                                                                        contents+= '<p>Please note that the conversion process typically takes between two to ten minutes, so please be patient...</p>';
                                                                     }
                                                                     else
                                                                     {
