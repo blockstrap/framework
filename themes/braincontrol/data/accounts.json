@@ -18,6 +18,11 @@
                             "buttons": [
                                 {
                                     "href": "#",
+                                    "css": "btn-danger btn-shapeshift",
+                                    "text": "Exchange Coins"
+                                },
+                                {
+                                    "href": "#",
                                     "css": "btn-primary",
                                     "text": "Add New Account",
                                     "attributes": [
