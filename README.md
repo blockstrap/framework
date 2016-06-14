@@ -87,3 +87,4 @@ Specific topics of interest include:
 * [Blockstrap Framework](docs/en/framework)
 * [Blockstrap Plugins](docs/en/plugins)
 * [Supported Blockchains](docs/en/blockchains)
+* __Embeddable Widgets__ (more documentation coming soon)
