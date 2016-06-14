@@ -84,7 +84,7 @@
                 if(!obj.value)
                 {
                     content+= 'N/A';
-                    obj.text = 'unable to connect to server';
+                    obj.text = 'unable to connect to source';
                 }
                 else 
                 {
