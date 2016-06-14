@@ -14,7 +14,7 @@ By default, it is configured to use the [BlockCypher API](http://blocksypher.com
 * [BlockCypher](http://blockcypher.com) (Supporting 3 Chains)
 * [Toshi](http://toshi.io) (Supporting 2 Chains)
 * [BlockTrail](http://blocktrail.com) (Supporting 2 Chains - __read only - no TX relay__)
-* __LocalQTs__ (only supported by QTs featuring watch-only addresses - __currently requires manual import of address to watch__)
+* __LocalQTs__ (only supported by QTs featuring watch-only addresses - __currently requires manual import of addresses__)
 
 We will also be adding support for the following APIs before officially re-launching:
 
