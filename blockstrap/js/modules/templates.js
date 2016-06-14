@@ -177,8 +177,17 @@
                 app_salt = CryptoJS.SHA3($.fn.blockstrap.settings.app_salt, { outputLength: 512 }).toString();
             }
             
-            var accounts = $.fn.blockstrap.accounts.get();
-            var contacts = $.fn.blockstrap.contacts.get();
+            var accounts = false;
+            var contacts = false; 
+            if(typeof $.fn.blockstrap.accounts != 'undefined')
+            {
+                accounts = $.fn.blockstrap.accounts.get();
+            }
+            if(typeof $.fn.blockstrap.contacts != 'undefined')
+            {
+                contacts = $.fn.blockstrap.contacts.get();
+            }
+            
             var account_count = blockstrap_functions.array_length(accounts);
             var contact_count = blockstrap_functions.array_length(contacts);
             if(account_count > 1 || account_count < 1) account_count = '' + account_count + ' accounts';
