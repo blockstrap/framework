@@ -45,6 +45,7 @@ This has enabled us to provide support for plugins and themes and allows develop
 We've also bundled the following plugins:
 
 * Market Conditions
+* Inline Shapeshift.io Coin Exchange
 * API Tests
 
 Everything is powered by one or more of the following interchangable [modules](docs/en/framework/modules/):
