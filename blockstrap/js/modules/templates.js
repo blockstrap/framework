@@ -172,9 +172,24 @@
             }
             
             var app_salt = CryptoJS.SHA3((new Date).getTime() + '_' + navigator.userAgent, { outputLength: 512 }).toString();
-            if(typeof $.fn.blockstrap.settings.app_salt != 'undefined')
-            {
-                app_salt = CryptoJS.SHA3($.fn.blockstrap.settings.app_salt, { outputLength: 512 }).toString();
+            if(
+                typeof $.fn.blockstrap.settings.app != 'undefined'
+                && typeof $.fn.blockstrap.settings.app.salt != 'undefined'
+            ){
+                var seed_to_use_for_salt = $.fn.blockstrap.settings.app.salt;
+                if(
+                    typeof $.fn.blockstrap.settings.app.use_ua != 'undefined'
+                    && $.fn.blockstrap.settings.app.use_ua === true
+                ){
+                    seed_to_use_for_salt+= '_' + navigator.userAgent;
+                }
+                if(
+                    typeof $.fn.blockstrap.settings.app.use_domain != 'undefined'
+                    && $.fn.blockstrap.settings.app.use_domain === true
+                ){
+                    seed_to_use_for_salt+= '_' + window.location.hostname;
+                }
+                app_salt = CryptoJS.SHA3(seed_to_use_for_salt, { outputLength: 512 }).toString();
             }
             
             var accounts = false;

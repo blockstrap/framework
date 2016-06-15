@@ -1,8 +1,37 @@
 {
-    "theme": "default",
+    "theme": "braincontrol",
     "app_id": "braincontrol",
     "styles": false,
+    "css": false,
     "plugins": [
         "markets", "shapeshift"
-    ]
+    ],
+    "app": {
+        "salt": "replace-the-app-options-object-from-within-secret-dot-json",
+        "use_ua": false,
+        "use_domain": false,
+        "plugins": {
+            "markets": {
+                "cache": 3600,
+                "map": {
+                    "rates": {
+                        "to": "https://openexchangerates.org/api/latest.json",
+                        "from": {
+                            "ts": "timestamp",
+                            "rates": "rates"
+                        }
+                    },
+                    "txs": {
+                        "to": "https://blockchain.info/q/24hrtransactioncount"
+                    },
+                    "btc": {
+                        "to": "https://blockchain.info/q/24hrbtcsent"
+                    },
+                    "total": {
+                        "to": "https://blockchain.info/q/totalbc"
+                    }
+                }
+            }
+        }
+    }
 }
