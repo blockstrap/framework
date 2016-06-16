@@ -24,11 +24,6 @@
                                 Addresses
                             </div>
                         </th>
-                        <th class="hide-on-small-screen">
-                            <div class="cell">
-                                DNKey
-                            </div>
-                        </th>
                         <th class="hide-on-mobile hide-on-tablets">
                             <div class="cell">
                                 Actions
@@ -148,18 +143,6 @@
                                             </p>
                                         {{/addresses}}
                                     {{/blockchains}}
-                                </div>
-                            </td>
-                            <td class="hide-on-small-screen">
-                                <div class="cell">
-                                    {{#data.contact_dnk}}
-                                        <a href="http://api.blockstrap.com/v0/multi/dnkey/{{data.contact_dnk}}" target="_blank">
-                                            {{data.contact_dnk}}
-                                        </a>
-                                    {{/data.contact_dnk}}
-                                    {{^data.contact_dnk}}
-                                        N / A
-                                    {{/data.contact_dnk}}
                                 </div>
                             </td>
                             <td class="hide-on-mobile hide-on-tablets">
