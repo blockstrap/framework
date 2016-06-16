@@ -28,6 +28,7 @@
     // IF API BEING USED DOES NOT SUPPORT MARKET API
     // THESE VALUES WILL NOT BE UPDATED UNLESS API SUPPORTS
     var conditions = {
+        "ts": 0,
         "price_usd_now" : {
             text: "BTC to USD",
             prefix: "US$",
@@ -61,7 +62,8 @@
     $($.fn.blockstrap.element).on('click', '.btn-markets', function(e)
     {
         e.preventDefault();
-        markets.updates(function()
+        $.fn.blockstrap.core.loader('open');
+        markets.updates(false, function()
         {
             $.fn.blockstrap.core.refresh(function()
             {
@@ -70,64 +72,116 @@
         }, true);
     });
     
-    markets.conditions = function(rates, callback)
+    markets.conditions = function(rates, callback, force_refresh)
     {
+        var cache = 0;
+        var now = (new Date().getTime()) / 1000;
+        
+        var refresh = false;
+        if(typeof force_refresh != 'undefined' && force_refresh == true) refresh = true;
+        
         if(
-            typeof conditions.price_usd_now != 'undefined'
-            && typeof rates.usd != 'undefined'
-            && typeof rates.usd.btc != 'undefined'
+            typeof $.fn.blockstrap.settings.cache != 'undefined'
+            && typeof $.fn.blockstrap.settings.cache.api != 'undefined'
+            && typeof $.fn.blockstrap.settings.cache.api.markets != 'undefined'
         ){
-            conditions.price_usd_now.value = rates.usd.btc;
-            if(
-                typeof $.fn.blockstrap.settings.app != 'undefined'
-                && typeof $.fn.blockstrap.settings.app.plugins != 'undefined'
-                && typeof $.fn.blockstrap.settings.app.plugins.markets != 'undefined'
-                && typeof $.fn.blockstrap.settings.app.plugins.markets.map != 'undefined'
-                && typeof $.fn.blockstrap.settings.app.plugins.markets.map.txs != 'undefined'
-                && typeof $.fn.blockstrap.settings.app.plugins.markets.map.btc != 'undefined'
-                && typeof $.fn.blockstrap.settings.app.plugins.markets.map.total != 'undefined'
-            ){
-                var map = $.fn.blockstrap.settings.app.plugins.markets.map;
-                $.ajax({
-                    url: map.txs.to,
-                    success: function(txs_response)
-                    {
-                        var txs = parseInt(txs_response);
+            cache = $.fn.blockstrap.settings.cache.api.markets;
+        }
+        else if(
+            typeof $.fn.blockstrap.settings.app != 'undefined'
+            && typeof $.fn.blockstrap.settings.app.plugins != 'undefined'
+            && typeof $.fn.blockstrap.settings.app.plugins.markets != 'undefined'
+            && typeof $.fn.blockstrap.settings.app.plugins.markets.cache != 'undefined'
+        ){
+            cache = $.fn.blockstrap.settings.app.plugins.markets.cache;
+        }
+        
+        $.fn.blockstrap.core.loading('FETCHING MARKET CONDITIONS', false);
+        
+        $.fn.blockstrap.data.find('market', 'conditions', function(data)
+        {
+            if(typeof data.ts == 'undefined' || (typeof data.ts != 'undefined' && (now > (data.ts + cache)) || refresh))
+            {
+                if(
+                    typeof conditions.price_usd_now != 'undefined'
+                    && typeof rates.usd != 'undefined'
+                    && typeof rates.usd.btc != 'undefined'
+                ){
+                    conditions.price_usd_now.value = rates.usd.btc;
+                    if(
+                        typeof $.fn.blockstrap.settings.app != 'undefined'
+                        && typeof $.fn.blockstrap.settings.app.plugins != 'undefined'
+                        && typeof $.fn.blockstrap.settings.app.plugins.markets != 'undefined'
+                        && typeof $.fn.blockstrap.settings.app.plugins.markets.map != 'undefined'
+                        && typeof $.fn.blockstrap.settings.app.plugins.markets.map.txs != 'undefined'
+                        && typeof $.fn.blockstrap.settings.app.plugins.markets.map.btc != 'undefined'
+                        && typeof $.fn.blockstrap.settings.app.plugins.markets.map.total != 'undefined'
+                    ){
+                        var map = $.fn.blockstrap.settings.app.plugins.markets.map;
                         $.ajax({
-                            url: map.btc.to,
-                            success: function(btc_response)
+                            url: map.txs.to,
+                            success: function(txs_response)
                             {
-                                var btc = parseInt(btc_response);
+                                var txs = parseInt(txs_response);
                                 $.ajax({
-                                    url: map.total.to,
-                                    success: function(total_response)
+                                    url: map.btc.to,
+                                    success: function(btc_response)
                                     {
-                                        var total = parseInt(total_response);
-                                        if(txs && btc && total)
-                                        {
-                                            conditions.tx_count_24hr.value = txs;
-                                            conditions.sent_coins_24hr.value = btc / 100000000;
-                                            conditions.sent_usd_24hr.value = parseFloat((parseFloat(conditions.sent_coins_24hr.value * conditions.price_usd_now.value).toFixed(2)) / 1000000000).toFixed(1);
-                                            conditions.coins_discovered.value = parseFloat((total / 100000000) / 1000000).toFixed(1);
-                                            conditions.marketcap.value = parseFloat((parseFloat((total / 100000000) * conditions.price_usd_now.value).toFixed(2)) / 1000000000).toFixed(1);
-                                        }
-                                        if(callback) callback();
+                                        var btc = parseInt(btc_response);
+                                        $.ajax({
+                                            url: map.total.to,
+                                            success: function(total_response)
+                                            {
+                                                var total = parseInt(total_response);
+                                                if(txs && btc && total)
+                                                {
+                                                    var now = (new Date().getTime()) / 1000;
+                                                    conditions.ts = now;
+                                                    conditions.tx_count_24hr.value = txs;
+                                                    conditions.sent_coins_24hr.value = btc / 100000000;
+                                                    conditions.sent_usd_24hr.value = parseFloat((parseFloat(conditions.sent_coins_24hr.value * conditions.price_usd_now.value).toFixed(2)) / 1000000000).toFixed(1);
+                                                    conditions.coins_discovered.value = parseFloat((total / 100000000) / 1000000).toFixed(1);
+                                                    conditions.marketcap.value = parseFloat((parseFloat((total / 100000000) * conditions.price_usd_now.value).toFixed(2)) / 1000000000).toFixed(1);
+                                                    localStorage.setItem('nw_market_conditions', JSON.stringify(conditions));
+                                                }
+                                                if(callback) callback();
+                                            }
+                                        });
                                     }
                                 });
                             }
                         });
                     }
-                });
+                    else
+                    {
+                        if(callback) callback();
+                    }
+                }
+                else
+                {
+                    if(callback) callback();
+                }
             }
             else
             {
-                if(callback) callback();
+                if(
+                    typeof data.ts != 'undefined'
+                    && typeof data.tx_count_24hr != 'undefined'
+                    && typeof data.sent_coins_24hr != 'undefined'
+                    && typeof data.sent_usd_24hr != 'undefined'
+                    && typeof data.coins_discovered != 'undefined'
+                    && typeof data.marketcap != 'undefined'
+                ){
+                    conditions.price_usd_now.value = data.price_usd_now.value;
+                    conditions.tx_count_24hr.value = data.tx_count_24hr.value;
+                    conditions.sent_coins_24hr.value = data.sent_coins_24hr.value;
+                    conditions.sent_usd_24hr.value = data.sent_usd_24hr.value;
+                    conditions.coins_discovered.value = data.coins_discovered.value;
+                    conditions.marketcap.value = data.marketcap.value;
+                }
+                if(callback) callback(conditions);
             }
-        }
-        else
-        {
-            if(callback) callback();
-        }
+        });
     }
     
     markets.filter = function(data)
@@ -168,11 +222,14 @@
         return market_conditions;
     }
     
-    markets.rates = function(callback)
+    markets.rates = function(callback, force_refresh)
     {
         var cache = 0;
         var url = false;
         var now = (new Date().getTime()) / 1000;
+        
+        var refresh = false;
+        if(typeof force_refresh != 'undefined' && force_refresh == true) refresh = true;
         
         if(
             typeof $.fn.blockstrap.settings.cache != 'undefined'
@@ -190,9 +247,11 @@
             cache = $.fn.blockstrap.settings.app.plugins.markets.cache;
         }
         
+        $.fn.blockstrap.core.loading('FETCHING EXCHANGE RATES', false);
+        
         $.fn.blockstrap.data.find('market', 'exchange', function(data)
         {
-            if(typeof data.ts != 'undefined' && now > (data.ts + cache))
+            if(typeof data.ts == 'undefined' || (typeof data.ts != 'undefined' && (now > (data.ts + cache)) || refresh))
             {
                 if(
                     typeof $.fn.blockstrap.settings.app != 'undefined'
@@ -229,7 +288,6 @@
                                 url: url,
                                 success: function(response)
                                 {
-                                    var obj = false;
                                     if(
                                         typeof response[map.from.ts] != 'undefined'
                                         && typeof response[map.from.rates] != 'undefined'
@@ -286,74 +344,7 @@
         return html;
     }
     
-    markets.update = function(results, callback)
-    {
-        if(
-            $.isPlainObject(results) 
-            && typeof results.data != 'undefined'
-            && typeof results.data.markets != 'undefined'
-            && typeof results.data.markets.btc != 'undefined'
-        )
-        {
-            res = results.data.markets.btc;
-            if(typeof res.fiat_usd_now != 'undefined')
-            {
-                conditions['price_usd_now']['value'] = res.fiat_usd_now;
-            }
-            if(typeof res.tx_count_24hr != 'undefined')
-            {
-                conditions['tx_count_24hr']['value'] = res.tx_count_24hr;
-            }
-            if(typeof res.output_value_24hr_fiat_now != 'undefined')
-            {
-                conditions['sent_usd_24hr']['value'] = (parseFloat(res.output_value_24hr_fiat_now) / 1000000);
-            }
-            if(typeof res.output_value_24hr != 'undefined')
-            {
-                conditions['sent_coins_24hr']['value'] = (res.output_value_24hr / 100000000);
-            }
-            if(typeof res.coinbase_value_todate != 'undefined')
-            {
-                conditions['coins_discovered']['value'] = ((res.coinbase_value_todate / 1000000) / 100000000);
-            }
-            if(typeof res.marketcap != 'undefined')
-            {
-                conditions['marketcap']['value'] = (res.marketcap / 1000000000);
-            }
-        }
-        
-        // NOW NEED TO UPDATE EXCHANGE RATE
-        if(
-            $.isPlainObject(results) 
-            && typeof results.data != 'undefined'
-            && typeof results.data.markets != 'undefined'
-        )
-        {
-            var market_info = results.data.markets;
-            var blockchains = $.fn.blockstrap.settings.blockchains;
-            $.each(blockchains, function(k, v)
-            {
-                if(typeof v.blockchain != 'undefined')
-                {
-                    var rate = $.fn.blockstrap.settings.exchange.usd[k];
-                    if(
-                        typeof market_info[k] != 'undefined'
-                        && typeof market_info[k].fiat_usd_now != 'undefined'
-                    )
-                    {
-                        $.fn.blockstrap.settings.exchange.usd[k] = market_info[k].fiat_usd_now;
-                    }
-                }
-            });
-        };
-        $('.bs.installing').attr('data-loading-content','LOADING');
-        if(typeof callback == 'function')
-        {
-            callback();
-        }
-    }
-    
-    markets.updates = function(variables, callback)
+    markets.updates = function(variables, callback, force_refresh)
     {    
         $.fn.blockstrap.plugins.markets.rates(function(response)
         {
@@ -364,13 +355,13 @@
                 $.fn.blockstrap.plugins.markets.conditions(response, function(response)
                 {
                     if(callback) callback();
-                });
+                }, force_refresh);
             }
             else
             {
                 if(callback) callback();
             }
-        });
+        }, force_refresh);
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
