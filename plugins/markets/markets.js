@@ -62,7 +62,8 @@
     $($.fn.blockstrap.element).on('click', '.btn-markets', function(e)
     {
         e.preventDefault();
-        markets.updates(function()
+        $.fn.blockstrap.core.loader('open');
+        markets.updates(false, function()
         {
             $.fn.blockstrap.core.refresh(function()
             {
@@ -71,10 +72,13 @@
         }, true);
     });
     
-    markets.conditions = function(rates, callback)
+    markets.conditions = function(rates, callback, force_refresh)
     {
         var cache = 0;
         var now = (new Date().getTime()) / 1000;
+        
+        var refresh = false;
+        if(typeof force_refresh != 'undefined' && force_refresh == true) refresh = true;
         
         if(
             typeof $.fn.blockstrap.settings.cache != 'undefined'
@@ -92,9 +96,11 @@
             cache = $.fn.blockstrap.settings.app.plugins.markets.cache;
         }
         
+        $.fn.blockstrap.core.loading('FETCHING MARKET CONDITIONS', false);
+        
         $.fn.blockstrap.data.find('market', 'conditions', function(data)
         {
-            if(typeof data.ts == 'undefined' || (typeof data.ts != 'undefined' && now > (data.ts + cache)))
+            if(typeof data.ts == 'undefined' || (typeof data.ts != 'undefined' && (now > (data.ts + cache)) || refresh))
             {
                 if(
                     typeof conditions.price_usd_now != 'undefined'
@@ -216,11 +222,14 @@
         return market_conditions;
     }
     
-    markets.rates = function(callback)
+    markets.rates = function(callback, force_refresh)
     {
         var cache = 0;
         var url = false;
         var now = (new Date().getTime()) / 1000;
+        
+        var refresh = false;
+        if(typeof force_refresh != 'undefined' && force_refresh == true) refresh = true;
         
         if(
             typeof $.fn.blockstrap.settings.cache != 'undefined'
@@ -238,9 +247,11 @@
             cache = $.fn.blockstrap.settings.app.plugins.markets.cache;
         }
         
+        $.fn.blockstrap.core.loading('FETCHING EXCHANGE RATES', false);
+        
         $.fn.blockstrap.data.find('market', 'exchange', function(data)
         {
-            if(typeof data.ts == 'undefined' || (typeof data.ts != 'undefined' && now > (data.ts + cache)))
+            if(typeof data.ts == 'undefined' || (typeof data.ts != 'undefined' && (now > (data.ts + cache)) || refresh))
             {
                 if(
                     typeof $.fn.blockstrap.settings.app != 'undefined'
@@ -333,7 +344,7 @@
         return html;
     }
     
-    markets.updates = function(variables, callback)
+    markets.updates = function(variables, callback, force_refresh)
     {    
         $.fn.blockstrap.plugins.markets.rates(function(response)
         {
@@ -344,13 +355,13 @@
                 $.fn.blockstrap.plugins.markets.conditions(response, function(response)
                 {
                     if(callback) callback();
-                });
+                }, force_refresh);
             }
             else
             {
                 if(callback) callback();
             }
-        });
+        }, force_refresh);
     }
     
     // MERGE THE NEW FUNCTIONS WITH CORE
