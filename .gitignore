@@ -3,6 +3,7 @@ git/
 
 secret.json
 options.js
+rpc_options.php
 
 *.swp
 *.log

@@ -791,7 +791,7 @@
                     if(callback) callback(results);
                 }
             },
-            error: function()
+            error: function(res)
             {
                 if(callback) callback()
             },
