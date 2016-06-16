@@ -174,7 +174,7 @@
                 else
                 {   
                     var amount = 0;
-                    var keys = $.fn.blockstrap.blockchains.keys(salt + id);
+                    var keys = $.fn.blockstrap.blockchains.keys(hash + id);
                     var from = keys.pub;
                     
                     if($.isArray(theme.issues))

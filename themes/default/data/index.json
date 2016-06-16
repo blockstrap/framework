@@ -786,7 +786,7 @@
             {
                 "id": "new-contact",
                 "title": "New Contact",
-                "body": "<p>You may either manually enter the address of your contact and select the required blockchain, or you can skip that by simply providing a <a href='http://dnkey.me'>DNKey ID</a>, where we will then collect and store the addresses for you. In both cases, contacts require a name.</p>",
+                "body": "<p>You may either manually enter the address of your contact and select the required blockchain.</p>",
                 "close": "Cancel",
                 "form": {
                     "css": "form-horizontal",
@@ -847,27 +847,6 @@
                                 "wrapper": {
                                     "css": "col-xs-9"
                                 }
-                            }
-                        },
-                        {
-                            "inputs": {
-                                "id": "contact_dnk",
-                                "css": "optional",
-                                "label": {
-                                    "text": "DNKey ID",
-                                    "css": "col-xs-3"
-                                },
-                                "placeholder": "Optional DNKey ID for contact",
-                                "type": "text",
-                                "wrapper": {
-                                    "css": "col-xs-9"
-                                },
-                                "attributes": [
-                                    {
-                                        "key": "data-setup-type",
-                                        "value": "contact"
-                                    }
-                                ]
                             }
                         }
                     ],

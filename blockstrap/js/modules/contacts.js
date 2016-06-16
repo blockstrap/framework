@@ -40,7 +40,10 @@
         {
             if(!ignore_errors)
             {
-                $.fn.blockstrap.core.modal('Error', 'This is not a valid address!');
+                setTimeout(function()
+                {
+                    $.fn.blockstrap.core.modal('Error', 'This is not a valid address!');
+                }, $.fn.blockstrap.core.timeouts('loader'));
             }
             $.fn.blockstrap.core.apply_actions('contacts_new', function()
             {
