@@ -141,6 +141,36 @@
                     placeholder: 'Optional Message to Encode on Chain'
                 }
             });
+            fields.push({
+                selects: {
+                    id: 'status',
+                    label: {
+                        css: 'col-xs-3',
+                        text: 'Encryption'
+                    },
+                    wrapper: {
+                        css: 'col-xs-9'
+                    },
+                    values: [
+                        {
+                            value: '',
+                            text: '-- Default is No Encryption --'
+                        },
+                        {
+                            value: 'address',
+                            text: 'Use s SHA3 Hash of Public Address to Encrypt'
+                        },
+                        {
+                            value: 'account',
+                            text: 'Use s SHA3 Hash of Account Password to Encrypt'
+                        },
+                        {
+                            value: 'salt',
+                            text: 'Use s SHA3 Hash of Device Salt to Encrypt'
+                        }
+                    ]
+                }
+            });
         }
         var options = {
             css: 'form-horizontal',

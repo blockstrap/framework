@@ -560,7 +560,7 @@
                     {
                         result_key = map.from.op_returns.inner;
                     }
-                    if(result_key && typeof results[result_key] != 'undefined')
+                    if(results && result_key && typeof results[result_key] != 'undefined')
                     {
                         these_results = results[result_key];
                     }
@@ -1159,7 +1159,7 @@
                                     if(send)
                                     {
                                         if(
-                                            (typeof res_01_array[i].addresses != 'undefined' && res_01_array[i].addresses[0] && res_01_array[i].addresses[0] != extra_id)
+                                            (typeof res_01_array[i].addresses != 'undefined' && $.isArray(res_01_array[i].addresses) && res_01_array[i].addresses[0] && res_01_array[i].addresses[0] != extra_id)
                                             ||
                                             (typeof res_01_array[i].address != 'undefined' && res_01_array[i].address && res_01_array[i].address != extra_id)
                                         ){
