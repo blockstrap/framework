@@ -1,8 +1,10 @@
 <?php
 
-// DEPENDENCIES
 //error_reporting(0);
+
+// DEPENDENCIES
 include('jsonRPCClient.php');
+include('rpc_options.php');
 
 // DEFAULTS
 $obj = false;
@@ -10,29 +12,6 @@ $call = false;
 $callback = '';
 $bitcoind = false;
 $blockchain = false;
-
-// RPC OPTIONS
-// TODO - HIDE THESE
-$rpc_options = [
-    "btc" => [
-        "username" => "test",
-        "password" => "temptesting123",
-        "host" => "localhost",
-        "port" => "8332"
-    ],
-    "doge" => [
-        "username" => "test",
-        "password" => "temptesting123",
-        "host" => "localhost",
-        "port" => "8335"
-    ],
-    "doget" => [
-        "username" => "test",
-        "password" => "temptesting123",
-        "host" => "localhost",
-        "port" => "8335"
-    ]
-];
 
 // PASSED VIA AJAX CALL
 if(isset($_GET['callback']) && $_GET['callback']) $callback = $_GET['callback'];

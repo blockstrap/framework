@@ -315,6 +315,7 @@
             {
                 template_data = $.extend({}, template_data, data);
                 var filtered_data = $.fn.blockstrap.core.filter(template_data);
+                filtered_data = $.fn.blockstrap.core.apply_filters('templates_render', filtered_data, filtered_data);
                 $.fn.blockstrap.core.get(html_url, 'html', function(content)
                 {
                     if(content)

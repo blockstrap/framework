@@ -183,6 +183,14 @@ var blockstrap_core = function()
                 ){
                     result = $.fn.blockstrap.settings.keys.apis[api][property];
                 }
+                else if(
+                    typeof $.fn.blockstrap.settings.keys != 'undefined'
+                    && typeof $.fn.blockstrap.settings.apis != 'undefined'
+                    && typeof $.fn.blockstrap.settings.apis.defaults[api] != 'undefined'
+                    && typeof $.fn.blockstrap.settings.apis.defaults[api][property] != 'undefined'
+                ){
+                    result = $.fn.blockstrap.settings.apis.defaults[api][property];
+                }
                 return result;
             },
             apply_actions: function(hook, callback, options)

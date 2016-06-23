@@ -1040,7 +1040,7 @@
                     else
                     {
                         var filtered_data = $.fn.blockstrap.core.filter(data);
-                        
+                        filtered_data = $.fn.blockstrap.core.apply_filters('templates_render', filtered_data, filtered_data);
                         bs.core.get(html_url, 'html', function(content)
                         {
                             if(content.status && content.status === 404)
@@ -1137,7 +1137,10 @@
             $(mnav).find('.loading').removeClass('loading');
             $(button).addClass('active');
             $($.fn.blockstrap.element).find('.activated').removeClass('activated');
-            $.fn.blockstrap.core.ready();
+            $.fn.blockstrap.core.apply_actions('buttons_processed', function()
+            {
+                $.fn.blockstrap.core.ready();
+            });
         });
     }
     
@@ -1954,8 +1957,14 @@
                 $(form).find('.form-group').each(function(i)
                 {
                     var input = $(this).find('input');
+                    var select = $(this).find('select');
                     var value = $(input).val();
                     var id = $(input).attr('id');
+                    if(!id)
+                    {
+                        value = $(select).val();
+                        id = $(select).attr('id');
+                    }
                     if(!$(input).hasClass('ignore'))
                     {
                         var use_op_return = false;
@@ -1966,8 +1975,10 @@
                         ){
                             use_op_return = true;
                         }
-                        if(id != 'msg')
-                        {
+                        if(
+                            id != 'msg'
+                            && id != 'status'
+                        ){
                             fields.push({
                                 id: id,
                                 value: value
@@ -1982,15 +1993,55 @@
                             ){
                                 op_limit = blockchain_settings[blockchain].op_limit;
                             }
-                            var m = encodeURIComponent(value).match(/%[89ABab]/g);
-                            var value_len = value.length + (m ? m.length : 0);
-                            if(value_len < (op_limit - 1))
+                            if(id == 'status' && value)
                             {
-                                op_return_data = value;
+                                var key_for_encryption = value;
+                                if(value == 'address')
+                                {
+                                    key_for_encryption = from_address;
+                                }
+                                else if(
+                                    value == 'account'
+                                    && $(form).find('#wallet_password').val()
+                                ){
+                                    key_for_encryption = $(form).find('#wallet_password').val();
+                                }
+                                else if(value =='salt')
+                                {
+                                    var salt = localStorage.getItem('nw_blockstrap_salt');
+                                    if(blockstrap_functions.json(salt)) salt = JSON.parse(salt);
+                                    key_for_encryption = salt;
+                                }
+                                var hash_of_key = CryptoJS.SHA3(key_for_encryption, { outputLength: 512 }).toString();
+                                var value_to_hash = value;
+                                if($(form).find('#msg').val())
+                                {
+                                    value_to_hash = $(form).find('#msg').val();
+                                }
+                                value = CryptoJS.AES.encrypt(value_to_hash, hash_of_key).toString();
+                                var m = encodeURIComponent(value).match(/%[89ABab]/g);
+                                var value_len = value.length + (m ? m.length : 0);
+                                if(value_len < (op_limit - 1))
+                                {
+                                    op_return_data = value;
+                                }
+                                else
+                                {
+                                    op_return_data = null;
+                                }
                             }
-                            else
+                            else if(value && id == 'msg')
                             {
-                                op_return_data = null;
+                                var m = encodeURIComponent(value).match(/%[89ABab]/g);
+                                var value_len = value.length + (m ? m.length : 0);
+                                if(value_len < (op_limit - 1))
+                                {
+                                    op_return_data = value;
+                                }
+                                else
+                                {
+                                    op_return_data = null;
+                                }
                             }
                         }
                         else if(value)
