@@ -321,5 +321,3 @@
     $.extend(true, $.fn.blockstrap, {filters:filters});
 })
 (jQuery);
-
-
