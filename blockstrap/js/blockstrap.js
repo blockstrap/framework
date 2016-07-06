@@ -426,12 +426,10 @@ var blockstrap_core = function()
                             }
                         }
                     });
-                    console.log('$.fn.blockstrap.settings.skin', $.fn.blockstrap.settings.skin);
                     if(typeof $.fn.blockstrap.settings.skin != 'undefined' && $.fn.blockstrap.settings.skin)
                     {
                         skin = $.fn.blockstrap.settings.skin;
                         var skin_url = $.fn.blockstrap.settings.theme_base + theme + '/skins/' + skin + '/css/styles.css';
-                        console.log('skin_url', skin_url);
                         blockstrap_functions.get_css(skin_url, true, skin);
                     }
                 }
@@ -2426,15 +2424,12 @@ var blockstrap_core = function()
                                             });
                                         }
                                         
-                                        console.log('modules', modules);
-                                        
                                         if($.fn.blockstrap.settings.vars)
                                         {
                                             var vars = $.fn.blockstrap.settings.vars;
                                             if(typeof vars.skin != 'undefined' && vars.skin)
                                             {
                                                 $.fn.blockstrap.settings.skin = vars.skin;
-                                                console.log('$.fn.blockstrap.settings.skin', $.fn.blockstrap.settings.skin);
                                             }
                                         }
 
