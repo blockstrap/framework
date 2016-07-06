@@ -348,6 +348,7 @@ var blockstrap_core = function()
             },
             css: function(callback, files)
             {
+                var skin = false;
                 var bs = $.fn.blockstrap;
                 var $bs = blockstrap_functions;
                 var theme = $.fn.blockstrap.settings.theme;
@@ -424,7 +425,15 @@ var blockstrap_core = function()
                                 }
                             }
                         }
-                    })
+                    });
+                    console.log('$.fn.blockstrap.settings.skin', $.fn.blockstrap.settings.skin);
+                    if(typeof $.fn.blockstrap.settings.skin != 'undefined' && $.fn.blockstrap.settings.skin)
+                    {
+                        skin = $.fn.blockstrap.settings.skin;
+                        var skin_url = $.fn.blockstrap.settings.theme_base + theme + '/skins/' + skin + '/css/styles.css';
+                        console.log('skin_url', skin_url);
+                        blockstrap_functions.get_css(skin_url, true, skin);
+                    }
                 }
                 else
                 {
@@ -1406,6 +1415,12 @@ var blockstrap_core = function()
                 {
                     var plugin = plugins[index];
                     var plugin_url = 'plugins/' + plugin + '/' + plugin + '.js';
+                    
+                    if(plugin.indexOf('plugins/') > -1)
+                    {
+                        plugin_url = plugin + '.js';
+                    }
+                    
                     // Need to cache plugin?
                     var plug = localStorage.getItem('nw_inc_plugin_'+plugin);
                     if(blockstrap_functions.json(plug)) plug = $.parseJSON(plug);
@@ -2372,12 +2387,55 @@ var blockstrap_core = function()
                                         var modules = $.fn.blockstrap.settings.modules;
                                         var bootstrap = $.fn.blockstrap.settings.bootstrap;
                                         var plugins = $.fn.blockstrap.settings.plugins;
-
+                                        
                                         if($.fn.blockstrap.settings.install === false)
                                         {
                                             dependencies = false;
                                             modules = false;
                                             plugins = false;
+                                        }
+                                        
+                                        if(plugins)
+                                        {
+                                            $.each(plugins, function(k, plugin)
+                                            {
+                                                var plugin_key = plugin;
+                                                var plugin_url = '../../../../plugins/' + plugin + '/';
+                                                if(plugin.indexOf('plugins/') > -1)
+                                                {
+                                                    var plugin_array = plugin.split('/');
+                                                    plugin_key = plugin_array[plugin_array.length -1];
+                                                    plugin = plugin.substring(0, (plugin.length - (plugin_key.length + 1)));
+                                                    plugin_url = '../../../../../plugins/' + plugin + '/';
+                                                }
+                                                if(
+                                                    typeof $.fn.blockstrap.settings.plugin != 'undefined'
+                                                    && typeof $.fn.blockstrap.settings.plugin.dependencies != 'undefined'
+                                                    && typeof $.fn.blockstrap.settings.plugin.dependencies[plugin_key] != 'undefined'
+                                                    && $.isArray($.fn.blockstrap.settings.plugin.dependencies[plugin_key])
+                                                ){
+                                                    var plugin_dependencies = $.fn.blockstrap.settings.plugin.dependencies[plugin_key];
+                                                    $.each(plugin_dependencies, function(pk, dependency)
+                                                    {
+                                                        if(modules && $.isArray(modules))
+                                                        {
+                                                            dependencies.push(plugin_url + 'js/dependencies/' + dependency);
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                        
+                                        console.log('modules', modules);
+                                        
+                                        if($.fn.blockstrap.settings.vars)
+                                        {
+                                            var vars = $.fn.blockstrap.settings.vars;
+                                            if(typeof vars.skin != 'undefined' && vars.skin)
+                                            {
+                                                $.fn.blockstrap.settings.skin = vars.skin;
+                                                console.log('$.fn.blockstrap.settings.skin', $.fn.blockstrap.settings.skin);
+                                            }
                                         }
 
                                         // UPDATE CORE IF REQUIRED
