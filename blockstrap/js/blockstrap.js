@@ -2455,6 +2455,26 @@ var blockstrap_core = function()
                                                                 $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(modules)+' Modules');
                                                                 $bs.include(bs, 0, modules, function()
                                                                 {
+                                                                    if($.fn.blockstrap.settings.vars)
+                                                                    {
+                                                                        var vars = $.fn.blockstrap.settings.vars;
+                                                                        if(typeof vars.skin != 'undefined' && vars.skin)
+                                                                        {
+                                                                            $.fn.blockstrap.settings.skin = vars.skin;
+                                                                            var theme = $.fn.blockstrap.settings.theme;
+                                                                            var theme_base = $.fn.blockstrap.settings.theme_base;
+                                                                            var language = theme_base + theme + '/skins/' + vars.skin + '/js/languages';
+                                                                            var skin_plugin = theme_base + theme + '/skins/' + vars.skin + '/js/' + vars.skin;
+                                                                            $.getScript(language + '.js', function(js)
+                                                                            {
+
+                                                                            });
+                                                                            $.getScript(skin_plugin + '.js', function(js)
+                                                                            {
+
+                                                                            });
+                                                                        }
+                                                                    }
                                                                     $.fn.blockstrap.snippets = {}; 
                                                                     if($.isArray(bootstrap))
                                                                     {
@@ -2519,6 +2539,26 @@ var blockstrap_core = function()
                                                         {
                                                             // INCLUDE JS MODULES
                                                             $('.bs.installing').attr('data-loading-content','Now Installing 1 of  '+$bs.array_length(modules)+' Modules');
+                                                            if($.fn.blockstrap.settings.vars)
+                                                            {
+                                                                var vars = $.fn.blockstrap.settings.vars;
+                                                                if(typeof vars.skin != 'undefined' && vars.skin)
+                                                                {
+                                                                    $.fn.blockstrap.settings.skin = vars.skin;
+                                                                    var theme = $.fn.blockstrap.settings.theme;
+                                                                    var theme_base = $.fn.blockstrap.settings.theme_base;
+                                                                    var language = theme_base + theme + '/skins/' + vars.skin + '/js/languages';
+                                                                    var skin_plugin = theme_base + theme + '/skins/' + vars.skin + '/js/' + vars.skin;
+                                                                    $.getScript(language + '.js', function(js)
+                                                                    {
+
+                                                                    });
+                                                                    $.getScript(skin_plugin + '.js', function(js)
+                                                                    {
+
+                                                                    });
+                                                                }
+                                                            }
                                                             $bs.include(bs, 0, modules, function()
                                                             {
                                                                 $.fn.blockstrap.snippets = {};
@@ -2823,7 +2863,6 @@ var blockstrap_functions = {
         if(dependency) include_type = 'Dependencies';
         
         $('.bs.installing').attr('data-loading-content','Now Installing ' + (start + 1) + ' of  '+blockstrap_functions.array_length(files)+' ' + include_type);
-        
         if(install === false)
         {
             callback();
@@ -2924,7 +2963,7 @@ var blockstrap_functions = {
                     }).fail(function(jqxhr, settings, exception)
                     {
                         start++;
-                        if(store === true)
+                        if(store === true && file_name != 'bitcoinjs-lib')
                         {
                             localStorage.setItem('nw_js_'+file_name, js);
                         }   
@@ -2944,7 +2983,7 @@ var blockstrap_functions = {
                             js+= "\n" + theme_js;
                         }
 
-                        if(store === true)
+                        if(store === true && file_name != 'bitcoinjs-lib')
                         {
                             localStorage.setItem('nw_js_'+file_name, js);
                         }
@@ -2954,7 +2993,7 @@ var blockstrap_functions = {
                     }).fail(function(jqxhr, settings, exception)
                     {
                         start++;
-                        if(store === true)
+                        if(store === true && file_name != 'bitcoinjs-lib')
                         {
                             localStorage.setItem('nw_js_'+file_name, js);
                         }
