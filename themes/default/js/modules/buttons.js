@@ -40,7 +40,7 @@
                                                 },
                                                 type: 'text',
                                                 wrapper: {
-                                                    css: 'col-sm-9'
+                                                    css: 'col-sm-9 extra-field-icon'
                                                 },
                                                 attributes: [
                                                     {
@@ -65,8 +65,18 @@
                     {
                         $(form).prepend(component);
                     }
+                    var this_button = '<a href="#" class="btn btn-xs btn-danger pull-right btn-remove-extra">remove</a>';
+                    $(form).find('#'+value).parent().append(this_button);
                     $(form).find('#'+value).parent().hide(0);
                     $(form).find('#'+value).parent().show(350);
+                    $(form).find('.btn-remove-extra').on('click', function(e)
+                    {
+                        e.preventDefault();
+                        $(this).parent().parent().hide(350, function()
+                        {
+                            $(this).remove();
+                        });
+                    });
                 }
             }
         });

@@ -40,7 +40,7 @@
                                                 },
                                                 type: 'text',
                                                 wrapper: {
-                                                    css: 'col-sm-9'
+                                                    css: 'col-sm-9 extra-field-icon'
                                                 },
                                                 attributes: [
                                                     {

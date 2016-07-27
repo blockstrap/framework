@@ -8034,6 +8034,15 @@ html body .blockstrap-wrapper #main-content .panel-heading .btn {
     z-index: 99999999;
 }
 
+.form-group .extra-field-icon .btn {
+    position: absolute;
+    top: 6px;
+    right: 22px;
+}
+.modal .form-group .extra-field-icon .btn {
+    top: 4px;
+    right: 8px;
+}
 
 /* 
 
