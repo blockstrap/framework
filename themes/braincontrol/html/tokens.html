@@ -1,0 +1,224 @@
+{{#tokens.panels}}
+    <div class="panel-wrapper {{class}}">
+        <div id="{{id}}" class="panel panel-default">
+            {{#header}}<div class="panel-heading">{{{header}}}</div>{{/header}}
+            {{#body}}<div class="panel-body padless">{{{body}}}</div>{{/body}}
+        </div>
+    </div>
+{{/tokens.panels}}
+
+<div class="panel-wrapper col-sm-12">
+    <div id="contracts" class="panel panel-default">
+        <div class="panel-body padless">
+            
+            <table class="table table-striped data-table" data-order="desc" data-order-by="0">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="cell">
+                                Token Name
+                            </div>
+                        </th>
+                        <th>
+                            <div class="cell">
+                                Contract Address
+                            </div>
+                        </th>
+                        <th class="hide-on-small-screen">
+                            <div class="cell">
+                                Total Supply
+                            </div>
+                        </th>
+                        <th class="hide-on-mobile hide-on-tablets">
+                            <div class="cell">
+                                Actions
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+                    {{#contracts.objects}}
+                        <tr id="table-row-{{id}}">
+                            <td>
+                                <div class="cell">
+                                    N/A
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cell">
+                                    N/A
+                                </div>
+                            </td>
+                            <td class="hide-on-small-screen">
+                                <div class="cell">
+                                    N/A
+                                </div>
+                            </td>
+                            <td class="hide-on-mobile hide-on-tablets">
+                                <div class="cell">
+                                    <a 
+                                       href="#" 
+                                       class="btn btn-icon btn-edit"
+                                       data-collection="contracts"
+                                       data-parent="contracts"
+                                       data-element="table-row-{{id}}"
+                                       data-key="{{id}}"
+                                       title="Edit Contract"
+                                    >
+                                    <i class="fa fa-edit"><span>Edit Contract</span></i>
+                                    </a>
+                                    
+                                    <a 
+                                       href="#" 
+                                       class="btn btn-icon btn-update_contract"
+                                       data-collection="contracts"
+                                       data-parent="contracts"
+                                       data-element="table-row-{{id}}"
+                                       data-key="{{id}}"
+                                       title="Update Contract"
+                                    >
+                                    <i class="fa fa-recycle"><span>Update Contract</span></i>
+                                    </a>
+                                    
+                                    <a 
+                                       href="#" 
+                                       class="btn btn-icon btn-remove"
+                                       data-collection="contracts"
+                                       data-parent="contracts"
+                                       data-element="table-row-{{id}}"
+                                       data-key="{{id}}"
+                                       title="Remove Contract"
+                                    >
+                                    <i class="fa fa-times"><span>Remove Contract</span></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {{/contracts.objects}}
+                </tbody>
+
+            </table>
+            
+        </div>
+    </div>
+</div>
+
+<div class="panel-wrapper col-sm-12">
+    <div id="tokens" class="panel panel-default">
+        <div class="panel-body padless">
+            
+            <table class="table table-striped data-table" data-order="desc" data-order-by="0">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="cell">
+                                Account Name
+                            </div>
+                        </th>
+                        <th>
+                            <div class="cell">
+                                Address
+                            </div>
+                        </th>
+                        <th>
+                            <div class="cell">
+                                Tokens
+                            </div>
+                        </th>
+                        <th class="hide-on-small-screen">
+                            <div class="cell">
+                                TXs
+                            </div>
+                        </th>
+                        <th class="hide-on-small-screen">
+                            <div class="cell">
+                                Balances
+                            </div>
+                        </th>
+                        <th class="hide-on-mobile hide-on-tablets">
+                            <div class="cell">
+                                Actions
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+                    {{#tokens.objects}}
+                        <tr id="table-row-{{id}}">
+                            <td>
+                                <div class="cell">
+                                    N/A
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cell">
+                                    N/A
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cell">
+                                    N/A
+                                </div>
+                            </td>
+                            <td class="hide-on-small-screen">
+                                <div class="cell">
+                                    N/A
+                                </div>
+                            </td>
+                            <td class="hide-on-small-screen">
+                                <div class="cell">
+                                    N/A
+                                </div>
+                            </td>
+                            <td class="hide-on-mobile hide-on-tablets">
+                                <div class="cell">
+                                    <a 
+                                       href="#" 
+                                       class="btn btn-icon btn-edit"
+                                       data-collection="tokens"
+                                       data-parent="tokens"
+                                       data-element="table-row-{{id}}"
+                                       data-key="{{id}}"
+                                       title="Edit Account"
+                                    >
+                                    <i class="fa fa-edit"><span>Edit Account</span></i>
+                                    </a>
+                                    
+                                    <a 
+                                       href="#" 
+                                       class="btn btn-icon btn-update_token"
+                                       data-collection="tokens"
+                                       data-parent="tokens"
+                                       data-element="table-row-{{id}}"
+                                       data-key="{{id}}"
+                                       title="Update Account"
+                                    >
+                                    <i class="fa fa-recycle"><span>Update Account</span></i>
+                                    </a>
+                                    
+                                    <a 
+                                       href="#" 
+                                       class="btn btn-icon btn-remove"
+                                       data-collection="tokens"
+                                       data-parent="tokens"
+                                       data-element="table-row-{{id}}"
+                                       data-key="{{id}}"
+                                       title="Remove Account"
+                                    >
+                                    <i class="fa fa-times"><span>Remove Account</span></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {{/tokens.objects}}
+                </tbody>
+
+            </table>
+            
+        </div>
+    </div>
+</div>
