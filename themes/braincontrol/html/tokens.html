@@ -26,6 +26,16 @@
                         </th>
                         <th class="hide-on-small-screen">
                             <div class="cell">
+                                Decimals
+                            </div>
+                        </th>
+                        <th class="hide-on-small-screen">
+                            <div class="cell">
+                                Symbol
+                            </div>
+                        </th>
+                        <th class="hide-on-small-screen">
+                            <div class="cell">
                                 Total Supply
                             </div>
                         </th>
@@ -43,17 +53,27 @@
                         <tr id="table-row-{{id}}">
                             <td>
                                 <div class="cell">
-                                    N/A
+                                    {{name}}
                                 </div>
                             </td>
                             <td>
                                 <div class="cell">
-                                    N/A
+                                    <a href="https://etherscan.io/address/{{address}}" target="_blank">{{address}}</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cell">
+                                    {{decimals}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cell">
+                                    {{symbol}}
                                 </div>
                             </td>
                             <td class="hide-on-small-screen">
                                 <div class="cell">
-                                    N/A
+                                    {{supply_display}}
                                 </div>
                             </td>
                             <td class="hide-on-mobile hide-on-tablets">
@@ -151,27 +171,33 @@
                         <tr id="table-row-{{id}}">
                             <td>
                                 <div class="cell">
-                                    N/A
+                                    {{name}}
                                 </div>
                             </td>
                             <td>
                                 <div class="cell">
-                                    N/A
+                                    <a href="https://etherscan.io/address/{{keys.address}}" target="_blank">{{keys.address}}</a>
                                 </div>
                             </td>
                             <td>
                                 <div class="cell">
-                                    N/A
+                                    {{#currencies}}
+                                        {{name}}<br />
+                                    {{/currencies}}
                                 </div>
                             </td>
                             <td class="hide-on-small-screen">
                                 <div class="cell">
-                                    N/A
+                                    {{#currencies}}
+                                        {{tx_count}}<br />
+                                    {{/currencies}}
                                 </div>
                             </td>
                             <td class="hide-on-small-screen">
                                 <div class="cell">
-                                    N/A
+                                    {{#currencies}}
+                                        {{balance_display}}<br />
+                                    {{/currencies}}
                                 </div>
                             </td>
                             <td class="hide-on-mobile hide-on-tablets">
@@ -186,6 +212,19 @@
                                        title="Edit Account"
                                     >
                                     <i class="fa fa-edit"><span>Edit Account</span></i>
+                                    </a>
+                                    
+                                    <a 
+                                       href="#" 
+                                       class="btn btn-icon btn-add-token-to-account"
+                                       data-toggle="modal" 
+                                       data-target="#add-token-modal"
+                                       onClick="$('#add-token-modal').attr('data-account-id', $('#table-row-{{id}}').find('.btn-add-token-to-account').attr('data-key'))"
+                                       data-element="table-row-{{id}}"
+                                       data-key="{{id}}"
+                                       title="Add Token"
+                                    >
+                                    <i class="fa fa-plus-circle"><span>Add Token</span></i>
                                     </a>
                                     
                                     <a 
