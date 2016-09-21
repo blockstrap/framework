@@ -179,6 +179,118 @@
         }
     }
     
+    forms.add_contract = function(form, vars)
+    {
+        var bs = $.fn.blockstrap;
+        var $bs = blockstrap_functions;
+        var title = 'Error';
+        var contents = 'Unknown error adding contract';
+        if(
+            typeof vars.accountId != 'undefined'
+            && typeof vars.chain != 'undefined'
+            && typeof vars.pw != 'undefined'
+        ){
+            title = 'Warning';
+            contents = 'Account password does not match contract requirements';
+            var account_id = vars.accountId;
+            var account = bs.accounts.get(account_id);
+            var chain = vars.chain;
+            var salt = JSON.parse(localStorage.getItem('nw_blockstrap_salt'));
+            var pw = $(form).find('input#account-password').val();
+            var hashed_pw = CryptoJS.SHA3(salt+pw, { outputLength: 512 }).toString();
+            if(
+                typeof account.password != 'undefined'
+                && account.password == vars.pw
+                && vars.pw == hashed_pw
+            ){
+                var primary_keys = bs.blockchains.keys(hashed_pw + pw + account_id, chain, 1, false, true);
+                var primary_hex = primary_keys.raw.pubKey.toHex();
+                var second_hex = $(form).find('#pubkey-02').val();
+                var third_hex = $(form).find('#pubkey-03').val();
+                console.log('primary_keys', primary_keys);
+                if(
+                    primary_hex && second_hex && third_hex
+                    && primary_hex != second_hex
+                    && primary_hex != third_hex
+                    && second_hex != third_hex
+                ){
+                    var multisig_keys = bs.multisig.generate(false, chain, [
+                        {hex:primary_hex},
+                        {hex:second_hex},
+                        {hex:third_hex}
+                    ], 2);
+                    if(multisig_keys && $.isArray(multisig_keys) && multisig_keys.length > 0)
+                    {
+                        var shared_keys = multisig_keys[multisig_keys.length-1];
+                        shared_keys.primary_address = primary_keys.pub;
+                        console.log('shared_keys', shared_keys);
+                        if(
+                            typeof shared_keys.script != 'undefined'
+                            && typeof shared_keys.address != 'undefined'
+                            && shared_keys.address
+                            && shared_keys.script
+                        ){
+                            if(
+                                typeof account.contracts == 'undefined'
+                                || typeof account.contracts[chain] == 'undefined'
+                                || typeof account.contracts[chain]['MS-2-3-' + shared_keys.address] == 'undefined'
+                            ){
+                                account.contracts = {};
+                                account.contracts[chain] = {};
+                                account.contracts[chain]['MS-2-3-' + shared_keys.address] = shared_keys;
+                                title = 'Success';
+                                contents = '<p>Created the following 2 of 3 multisignature address - ' + shared_keys.address + '</p>';
+                                bs.core.loader('open');
+                                bs.data.save('accounts', account_id, account, function()
+                                {
+                                    bs.accounts.updates(0, function()
+                                    {
+                                        bs.core.refresh(function()
+                                        {
+                                            bs.core.loader('close');
+                                            setTimeout(function()
+                                            {
+                                                bs.core.modal(title, contents);
+                                            }, bs.core.timeouts('loader'));
+                                        }, bs.core.page());
+                                    });
+                                });
+                            }
+                            else
+                            {
+                                contents = 'This account contract already exists';
+                                bs.core.modal(title, contents);    
+                            }
+                        }
+                        else
+                        {
+                            contents = 'Incorrect keys for contract';
+                            bs.core.modal(title, contents);
+                        }
+                    }
+                    else
+                    {
+                        contents = 'Unable to generate keys for contract';
+                        bs.core.modal(title, contents);
+                    }
+                }
+                else
+                {
+                    contents = 'Hexes used do not match contract requirements';
+                    bs.core.modal(title, contents);
+                }
+            }
+            else
+            {
+                bs.core.modal(title, contents);
+            }
+        }
+        else
+        {
+            bs.core.modal(title, contents);
+        }
+    }
+    
     forms.get = function(callback)
     {
         if($.fn.blockstrap.snippets.forms)
@@ -255,6 +367,29 @@
         if(!form) form = forms.get();
         var html = Mustache.render(form, data);
         return $.fn.blockstrap.templates.filter(html);
+    }
+    
+    forms.send_from_contract = function(form, vars)
+    {
+        var keys = [];
+        var pw = $(form).find('#account-password').val();
+        var amount = $(form).find('#amount').val();
+        var to = $(form).find('#send-address').val();
+        var chain = $(form).attr('data-blockchain-id');
+        var account_id = $(form).attr('data-account-id');
+        var contract_id = $(form).attr('data-contract-id');
+        var account = $.fn.blockstrap.accounts.get(account_id);
+        var primary_address = $(form).find('#account-password').attr('data-address-01');
+        var primary_hex = $(form).find('#account-password').attr('data-hex-01');
+        if(
+            pw && amount && to && chain && account
+            && typeof account.contracts != 'undefined'
+            && typeof account.contracts[chain] != 'undefined'
+            && typeof account.contracts[chain][contract_id] != 'undefined'
+        ){
+            var contract = account.contracts[chain][contract_id];
+            console.log('contract', contract);
+        }
     }
     
     forms.settings_form = function(form, vars)

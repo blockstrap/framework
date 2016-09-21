@@ -221,6 +221,257 @@
         });
     }
     
+    buttons.contract_remove = function(button, e)
+    {
+        e.preventDefault();
+        var account_id = $(button).attr('data-account-id');
+        var contract_id = $(button).attr('data-contract-id');
+        var chain = $(button).attr('data-blockchain-id');
+        if(account_id)
+        {
+            var account = $.fn.blockstrap.accounts.get(account_id);
+            if(
+                typeof account.contracts != 'unefined'
+                && typeof account.contracts[chain] != 'unefined'
+                && typeof account.contracts[chain][contract_id] != 'unefined'
+            ){
+                delete account.contracts[chain][contract_id];
+                $.fn.blockstrap.data.save('accounts', account_id, account, function()
+                {
+                    $.fn.blockstrap.core.loader('open');
+                    $.fn.blockstrap.core.refresh(function()
+                    {
+                        $.fn.blockstrap.core.loader('close');
+                        setTimeout(function()
+                        {
+                            $.fn.blockstrap.core.modal('Success', 'The contract has been removed');
+                        }, $.fn.blockstrap.core.timeouts('loader'));
+                    }, $.fn.blockstrap.core.page());
+                });
+            }
+        }
+    }
+    
+    buttons.contract_send = function(button, e)
+    {
+        e.preventDefault();
+        e.preventDefault();
+        var account_id = $(button).attr('data-account-id');
+        var contract_id = $(button).attr('data-contract-id');
+        var chain = $(button).attr('data-blockchain-id');
+        if(account_id)
+        {
+            var account = $.fn.blockstrap.accounts.get(account_id);
+            if(
+                typeof account.contracts != 'unefined'
+                && typeof account.contracts[chain] != 'unefined'
+                && typeof account.contracts[chain][contract_id] != 'unefined'
+            ){
+                var contract = account.contracts[chain][contract_id];
+                var required_keys = $.fn.blockstrap.multisig.decode(contract.script, chain);
+                var primary_address = contract.primary_address;
+                var primary_keys = [];
+                var public_keys = [];
+                $.each(required_keys, function(k, key)
+                {
+                    if(key.address == primary_address) primary_keys.push(key)
+                    else public_keys.push(key);
+                });
+                var blockchain = $.fn.blockstrap.settings.blockchains[chain].blockchain;
+                var title = 'Process Multisignature Transaction';
+                var contents = '<p>Please fill-out the details for ' + contract.address + ' to process this transaction:</p>';
+                var fields = [
+                    {
+                        selects: {
+                            label: {
+                                css: 'col-xs-3',
+                                text: 'Contract Type'
+                            },
+                            id: 'contract-type',
+                            wrapper: {
+                                css: 'col-xs-9'
+                            },
+                            values: [
+                                {
+                                    value: '2|3',
+                                    text: 'Multisignature (2 of 3)'
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        inputs: {
+                            label: {
+                                css: 'col-xs-3',
+                                text: 'Account Password'
+                            },
+                            type: 'password',
+                            id: 'account-password',
+                            wrapper: {
+                                css: 'col-xs-9'
+                            },
+                            attributes: [
+                                {
+                                    key: 'data-hex-01',
+                                    value: primary_keys[0].key
+                                },
+                                {
+                                    key: 'data-address-01',
+                                    value: primary_keys[0].address
+                                }
+                            ],
+                            placeholder: 'Needed in order to verify account ownership'
+                        }
+                    },
+                    {
+                        inputs: {
+                            label: {
+                                css: 'col-xs-3',
+                                text: 'Amount'
+                            },
+                            id: 'amount',
+                            wrapper: {
+                                css: 'col-xs-9'
+                            },
+                            placeholder: 'How much ' + blockchain + ' to send...?'
+                        }
+                    },
+                    {
+                        inputs: {
+                            label: {
+                                css: 'col-xs-3',
+                                text: 'Address'
+                            },
+                            id: 'send-address',
+                            wrapper: {
+                                css: 'col-xs-9'
+                            },
+                            placeholder: 'Address to send funds to...?'
+                        }
+                    },
+                    {
+                        inputs: {
+                            label: {
+                                css: 'col-xs-3',
+                                text: 'Address 2'
+                            },
+                            id: 'address-02',
+                            wrapper: {
+                                css: 'col-xs-9'
+                            },
+                            attributes: [
+                                {
+                                    key: 'data-hex-02',
+                                    value: public_keys[0].key
+                                },
+                                {
+                                    key: 'readonly',
+                                    value: 'readonly'
+                                },
+                                {
+                                    key: 'data-address-02',
+                                    value: public_keys[0].address
+                                }
+                            ],
+                            value: public_keys[0].address
+                        }
+                    },
+                    {
+                        inputs: {
+                            label: {
+                                css: 'col-xs-3',
+                                text: 'Address 3'
+                            },
+                            id: 'address-03',
+                            wrapper: {
+                                css: 'col-xs-9'
+                            },
+                            attributes: [
+                                {
+                                    key: 'data-hex-03',
+                                    value: public_keys[1].key
+                                },
+                                {
+                                    key: 'readonly',
+                                    value: 'readonly'
+                                },
+                                {
+                                    key: 'data-address-03',
+                                    value: public_keys[1].address
+                                }
+                            ],
+                            value: public_keys[1].address
+                        }
+                    },
+                    {
+                        inputs: {
+                            label: {
+                                css: 'col-xs-3',
+                                text: 'Extra Private Key'
+                            },
+                            id: 'extra-private-key',
+                            wrapper: {
+                                css: 'col-xs-9'
+                            },
+                            placeholder: 'For testing only!'
+                        }
+                    }
+                ];
+                var form = $.fn.blockstrap.forms.process({
+                    id: "send-from-contract",
+                    css: "form-horizontal bs",
+                    data: [
+                        {
+                            key: 'data-function',
+                            value: 'send_from_contract'
+                        },
+                        {
+                            key: 'data-account-id',
+                            value: account_id
+                        },
+                        {
+                            key: 'data-contract-id',
+                            value: contract_id
+                        },
+                        {
+                            key: 'data-blockchain-id',
+                            value: chain
+                        }
+                    ],
+                    objects: [
+                        {
+                            fields: fields
+                        }
+                    ],
+                    buttons: {
+                        forms: [
+                            {
+                                id: 'cancel-send',
+                                css: 'btn-danger pull-right btn-split',
+                                text: 'Cancel',
+                                type: 'button',
+                                attributes: [
+                                    {
+                                        key: 'data-dismiss',
+                                        value: 'modal'
+                                    }
+                                ]
+                            },
+                            {
+                                type: "submit",
+                                id: "submit-new-send",
+                                css: 'btn-success pull-right btn-split',
+                                text: 'Send',
+                                type: 'submit'
+                            }
+                        ]
+                    }
+                });
+                $.fn.blockstrap.core.modal(title, contents + form);
+            }
+        }
+    }
+    
     buttons.create_account = function(button, e)
     {
         e.preventDefault();
@@ -972,6 +1223,139 @@
                         {
                             type: "submit",
                             id: "submit-new-chain",
+                            css: 'btn-success pull-right btn-split',
+                            text: 'Confirm',
+                            type: 'submit'
+                        }
+                    ]
+                }
+            });
+            bs.core.modal(title, contents + form);
+        }
+        else
+        {
+            bs.core.modal(title, contents);
+        }
+    }
+    
+    buttons.new_contract = function(button, e)
+    {
+        e.preventDefault();
+        var bs = $.fn.blockstrap;
+        var $bs = blockstrap_functions;
+        var account_id = $(button).attr('data-id');
+        var blockchain = $(button).attr('data-chain');
+        var title = 'Error';
+        var contents = 'Unable to process new contract';
+        if(account_id && blockchain)
+        {
+            title = 'Create Address Contract';
+            contents = '<p>Please add additional keys as required:</p>';
+            var account = bs.accounts.get(account_id);
+            var hashed_pw = account.password;
+            var fields = [
+                {
+                    selects: {
+                        label: {
+                            css: 'col-xs-3',
+                            text: 'Contract Type'
+                        },
+                        id: 'contract-type',
+                        wrapper: {
+                            css: 'col-xs-9'
+                        },
+                        values: [
+                            {
+                                value: '2|3',
+                                text: 'Multisignature (2 of 3)'
+                            }
+                        ]
+                    }
+                },
+                {
+                    inputs: {
+                        label: {
+                            css: 'col-xs-3',
+                            text: 'Account Password'
+                        },
+                        type: 'password',
+                        id: 'account-password',
+                        wrapper: {
+                            css: 'col-xs-9'
+                        },
+                        placeholder: 'Needed in order to verify account ownership and generate new address'
+                    }
+                },
+                {
+                    inputs: {
+                        label: {
+                            css: 'col-xs-3',
+                            text: 'Public Hex 2'
+                        },
+                        id: 'pubkey-02',
+                        wrapper: {
+                            css: 'col-xs-9'
+                        },
+                        placeholder: 'Add a secondary public (hex) key here'
+                    }
+                },
+                {
+                    inputs: {
+                        label: {
+                            css: 'col-xs-3',
+                            text: 'Public Hex 3'
+                        },
+                        id: 'pubkey-03',
+                        wrapper: {
+                            css: 'col-xs-9'
+                        },
+                        placeholder: 'Add a third public (hex) key here'
+                    }
+                }
+            ];
+            var form = bs.forms.process({
+                id: "add-new-contract",
+                css: "form-horizontal bs",
+                data: [
+                    {
+                        key: 'data-function',
+                        value: 'add_contract'
+                    },
+                    {
+                        key: 'data-account-id',
+                        value: account_id
+                    },
+                    {
+                        key: 'data-chain',
+                        value: blockchain
+                    },
+                    {
+                        key: 'data-pw',
+                        value: hashed_pw
+                    }
+                ],
+                objects: [
+                    {
+                        fields: fields
+                    }
+                ],
+                buttons: {
+                    forms: [
+                        {
+                            id: 'cancel-creation',
+                            css: 'btn-danger pull-right btn-split',
+                            text: 'Cancel',
+                            type: 'button',
+                            attributes: [
+                                {
+                                    key: 'data-dismiss',
+                                    value: 'modal'
+                                }
+                            ]
+                        },
+                        {
+                            type: "submit",
+                            id: "submit-new-contract",
                             css: 'btn-success pull-right btn-split',
                             text: 'Confirm',
                             type: 'submit'

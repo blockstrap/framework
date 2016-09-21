@@ -94,7 +94,9 @@
             "see_all",
             "check_inactive",
             "check_all_inactive",
-            "add_contact_address"
+            "add_contact_address",
+            "contract_remove",
+            "contract_send"
         ],
         "ids": [
             "create-account",

@@ -183,6 +183,18 @@ html .blockstrap-wrapper #main-content #accounts.panel .panel-body {
     border: none !important;
     box-shadow: none !important;
 }
+.blockstrap-wrapper #main-content table.table tbody tr td .btn-spacing {
+    min-height: 16px;
+}
+table.table p.totals {
+    margin: 0;
+}
+.blockstrap-wrapper #main-content table.table tbody tr td a.btn.btn-see_all {
+    margin: -5px 0 0 0;
+}
+.blockstrap-wrapper #main-content table.table tbody tr td a.btn.btn-new_chain {
+    margin: -15px 0 15px;
+}
 .blockstrap-wrapper #main-content table.table thead tr th, 
 .blockstrap-wrapper table.table thead tr th {
     background: #000;
@@ -193,6 +205,9 @@ html .blockstrap-wrapper #main-content #accounts.panel .panel-body {
 .blockstrap-wrapper #main-content table.table thead tr th.sorting_desc, 
 .blockstrap-wrapper table.table thead tr th.sorting_desc {
     background: #0085B2;
+}
+.table tr p.chains {
+    clear: both;
 }
 .table tr p.chains,
 .table tr:nth-child(2n+1) p.chains {

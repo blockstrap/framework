@@ -58,6 +58,10 @@
             seed = CryptoJS.SHA3(seed, { outputLength: 512 }).toString();
             hashed_seed = seed;
         }
+        else
+        {
+            hashed_seed = '';
+        }
         if(typeof chain == 'undefined' || !chain)
         {
             var chain = 'btc';
@@ -72,7 +76,7 @@
         if($.isArray(key_pairs))
         {
             var keys = [];
-            $.each(key_pairs, function(k, obj)
+            $.each(key_pairs.sort(function(a,b) {return (a.hex > b.hex) ? 1 : ((b.hex > a.hex) ? -1 : 0);} ), function(k, obj)
             {
                 var key = bitcoin.ECPubKey.fromHex(obj.hex);
                 keys.push(key);

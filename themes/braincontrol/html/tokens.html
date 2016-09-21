@@ -182,21 +182,39 @@
                             <td>
                                 <div class="cell">
                                     {{#currencies}}
-                                        {{name}}<br />
+                                        <hr />
+                                        <a 
+                                           href="#" 
+                                           class="btn btn-xs btn-primary btn-left btn-send-tokens"
+                                           data-toggle="modal" 
+                                           data-target="#send-token-modal"
+                                           data-contract-id="{{code}}"
+                                           data-account-id="{{id}}"
+                                           onClick="$('#send-token-modal').find('#contract-id').val('{{code}}'); $('#send-token-modal').find('#account-id').val('{{id}}');"
+                                        >send</a>
+                                        <span class="list">
+                                            {{name}}
+                                        </span>
                                     {{/currencies}}
                                 </div>
                             </td>
                             <td class="hide-on-small-screen">
                                 <div class="cell">
                                     {{#currencies}}
-                                        {{tx_count}}<br />
+                                        <hr />
+                                        <span class="list">
+                                            {{tx_count}}
+                                        </span>
                                     {{/currencies}}
                                 </div>
                             </td>
                             <td class="hide-on-small-screen">
                                 <div class="cell">
                                     {{#currencies}}
-                                        {{balance_display}}<br />
+                                        <hr />
+                                        <span class="list">
+                                            {{balance_display}}
+                                        </span>
                                     {{/currencies}}
                                 </div>
                             </td>
@@ -233,6 +251,7 @@
                                        data-collection="tokens"
                                        data-parent="tokens"
                                        data-element="table-row-{{id}}"
+                                       data-contract-id="{{code}}"
                                        data-key="{{id}}"
                                        title="Update Account"
                                     >

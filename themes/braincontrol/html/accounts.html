@@ -55,6 +55,20 @@
                                 <div class="cell">
                                     <div class="hide-on-mobile">
                                         <p><strong>{{name}}</strong></p>
+                                        {{#blockchains}}
+                                            <p class="hide-on-tablets">
+                                                <a 
+                                                   href="#" 
+                                                   class="btn btn-xs pull-left btn-hd btn-new_contract"
+                                                   data-id="{{id}}"
+                                                   data-chain="{{code}}"
+                                                   style="margin:12px 0 6px -9px;"
+                                                >
+                                                    <i class="fa fa-plus-circle" style="font-size:20px; float: left; margin: 0 5px 0 0;"></i>
+                                                    Add Contract
+                                                </a>
+                                            </p>
+                                        {{/blockchains}}
                                     </div>
                                     <div class="show-on-mobile">
                                         <h2>{{name}}</h2>
@@ -309,12 +323,17 @@
                                     <hr>
                                     {{#blockchains}}
                                         <p class="chains">{{type}}</p>
+                                        {{#contracts}}
+                                            <p class="chains">
+                                                {{type}} (2 of 3)
+                                            </p>
+                                        {{/contracts}}
                                     {{/blockchains}}
                                 </div>
                             </td>
                             <td>
                                 <div class="cell">
-                                    <p class="hide-on-tablets">
+                                    <p class="hide-on-tablets btn-spacing">
                                         {{#addresses}}
                                         <a 
                                            href="#" 
@@ -332,6 +351,11 @@
                                         <p class="chains">
                                             <a href="?key={{address}}#address">{{address}}</a>
                                         </p>
+                                        {{#contracts}}
+                                            <p class="chains">
+                                                <a href="?key={{address}}#address">{{address}}</a>
+                                            </p>
+                                        {{/contracts}}
                                     {{/blockchains}}
                                 </div>
                             </td>
@@ -341,6 +365,9 @@
                                     <hr>
                                     {{#blockchains}}
                                         <p class="chains">{{tx_count}}</p>
+                                        {{#contracts}}
+                                            <p class="chains">{{tx_count}}</p>
+                                        {{/contracts}}
                                     {{/blockchains}}
                                 </div>
                             </td>
@@ -350,6 +377,9 @@
                                     <hr>
                                     {{#blockchains}}
                                         <p class="chains">{{display_balance}}</p>
+                                        {{#contracts}}
+                                            <p class="chains">{{display_balance}}</p>
+                                        {{/contracts}}
                                     {{/blockchains}}
                                 </div>
                             </td>
@@ -439,6 +469,24 @@
                                             <i class="fa fa-times"><span>Remove Account</span></i>
                                             </a>
                                         </p>
+                                        {{#contracts}}
+                                            <p class="chains">
+                                                <a 
+                                                   href="#" 
+                                                   class="btn btn-xs btn-danger btn-contract_send"
+                                                   data-account-id="{{account_id}}"
+                                                   data-contract-id="{{contract_id}}"
+                                                   data-blockchain-id="{{code}}"
+                                                >send</a>
+                                                <a 
+                                                   href="#" 
+                                                   class="btn btn-xs btn-danger btn-contract_remove"
+                                                   data-account-id="{{account_id}}"
+                                                   data-contract-id="{{contract_id}}"
+                                                   data-blockchain-id="{{code}}"
+                                                >remove</a>
+                                            </p>
+                                        {{/contracts}}
                                     {{/blockchains}}
                                 </div>
                             </td>
