@@ -542,7 +542,6 @@
         {
             api.request(api_url, function(results)
             {
-                console.log('op_return.results', results);
                 if(return_raw && callback)
                 {
                     $.fn.blockstrap.core.apply_actions('api_op_returns', function()
@@ -557,7 +556,6 @@
                     var transactions = [];
                     var now = new Date().getTime();
                     var result_key = false;
-                    console.log('map', map);
                     if(typeof map.from.op_returns.inner != 'undefined' && map.from.op_returns.inner)
                     {
                         result_key = map.from.op_returns.inner;
@@ -566,7 +564,6 @@
                     {
                         these_results = results[result_key];
                     }
-                    console.log('these_results', these_results);
                     if(typeof map.from.op_returns.inner_unconfirmed != 'undefined' && map.from.op_returns.inner_unconfirmed)
                     {
                         var unconfirmed_result_key = map.from.op_returns.inner_unconfirmed;
@@ -596,7 +593,6 @@
                                     data: ''
                                 };
                                 var this_tx = these_results[k];
-                                console.log('this_tx', this_tx);
                                 $.each(this_tx.outputs, function(output_k, output)
                                 {
                                     if(
@@ -611,11 +607,10 @@
                                         && output.type != 'op_return'
                                         )
                                     ){
-                                        console.log('why here?');
+
                                     }
                                     else
                                     {
-                                        console.log('here?');
                                         transaction.pos = output_k;
                                         if(
                                             typeof this_tx[map.from.op_returns.txid] != 'undefined'
@@ -720,7 +715,7 @@
             headers: headers,
             success: function(results)
             {
-                console.log('' + call + '.results', results);
+                //console.log('' + call + '.results', results);
                 var extra_key = false;
                 var key_to_call = false;
                 if(
@@ -790,7 +785,6 @@
                     {
                         data = results;
                     }
-                    console.log('' + call + '.data', data);
                     if(callback) callback(data);
                 }
                 else
