@@ -362,14 +362,13 @@ var blockstrap_core = function()
                     var file_len = Object.keys(css_files).length;
                     $.each(css_files, function(k, v)
                     {
-                        var called = false;
-                        
+                        var called = false;   
                         var css = localStorage.getItem('nw_inc_css_'+v);
                         if(blockstrap_functions.json(css)) css = $.parseJSON(css);
                         var refresh = blockstrap_functions.vars('refresh');
                         var cache = bs.settings.cache;
                         var store = true;
-                        if(cache.css === false) store = false;
+                        if(typeof cache != 'undefined' && cache.css === false) store = false;
                         if(!css || refresh === true || store === false) 
                         {
                             // FETCH CSS?
@@ -1425,7 +1424,7 @@ var blockstrap_core = function()
                     var refresh = blockstrap_functions.vars('refresh');
                     var cache = bs.settings.cache;
                     var store = true;
-                    if(cache.plugins === false) store = false;
+                    if(typeof cache != 'undefined' && cache.plugins === false) store = false;
                     if(!plug || refresh === true || store === false) 
                     {
                         $.getScript(plugin_url, function(plugin_js)
@@ -2436,7 +2435,6 @@ var blockstrap_core = function()
                                         // UPDATE CORE IF REQUIRED
                                         $bs.update(bs.settings.v, function(saved_version, this_version, refresh)
                                         {
-
                                             // USE LESS.css ...?
                                             bs.core.less(function()
                                             {
@@ -2876,11 +2874,11 @@ var blockstrap_functions = {
             if(blockstrap_functions.json(js_file)) js_file = $.parseJSON(js_file);
             if(!dependency)
             {
-                if(cache.modules === false) store = false;
+                if(typeof cache != 'undefined' && cache.modules === false) store = false;
             }
             else
             {
-                if(cache.dependencies === false) store = false;
+                if(typeof cache != 'undefined' && cache.dependencies === false) store = false;
             }
             if(blockstrap.settings.cascade === false)
             {

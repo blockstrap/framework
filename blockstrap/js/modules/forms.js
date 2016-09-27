@@ -207,7 +207,6 @@
                 var primary_hex = primary_keys.raw.pubKey.toHex();
                 var second_hex = $(form).find('#pubkey-02').val();
                 var third_hex = $(form).find('#pubkey-03').val();
-                console.log('primary_keys', primary_keys);
                 if(
                     primary_hex && second_hex && third_hex
                     && primary_hex != second_hex
@@ -223,7 +222,6 @@
                     {
                         var shared_keys = multisig_keys[multisig_keys.length-1];
                         shared_keys.primary_address = primary_keys.pub;
-                        console.log('shared_keys', shared_keys);
                         if(
                             typeof shared_keys.script != 'undefined'
                             && typeof shared_keys.address != 'undefined'
@@ -388,7 +386,6 @@
             && typeof account.contracts[chain][contract_id] != 'undefined'
         ){
             var contract = account.contracts[chain][contract_id];
-            console.log('contract', contract);
         }
     }
     

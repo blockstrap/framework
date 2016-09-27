@@ -594,7 +594,6 @@
         {
             $.fn.blockstrap.accounts.updates(0, function(txs)
             {
-                console.log('update txs', txs);
                 if($.isArray(txs) && blockstrap_functions.array_length(txs) > 0)
                 {
                     var title = '1 New Transaction';
@@ -1010,7 +1009,8 @@
                                             });
                                             if(!got_tx)
                                             {
-                                                if(typeof chain.id == 'undefined')
+                                                // changed this from == to != in order to fix txs filter on dashboard ...
+                                                if(typeof chain.id != 'undefined')
                                                 {
                                                     the_account.txs.push({
                                                         ts: now,
@@ -1020,29 +1020,6 @@
                                                         txid: transaction.txid
                                                     });
                                                 }
-                                                /*
-                                                the_account.blockchains[k] = JSON.parse(JSON.stringify(chain));
-                                                if(typeof the_account.contracts == 'undefined') the_account.contracts = {};
-                                                if(typeof the_account.contracts[chain.code] == 'undefined')
-                                                {
-                                                    the_account.contracts[chain.code] = {};
-                                                }
-                                                if(typeof the_account.contracts[chain.code][chain.id] == 'undefined')
-                                                {
-                                                    the_account.contracts[chain.code][chain.id] = {};
-                                                }
-                                                if(typeof the_account.contracts[chain.code][chain.id].txs == 'undefined')
-                                                {
-                                                    the_account.contracts[chain.code][chain.id].txs = [];
-                                                }
-                                                the_account.contracts[chain.code][chain.id].txs.push({
-                                                    ts: now,
-                                                    address: chain.address,
-                                                    chain: chain.code,
-                                                    tx: transaction,
-                                                    txid: transaction.txid
-                                                });
-                                                */
                                             }
                                         });
                                     }
@@ -1059,24 +1036,6 @@
                                         the_account.blockchains[k] = JSON.parse(JSON.stringify(chain));
                                     }
                                     
-                                    /*
-                                    console.log('chain.id', chain.id);
-                                    if(typeof chain.id == 'undefined')
-                                    {
-                                        the_account.blockchains[k] = JSON.parse(JSON.stringify(chain));
-                                    }
-                                    else
-                                    {
-                                        if(
-                                            typeof the_account.contracts != 'undefined'
-                                            && typeof the_account.contracts[chain.code] != 'undefined'
-                                            && typeof the_account.contracts[chain.code][chain.id] != 'undefined'
-                                        ){
-                                            the_account.contracts[chain.code][chain.id] = JSON.parse(JSON.stringify(chain));
-                                        }
-                                    }
-                                    */
-                                    
                                     if(
                                         blockstrap_functions.array_length(chain.txs) < chain.tx_count
                                         && $.fn.blockstrap.core.apis('paginate') === true
@@ -1087,8 +1046,6 @@
                                     }
                                     else
                                     {
-                                        console.log('chain_count', chain_count);
-                                        console.log('total_chains', total_chains);
                                         if(total_chains <= chain_count)
                                         {
                                             if(
@@ -1097,7 +1054,6 @@
                                             ){
                                                 delete the_account.blockchains[k].txs;
                                             }
-                                            console.log('the_account', the_account);
                                             $.fn.blockstrap.data.save('accounts', the_account.id, the_account, function(updated_account)
                                             {
                                                 if(callback) callback(the_account);
