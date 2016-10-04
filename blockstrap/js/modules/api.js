@@ -599,6 +599,7 @@
                                         (
                                         typeof output.script_type != 'undefined'
                                         && output.script_type != 'op_return'
+                                        && output.script_type != 'nulldata'
                                         )
                                         ||
                                         (
@@ -606,7 +607,7 @@
                                         && output.type != 'op_return'
                                         )
                                     ){
-                                        
+
                                     }
                                     else
                                     {

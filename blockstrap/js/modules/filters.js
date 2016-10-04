@@ -32,6 +32,34 @@
                             {
                                 $.each(this_account.blockchains, function(chain, obj)
                                 {
+                                    if(
+                                        typeof this_account.contracts != 'undefined'
+                                        && typeof this_account.contracts[chain] != 'undefined'
+                                        && $.isPlainObject(this_account.contracts[chain])
+                                    ){
+                                        obj.contracts = [];
+                                        $.each(this_account.contracts[chain], function(k, contract)
+                                        {
+                                            contract.account_id = this_account.id;
+                                            contract.contract_id = k;
+                                            if(typeof contract.tx_count == 'undefined')
+                                            {
+                                                contract.tx_count = 0;
+                                            }
+                                            if(typeof contract.balance == 'undefined')
+                                            {
+                                                contract.balance = 0;
+                                            }
+                                            var decimal_places = 8;
+                                            var minimum_unit = 100000000;
+                                            contract.display_balance = parseFloat(contract.balance / minimum_unit).toFixed(decimal_places);
+                                            obj.contracts.push(contract);
+                                        });
+                                    }   
+                                    else
+                                    {
+                                        obj.contracts = false;
+                                    }
                                     account.blockchains.push(obj);
                                 });
                                 accounts.push(account);

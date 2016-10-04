@@ -77,7 +77,9 @@ var blockstrap_options = {
             "see_all",
             "check_inactive",
             "check_all_inactive",
-            "add_contact_address"
+            "add_contact_address",
+            "contract_send",
+            "contract_remove"
         ],
         ids: [
             "create-account",

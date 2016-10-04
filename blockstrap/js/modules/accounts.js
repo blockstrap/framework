@@ -923,6 +923,34 @@
                         }
                     });
                 }
+                else
+                {
+                    $.each(current_account.blockchains, function(k, temp_chain)
+                    {
+                        if(
+                            typeof current_account.contracts != 'undefined'
+                            && typeof current_account.contracts[k] != 'undefined'
+                        ){
+                            total_chains = total_chains + blockstrap_functions.array_length(current_account.contracts[k]);
+                            $.each(current_account.contracts[k], function(id, obj)
+                            {
+                                var contract_txs = [];
+                                var contract_balance = 0;
+                                if(typeof obj.txs != 'undefined') contract_txs = obj.txs;
+                                if(typeof obj.balance != 'undefined') contract_balance = obj.balance;
+                                current_account.blockchains[id] = {
+                                    id: id,
+                                    address: obj.address,
+                                    script: obj.script,
+                                    primary_address: obj.primary_address,
+                                    code: k,
+                                    txs: contract_txs,
+                                    balance: contract_balance
+                                };
+                            });
+                        }
+                    });     
+                }
                 $.each(current_account.blockchains, function(k, chain)
                 {
                     var current_balance = chain.balance;
@@ -981,17 +1009,33 @@
                                             });
                                             if(!got_tx)
                                             {
-                                                the_account.txs.push({
-                                                    ts: now,
-                                                    address: chain.address,
-                                                    chain: chain.code,
-                                                    tx: transaction,
-                                                    txid: transaction.txid
-                                                });
+                                                // changed this from == to != in order to fix txs filter on dashboard ...
+                                                if(typeof chain.id != 'undefined')
+                                                {
+                                                    the_account.txs.push({
+                                                        ts: now,
+                                                        address: chain.address,
+                                                        chain: chain.code,
+                                                        tx: transaction,
+                                                        txid: transaction.txid
+                                                    });
+                                                }
                                             }
                                         });
                                     }
-                                    the_account.blockchains[k] = JSON.parse(JSON.stringify(chain));
+                                    
+                                    if(
+                                        typeof the_account.contracts != 'undefined'
+                                        && typeof the_account.contracts[chain.code] != 'undefined'
+                                        && typeof the_account.contracts[chain.code][chain.id] != 'undefined'
+                                    ){
+                                        the_account.contracts[chain.code][chain.id] = JSON.parse(JSON.stringify(chain));
+                                    }
+                                    else
+                                    {
+                                        the_account.blockchains[k] = JSON.parse(JSON.stringify(chain));
+                                    }
+                                    
                                     if(
                                         blockstrap_functions.array_length(chain.txs) < chain.tx_count
                                         && $.fn.blockstrap.core.apis('paginate') === true
@@ -1004,7 +1048,12 @@
                                     {
                                         if(total_chains <= chain_count)
                                         {
-                                            delete the_account.blockchains[k].txs;
+                                            if(
+                                                typeof the_account.blockchains[k] != 'undefined'
+                                                && typeof the_account.blockchains[k].txs != 'undefined'
+                                            ){
+                                                delete the_account.blockchains[k].txs;
+                                            }
                                             $.fn.blockstrap.data.save('accounts', the_account.id, the_account, function(updated_account)
                                             {
                                                 if(callback) callback(the_account);
@@ -1019,7 +1068,12 @@
                         {
                             if(total_chains <= chain_count)
                             {
-                                delete the_account.blockchains[k].txs;
+                                if(
+                                    typeof the_account.blockchains[k] != 'undefined'
+                                    && typeof the_account.blockchains[k].txs != 'undefined'
+                                ){
+                                    delete the_account.blockchains[k].txs;
+                                }
                                 $.fn.blockstrap.data.save('accounts', the_account.id, the_account, function(updated_account)
                                 {
                                     if(callback) callback(false);
