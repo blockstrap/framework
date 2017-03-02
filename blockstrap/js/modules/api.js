@@ -48,6 +48,7 @@
                         blockchain: blockchain,
                         received: 0,
                         balance: 0,
+                        txs: []
                     }
                     if(results)
                     {
@@ -596,10 +597,36 @@
                                 $.each(this_tx.outputs, function(output_k, output)
                                 {
                                     if(
+                                        typeof output.script_type != 'undefined'
+                                        && output.script_type == 'nulldata'
+                                        && typeof output.script_data_decode != 'undefined'
+                                        && output.script_data_decode
+                                    ){
+                                        transaction.pos = output_k;
+                                        if(
+                                            typeof this_tx[map.from.op_returns.txid] != 'undefined'
+                                        ){
+                                            transaction.txid = this_tx[map.from.op_returns.txid];
+                                        }
+                                        if(
+                                            typeof output[map.from.op_returns.data] != 'undefined'
+                                        ){
+                                            transaction.data = output[map.from.op_returns.data];
+                                        }
+                                        if(
+                                            typeof transaction.data != 'undefined' 
+                                            && typeof transaction.txid != 'undefined'
+                                            && transaction.txid != 'N/A'
+                                            && transaction.data
+                                        ){
+                                            transactions.push(transaction);
+                                        }
+                                    }
+                                    else if
+                                    (
                                         (
                                         typeof output.script_type != 'undefined'
                                         && output.script_type != 'op_return'
-                                        && output.script_type != 'nulldata'
                                         )
                                         ||
                                         (
@@ -607,7 +634,7 @@
                                         && output.type != 'op_return'
                                         )
                                     ){
-
+                                        
                                     }
                                     else
                                     {
@@ -662,10 +689,11 @@
         }
     }
     
-    api.request = function(url, callback, type, data, blockchain, call, username, password, service, to_address)
+    api.request = function(url, callback, type, data, blockchain, call, username, password, service, to_address, json_header)
     {
         if(!type) type = 'GET';
         if(!blockchain) blockchain = 'btc';
+        if(typeof json_header == 'undefined') json_header = false;
         var map = $.fn.blockstrap.settings.apis.defaults[service].functions;
         var headers = false;
         if(
@@ -693,6 +721,17 @@
                 }
             }
         }
+        
+        var content_type = 'application/x-www-form-urlencoded; charset=UTF-8';
+        var before_send = false;
+        if(json_header)
+        {
+            content_type = 'application/json';
+            headers = {          
+                 Accept : "application/json; charset=utf-8"
+            };
+        }
+        
         var api_type = $.fn.blockstrap.core.apis('type', service);
         var use_async = $.fn.blockstrap.core.apis('async', service);
         var data_type = 'json';
@@ -710,12 +749,13 @@
             url: url,
             type: type,
             dataType: data_type,
+            contentType: content_type,
+            beforeSend: before_send,
             data: data,
             async: use_async,
             headers: headers,
             success: function(results)
             {
-                //console.log('' + call + '.results', results);
                 var extra_key = false;
                 var key_to_call = false;
                 if(
@@ -804,11 +844,13 @@
     {
         if(typeof service == 'undefined' || !service) service = $.fn.blockstrap.core.api();
         var request_data = {};
+        var json_header = false;
         var map = $.fn.blockstrap.settings.apis.defaults[service].functions;
         request_data[map.to.relay_param] = hash;
         if(typeof map.to.relay_json != 'undefined')
         {
             request_data = JSON.stringify(request_data);
+            json_header = true;
         }
         var api_url = api.url('relay', hash, blockchain, service);
         if(api_url)
@@ -893,7 +935,7 @@
                         return tx;
                     }
                 }
-            }, get_type, request_data, blockchain, 'relay', false, false, service);
+            }, get_type, request_data, blockchain, 'relay', false, false, service, false, json_header);
         }
         else if(callback)
         {
@@ -1185,7 +1227,62 @@
                             }
                             defaults[field_name] = res_01;
                         }
-                    }       
+                    }
+                    else if(arrayed_result && $bs.array_length(arrayed_result) === 1)
+                    {
+                        if(arrayed_result[0] == 'tx_list' && typeof results.tx_list)
+                        {
+                            var balance = 0;
+                            if(
+                                typeof results.tx_list != 'undefined'
+                                && jQuery.isArray(results.tx_list)
+                                && blockstrap_functions.array_length(results.tx_list) > 0
+                            ){
+                                jQuery.each(results.tx_list, function(i)
+                                {
+                                    var tx = results.tx_list[i];
+                                    if(
+                                        typeof tx.tx_address_ledger_direction != 'undefined'
+                                        && tx.tx_address_ledger_direction == 'received'
+                                    ){
+                                        jQuery.each(tx.outputs, function(t)
+                                        {
+                                            if(tx.outputs[t].addresses[0] == results.address)
+                                            {
+                                                balance = balance + tx.outputs[t].value;
+                                            }
+                                        });
+                                        jQuery.each(tx.inputs, function(t)
+                                        {
+                                            if(tx.inputs[t].addresses[0] == results.address)
+                                            {
+                                                balance = balance - tx.inputs[t].value;
+                                            }
+                                        });
+                                    }
+                                    else if(
+                                        typeof tx.tx_address_ledger_direction != 'undefined'
+                                    ){
+                                        jQuery.each(tx.inputs, function(t)
+                                        {
+                                            if(tx.inputs[t].addresses[0] == results.address)
+                                            {
+                                                balance = balance - tx.inputs[t].value;
+                                            }
+                                        });
+                                        jQuery.each(tx.outputs, function(t)
+                                        {
+                                            if(tx.outputs[t].addresses[0] == results.address)
+                                            {
+                                                balance = balance + tx.outputs[t].value;
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                            defaults[field_name] = balance;
+                        }
+                    }
                     else
                     {
                         if(
@@ -1558,16 +1655,32 @@
                         });
                         if(reverse) unspents = unspents.reverse();
                     }
+                    
+                    var unique_unspents = [];
+                    jQuery(unspents).each(function(i)
+                    {
+                        var is_unique = true;
+                        var txid = unspents[i].txid;
+                        jQuery(unique_unspents).each(function(ui)
+                        {
+                            if(unique_unspents[ui].txid == txid) is_unique = false;
+                        });
+                        if(is_unique)
+                        {
+                            unique_unspents.push(unspents[i]);
+                        }
+                    });
+                    
                     if(callback) 
                     {
                         $.fn.blockstrap.core.apply_actions('api_unspents', function()
                         {
-                            callback(unspents);
-                        }, unspents);
+                            callback(unique_unspents);
+                        }, unique_unspents);
                     }
                     else 
                     {
-                        return unspents;
+                        return unique_unspents;
                     }
                 }
                 else
@@ -1726,32 +1839,6 @@
         else
         {
             app_id = $.fn.blockstrap.settings.id;
-        }
-        if(api_service == 'blockstrap')
-        {
-            app_id+= '_v'+blockstrap_functions.slug($.fn.blockstrap.settings.v);
-            if(action == 'stats' || action == 'addresses')
-            {
-                if(url.indexOf("?") > -1)
-                {
-                    url+= '&app_id='+app_id;
-                }
-                else
-                {
-                    url+= '?app_id='+app_id;
-                }
-            }
-            else
-            {
-                if(url.indexOf("?") > -1)
-                {
-                    url+= '&app_id='+app_id;
-                }
-                else
-                {
-                    url+= '?app_id='+app_id;
-                }
-            }
         }
         return url;
     }

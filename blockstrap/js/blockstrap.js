@@ -144,7 +144,7 @@ var blockstrap_core = function()
             },
             api: function(default_service)
             {
-                api = 'blockstrap';
+                api = 'spinal';
                 if(typeof $.fn.blockstrap.settings.default_api != 'undefined')
                 {
                     api = $.fn.blockstrap.settings.default_api;
