@@ -2,6 +2,7 @@ nbproject/
 git/
 
 secret.json
+secrets.js
 options.js
 rpc_options.php
 
